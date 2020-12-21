@@ -1,28 +1,12 @@
 <template>
-  <div class="index">
-    Index
-  </div>
+  <layouts />
 </template>
 
 <script>
+import Layouts from '@/views/Layouts'
+
 export default {
-  name: 'index'
+  name: 'index',
+  components: { Layouts }
 }
 </script>
-
-<style lang="scss">
-* {
-  margin: 0;
-  padding: 0;
-}
-.index {
-  width: 100vw;
-  height: 100vh;
-  background-color: #0cf;
-  color: #fff;
-  font-size: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
