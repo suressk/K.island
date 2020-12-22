@@ -2,7 +2,8 @@
   <router-view/>
 </template>
 
-<style lang="scss">
-@import "assets/reset.scss";
-@import "assets/public.scss";
+<style lang="less">
+@import "assets/reset.less";
+@import "assets/public.less";
+@import "https://at.alicdn.com/t/font_2285304_8mjfzaheewr.css";
 </style>

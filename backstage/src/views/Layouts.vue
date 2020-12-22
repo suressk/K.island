@@ -3,14 +3,25 @@
     <header class="header-container">
       <h1 class="title">K.island</h1>
     </header>
-    <aside-menu />
-    <main class="main-container">
-      <div class="main-content">
-        <router-view></router-view>
+    <main class="main-container d-flex">
+      <aside-menu />
+      <div class="main">
+        <div class="main-content scroller-light">
+          <router-view></router-view>
+        </div>
+        <!--  页脚  -->
+        <footer class="footer-container flex-between">
+          <span class="footer-item">K.island</span>
+          <span class="footer-item">嗐 | 好久不见</span>
+          <span class="footer-item">
+            <a
+              class="link"
+              href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42282302422860"
+              target="_blank"
+            >鄂公安备 42282302422860</a>
+          </span>
+        </footer>
       </div>
-      <footer class="footer-container flex-center">
-        <a class="link" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42282302422860" target="_blank">鄂公安备 42282302422860</a>
-      </footer>
     </main>
   </section>
 </template>
@@ -26,7 +37,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 .layouts-container {
   width: 100vw;
   height: 100vh;
@@ -44,40 +55,41 @@ export default {
       font-size: 20px;
       color: #fff;
       font-style: italic;
-      position: relative;
-      &::after {
-        content: "";
-        position: absolute;
-        width: 40px;
-        height: 40px;
-        background-image: url("~@/assets/svg/logo.svg");
-        background-size: cover;
-        left: 10px;
-        top: 10px;
-      }
+      background-image: url("~@/assets/svg/logo.svg");
+      background-size: 40px 40px;
+      background-repeat: no-repeat;
+      background-position: 10px 10px;
     }
   }
   .main-container {
     position: absolute;
     right: 0;
     bottom: 0;
-    width: calc(100vw - 200px);
+    width: 100vw;
     height: calc(100vh - 60px);
-    .main-content {
-      height: calc(100% - 80px);
-      margin: 20px;
+    .main {
+      height: calc(100% - 10px);
+      width: calc(100% - 200px);
       overflow: auto;
       background-color: #fff;
-      border-bottom: 1px solid #d9d9d9;
+      margin: 10px 10px 0;
+      .main-content {
+        height: calc(100% - 40px);
+        overflow: auto;
+        box-shadow: 0 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
     }
     .footer-container {
+      user-select: none;
       height: 40px;
       line-height: 40px;
-      background-color: #0d7377;
-      a.link {
-        font-size: 12px;
-        color: #dcdfe6;
-        margin: 0 20px;
+      background-color: #e2e2e2;
+      overflow: hidden;
+      color: #808080;
+      font-size: 12px;
+      a {
+        color: inherit;
+        padding: 0 5px;
       }
     }
   }

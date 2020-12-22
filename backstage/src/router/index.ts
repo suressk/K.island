@@ -5,12 +5,20 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    component: Home
-    // children: [
-    //   {
-    //     path: '/'
-    //   }
-    // ]
+    redirect: '/edit',
+    component: Home,
+    children: [{
+      path: '/edit',
+      name: 'EditBlog',
+      meta: {
+        title: 'K.island'
+      },
+      component: () => import('../views/pages/EditBlog.vue')
+    }, {
+      path: '/reply',
+      name: 'Reply',
+      component: () => import('../views/pages/Reply.vue')
+    }]
   },
   {
     path: '/login',
@@ -31,5 +39,9 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+// router.beforeEach((to, from, next) => {
+//
+// })
 
 export default router

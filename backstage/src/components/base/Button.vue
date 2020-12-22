@@ -10,7 +10,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 .k-button {
   background-color: #409EFF;
 }

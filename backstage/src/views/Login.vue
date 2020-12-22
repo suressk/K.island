@@ -20,8 +20,7 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
-// onMounted,
+import { reactive, toRefs, onMounted } from 'vue'
 // import { form, formItem } from 'ant-design-vue/lib'
 // import 'ant-design-vue/lib/style'
 
@@ -36,9 +35,9 @@ export default {
     function handleLogin () {
       console.log('login', loginInfo)
     }
-    // onMounted(() => {
-    //   console.log('onMounted')
-    // })
+    onMounted(() => {
+      document.title = '驿站加油站 - K.island'
+    })
     return {
       ...toRefs(loginInfo),
       handleLogin
@@ -47,7 +46,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="less">
 .login-container {
   font-family: Consolas, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   width: 100vw;
@@ -112,13 +111,35 @@ export default {
         font-weight: 500;
         position: relative;
         background-image: linear-gradient(90deg,
-          #f40 0%,
-          #1bd1a5 50%,
-          #21a675 100%
+          #03a9f4,
+          #f441a5,
+          #ffeb3b,
+          #03a9f4
         );
-        //&:hover {
-        //  animation: bgAnimate 0.8s infinite linear;
-        //}
+        background-size: 400%;
+        &::before {
+          content: "";
+          position: absolute;
+          left: -5px;
+          right: -5px;
+          top: -5px;
+          bottom: -5px;
+          opacity: 0;
+          transition: all 0.5s;
+          background-image: linear-gradient(90deg,
+            #03a9f4,
+            #f441a5,
+            #ffeb3b,
+            #03a9f4
+          );
+        }
+        &:hover {
+          animation: bgAnimate 8s infinite linear;
+        }
+        &:hover::before {
+          filter: blur(10px);
+          opacity: 0.8;
+        }
       }
     }
   }
@@ -131,16 +152,17 @@ export default {
     left: 50%;
     bottom: 10px;
     transform: translateX(-50%);
+    white-space: nowrap;
   }
 }
 
 // 300px
-//@keyframes bgAnimate {
-//  0% {
-//    background-position: -300px;
-//  }
-//  100% {
-//    background-position: 0;
-//  }
-//}
+@keyframes bgAnimate {
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: 400%;
+  }
+}
 </style>
