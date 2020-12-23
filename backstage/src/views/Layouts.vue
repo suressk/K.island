@@ -11,9 +11,9 @@
         </div>
         <!--  页脚  -->
         <footer class="footer-container flex-between">
-          <span class="footer-item">K.island</span>
-          <span class="footer-item">嗐 | 好久不见</span>
-          <span class="footer-item">
+          <span class="footer-item txt-overflow">K.island</span>
+          <span class="footer-item txt-overflow">嗐 | 好久不见</span>
+          <span class="footer-item txt-overflow">
             <a
               class="link"
               href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42282302422860"
@@ -26,7 +26,7 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import AsideMenu from '@/components/AsideMenu'
 
 export default {
@@ -55,7 +55,7 @@ export default {
       font-size: 20px;
       color: #fff;
       font-style: italic;
-      background-image: url("~@/assets/svg/logo.svg");
+      background-image: url("../assets/svg/logo.svg");
       background-size: 40px 40px;
       background-repeat: no-repeat;
       background-position: 10px 10px;
@@ -69,14 +69,15 @@ export default {
     height: calc(100vh - 60px);
     .main {
       height: calc(100% - 10px);
-      width: calc(100% - 200px);
+      min-width: calc(100% - 200px);
+      flex-grow: 1;
       overflow: auto;
       background-color: #fff;
       margin: 10px 10px 0;
       .main-content {
         height: calc(100% - 40px);
         overflow: auto;
-        box-shadow: 0 0 10px 20px rgba(0, 0, 0, 0.1);
+        padding: 10px;
       }
     }
     .footer-container {

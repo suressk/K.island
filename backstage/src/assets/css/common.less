@@ -1,0 +1,81 @@
+/* flex 布局 */
+.d-flex,
+.flex-between,
+.flex-around,
+.flex-center,
+.flex-col,
+.flex-col-between {
+  display: flex;
+  align-items: center;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+.flex-around {
+  justify-content: space-around;
+}
+.flex-center {
+  justify-content: center;
+}
+
+.flex-col {
+  flex-direction: column;
+  justify-content: center;
+}
+.flex-col-between {
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+/**
+ 文字溢出隐藏
+ */
+.txt-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/**
+  scroll
+*/
+.scroller-light::-webkit-scrollbar,
+.scroller-light::-webkit-scrollbar-corner,
+.scroller::-webkit-scrollbar,
+.scroller::-webkit-scrollbar-corner  {
+  background-color: transparent;
+}
+.scroller-light::-webkit-scrollbar:vertical,
+.scroller::-webkit-scrollbar:vertical {
+  cursor: default;
+  width: 6px;
+}
+.scroller-light::-webkit-scrollbar:horizontal,
+.scroller::-webkit-scrollbar:horizontal {
+  cursor: default;
+  height: 6px;
+}
+.scroller-light::-webkit-scrollbar-button,
+.scroller-light::-webkit-scrollbar-corner,
+.scroller::-webkit-scrollbar-button,
+.scroller::-webkit-scrollbar-corner {
+  display: none;
+}
+
+.scroller-light::-webkit-scrollbar-thumb,
+.scroller::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+}
+.scroller-light::-webkit-scrollbar-thumb {
+  background-color: #a2a2a2;
+}
+.scroller::-webkit-scrollbar-thumb {
+  background-color: #545454;
+}
+
+.scroller-light::-webkit-scrollbar-thumb:hover {
+  background-color: #9a9a9a;
+}
+.scroller::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}

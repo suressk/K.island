@@ -4,20 +4,20 @@ import Home from '../views/index.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
-    redirect: '/edit',
+    name: 'island',
+    redirect: '/soul',
     component: Home,
     children: [{
-      path: '/edit',
-      name: 'EditBlog',
+      path: 'soul',
+      name: 'SoulArea',
       meta: {
         title: 'K.island'
       },
-      component: () => import('../views/pages/EditBlog.vue')
+      component: () => import('../views/pages/SoulRecord.vue')
     }, {
       path: '/reply',
       name: 'Reply',
-      component: () => import('../views/pages/Reply.vue')
+      component: () => import('../views/pages/SoulReply.vue')
     }]
   },
   {
@@ -29,7 +29,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/Login.vue')
   },
   {
-    path: '/404',
+    path: '/:catchAll(.*)',
     name: 'NotFound',
     component: () => import('../views/NotFound.vue')
   }

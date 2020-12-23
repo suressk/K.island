@@ -1,0 +1,47 @@
+<template>
+  <el-button class="upload-btn" v-bind="$attrs">
+    <slot>Upload</slot>
+    <input type="file" :accept="accept" @change="handleFileChange($event)" >
+  </el-button>
+</template>
+
+<script>
+import { getCurrentInstance } from 'vue'
+import { ElButton } from 'element-plus'
+
+export default {
+  name: 'UploadFile',
+  props: {
+    accept: {
+      type: String,
+      default: ''
+    },
+    limit: {
+      type: Number
+    }
+  },
+  components: { ElButton },
+  setup () {
+    const { ctx } = getCurrentInstance()
+    function handleFileChange (e) {
+      ctx.$emit('change', e.target.files)
+    }
+    return { handleFileChange }
+  }
+}
+</script>
+
+<style lang="less">
+.upload-btn {
+  position: relative;
+  input {
+    position: absolute;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    left: 0;
+    top: 0;
+  }
+}
+</style>

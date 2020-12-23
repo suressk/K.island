@@ -15,20 +15,23 @@
         <button class="btn-login" @click="handleLogin">LOGIN</button>
       </div>
     </div>
-    <div class="hint">愿所有的美好都能如约而至...</div>
+    <div class="hint">愿所有美好都能如约而至...</div>
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import { reactive, toRefs, onMounted } from 'vue'
-// import { form, formItem } from 'ant-design-vue/lib'
-// import 'ant-design-vue/lib/style'
+
+interface LoginInfo {
+  username: string;
+  password: string;
+}
 
 export default {
   name: 'Login',
   components: {},
   setup () {
-    const loginInfo = reactive({
+    const loginInfo: LoginInfo = reactive({
       username: '',
       password: ''
     })
