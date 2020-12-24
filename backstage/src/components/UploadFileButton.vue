@@ -1,5 +1,5 @@
 <template>
-  <el-button class="upload-btn" v-bind="$attrs">
+  <el-button class="k-upload-btn" v-bind="$attrs">
     <slot>Upload</slot>
     <input type="file" :accept="accept" @change="handleFileChange($event)" >
   </el-button>
@@ -31,8 +31,8 @@ export default {
 }
 </script>
 
-<style lang="less">
-.upload-btn {
+<style lang="scss">
+.k-upload-btn {
   position: relative;
   input {
     position: absolute;

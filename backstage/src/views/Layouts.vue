@@ -7,7 +7,16 @@
       <aside-menu />
       <div class="main">
         <div class="main-content scroller-light">
-          <router-view></router-view>
+          <router-view v-slot="{ Component }">
+            <keep-alive>
+              <transition
+                @before-leave="handleBeforeLeave"
+                name="trans"
+              >
+                <component :is="Component" />
+              </transition>
+            </keep-alive>
+          </router-view>
         </div>
         <!--  页脚  -->
         <footer class="footer-container flex-between">
@@ -27,17 +36,35 @@
 </template>
 
 <script lang="ts">
-import AsideMenu from '@/components/AsideMenu'
+import AsideMenu from '@/components/AsideMenu.vue'
 
 export default {
   name: 'Layouts',
   components: {
     AsideMenu
+  },
+  setup () {
+    const handleBeforeLeave = () => {
+      console.log('beforeleave')
+    }
+    return {
+      handleBeforeLeave
+    }
   }
 }
 </script>
 
-<style lang="less">
+<style lang="scss">
+.trans-enter-active,
+.trans-leave-active {
+  transition: all 0.5s ease;
+}
+
+.trans-enter-from,
+.trans-leave-active {
+  opacity: 0;
+  transform: translateX(200px);
+}
 .layouts-container {
   width: 100vw;
   height: 100vh;
@@ -76,7 +103,8 @@ export default {
       margin: 10px 10px 0;
       .main-content {
         height: calc(100% - 40px);
-        overflow: auto;
+        //overflow: auto;
+        overflow: hidden;
         padding: 10px;
       }
     }

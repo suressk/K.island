@@ -295,7 +295,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="scss">
 .not-found {
   position: fixed;
   width: 100vw;

@@ -49,36 +49,39 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="scss">
 .login-container {
   font-family: Consolas, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   position: relative;
-  &::before,
-  &::after {
+  &::before {
     content: "";
     position: fixed;
     width: 100%;
     height: 100%;
   }
   &::before {
-    background-image: url("../assets/images/login_bg.webp");
+    background-image: url("~@/assets/images/login_bg.webp");
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
     z-index: -2;
   }
-  &::after {
-    z-index: -1;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+  //&::after {
+  //  z-index: -1;
+  //  background-color: rgba(0, 0, 0, 0.5);
+  //}
   .login-form {
     width: 500px;
     height: 300px;
-    background-color: rgba(0, 0, 0, 0.8);
     border-radius: 10px;
+    background-image: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0, 0.1));
+    backdrop-filter: blur(8px);
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+    border-top: 2px solid rgba(0, 0,0,0.5);
+    border-left: 2px solid rgba(0,0,0,0.5);
     .form-item {
       margin: 30px auto;
       width: 60%;
@@ -110,6 +113,8 @@ export default {
         line-height: 40px;
         border-radius: 5px;
         color: #fff;
+        //color: transparent;
+        //-webkit-background-clip: text;
         font-size: 20px;
         font-weight: 500;
         position: relative;

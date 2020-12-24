@@ -1,20 +1,24 @@
 <template>
-  <aside class="aside-menu scroller" :class="{ shrink: shrinkMenu }">
+  <aside class="aside-menu trans-all-05 scroller" :class="{ shrink: shrinkMenu }">
     <router-link
       v-for="menuItem in menuList"
       :key="menuItem.label"
       :to="menuItem.path"
-      class="menu-item flex-center txt-overflow"
+      class="menu-item flex-center txt-overflow trans-all-05"
     >
       <i class="iconfont" :class="menuItem.icon" />
       <span v-show="!shrinkMenu">{{ menuItem.label }}</span>
     </router-link>
-    <i class="iconfont shrink-switch flex-center" :class="iconClass" @click="handleShrinkMenu" />
+    <i
+      class="iconfont shrink-switch flex-center trans-all-05"
+      :class="iconClass"
+      @click="handleShrinkMenu"
+    />
   </aside>
 </template>
 
 <script lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, ComputedRef } from 'vue'
 
 const menuList = [
   { label: '心情 / 杂记', path: '/soul', icon: 'icon-edit' },
@@ -26,7 +30,7 @@ export default {
   setup () {
     // 收缩菜单项
     const shrinkMenu = ref<boolean>(false)
-    const iconClass: string = computed(() => {
+    const iconClass: ComputedRef<'icon-stretch' | 'icon-shrink'> = computed(() => {
       return shrinkMenu.value ? 'icon-stretch' : 'icon-shrink'
     })
 
@@ -43,20 +47,18 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="scss">
 .aside-menu {
   width: 200px;
   height: calc(100vh - 60px);
   background-color: #323232;
   padding: 20px 0;
   color: #fff;
-  transition: all 0.5s;
   position: relative;
   .menu-item {
     padding: 20px 0 20px 20px;
     display: block;
     text-align: center;
-    transition: all 0.5s;
     color: inherit;
     border-right: 5px solid transparent;
     font-size: 14px;
@@ -88,7 +90,7 @@ export default {
     right: -20px;
     background-color: #323232;
     cursor: pointer;
-    transition: all 0.5s;
+    //transition: all 0.5s;
     opacity: 0;
   }
 }

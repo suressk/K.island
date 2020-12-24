@@ -19,6 +19,9 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+.reply-comments {
+  width: 100%;
+  height: 100%;
+}
 </style>

@@ -9,9 +9,9 @@ export default {
 }
 </script>
 
-<style lang="less">
-@import "./assets/css/reset.less";
-@import "./assets/css/common.less";
-@import "./assets/css/media.less";
-@import "https://at.alicdn.com/t/font_2285304_wm9oyqvo8h.css";
+<style lang="scss">
+@import "assets/css/reset.scss";
+@import "assets/css/common.scss";
+@import "assets/css/media.scss";
+@import "https://at.alicdn.com/t/font_2285304_jyfxpc1j6c.css";
 </style>

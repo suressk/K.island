@@ -29,12 +29,25 @@
 }
 
 /**
+ 文字溢出隐藏
+ */
+.txt-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trans-all-05 {
+  transition: all 0.5s;
+}
+
+/**
   scroll
 */
 .scroller-light::-webkit-scrollbar,
-.scroller-light::-webkit-scrollbar-corner,
 .scroller::-webkit-scrollbar,
-.scroller::-webkit-scrollbar-corner  {
+.scroller-light::-webkit-scrollbar-corner,
+.scroller::-webkit-scrollbar-corner {
   background-color: transparent;
 }
 .scroller-light::-webkit-scrollbar:vertical,
@@ -57,6 +70,7 @@
 .scroller-light::-webkit-scrollbar-thumb,
 .scroller::-webkit-scrollbar-thumb {
   border-radius: 3px;
+  cursor: pointer;
 }
 .scroller-light::-webkit-scrollbar-thumb {
   background-color: #a2a2a2;
