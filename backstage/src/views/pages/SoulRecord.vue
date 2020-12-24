@@ -79,7 +79,7 @@
 
 <script lang="ts">
 import { toRefs, onMounted } from 'vue'
-import UploadFileButton from '@/components/UploadFileButton'
+import UploadFileButton from '@/components/UploadFileButton.vue'
 import tabIndent from '@/directives/tabIndent'
 import {
   ElForm,
