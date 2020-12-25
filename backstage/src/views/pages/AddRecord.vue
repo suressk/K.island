@@ -101,14 +101,13 @@ import {
   recordInfo,
   contentTxt,
   previewContent,
-  // previewCoverUrl,
   handleInsertContent,
   handleUploadArticle,
   handleClearContent,
-  parseMarkdownFile,
   handleUploadCover,
   handleDeleteCoverImg
 } from './addRecord'
+import { parseMarkdownFile } from '@/utils/marked'
 
 export default {
   name: 'EditBlog',
@@ -129,7 +128,7 @@ export default {
   setup () {
     onMounted(() => {
       document.title = '"杂货"整理铺 - K.island'
-      parseMarkdownFile()
+      previewContent.value = parseMarkdownFile(contentTxt.value)
     })
     return {
       ...toRefs(recordInfo),

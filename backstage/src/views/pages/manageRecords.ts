@@ -29,7 +29,7 @@ export const records = ref<RecordsItem[]>([
   }
 ])
 export const drawerTitle = ref<string>('')
-export const openDrawer = ref<boolean>(false)
+export const drawerVisible = ref<boolean>(false)
 
 export function handleSelectionChange (selection: RecordsItem[]) {
   console.log(selection)
@@ -39,16 +39,20 @@ export function handlePageChange (curPage: number) {
   console.log(curPage)
 }
 
+function showDrawer () {
+  drawerVisible.value = true
+}
+
 export function handleShowDetail (selectionRow: RecordsItem) {
   drawerTitle.value = '详情'
-  openDrawer.value = true
+  showDrawer()
   console.log('handleShowDetail')
   console.log(selectionRow)
 }
 
 export function handleShowEdit (selectionRow: RecordsItem) {
   drawerTitle.value = '编辑'
-  openDrawer.value = true
+  showDrawer()
   console.log('handleEdit')
   console.log(selectionRow)
 }

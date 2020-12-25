@@ -1,11 +1,10 @@
 import { reactive, ref, watch } from 'vue'
 import { Notify } from '@/utils/util'
-/* eslint-disable */
-// @ts-ignore
-import marked from 'marked'
-import highlightJs from 'highlight.js'
+import { marked } from '@/utils/marked'
 // import dayjs from 'dayjs'
 
+/* eslint-disable */
+// @ts-ignore
 type RecordInfo = {
   title: string;
   tag: string;
@@ -135,29 +134,6 @@ export function handleUploadArticle () {
  * */
 export function handleClearContent () {
   contentTxt.value = ''
-}
-
-/**
- * 解析 Markdown 文件配置及语法高亮
- * */
-export function parseMarkdownFile () {
-  marked.setOptions({
-    renderer: new marked.Renderer(),
-    highlight (code: string, language: string) {
-      const validLanguage = highlightJs.getLanguage(language)
-        ? language
-        : 'plaintext'
-      return highlightJs.highlight(validLanguage, code).value // 根据对应语法高亮
-    },
-    pedantic: false,
-    gfm: true,
-    breaks: false,
-    sanitize: false,
-    smartLists: true,
-    smartypants: false,
-    xhtml: false
-  })
-  previewContent.value = marked(contentTxt.value) // 解析 .md 文件为 HTML
 }
 
 /**

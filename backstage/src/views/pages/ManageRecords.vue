@@ -97,10 +97,11 @@
       >
       </el-pagination>
     </div>
-    <!--  侧边弹出层  -->
+    <!--  侧边弹出层 查看详情 / 编辑（修改）  -->
     <el-drawer
       :title="drawerTitle"
-      v-model="openDrawer"
+      v-model="drawerVisible"
+      size="40%"
     ></el-drawer>
   </section>
 </template>
@@ -119,7 +120,7 @@ import {
 import {
   records,
   drawerTitle,
-  openDrawer,
+  drawerVisible,
   handleSelectionChange,
   handlePageChange,
   handleShowDetail,
@@ -143,7 +144,7 @@ export default {
     return {
       records,
       drawerTitle,
-      openDrawer,
+      drawerVisible,
       handleSelectionChange,
       handlePageChange,
       handleShowDetail,
