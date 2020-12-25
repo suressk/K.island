@@ -1,11 +1,11 @@
 <template>
   <!-- 评论回复 -->
   <section class="reply-comments">
-    reply
+    comments
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import { onMounted } from 'vue'
 
 export default {

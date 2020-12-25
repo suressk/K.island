@@ -21,7 +21,8 @@
 import { ref, computed, ComputedRef } from 'vue'
 
 const menuList = [
-  { label: '心情 / 杂记', path: '/soul', icon: 'icon-edit' },
+  { label: '心情 / 杂记', path: '/add', icon: 'icon-add' },
+  { label: '杂货 - 整理', path: '/management', icon: 'icon-management' },
   { label: '吐槽 / 赞赏', path: '/reply', icon: 'icon-reply' }
 ]
 
@@ -49,12 +50,13 @@ export default {
 
 <style lang="scss">
 .aside-menu {
-  width: 200px;
+  width: 180px;
   height: calc(100vh - 60px);
   background-color: #323232;
   padding: 20px 0;
   color: #fff;
   position: relative;
+  flex-shrink: 0;
   .menu-item {
     padding: 20px 0 20px 20px;
     display: block;
@@ -73,7 +75,7 @@ export default {
     }
   }
   &.shrink {
-    width: unset;
+    width: 40px;
     .menu-item {
       padding: 20px 5px;
     }

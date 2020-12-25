@@ -25,6 +25,9 @@ export default {
     const { ctx } = getCurrentInstance()
     function handleFileChange (e) {
       ctx.$emit('change', e.target.files)
+      ctx.$nextTick(() => {
+        e.target.value = ''
+      })
     }
     return { handleFileChange }
   }

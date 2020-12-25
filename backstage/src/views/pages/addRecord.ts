@@ -1,6 +1,6 @@
 import { reactive, ref, watch } from 'vue'
 import { Notify } from '@/utils/util'
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+/* eslint-disable */
 // @ts-ignore
 import marked from 'marked'
 import highlightJs from 'highlight.js'
@@ -11,6 +11,7 @@ type RecordInfo = {
   tag: string;
   introduce: string;
   time: null | string | object;
+  cover: string;
 }
 
 // 其他记录信息
@@ -18,7 +19,8 @@ export const recordInfo = reactive<RecordInfo>({
   title: '',
   tag: '',
   introduce: '',
-  time: null
+  time: null,
+  cover: ''
 })
 // 编辑文章内容主体
 export const contentTxt = ref<string>('# MarkDown\n\n```js\nimport { ref } from "vue"\n```')
@@ -26,23 +28,39 @@ export const contentTxt = ref<string>('# MarkDown\n\n```js\nimport { ref } from 
 export const previewContent = ref<string>('')
 
 // 预览封面图 url
-export const previewCoverUrl = ref<string>('')
+// export const previewCoverUrl = ref<string>('')
 
-function readFile (file: File): Promise<any> {
-  const fileReader = new FileReader()
-  if (typeof fileReader === 'undefined') {
-    // eslint-disable-next-line prefer-promise-reject-errors
-    return new Promise((resolve, reject) => reject('浏览器不支持 FileReader'))
-  }
-  return new Promise(resolve => {
-    fileReader.readAsArrayBuffer(file)
-    fileReader.onload = e => {
-      // 要使用读取的内容，所以将读取内容转化成 Uint8Array
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore
-      const bufferUint8Array = new Uint8Array(e.target.result)
-      // 二进制缓存区内容转化成中文
-      resolve(new TextDecoder('utf-8').decode(bufferUint8Array))
+function createFileReader (): FileReader {
+  return new FileReader()
+}
+
+// @typescript-eslint/no-explicit-any
+function readFileAsTxt (file: File): Promise<any> {
+  const fileReader = createFileReader()
+  return new Promise((resolve, reject) => {
+    if (typeof fileReader === 'undefined') {
+      reject('此浏览器不支持 FileReader API')
+    } else {
+      // 1. 文件读取为文本数据
+      fileReader.readAsText(file)
+      fileReader.onload = e => {
+        // @ts-ignore
+        resolve(e.target.result)
+      }
+      fileReader.onerror = () => {
+        // 取消文件读取
+        fileReader.abort()
+        // @ts-ignore
+        reject(fileReader.error.message)
+      }
+      /*
+       * 2. 文件读取为二进制数据
+        fileReader.readAsArrayBuffer(file)
+        fileReader.onload = e => {
+          const bufferUint8Array = new Uint8Array(e.target.result)
+          resolve(new TextDecoder('utf-8').decode(bufferUint8Array))
+        }
+      */
     }
   })
 }
@@ -55,8 +73,8 @@ export function handleInsertContent (files: FileList) {
   let file: File
   if (files.length) {
     file = files[0]
-    readFile(file).then(res => {
-      contentTxt.value = res
+    readFileAsTxt(file).then(txt => {
+      contentTxt.value = txt
     }, err => {
       Notify('warning', 'WARNING', err)
     })
@@ -67,19 +85,37 @@ export function handleInsertContent (files: FileList) {
  * 上传封面图
  * */
 export function handleUploadCover (files: FileList) {
-  if (!files.length) {
-    Notify('warning', '警告', '图片貌似没有上传成功呢~')
-    return
+  if (files.length) {
+    const file: File = files[0]
+    // 非图片类型
+    if (!file.type.match(/image/g)) {
+      Notify('warning', '警告', '上传的封面图片文件格式不太对哦~')
+      return
+    }
+    new Promise(resolve => {
+      // 1. 创建 blob 图片 url
+      resolve(window.URL.createObjectURL(file))
+      /**
+       * 2. 读取文件为 base64 编码
+        const fr = createFileReader()
+        fr.readAsDataURL(file)
+        fr.onload = e => {
+          resolve(e.target.result)
+        }
+       */
+    }).then(urlStr => {
+      // console.log(urlStr)
+      if (typeof urlStr === 'string') {
+        // previewCoverUrl.value = urlStr
+        recordInfo.cover = urlStr
+      }
+    })
+     // 创建上传图片的数据对象
+    const formData = new FormData()
+    formData.append('imageFile', file)
+    formData.append('filename', file.name)
+    // 封面图片上传 method
   }
-  const file: File = files[0]
-  // 非图片类型
-  if (!file.type.match(/image/g)) {
-    Notify('warning', '警告', '上传的封面图片文件格式不太对哦~')
-    return
-  }
-  const formData = new FormData()
-  formData.append('imageFile', file)
-  formData.append('filename', file.name)
 }
 
 /**
@@ -128,7 +164,8 @@ export function parseMarkdownFile () {
  * 删除封面图
  * */
 export function handleDeleteCoverImg () {
-  previewCoverUrl.value = ''
+  // previewCoverUrl.value = ''
+  recordInfo.cover = ''
 }
 
 let preViewTimer: NodeJS.Timeout
@@ -137,7 +174,7 @@ let preViewTimer: NodeJS.Timeout
  * 内容变更解析 markdown
  * */
 watch(contentTxt, content => {
-  if (preViewTimer !== null) {
+  if (preViewTimer) {
     clearTimeout(preViewTimer)
   }
   preViewTimer = setTimeout(() => {

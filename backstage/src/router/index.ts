@@ -5,19 +5,23 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'island',
-    redirect: '/soul',
+    redirect: '/add',
     component: Home,
     children: [{
-      path: 'soul',
+      path: 'add',
       name: 'SoulArea',
       meta: {
         title: 'K.island'
       },
-      component: () => import('../views/pages/SoulRecord.vue')
+      component: () => import('../views/pages/AddRecord.vue')
     }, {
-      path: '/reply',
+      path: 'management',
+      name: 'Management',
+      component: () => import('../views/pages/ManageRecords.vue')
+    }, {
+      path: 'reply',
       name: 'Reply',
-      component: () => import('../views/pages/SoulReply.vue')
+      component: () => import('../views/pages/ConcatReply.vue')
     }]
   },
   {

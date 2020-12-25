@@ -1,8 +1,8 @@
 import axios from 'axios'
-import Vue from 'vue'
 import { ElNotification } from 'element-plus'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, TOKEN_EXPIRE_TIME } from '@/store/mutation-types'
 
+/* eslint-disable */
 // @ts-ignore
 const BASE_URL = window.__CONFIG.domainURL
 
@@ -18,11 +18,11 @@ interface ErrorResponse {
 }
 
 const handleError = (err: ErrorResponse) => {
-  if (err.code === "ECONNABORTED" && err.message.indexOf("timeout") !== -1) {
+  if (err.code === "ECONNABORTED" && err.message.includes("timeout")) {
     ElNotification({
       type: 'error',
-      title: status,
-      message: '请求超时，请稍后重试...'
+      title: 'Timeout',
+      message: 'Timeout, Please Wait For Trying Again Later...'
     })
   }
   if (err.response) {
@@ -34,7 +34,7 @@ const handleError = (err: ErrorResponse) => {
         ElNotification({
           type: 'error',
           title: status + '',
-          message: 'Access Denied, Please Wait to Try Again Later...'
+          message: 'Access Denied, Please Wait For Trying Again Later...'
         })
         break
       case 404:
@@ -85,9 +85,11 @@ service.interceptors.request.use(
  */
 service.interceptors.response.use(resp => {
   const data = resp.data.data;
+  // console.log(resp)
   if (data.token) {
-    // @ts-ignore
-    Vue.ls.set(ACCESS_TOKEN, data.token, data.expireTime); // LocalStorage 存储 token
+    // LocalStorage 存储 token
+    window.localStorage.setItem(ACCESS_TOKEN, data.token)
+    window.localStorage.setItem(TOKEN_EXPIRE_TIME, data.expireTime)
   }
   return resp.data;
 }, handleError);

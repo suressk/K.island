@@ -67,8 +67,14 @@
             icon="el-icon-picture"
             @change="handleUploadCover"
           >封面图片</upload-file-button>
-          <div class="preview-image" v-show="previewCoverUrl">
-            <img :src="previewCoverUrl" alt="封面图预览">
+          <div
+            class="preview-image"
+            :class="{
+              'translate-fade-in': cover
+            }"
+            v-show="cover"
+          >
+            <img :src="cover" alt="封面图预览">
             <i class="el-icon-delete-solid trans-all-05" @click="handleDeleteCoverImg" />
           </div>
         </div>
@@ -95,14 +101,14 @@ import {
   recordInfo,
   contentTxt,
   previewContent,
-  previewCoverUrl,
+  // previewCoverUrl,
   handleInsertContent,
   handleUploadArticle,
   handleClearContent,
   parseMarkdownFile,
   handleUploadCover,
   handleDeleteCoverImg
-} from './soulRecord'
+} from './addRecord'
 
 export default {
   name: 'EditBlog',
@@ -129,7 +135,7 @@ export default {
       ...toRefs(recordInfo),
       contentTxt,
       previewContent,
-      previewCoverUrl,
+      // previewCoverUrl,
       handleInsertContent,
       handleUploadArticle,
       handleClearContent,
@@ -142,112 +148,5 @@ export default {
 
 <style lang="scss">
 @import "~@/assets/css/marked.scss";
-
-.soul-record {
-  height: 100%;
-  .base-info {
-    white-space: nowrap;
-  }
-  .tag-inp,
-  .date-picker {
-    width: 150px;
-  }
-  .edit-area {
-    height: calc(100% - 62px);
-    .el-col {
-      height: 100%;
-    }
-    .txt-content-col {
-      position: relative;
-      // 编辑区顶部菜单栏
-      .edit-toolbar {
-        height: 30px;
-        padding: 5px 10px;
-        color: $baseColor;
-        background-color: #323232;
-        .tool-item {
-          cursor: pointer;
-          &:hover {
-            color: $lightCyan;
-          }
-        }
-      }
-      .article-content {
-        font-family: Consolas, Arial, Helvetica, sans-serif;
-        height: calc(100% - 30px)!important;
-        max-height: 100%;
-        min-height: 50%;
-        border-radius: 0 0 5px 5px;
-      }
-      .el-icon-close {
-        position: absolute;
-        right: 6px;
-        top: 24px;
-        font-size: 1rem;
-        padding: 0.5rem;
-        color: $borderColor;
-        cursor: pointer;
-        &:hover {
-          color: #232425;
-        }
-      }
-    }
-    .preview-content {
-      height: 100%;
-      padding: 5px 15px;
-      border: 1px solid $borderColor;
-      background-color: rgba(3, 46, 61, 0.9);
-      overflow: auto;
-      border-radius: 5px;
-    }
-    // introduce
-    .introduce-txt {
-      display: block;
-      width: 100%;
-      min-height: 30%;
-      max-height: 30%;
-      overflow: scroll;
-    }
-    .preview-container {
-      button {
-        margin: 10px 0;
-      }
-      .preview-image {
-        position: relative;
-        color: $borderColor;
-        &::after {
-          position: absolute;
-          content: "";
-          width: 100%;
-          height: 100%;
-          left: 0;
-          top: 0;
-          background-color: rgba(0, 0, 0, 0.3);
-          opacity: 0;
-          transition: all 0.5s;
-        }
-        &:hover {
-          color: $lightCyan;
-        }
-        &:hover i,
-        &:hover::after {
-          opacity: 1;
-        }
-        img {
-          width: 100%;
-        }
-        i {
-          opacity: 0;
-          position: absolute;
-          z-index: 10;
-          cursor: pointer;
-          font-size: 40px;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-        }
-      }
-    }
-  }
-}
+@import "~@/assets/css/pages/addRecord.scss";
 </style>

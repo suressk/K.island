@@ -9,10 +9,7 @@
         <div class="main-content scroller-light">
           <router-view v-slot="{ Component }">
             <keep-alive>
-              <transition
-                @before-leave="handleBeforeLeave"
-                name="trans"
-              >
+              <transition name="trans">
                 <component :is="Component" />
               </transition>
             </keep-alive>
@@ -42,29 +39,11 @@ export default {
   name: 'Layouts',
   components: {
     AsideMenu
-  },
-  setup () {
-    const handleBeforeLeave = () => {
-      console.log('beforeleave')
-    }
-    return {
-      handleBeforeLeave
-    }
   }
 }
 </script>
 
 <style lang="scss">
-.trans-enter-active,
-.trans-leave-active {
-  transition: all 0.5s ease;
-}
-
-.trans-enter-from,
-.trans-leave-active {
-  opacity: 0;
-  transform: translateX(200px);
-}
 .layouts-container {
   width: 100vw;
   height: 100vh;
