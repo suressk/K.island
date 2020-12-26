@@ -28,8 +28,17 @@ export const records = ref<RecordsItem[]>([
     cover: ''
   }
 ])
+export const articleDetail = ref({
+  title: '醒不来的梦',
+  tag: '梦回',
+  introduce: '你是我触碰不到的风，醒不来的梦；寻不到的天堂，医不好的痛；点不着的香烟，松不开的手；忘不了的某某某...',
+  cover: 'https://tse2-mm.cn.bing.net/th/id/OIP.2qQECtS2brOCBsrxHhmJ_wHaE8?pid=Api&rs=1',
+  content: '',
+  previewContent: undefined
+})
 export const drawerTitle = ref<string>('')
-export const drawerVisible = ref<boolean>(false)
+export const detailVisible = ref<boolean>(false)
+export const editVisible = ref<boolean>(false)
 
 export function handleSelectionChange (selection: RecordsItem[]) {
   console.log(selection)
@@ -39,26 +48,23 @@ export function handlePageChange (curPage: number) {
   console.log(curPage)
 }
 
-function showDrawer () {
-  drawerVisible.value = true
-}
-
 export function handleShowDetail (selectionRow: RecordsItem) {
   drawerTitle.value = '详情'
-  showDrawer()
-  console.log('handleShowDetail')
+  detailVisible.value = true
   console.log(selectionRow)
 }
 
 export function handleShowEdit (selectionRow: RecordsItem) {
   drawerTitle.value = '编辑'
-  showDrawer()
-  console.log('handleEdit')
+  editVisible.value = true
   console.log(selectionRow)
 }
 
-export function handleDelete (selectionRow: RecordsItem) {
-  console.log('handleDelete')
+export function handleDeleteArticle (selectionRow: RecordsItem) {
   console.log(selectionRow)
   Notify('error', 'DELETE', `Delete 《${selectionRow.title}》`)
+}
+
+export function handleSaveArticle () {
+  Notify('success', 'SUCCESS', '保存文章')
 }

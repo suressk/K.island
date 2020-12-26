@@ -134,7 +134,6 @@ export default {
       ...toRefs(recordInfo),
       contentTxt,
       previewContent,
-      // previewCoverUrl,
       handleInsertContent,
       handleUploadArticle,
       handleClearContent,
@@ -146,6 +145,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/assets/css/marked.scss";
+//@import "~@/assets/css/marked.scss";
 @import "~@/assets/css/pages/addRecord.scss";
 </style>

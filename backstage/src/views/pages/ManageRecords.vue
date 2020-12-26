@@ -78,7 +78,7 @@
               icon="el-icon-info"
               iconColor="red"
               :title="'确定删除《'+ scope.row.title +'》吗？'"
-              @confirm="handleDelete(scope.row)"
+              @confirm="handleDeleteArticle(scope.row)"
             >
               <template #reference>
                 <el-button type="danger" size="mini">删除</el-button>
@@ -97,12 +97,33 @@
       >
       </el-pagination>
     </div>
-    <!--  侧边弹出层 查看详情 / 编辑（修改）  -->
+    <!--  侧边弹出层 查看详情  -->
     <el-drawer
       :title="drawerTitle"
-      v-model="drawerVisible"
+      v-model="detailVisible"
       size="40%"
-    ></el-drawer>
+    >
+      <article-detail-drawer />
+    </el-drawer>
+    <!--  编辑文章内容 === 修改  -->
+    <el-dialog
+      title="编辑"
+      v-model="editVisible"
+      width="80%"
+      destroy-on-close
+    >
+      <div
+        class="flex-center"
+        style="width: 100%;height: 60vh;background-color: #0fc;"
+      >
+        CONTENT
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="handleSaveArticle">保 存</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </section>
 </template>
 
@@ -115,18 +136,22 @@ import {
   ElTag,
   ElPagination,
   ElPopconfirm,
-  ElDrawer
+  ElDrawer,
+  ElDialog
 } from 'element-plus'
 import {
   records,
   drawerTitle,
-  drawerVisible,
+  detailVisible,
+  editVisible,
   handleSelectionChange,
   handlePageChange,
   handleShowDetail,
   handleShowEdit,
-  handleDelete
+  handleDeleteArticle,
+  handleSaveArticle
 } from './manageRecords'
+import ArticleDetailDrawer from '@/components/ArticleDetailDrawer.vue'
 
 export default {
   name: 'ManagementRecords',
@@ -138,18 +163,22 @@ export default {
     ElTag,
     ElPagination,
     ElPopconfirm,
-    ElDrawer
+    ElDrawer,
+    ElDialog,
+    ArticleDetailDrawer
   },
   setup () {
     return {
       records,
       drawerTitle,
-      drawerVisible,
+      detailVisible,
+      editVisible,
       handleSelectionChange,
       handlePageChange,
       handleShowDetail,
       handleShowEdit,
-      handleDelete
+      handleDeleteArticle,
+      handleSaveArticle
     }
   }
 }

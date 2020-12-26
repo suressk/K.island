@@ -24,6 +24,12 @@
       }
     }
   }
+  .el-drawer:focus {
+    outline: none;
+  }
+  .el-drawer__body {
+    overflow: auto;
+  }
 }
 .el-popconfirm {
   .el-popconfirm__main {

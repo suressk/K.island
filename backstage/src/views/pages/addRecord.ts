@@ -1,6 +1,7 @@
 import { reactive, ref, watch } from 'vue'
 import { Notify } from '@/utils/util'
 import { marked } from '@/utils/marked'
+// import { postCompressImage } from '@/api/api'
 // import dayjs from 'dayjs'
 
 /* eslint-disable */
@@ -114,6 +115,19 @@ export function handleUploadCover (files: FileList) {
     formData.append('imageFile', file)
     formData.append('filename', file.name)
     // 封面图片上传 method
+    //
+    // 尝试调用智图压缩 API => 跨域（失败）
+    // formData.append('fileSelect', file)
+    // formData.append('name', file.name)
+    // formData.append('compress', '10')
+    // formData.append('oriSize', '1981.0')
+    // formData.append('type', file.type)
+    // formData.append('pngLess', '1')
+    // formData.append('isOa', '0')
+    // formData.append('typeChange', '1')
+    // postCompressImage(formData).then(res => {
+    //   console.log(res)
+    // })
   }
 }
 
