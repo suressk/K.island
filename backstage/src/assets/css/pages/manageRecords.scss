@@ -30,6 +30,9 @@
   .el-drawer__body {
     overflow: auto;
   }
+  .el-dialog__body {
+    height: 70vh;
+  }
 }
 .el-popconfirm {
   .el-popconfirm__main {

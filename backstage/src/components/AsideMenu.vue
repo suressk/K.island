@@ -1,5 +1,5 @@
 <template>
-  <aside class="aside-menu trans-all-05 scroller" :class="{ shrink: shrinkMenu }">
+  <aside class="aside-menu scroller" :class="{ shrink: shrinkMenu }">
     <router-link
       v-for="menuItem in menuList"
       :key="menuItem.label"
@@ -57,6 +57,7 @@ export default {
   color: #fff;
   position: relative;
   flex-shrink: 0;
+  transition: width .5s;
   .menu-item {
     padding: 20px 0 20px 20px;
     display: block;
@@ -92,7 +93,6 @@ export default {
     right: -20px;
     background-color: #323232;
     cursor: pointer;
-    //transition: all 0.5s;
     opacity: 0;
   }
 }

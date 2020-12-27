@@ -1,5 +1,6 @@
 <template>
   <section class="layouts-container">
+    <loading-progress />
     <header class="header-container">
       <h1 class="title">K.island</h1>
     </header>
@@ -34,11 +35,13 @@
 
 <script lang="ts">
 import AsideMenu from '@/components/AsideMenu.vue'
+import LoadingProgress from '@/components/LoadingProgress.vue'
 
 export default {
   name: 'Layouts',
   components: {
-    AsideMenu
+    AsideMenu,
+    LoadingProgress
   }
 }
 </script>

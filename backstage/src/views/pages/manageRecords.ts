@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { Notify } from '@/utils/util'
 
 interface RecordsItem {
@@ -12,7 +12,7 @@ interface RecordsItem {
 
 export const records = ref<RecordsItem[]>([
   {
-    title: '寻觅不到的风',
+    title: '醒不来的梦',
     id: 'uuid0001',
     introduce: '忘不了的某某某',
     ctime: '2020/10/08',
@@ -28,14 +28,16 @@ export const records = ref<RecordsItem[]>([
     cover: ''
   }
 ])
-export const articleDetail = ref({
+// 文章详情
+export const articleDetail = reactive({
   title: '醒不来的梦',
-  tag: '梦回',
+  tag: 'TypeScript',
   introduce: '你是我触碰不到的风，醒不来的梦；寻不到的天堂，医不好的痛；点不着的香烟，松不开的手；忘不了的某某某...',
   cover: 'https://tse2-mm.cn.bing.net/th/id/OIP.2qQECtS2brOCBsrxHhmJ_wHaE8?pid=Api&rs=1',
-  content: '',
-  previewContent: undefined
+  content: '# MarkDown Detail',
+  ctime: '2020/10/08'
 })
+
 export const drawerTitle = ref<string>('')
 export const detailVisible = ref<boolean>(false)
 export const editVisible = ref<boolean>(false)

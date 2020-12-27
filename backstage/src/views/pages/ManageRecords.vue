@@ -103,31 +103,26 @@
       v-model="detailVisible"
       size="40%"
     >
-      <article-detail-drawer />
+      <article-detail-drawer :article-info="articleDetail" />
     </el-drawer>
     <!--  编辑文章内容 === 修改  -->
     <el-dialog
       title="编辑"
       v-model="editVisible"
       width="80%"
-      destroy-on-close
     >
-      <div
-        class="flex-center"
-        style="width: 100%;height: 60vh;background-color: #0fc;"
-      >
-        CONTENT
-      </div>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button type="primary" @click="handleSaveArticle">保 存</el-button>
-        </span>
-      </template>
+      <!-- destroy-on-close => 关闭销毁 body 中的组件 -->
+      <edit-article
+        :article-info="articleDetail"
+        @upload-article="handleSaveArticle"
+      />
     </el-dialog>
   </section>
 </template>
 
 <script lang="ts">
+import ArticleDetailDrawer from '@/components/ArticleDetailDrawer.vue'
+import EditArticle from '@/components/EditArticle.vue'
 import {
   ElInput,
   ElButton,
@@ -142,6 +137,7 @@ import {
 import {
   records,
   drawerTitle,
+  articleDetail,
   detailVisible,
   editVisible,
   handleSelectionChange,
@@ -151,7 +147,6 @@ import {
   handleDeleteArticle,
   handleSaveArticle
 } from './manageRecords'
-import ArticleDetailDrawer from '@/components/ArticleDetailDrawer.vue'
 
 export default {
   name: 'ManagementRecords',
@@ -165,12 +160,14 @@ export default {
     ElPopconfirm,
     ElDrawer,
     ElDialog,
-    ArticleDetailDrawer
+    ArticleDetailDrawer,
+    EditArticle
   },
   setup () {
     return {
       records,
       drawerTitle,
+      articleDetail,
       detailVisible,
       editVisible,
       handleSelectionChange,

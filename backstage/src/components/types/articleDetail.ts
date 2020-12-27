@@ -1,5 +1,5 @@
 export type PropsType = {
-  articleDetail: {
+  articleInfo: {
     title: string;
     tag: string;
     introduce: string;

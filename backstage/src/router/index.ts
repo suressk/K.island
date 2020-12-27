@@ -30,12 +30,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       requireAuth: true
     },
-    component: () => import('../views/Login.vue')
+    component: () => import('../views/pages/Login.vue')
   },
   {
     path: '/:catchAll(.*)',
     name: 'NotFound',
-    component: () => import('../views/NotFound.vue')
+    component: () => import('../views/pages/NotFound.vue')
   }
 ]
 

@@ -164,7 +164,6 @@ export default {
   }
 }
 
-// 300px
 @keyframes bgAnimate {
   0% {
     background-position: 0;
