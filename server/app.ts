@@ -1,13 +1,12 @@
-import express, { Request } from "express";
-import { CallBack } from "./types/corsTypes";
+import express, { Request } from 'express'
+import { CallBack } from './types/corsTypes'
+import cors from 'cors'
 
-// @ts-ignore
-const app = new express()
+const app = express()
 
 const host = process.env.HOST || '127.0.0.1'
 const port = process.env.PORT || 9527
 
-const cors = require('cors')
 const WHITE_LIST = ['http://localhost:8080']
 
 let corsOptionsDelegate = (req: Request, callback: CallBack) => {

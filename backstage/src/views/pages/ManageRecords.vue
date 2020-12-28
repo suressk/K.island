@@ -12,7 +12,6 @@
         :data="records"
         style="width: 100%"
         header-align="center"
-        @selection-change="handleSelectionChange"
       >
         <!--<el-table-column type="selection" width="55" />-->
         <el-table-column
@@ -114,6 +113,7 @@
       <!-- destroy-on-close => 关闭销毁 body 中的组件 -->
       <edit-article
         :article-info="articleDetail"
+        v-model:ready="detailReady"
         @upload-article="handleSaveArticle"
       />
     </el-dialog>
@@ -140,7 +140,7 @@ import {
   articleDetail,
   detailVisible,
   editVisible,
-  handleSelectionChange,
+  detailReady,
   handlePageChange,
   handleShowDetail,
   handleShowEdit,
@@ -170,7 +170,7 @@ export default {
       articleDetail,
       detailVisible,
       editVisible,
-      handleSelectionChange,
+      detailReady,
       handlePageChange,
       handleShowDetail,
       handleShowEdit,
