@@ -11,6 +11,7 @@
       </el-form-item>
 
       <el-form-item label="时间:">
+        <!--    ctime => Date, String, Array 均可，number 也可解析   -->
         <el-date-picker class="date-picker" v-model="ctime" size="small" clearable />
       </el-form-item>
 
@@ -26,7 +27,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" icon="el-icon-upload" size="small" @click="handleUploadArticle" />
+        <el-button type="primary" icon="el-icon-upload" size="small" @click="handleEmitArticle" />
       </el-form-item>
     </el-form>
     <!--  编辑区  -->
@@ -40,12 +41,12 @@
         <textarea
           v-tab-indent
           class="article-content el-textarea__inner scroller-light"
-          v-model="contentTxt"
+          v-model="content"
           aria-label=""
         />
         <i
           class="el-icon-close trans-all-05"
-          v-show="contentTxt"
+          v-show="content"
           @click="handleClearContent"
         />
       </el-col>
@@ -84,10 +85,11 @@
 </template>
 
 <script lang="ts">
-import { toRefs, onMounted, getCurrentInstance } from 'vue'
+import { toRefs, onMounted, getCurrentInstance, watchEffect, onUnmounted } from 'vue'
 import UploadFileButton from '@/components/UploadFileButton.vue'
 import tabIndent from '@/directives/tabIndent'
 import { parseMarkdownFile } from '@/utils/marked'
+import { PropsType } from './types/articleDetail'
 import {
   ElForm,
   ElFormItem,
@@ -100,7 +102,6 @@ import {
 } from 'element-plus'
 import {
   recordInfo,
-  contentTxt,
   previewContent,
   handleInsertContent,
   handleClearContent,
@@ -127,29 +128,61 @@ export default {
   props: {
     articleInfo: {
       type: Object
+    },
+    ready: {
+      type: Boolean,
+      default: false
     }
   },
-  setup () {
+  setup (props: PropsType) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     const { ctx } = getCurrentInstance()
     onMounted(() => {
       document.title = '"杂货"整理铺 - K.island'
-      previewContent.value = parseMarkdownFile(contentTxt.value)
+      // 初始化置空
+      recordInfo.title = ''
+      recordInfo.tag = ''
+      recordInfo.introduce = ''
+      recordInfo.ctime = ''
+      recordInfo.cover = ''
+      recordInfo.content = ''
+      previewContent.value = parseMarkdownFile(recordInfo.content)
+      console.log('onMounted ready: ', props.ready)
     })
-    function handleUploadArticle () {
-      ctx.$emit('upload-article', {
-        ...recordInfo,
-        content: contentTxt.value
-      })
+    function handleEmitArticle () {
+      ctx.$emit('upload-article', { ...recordInfo })
     }
+
+    function initRecord () {
+      recordInfo.title = props.articleInfo.title
+      recordInfo.tag = props.articleInfo.tag
+      recordInfo.introduce = props.articleInfo.introduce
+      recordInfo.ctime = props.articleInfo.ctime
+      recordInfo.cover = props.articleInfo.cover
+      recordInfo.content = props.articleInfo.content
+      previewContent.value = parseMarkdownFile(recordInfo.content)
+    }
+
+    // 结束监听
+    const stopWatch = watchEffect(() => {
+      if (props.ready && props.articleInfo) {
+        initRecord()
+        ctx.$nextTick(() => {
+          ctx.$emit('update:ready')
+        })
+      }
+    })
+
+    onUnmounted(() => {
+      stopWatch()
+    })
 
     return {
       ...toRefs(recordInfo),
-      contentTxt,
       previewContent,
       handleInsertContent,
-      handleUploadArticle,
+      handleEmitArticle,
       handleClearContent,
       handleUploadCover,
       handleDeleteCoverImg
@@ -157,6 +190,6 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~@/assets/css/components/editRecord.scss";
 </style>

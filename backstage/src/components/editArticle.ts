@@ -6,12 +6,13 @@ import { marked } from '@/utils/marked'
 
 /* eslint-disable */
 // @ts-ignore
-type RecordInfo = {
+interface RecordInfo {
   title: string;
   tag: string;
   introduce: string;
-  ctime: null | string | object;
+  ctime: null | string | object | number;
   cover: string;
+  content: string;
 }
 
 // 其他记录信息
@@ -20,10 +21,11 @@ export const recordInfo = reactive<RecordInfo>({
   tag: '',
   introduce: '',
   ctime: null,
-  cover: ''
+  cover: '',
+  content: ''
 })
 // 编辑文章内容主体
-export const contentTxt = ref<string>('# MarkDown\n\n```js\nimport { ref } from "vue"\n```')
+// export const contentTxt = ref<string>('# MarkDown\n\n```js\nimport { ref } from "vue"\n```')
 // 预览 markdown HTML 内容
 export const previewContent = ref<string>('')
 
@@ -74,7 +76,7 @@ export function handleInsertContent (files: FileList) {
   if (files.length) {
     file = files[0]
     readFileAsTxt(file).then(txt => {
-      contentTxt.value = txt
+      recordInfo.content = txt
     }, err => {
       Notify('warning', 'WARNING', err)
     })
@@ -151,14 +153,13 @@ export function handleUploadCover (files: FileList) {
  * 清除文章内容
  * */
 export function handleClearContent () {
-  contentTxt.value = ''
+  recordInfo.content = ''
 }
 
 /**
  * 删除封面图
  * */
 export function handleDeleteCoverImg () {
-  // previewCoverUrl.value = ''
   recordInfo.cover = ''
 }
 
@@ -167,7 +168,7 @@ let preViewTimer: NodeJS.Timeout
 /**
  * 内容变更解析 markdown
  * */
-watch(contentTxt, content => {
+watch(() => recordInfo.content, content => {
   if (preViewTimer) {
     clearTimeout(preViewTimer)
   }
