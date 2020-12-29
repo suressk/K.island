@@ -1,12 +1,7 @@
 <template>
   <section class="layouts-container">
-<<<<<<< HEAD
-    <loading-progress :loading="true" />
-    <header class="header-container">
-=======
     <loading-progress :loading="false" />
     <header class="header-container flex-between">
->>>>>>> 33852c2795d9ec9d1c9d010267886713716814e6
       <h1 class="title">K.island</h1>
       <el-dropdown @command="handleLogout" trigger="click">
         <div class="avatar flex-center">K.</div>
