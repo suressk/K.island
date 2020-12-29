@@ -2,7 +2,7 @@
   <div class="loading-progress loading" v-show="loading"></div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'LoadingProgress',
   props: {
