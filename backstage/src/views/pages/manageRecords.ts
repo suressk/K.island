@@ -82,7 +82,6 @@ export function handleShowEdit (selectionRow: RecordsItem) {
     content: '# MarkDown Detail',
     ctime: '2020/10/08'
   })
-  // debugger
   detailReady.value = true
   console.log(selectionRow)
 }

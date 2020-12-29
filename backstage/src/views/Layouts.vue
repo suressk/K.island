@@ -1,8 +1,19 @@
 <template>
   <section class="layouts-container">
-    <loading-progress />
-    <header class="header-container">
+    <loading-progress :loading="false" />
+    <header class="header-container flex-between">
       <h1 class="title">K.island</h1>
+      <el-dropdown @command="handleLogout" trigger="click">
+        <div class="avatar flex-center">K.</div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item command="logout" class="flex-center">
+              <i class="iconfont icon-logout" />
+              退出登录
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
     </header>
     <main class="main-container d-flex">
       <aside-menu />
@@ -36,12 +47,25 @@
 <script lang="ts">
 import AsideMenu from '@/components/AsideMenu.vue'
 import LoadingProgress from '@/components/LoadingProgress.vue'
+import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus'
+import { Notify } from '@/utils/util'
 
 export default {
   name: 'Layouts',
   components: {
     AsideMenu,
-    LoadingProgress
+    LoadingProgress,
+    ElDropdown,
+    ElDropdownMenu,
+    ElDropdownItem
+  },
+  setup () {
+    function handleLogout () {
+      Notify('success', 'SUCCESS', '退出登录')
+    }
+    return {
+      handleLogout
+    }
   }
 }
 </script>
@@ -69,6 +93,16 @@ export default {
       background-repeat: no-repeat;
       background-position: 10px 10px;
     }
+    .el-dropdown {
+      margin-right: 30px;
+    }
+    .avatar {
+      background-color: #e9f1f6;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      border-radius: 50%;
+    }
   }
   .main-container {
     position: absolute;
@@ -85,7 +119,6 @@ export default {
       margin: 10px 10px 0;
       .main-content {
         height: calc(100% - 40px);
-        //overflow: auto;
         overflow: hidden;
         padding: 10px;
       }

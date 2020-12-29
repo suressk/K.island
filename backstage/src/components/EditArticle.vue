@@ -148,7 +148,6 @@ export default {
       recordInfo.cover = ''
       recordInfo.content = ''
       previewContent.value = parseMarkdownFile(recordInfo.content)
-      console.log('onMounted ready: ', props.ready)
     })
     function handleEmitArticle () {
       ctx.$emit('upload-article', { ...recordInfo })
@@ -164,7 +163,6 @@ export default {
       previewContent.value = parseMarkdownFile(recordInfo.content)
     }
 
-    // 结束监听
     const stopWatch = watchEffect(() => {
       if (props.ready && props.articleInfo) {
         initRecord()
@@ -175,6 +173,7 @@ export default {
     })
 
     onUnmounted(() => {
+      // 结束监听
       stopWatch()
     })
 
