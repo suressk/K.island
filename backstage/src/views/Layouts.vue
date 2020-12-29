@@ -1,6 +1,6 @@
 <template>
   <section class="layouts-container">
-    <loading-progress />
+    <loading-progress :loading="true" />
     <header class="header-container">
       <h1 class="title">K.island</h1>
     </header>

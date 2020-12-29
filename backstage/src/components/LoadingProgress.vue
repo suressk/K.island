@@ -1,10 +1,16 @@
 <template>
-  <div class="loading-progress loading"></div>
+  <div class="loading-progress loading" v-show="loading"></div>
 </template>
 
 <script>
 export default {
-  name: 'LoadingProgress'
+  name: 'LoadingProgress',
+  props: {
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  }
 }
 </script>
 
