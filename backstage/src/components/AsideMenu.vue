@@ -21,6 +21,7 @@
 import { ref, computed, ComputedRef } from 'vue'
 
 const menuList = [
+  { label: '统计 / 概览', path: '/overview', icon: 'icon-new' },
   { label: '心情 / 杂记', path: '/add', icon: 'icon-add' },
   { label: '杂货 - 整理', path: '/management', icon: 'icon-management' },
   { label: '吐槽 / 赞赏', path: '/reply', icon: 'icon-reply' }
