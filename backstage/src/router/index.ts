@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/index.vue'
+import { verifyTokenExist } from '@/utils/util'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -61,8 +62,14 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//
-// })
+router.beforeEach((to, from, next) => {
+  const tokenExist = verifyTokenExist()
+  // 去往非登录页且无 token
+  if (!to.path.includes('login') && !tokenExist) {
+    next('/login')
+  } else {
+    next()
+  }
+})
 
 export default router
