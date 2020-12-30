@@ -89,7 +89,7 @@ import { toRefs, onMounted, getCurrentInstance, watchEffect, onUnmounted } from 
 import UploadFileButton from '@/components/UploadFileButton.vue'
 import tabIndent from '@/directives/tabIndent'
 import { parseMarkdownFile } from '@/utils/marked'
-import { PropsType } from './types/articleDetail'
+import { PropsType } from '../types/articleDetail'
 import {
   ElForm,
   ElFormItem,

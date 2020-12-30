@@ -122,7 +122,7 @@
 
 <script lang="ts">
 import ArticleDetailDrawer from '@/components/ArticleDetailDrawer.vue'
-import EditArticle from '@/components/EditArticle.vue'
+import EditArticle from '@/components/EditArticle/index.vue'
 import {
   ElInput,
   ElButton,
