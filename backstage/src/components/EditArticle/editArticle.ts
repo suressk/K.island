@@ -1,6 +1,7 @@
 import { reactive, ref, watch } from 'vue'
 import { Notify } from '@/utils/util'
 import { marked } from '@/utils/marked'
+
 // import { postCompressImage } from '@/api/api'
 // import dayjs from 'dayjs'
 
@@ -83,15 +84,37 @@ export function handleInsertContent (files: FileList) {
   }
 }
 
+// 判断是否是图片类型
+export function isImage (file: File): boolean {
+  if (!file.type.match(/image/g)) {
+    Notify('warning', '警告', '上传的封面图片文件格式不太对哦~')
+    return false
+  }
+  return true
+}
+
+export function handleInsertContentImage (e: any) {
+  const files = e.target.files
+  if (files.length) {
+    const file = files[0]
+    // 不是图片类型
+    if (!isImage(file)) {
+      return
+    }
+    setTimeout(() => {
+      e.target.value = ''
+    }, 2000)
+  }
+  // `![file.name](${res.imgUrl})`
+}
+
 /**
  * 上传封面图
  * */
 export function handleUploadCover (files: FileList) {
   if (files.length) {
     const file: File = files[0]
-    // 非图片类型
-    if (!file.type.match(/image/g)) {
-      Notify('warning', '警告', '上传的封面图片文件格式不太对哦~')
+    if (!isImage(file)) {
       return
     }
     new Promise(resolve => {

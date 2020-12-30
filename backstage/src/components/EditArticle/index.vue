@@ -34,7 +34,8 @@
     <el-row class="edit-area" style="margin: 0 -10px" :gutter="24">
       <el-col :span="10" class="txt-content-col">
         <div class="edit-toolbar d-flex">
-          <span class="tool-item trans-all-05" title="插入图片">
+          <span class="tool-item trans-all-05 insert-img" title="插入图片">
+            <input type="file" @change="handleInsertContentImage($event)">
             <i class="iconfont icon-image" />
           </span>
         </div>
@@ -56,6 +57,7 @@
       <el-col :span="4">
         <el-tag type="primary" style="margin-bottom: 10px">Introduce：</el-tag>
         <textarea
+          ref="contentRef"
           class="introduce-txt el-textarea__inner scroller-light"
           v-model="introduce"
           aria-label=""
@@ -85,7 +87,7 @@
 </template>
 
 <script lang="ts">
-import { toRefs, onMounted, getCurrentInstance, watchEffect, onUnmounted } from 'vue'
+import { toRefs, onMounted, getCurrentInstance, watchEffect, onBeforeUnmount } from 'vue'
 import UploadFileButton from '@/components/UploadFileButton.vue'
 import tabIndent from '@/directives/tabIndent'
 import { parseMarkdownFile } from '@/utils/marked'
@@ -106,7 +108,8 @@ import {
   handleInsertContent,
   handleClearContent,
   handleUploadCover,
-  handleDeleteCoverImg
+  handleDeleteCoverImg,
+  isImage
 } from './editArticle'
 
 export default {
@@ -137,9 +140,11 @@ export default {
   setup (props: PropsType) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
-    const { ctx } = getCurrentInstance()
+    let vm: any
+    let ctx: any
     onMounted(() => {
-      document.title = '"杂货"整理铺 - K.island'
+      vm = getCurrentInstance()
+      ctx = vm.ctx
       // 初始化置空
       recordInfo.title = ''
       recordInfo.tag = ''
@@ -149,10 +154,37 @@ export default {
       recordInfo.content = ''
       previewContent.value = parseMarkdownFile(recordInfo.content)
     })
+
+    // 文章信息扔向父组件
     function handleEmitArticle () {
       ctx.$emit('upload-article', { ...recordInfo })
     }
 
+    // 文章内部插入图片
+    function handleInsertContentImage (e: any) {
+      const files = e.target.files
+      const el = vm.refs.contentRef
+      if (files.length) {
+        const file = files[0]
+        // 不是图片类型
+        if (!isImage(file)) {
+          return
+        }
+        // 上传图片
+        const startPoint = el.selectionStart || recordInfo.content.length
+        const endPoint = el.selectionEnd || recordInfo.content.length
+        const imgStr = `\n![${file.name}](https://tse2-mm.cn.bing.net/th/id/OIP.2qQECtS2brOCBsrxHhmJ_wHaE8?pid=Api&rs=1)`
+        recordInfo.content = recordInfo.content.substring(0, startPoint) +
+          imgStr +
+          recordInfo.content.substring(endPoint)
+      }
+      // `![file.name](${res.imgUrl})`
+      ctx.$nextTick(() => {
+        e.target.value = ''
+      })
+    }
+
+    // 从 props 初始化
     function initRecord () {
       recordInfo.title = props.articleInfo.title
       recordInfo.tag = props.articleInfo.tag
@@ -172,7 +204,7 @@ export default {
       }
     })
 
-    onUnmounted(() => {
+    onBeforeUnmount(() => {
       // 结束监听
       stopWatch()
     })
@@ -183,6 +215,7 @@ export default {
       handleInsertContent,
       handleEmitArticle,
       handleClearContent,
+      handleInsertContentImage,
       handleUploadCover,
       handleDeleteCoverImg
     }

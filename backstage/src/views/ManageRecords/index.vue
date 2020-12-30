@@ -121,6 +121,7 @@
 </template>
 
 <script lang="ts">
+import { onMounted } from 'vue'
 import ArticleDetailDrawer from '@/components/ArticleDetailDrawer.vue'
 import EditArticle from '@/components/EditArticle/index.vue'
 import {
@@ -164,6 +165,9 @@ export default {
     EditArticle
   },
   setup () {
+    onMounted(() => {
+      document.title = '"杂货"整理铺 - K.island'
+    })
     return {
       records,
       drawerTitle,
