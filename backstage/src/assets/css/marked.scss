@@ -40,6 +40,13 @@
     font-size: 1rem;
     border-left-color: $ivory;
   }
+  a {
+    color: $bColor;
+    transition: all 0.3s;
+    &:hover {
+      color: $cyanogen;
+    }
+  }
 
   ol, ul {
     padding-left: 2rem;
@@ -122,13 +129,6 @@
       font-size: 0.8rem;
       padding: 2px 10px;
       border-radius: 3px;
-    }
-    a {
-      color: $bColor;
-      transition: all 0.3s;
-      &:hover {
-        color: $cyanogen;
-      }
     }
 
     strong {

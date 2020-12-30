@@ -110,8 +110,7 @@
       v-model="editVisible"
       width="80%"
     >
-      <!-- destroy-on-close => 关闭销毁 body 中的组件 -->
-      <!--     -->
+      <!-- destroy-on-close => 关闭时销毁 body 中的组件 -->
       <edit-article
         :article-info="articleDetail"
         v-model:ready="detailReady"

@@ -3,27 +3,27 @@
   <div class="detail-content">
     <div class="d-flex">
       <span class="info-title">标题：</span>
-      <span class="article-title">{{ articleInfo.title }}</span>
+      <span v-show="articleInfo.title" class="article-title">{{ articleInfo.title }}</span>
     </div>
     <div class="d-flex">
       <span class="info-title">标签：</span>
-      <el-tag type="primary">{{ articleInfo.tag }}</el-tag>
+      <el-tag v-show="articleInfo.tag" type="primary">{{ articleInfo.tag }}</el-tag>
     </div>
     <div class="d-flex">
       <span class="info-title">时间：</span>
-      <el-tag type="primary">{{ articleInfo.ctime }}</el-tag>
+      <el-tag v-show="articleInfo.ctime" type="primary">{{ articleInfo.ctime }}</el-tag>
     </div>
     <div class="d-flex">
       <span class="info-title">简介：</span>
-      <span class="article-introduce">{{ articleInfo.introduce }}</span>
+      <span v-show="articleInfo.introduce" class="article-introduce">{{ articleInfo.introduce }}</span>
     </div>
     <div class="d-flex">
       <span class="info-title">封面：</span>
-      <img class="article-cover" :src="articleInfo.cover" alt="封面图">
+      <img v-show="articleInfo.cover" class="article-cover" :src="articleInfo.cover" alt="封面图">
     </div>
     <!--  markdown 语法解析的文章详情  -->
     <span class="info-title">文章详情：</span>
-    <div class="preview-content markdown scroller-light" v-html="previewContent" />
+    <div v-show="articleInfo.content" class="preview-content markdown scroller-light" v-html="previewContent" />
   </div>
 </template>
 
