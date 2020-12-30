@@ -170,10 +170,11 @@ export default {
         if (!isImage(file)) {
           return
         }
+        // el.focus()
         // 上传图片
         const startPoint = el.selectionStart || recordInfo.content.length
         const endPoint = el.selectionEnd || recordInfo.content.length
-        const imgStr = `\n![${file.name}](https://tse2-mm.cn.bing.net/th/id/OIP.2qQECtS2brOCBsrxHhmJ_wHaE8?pid=Api&rs=1)`
+        const imgStr = `\n![${file.name}](https://tse2-mm.cn.bing.net/th/id/OIP.2qQECtS2brOCBsrxHhmJ_wHaE8?pid=Api&rs=1)\n`
         recordInfo.content = recordInfo.content.substring(0, startPoint) +
           imgStr +
           recordInfo.content.substring(endPoint)
