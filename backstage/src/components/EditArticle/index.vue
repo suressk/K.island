@@ -138,7 +138,7 @@ export default {
     }
   },
   setup (props: PropsType) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    /* eslint-disable */
     // @ts-ignore
     let vm: any
     let ctx: any
