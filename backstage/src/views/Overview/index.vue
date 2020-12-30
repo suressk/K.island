@@ -1,28 +1,19 @@
 <template>
-  <section class="overview">
-    <v-echarts class="echarts-demo" :option="option" />
+  <section class="overview flex-around">
+    <v-echarts class="echarts-item" :option="barOption" />
+    <v-echarts class="echarts-item" :option="lineOption" />
+    <v-echarts class="echarts-item" :option="pieOption" />
   </section>
 </template>
 
 <script lang="ts">
 import VueEcharts from '@/components/VueEcharts.vue'
 import 'echarts/lib/chart/bar'
-
-const option = {
-  title: {
-    text: 'ECharts 入门示例'
-  },
-  tooltip: {},
-  xAxis: {
-    data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-  },
-  yAxis: {},
-  series: [{
-    name: '销量',
-    type: 'bar',
-    data: [5, 20, 36, 10, 10, 20]
-  }]
-}
+import 'echarts/lib/chart/line'
+import 'echarts/lib/chart/pie'
+import 'echarts/lib/component/tooltip'
+import 'echarts/lib/component/legend'
+import { barOption, lineOption, pieOption } from './overview'
 
 export default {
   name: 'Overview',
@@ -30,31 +21,21 @@ export default {
     'v-echarts': VueEcharts
   },
   setup () {
-    // setTimeout(() => {
-    //   option = {
-    //     title: {
-    //       text: 'ECharts 入门示例'
-    //     },
-    //     tooltip: {},
-    //     xAxis: {
-    //       data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-    //     },
-    //     yAxis: {},
-    //     series: [{
-    //       name: '销量',
-    //       type: 'bar',
-    //       data: [5, 20, 36, 10, 10, 20]
-    //     }]
-    //   }
-    // }, 5000)
-    return { option }
+    return { barOption, lineOption, pieOption }
   }
 }
 </script>
 
-<style scoped>
-.echarts-demo {
-  width: 500px;
-  height: 400px;
+<style lang="scss">
+.overview {
+  height: 100%;
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  .echarts-item {
+    margin: 10px 20px;
+    width: 30%;
+    height: 30%;
+  }
 }
 </style>

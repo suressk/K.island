@@ -5,7 +5,7 @@
 <script lang="ts">
 import echarts, { EChartsType } from 'echarts/lib/echarts'
 import { EChartsFullOption } from 'echarts/lib/option'
-import { getCurrentInstance, onMounted } from 'vue'
+import { getCurrentInstance, onMounted, watch } from 'vue'
 
 export default {
   name: 'VueEcharts',
@@ -21,16 +21,13 @@ export default {
       /* eslint-disable */
       // @ts-ignore
       const { refs } = getCurrentInstance()
-      // console.log(ctx.$refs)
       const container = refs.echartsContainer
       echartsInstance = echarts.init(container)
-      echartsInstance.setOption(props.option)
+      // echartsInstance.setOption(props.option)
     })
-    // watchEffect(() => {
-    //   if (props.option) {
-    //     echartsInstance.setOption(props.option)
-    //   }
-    // })
+    watch(() => props.option, opt => {
+      echartsInstance.setOption(opt)
+    })
   }
 }
 </script>

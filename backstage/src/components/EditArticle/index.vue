@@ -197,6 +197,7 @@ export default {
     }
 
     const stopWatch = watchEffect(() => {
+      // debugger
       if (props.ready && props.articleInfo) {
         initRecord()
         ctx.$nextTick(() => {
