@@ -1,13 +1,13 @@
 <template>
   <section class="overview flex-around">
-    <v-echarts class="echarts-item" :option="barOption" />
-    <v-echarts class="echarts-item" :option="lineOption" />
-    <v-echarts class="echarts-item" :option="pieOption" />
+    <v-echarts class="echarts-item" :options="barOption" />
+    <v-echarts class="echarts-item" :options="lineOption" />
+    <v-echarts class="echarts-item" :options="pieOption" />
   </section>
 </template>
 
 <script lang="ts">
-import VueEcharts from '@/components/custom/VueEcharts.vue'
+import VueEcharts from '@/components/VueEcharts/index.vue'
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/chart/line'
 import 'echarts/lib/chart/pie'

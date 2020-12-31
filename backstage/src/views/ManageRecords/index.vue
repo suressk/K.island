@@ -98,7 +98,7 @@
     </div>
     <!--  侧边弹出层 查看详情  -->
     <el-drawer
-      :title="drawerTitle"
+      title="详情"
       v-model="detailVisible"
       size="40%"
     >
@@ -123,20 +123,9 @@
 import { onMounted } from 'vue'
 import ArticleDetailDrawer from '@/components/custom/ArticleDetailDrawer.vue'
 import EditArticle from '@/components/EditRecord/index.vue'
+// eslint-disable-next-line import/no-named-default
+import { default as useManage } from './manageRecords'
 import { ElInput, ElButton, ElTable, ElTableColumn, ElTag, ElPagination, ElPopconfirm, ElDrawer, ElDialog } from 'element-plus'
-import {
-  records,
-  drawerTitle,
-  articleDetail,
-  detailVisible,
-  editVisible,
-  detailReady,
-  handlePageChange,
-  handleShowDetail,
-  handleShowEdit,
-  handleDeleteRecord,
-  handleSaveRecord
-} from './manageRecords'
 
 export default {
   name: 'ManagementRecords',
@@ -157,19 +146,8 @@ export default {
     onMounted(() => {
       document.title = '"杂货"整理铺 - K.island'
     })
-
     return {
-      records,
-      drawerTitle,
-      articleDetail,
-      detailVisible,
-      editVisible,
-      detailReady,
-      handlePageChange,
-      handleShowDetail,
-      handleShowEdit,
-      handleDeleteRecord,
-      handleSaveRecord
+      ...useManage()
     }
   }
 }

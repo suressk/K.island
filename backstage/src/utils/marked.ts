@@ -2,7 +2,7 @@
 // @ts-ignore
 import marked from 'marked'
 import highlightJs from 'highlight.js'
-export function parseMarkdownFile (content: string) {
+export function parseMarkdownFile (content: string): string {
   marked.setOptions({
     renderer: new marked.Renderer(),
     highlight (code: string, language: string) {

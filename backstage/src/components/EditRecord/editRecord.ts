@@ -88,11 +88,12 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
     }, 200)
   })
 
+  // 请求文章详情数据成功获取 => modelValue 置为 true 触发
   watch(() => props.modelValue, val => {
     if (val) {
       initRecord(props)
       nextTick(() => {
-        ctx.emit('update:modelValue')
+        ctx.emit('update:modelValue') // 更新父级状态
       })
     }
   })

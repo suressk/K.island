@@ -34,7 +34,7 @@ import { parseMarkdownFile } from '@/utils/marked'
 import { PropsType } from '../types/articleDetail'
 
 export default {
-  name: 'articleInfoDrawer',
+  name: 'ArticleDetailDrawer',
   components: { ElTag },
   props: {
     articleInfo: {
