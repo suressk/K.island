@@ -27,7 +27,7 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" icon="el-icon-upload" size="small" @click="handleEmitArticle" />
+        <el-button type="primary" icon="el-icon-upload" size="small" @click="handleEmitRecord" />
       </el-form-item>
     </el-form>
     <!--  编辑区  -->
@@ -87,11 +87,17 @@
 </template>
 
 <script lang="ts">
-import { toRefs, onMounted, getCurrentInstance, watchEffect, onBeforeUnmount } from 'vue'
-import UploadFileButton from '@/components/UploadFileButton.vue'
+// import {
+//   // toRefs,
+//   nextTick
+//   // getCurrentInstance,
+//   // onMounted
+// } from 'vue'
+import UploadFileButton from '@/components/custom/UploadFileButton.vue'
 import tabIndent from '@/directives/tabIndent'
-import { parseMarkdownFile } from '@/utils/marked'
+// import { parseMarkdownFile } from '@/utils/marked'
 import { PropsType } from '../types/articleDetail'
+import { SetupContext } from '@vue/runtime-core'
 import {
   ElForm,
   ElFormItem,
@@ -103,20 +109,14 @@ import {
   ElTag
 } from 'element-plus'
 import {
-  recordInfo,
-  previewContent,
-  handleInsertContent,
-  handleClearContent,
-  handleUploadCover,
-  handleDeleteCoverImg,
-  isImage
-} from './editArticle'
+  // eslint-disable-next-line import/no-named-default
+  default as useEdit
+  // isImage
+} from './editRecord'
 
 export default {
-  name: 'EditArticle',
-  directives: {
-    tabIndent
-  },
+  name: 'EditRecord',
+  directives: { tabIndent },
   components: {
     ElForm,
     ElFormItem,
@@ -132,94 +132,14 @@ export default {
     articleInfo: {
       type: Object
     },
-    ready: {
+    modelValue: {
       type: Boolean,
       default: false
     }
   },
-  setup (props: PropsType) {
-    /* eslint-disable */
-    // @ts-ignore
-    let vm: any
-    let ctx: any
-    onMounted(() => {
-      vm = getCurrentInstance()
-      ctx = vm.ctx
-      // 初始化置空
-      recordInfo.title = ''
-      recordInfo.tag = ''
-      recordInfo.introduce = ''
-      recordInfo.ctime = ''
-      recordInfo.cover = ''
-      recordInfo.content = ''
-      previewContent.value = parseMarkdownFile(recordInfo.content)
-    })
-
-    // 文章信息扔向父组件
-    function handleEmitArticle () {
-      ctx.$emit('upload-article', { ...recordInfo })
-    }
-
-    // 文章内部插入图片
-    function handleInsertContentImage (e: any) {
-      const files = e.target.files
-      const el = vm.refs.contentRef
-      if (files.length) {
-        const file = files[0]
-        // 不是图片类型
-        if (!isImage(file)) {
-          return
-        }
-        // el.focus()
-        // 上传图片
-        const startPoint = el.selectionStart || recordInfo.content.length
-        const endPoint = el.selectionEnd || recordInfo.content.length
-        const imgStr = `\n![${file.name}](https://tse2-mm.cn.bing.net/th/id/OIP.2qQECtS2brOCBsrxHhmJ_wHaE8?pid=Api&rs=1)\n`
-        recordInfo.content = recordInfo.content.substring(0, startPoint) +
-          imgStr +
-          recordInfo.content.substring(endPoint)
-      }
-      // `![file.name](${res.imgUrl})`
-      ctx.$nextTick(() => {
-        e.target.value = ''
-      })
-    }
-
-    // 从 props 初始化
-    function initRecord () {
-      recordInfo.title = props.articleInfo.title
-      recordInfo.tag = props.articleInfo.tag
-      recordInfo.introduce = props.articleInfo.introduce
-      recordInfo.ctime = props.articleInfo.ctime
-      recordInfo.cover = props.articleInfo.cover
-      recordInfo.content = props.articleInfo.content
-      previewContent.value = parseMarkdownFile(recordInfo.content)
-    }
-
-    const stopWatch = watchEffect(() => {
-      // debugger
-      if (props.ready && props.articleInfo) {
-        initRecord()
-        ctx.$nextTick(() => {
-          ctx.$emit('update:ready')
-        })
-      }
-    })
-
-    onBeforeUnmount(() => {
-      // 结束监听
-      stopWatch()
-    })
-
+  setup (props: PropsType, ctx: SetupContext) {
     return {
-      ...toRefs(recordInfo),
-      previewContent,
-      handleInsertContent,
-      handleEmitArticle,
-      handleClearContent,
-      handleInsertContentImage,
-      handleUploadCover,
-      handleDeleteCoverImg
+      ...useEdit(props, ctx)
     }
   }
 }

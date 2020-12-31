@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import VueEcharts from '@/components/VueEcharts.vue'
+import VueEcharts from '@/components/custom/VueEcharts.vue'
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/chart/line'
 import 'echarts/lib/chart/pie'

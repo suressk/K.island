@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue'
+import { getCurrentInstance, nextTick } from 'vue'
 import { ElButton } from 'element-plus'
 
 export default {
@@ -25,7 +25,7 @@ export default {
     const { ctx } = getCurrentInstance()
     function handleFileChange (e) {
       ctx.$emit('change', e.target.files)
-      ctx.$nextTick(() => {
+      nextTick(() => {
         e.target.value = ''
       })
     }

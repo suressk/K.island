@@ -1,6 +1,7 @@
 import { reactive, ref } from 'vue'
 import { Notify } from '@/utils/util'
 import { PropsType } from '@/components/types/articleDetail'
+// import { SetupContext} from "@vue/runtime-core";
 
 interface RecordsItem {
   id?: string;
@@ -87,13 +88,21 @@ export function handleShowEdit (selectionRow: RecordsItem) {
 }
 
 // 删除按钮点击事件
-export function handleDeleteArticle (selectionRow: RecordsItem) {
+export function handleDeleteRecord (selectionRow: RecordsItem) {
   console.log(selectionRow)
   Notify('error', 'DELETE', `Delete 《${selectionRow.title}》`)
 }
 
 // 更改文章保存
-export function handleSaveArticle (info: PropsType) {
+export function handleSaveRecord (info: PropsType) {
   Notify('success', 'SUCCESS', '保存文章')
   console.log(info)
 }
+
+export function handleUpdateReady () {
+  detailReady.value = false
+}
+
+// export function handleCloseEdit () {
+//   editVisible.value = false
+// }

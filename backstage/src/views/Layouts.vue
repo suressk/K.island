@@ -46,7 +46,7 @@
 
 <script lang="ts">
 import AsideMenu from '@/components/AsideMenu.vue'
-import LoadingProgress from '@/components/LoadingProgress.vue'
+import LoadingProgress from '@/components/custom/LoadingProgress.vue'
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus'
 import { Notify } from '@/utils/util'
 

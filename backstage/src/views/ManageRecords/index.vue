@@ -77,7 +77,7 @@
               icon="el-icon-info"
               iconColor="red"
               :title="'确定删除《'+ scope.row.title +'》吗？'"
-              @confirm="handleDeleteArticle(scope.row)"
+              @confirm="handleDeleteRecord(scope.row)"
             >
               <template #reference>
                 <el-button type="danger" size="mini">删除</el-button>
@@ -107,14 +107,13 @@
     <!--  编辑文章内容 === 修改  -->
     <el-dialog
       title="编辑"
-      v-model="editVisible"
       width="80%"
+      v-model="editVisible"
     >
-      <!-- destroy-on-close => 关闭时销毁 body 中的组件 -->
       <edit-article
         :article-info="articleDetail"
-        v-model:ready="detailReady"
-        @upload-article="handleSaveArticle"
+        v-model="detailReady"
+        @upload-article="handleSaveRecord"
       />
     </el-dialog>
   </section>
@@ -122,19 +121,9 @@
 
 <script lang="ts">
 import { onMounted } from 'vue'
-import ArticleDetailDrawer from '@/components/ArticleDetailDrawer.vue'
-import EditArticle from '@/components/EditArticle/index.vue'
-import {
-  ElInput,
-  ElButton,
-  ElTable,
-  ElTableColumn,
-  ElTag,
-  ElPagination,
-  ElPopconfirm,
-  ElDrawer,
-  ElDialog
-} from 'element-plus'
+import ArticleDetailDrawer from '@/components/custom/ArticleDetailDrawer.vue'
+import EditArticle from '@/components/EditRecord/index.vue'
+import { ElInput, ElButton, ElTable, ElTableColumn, ElTag, ElPagination, ElPopconfirm, ElDrawer, ElDialog } from 'element-plus'
 import {
   records,
   drawerTitle,
@@ -145,8 +134,8 @@ import {
   handlePageChange,
   handleShowDetail,
   handleShowEdit,
-  handleDeleteArticle,
-  handleSaveArticle
+  handleDeleteRecord,
+  handleSaveRecord
 } from './manageRecords'
 
 export default {
@@ -168,6 +157,7 @@ export default {
     onMounted(() => {
       document.title = '"杂货"整理铺 - K.island'
     })
+
     return {
       records,
       drawerTitle,
@@ -178,8 +168,8 @@ export default {
       handlePageChange,
       handleShowDetail,
       handleShowEdit,
-      handleDeleteArticle,
-      handleSaveArticle
+      handleDeleteRecord,
+      handleSaveRecord
     }
   }
 }

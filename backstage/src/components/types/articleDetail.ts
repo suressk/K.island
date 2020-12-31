@@ -7,5 +7,5 @@ export interface PropsType {
     content: string;
     ctime: string;
   };
-  ready: boolean;
+  modelValue: boolean;
 }

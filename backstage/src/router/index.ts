@@ -48,6 +48,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/Login.vue')
   },
   {
+    path: '/modal',
+    name: 'Modal',
+    component: () => import('../components/custom/Modal.vue')
+  },
+  {
     path: '/:catchAll(.*)',
     name: 'NotFound',
     meta: {

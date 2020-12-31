@@ -5,6 +5,7 @@
 .flex-between,
 .flex-around,
 .flex-center,
+.flex-end,
 .flex-col,
 .flex-col-between {
   display: flex;
@@ -19,6 +20,10 @@
 }
 .flex-center {
   justify-content: center;
+}
+
+.flex-end {
+  justify-content: flex-end;
 }
 
 .flex-col {

@@ -5,7 +5,7 @@
 
 <script lang="ts">
 import { onMounted } from 'vue'
-import EditArticle from '@/components/EditArticle/index.vue'
+import EditArticle from '@/components/EditRecord/index.vue'
 import { handleAddRecord } from './addRecord'
 
 export default {
