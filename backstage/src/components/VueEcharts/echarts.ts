@@ -1,11 +1,10 @@
 import { onMounted, getCurrentInstance, watch } from 'vue'
 import echarts, { EChartsType } from 'echarts/lib/echarts'
 import { PropsType } from './echartsTypes'
-import { SetupContext, ComponentInternalInstance } from '@vue/runtime-core'
+import { ComponentInternalInstance } from '@vue/runtime-core'
 import { EChartsFullOption } from 'echarts/lib/option'
-// import debounce from 'lodash/debounce'
 
-export default function useEcharts (props: PropsType, ctx: SetupContext) {
+export default function useEcharts (props: PropsType) {
   let echartsInstance: EChartsType
   /* eslint-disable */
   // @ts-ignore

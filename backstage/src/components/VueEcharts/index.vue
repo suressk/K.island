@@ -3,7 +3,6 @@
 </template>
 
 <script lang="ts">
-import { SetupContext } from '@vue/runtime-core'
 import { PropsType } from './echartsTypes'
 import useEcharts from './echarts'
 
@@ -15,8 +14,8 @@ export default {
       default: () => ({})
     }
   },
-  setup (props: PropsType, ctx: SetupContext) {
-    useEcharts(props, ctx)
+  setup (props: PropsType) {
+    useEcharts(props)
   }
 }
 </script>

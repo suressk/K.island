@@ -19,7 +19,7 @@
           align="center"
         >
           <template #default="scope">
-            <i class="el-icon-time"></i>
+            <!--<i class="el-icon-time"></i>-->
             <span style="margin-left: 10px">{{ scope.row.ctime }}</span>
           </template>
         </el-table-column>

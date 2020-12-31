@@ -9,6 +9,9 @@ const port = process.env.PORT || 9527
 
 const WHITE_LIST = ['http://localhost:8080']
 
+// 解析 json 格式请求体
+app.use(express.json());
+
 let corsOptionsDelegate = (req: Request, callback: CallBack) => {
     let corsOptions
     // @ts-ignore
@@ -20,6 +23,7 @@ let corsOptionsDelegate = (req: Request, callback: CallBack) => {
     callback(null, corsOptions);
 }
 
+// 跨域配置
 app.all('*', cors(corsOptionsDelegate), (req: { method: string; }, res: { sendStatus: (arg0: number) => void; }, next: () => void) => {
     if (req.method.toLowerCase() === 'options') {
         // 快速结束 options 请求
@@ -29,16 +33,18 @@ app.all('*', cors(corsOptionsDelegate), (req: { method: string; }, res: { sendSt
     }
 })
 
-app.get('/', (req: any, res: { send: (arg0: string) => void; }) => {
-    res.send('hello')
-})
-
 // @ts-ignore
 app.get('/images/*', (req, res) => {
-    // console.log(req)
-    res.writeHead(200)
+    // res.sendStatus
     res.sendFile(__dirname, "/" + req.url)
 })
+
+app.use(express.static('/'))
+
+// 兼容旧的版本，使用新的 qs 库解析 body 消息体
+app.use(express.urlencoded({
+    extended: true
+}));
 
 app.listen(port, () => {
     console.log(`server is listening at ${host}:${port}...`)
