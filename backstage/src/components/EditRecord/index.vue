@@ -87,32 +87,13 @@
 </template>
 
 <script lang="ts">
-// import {
-//   // toRefs,
-//   nextTick
-//   // getCurrentInstance,
-//   // onMounted
-// } from 'vue'
 import UploadFileButton from '@/components/custom/UploadFileButton.vue'
 import tabIndent from '@/directives/tabIndent'
-// import { parseMarkdownFile } from '@/utils/marked'
 import { PropsType } from '../types/articleDetail'
 import { SetupContext } from '@vue/runtime-core'
-import {
-  ElForm,
-  ElFormItem,
-  ElButton,
-  ElInput,
-  ElDatePicker,
-  ElRow,
-  ElCol,
-  ElTag
-} from 'element-plus'
-import {
-  // eslint-disable-next-line import/no-named-default
-  default as useEdit
-  // isImage
-} from './editRecord'
+import { ElForm, ElFormItem, ElButton, ElInput, ElDatePicker, ElRow, ElCol, ElTag } from 'element-plus'
+// eslint-disable-next-line import/no-named-default
+import { default as useEdit } from './editRecord'
 
 export default {
   name: 'EditRecord',
@@ -144,6 +125,6 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~@/assets/css/components/editRecord.scss";
 </style>

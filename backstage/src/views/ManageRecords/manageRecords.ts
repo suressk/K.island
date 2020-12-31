@@ -1,4 +1,4 @@
-import { reactive, ref } from 'vue'
+import { reactive, ref, nextTick } from 'vue'
 import { Notify } from '@/utils/util'
 import { PropsType } from '@/components/types/articleDetail'
 // import { SetupContext} from "@vue/runtime-core";
@@ -75,15 +75,18 @@ export function handleShowEdit (selectionRow: RecordsItem) {
   drawerTitle.value = '编辑'
   editVisible.value = true
   Notify('success', 'SUCCESS', '请求成功！')
-  assignArticle({
-    title: '醒不来的梦',
-    tag: 'TypeScript',
-    introduce: '你是我触碰不到的风，醒不来的梦；寻不到的天堂，医不好的痛；点不着的香烟，松不开的手；忘不了的某某某...',
-    cover: 'https://tse2-mm.cn.bing.net/th/id/OIP.2qQECtS2brOCBsrxHhmJ_wHaE8?pid=Api&rs=1',
-    content: '# MarkDown Detail',
-    ctime: '2020/10/08'
+  nextTick(() => {
+    assignArticle({
+      title: '醒不来的梦',
+      tag: 'TypeScript',
+      introduce: '你是我触碰不到的风，醒不来的梦；寻不到的天堂，医不好的痛；点不着的香烟，松不开的手；忘不了的某某某...',
+      cover: 'https://tse2-mm.cn.bing.net/th/id/OIP.2qQECtS2brOCBsrxHhmJ_wHaE8?pid=Api&rs=1',
+      content: '# MarkDown Detail',
+      ctime: '2020/10/08'
+    })
+  }).then(() => {
+    detailReady.value = true
   })
-  detailReady.value = true
   console.log(selectionRow)
 }
 

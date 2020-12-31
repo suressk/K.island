@@ -5,26 +5,9 @@ import { RecordInfo } from './editTypes'
 import { PropsType } from '@/components/types/articleDetail'
 import { SetupContext } from '@vue/runtime-core'
 
-// import { postCompressImage } from '@/api/api'
 // import dayjs from 'dayjs'
 
 /* eslint-disable */
-
-// 其他记录信息
-// export const recordInfo = reactive<RecordInfo>({
-//   title: '',
-//   tag: '',
-//   introduce: '',
-//   ctime: '',
-//   cover: '',
-//   content: ''
-// })
-
-// 预览 markdown HTML 内容
-// export const previewContent = ref<string>('')
-// export const previewContent = ref<string>('')
-
-
 function createFileReader (): FileReader {
   return new FileReader()
 }
@@ -75,6 +58,7 @@ function isImage (file: File): boolean {
 export default function useEdit (props: PropsType, ctx: SetupContext) {
   // props 传递的文章详情是否请求成功
   const ready = ref<boolean>(false)
+  // 文章所有信息
   const recordInfo = reactive<RecordInfo>({
     title: '',
     tag: '',
@@ -83,13 +67,12 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
     cover: '',
     content: ''
   })
+  // 预览 markdown HTML 内容
   const previewContent = ref<string>('')
-
   let preViewTimer: NodeJS.Timeout | null = null
-  let instance: any
+  const vm: any = getCurrentInstance()
 
-  onMounted(() => {
-    instance = getCurrentInstance()
+  onMounted((): void => {
     // 初始化置空
     clearRecord()
   })
@@ -105,10 +88,12 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
     }, 200)
   })
 
-  watch(() => props.modelValue, (val: boolean) => {
-    console.log('EditRecord ========== ', val)
+  watch(() => props.modelValue, val => {
     if (val) {
       initRecord(props)
+      nextTick(() => {
+        ctx.emit('update:modelValue')
+      })
     }
   })
   // 从 props 初始化
@@ -122,7 +107,9 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
     previewContent.value = parseMarkdownFile(recordInfo.content)
   }
 
-  // 清除文章所有相关信息
+  /**
+   * 清除文章所有相关信息
+   * */
   function clearRecord () {
     recordInfo.title = ''
     recordInfo.tag = ''
@@ -152,9 +139,12 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
    * @param {*} files: FileList 文件列表
    * */
   function handleInsertContent (files: FileList) {
-    let file: File
     if (files.length) {
-      file = files[0]
+      const file: File = files[0]
+      if (!file.type.includes('md') || !file.type.includes('js')) {
+        Notify('warning', 'WARNING', '请导入 .md 文件或 .js 文件')
+        return
+      }
       readFileAsTxt(file).then(txt => {
         recordInfo.content = txt
       }, err => {
@@ -199,10 +189,12 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
     }
   }
 
-  // 文章内部插入图片
+  /**
+   * 文章内部插入图片
+   * */
   function handleInsertContentImage (e: any) {
     const files = e.target.files
-    const el = instance.refs.contentRef
+    const el = vm.refs.contentRef
     if (files.length) {
       const file = files[0]
       // 不是图片类型
@@ -224,40 +216,29 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
     })
   }
 
-  // 文章信息扔向父组件
+  /**
+   * 文章信息扔向父组件
+   * */
   function handleEmitRecord () {
     ctx.emit('upload-article', {
       ...recordInfo,
       ctime: new Date(recordInfo.ctime).getTime()
     })
   }
+
   return {
     ...toRefs(recordInfo),
     previewContent,
     ready,
+    clearRecord,
     handleInsertContent,
     handleUploadCover,
     handleClearContent,
     handleDeleteCoverImg,
-    clearRecord,
     handleEmitRecord,
     handleInsertContentImage
   }
 }
-// export function handleInsertContentImage (e: any) {
-//   const files = e.target.files
-//   if (files.length) {
-//     const file = files[0]
-//     // 不是图片类型
-//     if (!isImage(file)) {
-//       return
-//     }
-//     setTimeout(() => {
-//       e.target.value = ''
-//     }, 2000)
-//   }
-//   // `![file.name](${res.imgUrl})`
-// }
 
 // 尝试调用智图压缩 API => 跨域（失败）
 // formData.append('fileSelect', file)
@@ -271,20 +252,3 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
 // postCompressImage(formData).then(res => {
 //   console.log(res)
 // })
-
-/**
- * 上传文章
- * */
-// export function handleUploadArticle () {
-//   ctx.$emit('upload-article', {
-//     ...recordInfo,
-//     content: contentTxt
-//   })
-//   console.log('upload', recordInfo)
-//   // if (recordInfo.time !== null) {
-//   //   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-//   //   // @ts-ignore
-//   //   // console.log(recordInfo.time.valueOf()) // 得到时间戳
-//   // }
-// }
-
