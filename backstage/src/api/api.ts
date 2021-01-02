@@ -5,7 +5,7 @@ import axios from 'axios'
 const getBg = (params: string | object) => getAction('/images/bg.webp', params = {})
 const getHello = (params: string | object | undefined) => getAction('/', params = {})
 
-// type CompressParam = {
+// interface CompressParam {
 //   name: string;
 //   compress: number;
 //   oriSize: number;
@@ -26,8 +26,19 @@ const postCompressImage = (params: FormData) => axios('https://zhitu.isux.us/ind
   }
 })
 
+interface LoginInfo {
+  username: string;
+  password: string;
+}
+
+// 登录 后台
+const backLogin = (params: LoginInfo) => postAction('/back/login', params)
+const backLogout = (params: LoginInfo) => postAction('/back/logout', params)
+
 export {
   getBg,
   getHello,
-  postCompressImage
+  postCompressImage,
+  backLogin,
+  backLogout
 }

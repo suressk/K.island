@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/index.vue'
-// import { verifyTokenExist } from '@/utils/util'
+import { getStorageToken } from '@/utils/util'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,28 +12,28 @@ const routes: Array<RouteRecordRaw> = [
       path: 'overview',
       name: 'Overview',
       meta: {
-        title: '瞧瞧这人气'
+        title: '嗐！瞧瞧这人气'
       },
       component: () => import('../views/Overview/index.vue')
     }, {
       path: 'add',
       name: 'Add',
       meta: {
-        title: '新品上架哦'
+        title: '叮！新品上架哦'
       },
       component: () => import('../views/AddRecord/index.vue')
     }, {
       path: 'management',
       name: 'Management',
       meta: {
-        title: '杂货翻新啦'
+        title: '哗！杂货翻新啦'
       },
       component: () => import('../views/ManageRecords/index.vue')
     }, {
       path: 'reply',
       name: 'Reply',
       meta: {
-        title: '聊个五毛钱的天'
+        title: '噔噔噔！聊个五毛钱的天？'
       },
       component: () => import('../views/ConcatReply/index.vue')
     }]
@@ -46,11 +46,6 @@ const routes: Array<RouteRecordRaw> = [
       title: '嘀！加油站'
     },
     component: () => import('../views/Login.vue')
-  },
-  {
-    path: '/modal',
-    name: 'Modal',
-    component: () => import('../components/custom/Modal.vue')
   },
   {
     path: '/:catchAll(.*)',
@@ -67,14 +62,14 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   const tokenExist = verifyTokenExist()
-//   // 去往非登录页且无 token
-//   if (!to.path.includes('login') && !tokenExist) {
-//     next('/login')
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  const token = getStorageToken() // null | token
+  // 去往非登录页且无 token
+  if (!to.path.includes('login') && !token) {
+    next('/login')
+  } else {
+    next()
+  }
+})
 
 export default router

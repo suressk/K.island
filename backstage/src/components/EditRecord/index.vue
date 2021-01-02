@@ -89,7 +89,7 @@
 <script lang="ts">
 import UploadFileButton from '@/components/custom/UploadFileButton.vue'
 import tabIndent from '@/directives/tabIndent'
-import { PropsType } from '../types/articleDetail'
+import { PropsType } from '../../types/articleDetail'
 import { SetupContext } from '@vue/runtime-core'
 import { ElForm, ElFormItem, ElButton, ElInput, ElDatePicker, ElRow, ElCol, ElTag } from 'element-plus'
 // eslint-disable-next-line import/no-named-default

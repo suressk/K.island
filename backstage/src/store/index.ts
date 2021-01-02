@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 
-// import { SET_ASIDE_MENU_SHRINK } from './mutation-types'
+// import { SET_ASIDE_MENU_SHRINK } from './mutation-common'
 
 export default createStore({
   state: {

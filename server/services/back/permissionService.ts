@@ -20,3 +20,5 @@ export function login (options: LoginOptions, success: (result: any) => void, er
     }))
     connection.end()
 }
+
+// export function logout ()

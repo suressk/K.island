@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { ElNotification } from 'element-plus'
-import { ACCESS_TOKEN, TOKEN_EXPIRE_TIME } from '@/store/mutation-types'
+// import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { getStorageToken, setStorageToken } from '@/utils/util'
 
 /* eslint-disable */
 // @ts-ignore
@@ -75,6 +76,10 @@ service.interceptors.request.use(
         ...config.params
       };
     }
+    const token = getStorageToken()
+    if (token) {
+      config.headers.authorization = token
+    }
     return config;
   },
   err => Promise.reject(err)
@@ -85,11 +90,9 @@ service.interceptors.request.use(
  */
 service.interceptors.response.use(resp => {
   const data = resp.data.data;
-  // console.log(resp)
   if (data.token) {
     // LocalStorage 存储 token
-    window.localStorage.setItem(ACCESS_TOKEN, data.token)
-    window.localStorage.setItem(TOKEN_EXPIRE_TIME, data.expireTime)
+    setStorageToken(data.token)
   }
   return resp.data;
 }, handleError);

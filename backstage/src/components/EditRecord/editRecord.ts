@@ -2,7 +2,7 @@ import { reactive, ref, toRefs, watch, onMounted, getCurrentInstance, nextTick }
 import { Notify } from '@/utils/util'
 import { marked, parseMarkdownFile } from '@/utils/marked'
 import { RecordInfo } from './editTypes'
-import { PropsType } from '@/components/types/articleDetail'
+import { PropsType } from '@/types/articleDetail'
 import { SetupContext } from '@vue/runtime-core'
 
 // import dayjs from 'dayjs'

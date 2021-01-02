@@ -9,3 +9,9 @@ export interface PropsType {
   };
   modelValue: boolean;
 }
+
+export interface ResponseRes {
+  success: boolean;
+  data: object;
+  message: string;
+}
