@@ -9,11 +9,8 @@ const port = process.env.PORT || 9527
 
 const WHITE_LIST = ['http://localhost:8080']
 
-// 解析 json 格式请求体
-app.use(express.json());
-
 let corsOptionsDelegate = (req: Request, callback: CallBack) => {
-    let corsOptions
+    let corsOptions: { origin: boolean }
     // @ts-ignore
     if (WHITE_LIST.includes(req.header('Origin'))) {
         corsOptions = { origin: true }
@@ -33,10 +30,8 @@ app.all('*', cors(corsOptionsDelegate), (req: { method: string; }, res: { sendSt
     }
 })
 
-// @ts-ignore
 app.get('/images/*', (req, res) => {
-    // res.sendStatus
-    res.sendFile(__dirname, "/" + req.url)
+    res.sendFile(__dirname + "/" + req.url)
 })
 
 app.use(express.static('/'))
@@ -45,6 +40,9 @@ app.use(express.static('/'))
 app.use(express.urlencoded({
     extended: true
 }));
+
+// 解析 json 格式请求体
+app.use(express.json());
 
 app.listen(port, () => {
     console.log(`server is listening at ${host}:${port}...`)
