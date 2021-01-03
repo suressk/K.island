@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { ElNotification } from 'element-plus'
-// import { ACCESS_TOKEN } from '@/store/mutation-types'
-import { getStorageToken, setStorageToken } from '@/utils/util'
+import { getStorageToken } from '@/utils/util'
 
 /* eslint-disable */
 // @ts-ignore
@@ -89,11 +88,11 @@ service.interceptors.request.use(
  * response interceptor
  */
 service.interceptors.response.use(resp => {
-  const data = resp.data.data;
-  if (data.token) {
-    // LocalStorage 存储 token
-    setStorageToken(data.token)
-  }
+  // const data = resp.data.data;
+  // if (data.token) {
+  //   // LocalStorage 存储 token
+  //   setStorageToken(data.token)
+  // }
   return resp.data;
 }, handleError);
 

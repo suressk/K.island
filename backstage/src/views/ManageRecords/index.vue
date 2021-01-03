@@ -120,7 +120,6 @@
 </template>
 
 <script lang="ts">
-import { onMounted } from 'vue'
 import ArticleDetailDrawer from '@/components/custom/ArticleDetailDrawer.vue'
 import EditArticle from '@/components/EditRecord/index.vue'
 // eslint-disable-next-line import/no-named-default
@@ -143,9 +142,6 @@ export default {
     EditArticle
   },
   setup () {
-    onMounted(() => {
-      document.title = '"杂货"整理铺 - K.island'
-    })
     return {
       ...useManage()
     }

@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, toRefs, nextTick, onMounted, getCurrentInstance } from 'vue'
+import { reactive, toRefs, getCurrentInstance } from 'vue'
 import { backLogin } from '@/api/api'
 import { Notify, setStorageToken } from '@/utils/util'
 
@@ -41,30 +41,24 @@ export default {
       password: ''
     })
     function handleLogin () {
-      // @ts-ignore
       backLogin({ ...loginInfo }).then(res => {
         // @ts-ignore
         if (res.success) {
           // @ts-ignore
           Notify('success', 'SUCCESS', res.message)
-          // @ts-ignore
           setStorageToken(res.data)
-          nextTick(() => {
+          // 1s 后跳转至后台管理首页
+          setTimeout(() => {
             ctx.$router.push('/')
-          })
+          }, 1000)
         } else {
           // @ts-ignore
           Notify('warning', 'WARNING', res.message)
         }
       }).catch(err => {
-        // @ts-ignore
         Notify('warning', 'WARNING', err.message)
       })
     }
-    onMounted(() => {
-      const route = ctx.$router.currentRoute.value
-      document.title = route.meta.title + ' - K.island'
-    })
     return {
       ...toRefs(loginInfo),
       handleLogin

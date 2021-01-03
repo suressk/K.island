@@ -45,10 +45,11 @@
 </template>
 
 <script lang="ts">
+import { getCurrentInstance } from 'vue'
 import AsideMenu from '@/components/AsideMenu.vue'
 import LoadingProgress from '@/components/custom/LoadingProgress.vue'
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus'
-import { Notify } from '@/utils/util'
+import { Notify, removeStorageToken } from '@/utils/util'
 
 export default {
   name: 'Layouts',
@@ -60,8 +61,16 @@ export default {
     ElDropdownItem
   },
   setup () {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    const { ctx } = getCurrentInstance()
     function handleLogout () {
+      removeStorageToken()
       Notify('success', 'SUCCESS', '退出登录')
+      // 1s 后跳转到登录页
+      setTimeout(() => {
+        ctx.$router.push('/login')
+      }, 1000)
     }
     return {
       handleLogout

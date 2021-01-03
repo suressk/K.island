@@ -72,4 +72,15 @@ router.beforeEach((to, from, next) => {
   }
 })
 
+// 路由后置守卫 由路由信息 设置标签页标题
+router.afterEach(to => {
+  let title: string
+  if (to.meta && to.meta.title) {
+    title = to.meta.title + ' - K.island'
+  } else {
+    title = 'K.island'
+  }
+  document.title = title
+})
+
 export default router

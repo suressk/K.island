@@ -1,19 +1,22 @@
 import { ElNotification } from 'element-plus'
-import { INotification } from 'element-plus/packages/notification/src/notification.type'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+
+/**
+ * Notification 消息通知
+ * @param {*} type 提示类型
+ * @param {*} title 提示标题
+ * @param {*} message 提示信息内容
+ * @param {*} duration 持续时长（s）
+ * */
+export function Notify (type = 'success', title: string, message: string, duration = 4500) {
+  /* eslint-disable */
+  // @ts-ignore
+  ElNotification({ type, title, message, duration })
+}
 
 interface TokenInfo {
   token: string; // token 本身
   expireTime: number; // 过期时间（s）
-}
-
-export function Notify (type: string, title: string, message: string): INotification {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
-  return ElNotification[type]({
-    title,
-    message
-  })
 }
 
 /**
@@ -47,4 +50,14 @@ export function getStorageToken (): null | string {
     localStorage.removeItem(ACCESS_TOKEN)
   }
   return null
+}
+
+/**
+ * 移除 LocalStorage 的 token 信息
+ * */
+export function removeStorageToken (): void {
+  const tokenInfoStr: null | string = localStorage.getItem(ACCESS_TOKEN)
+  if (tokenInfoStr) {
+    localStorage.removeItem(ACCESS_TOKEN)
+  }
 }

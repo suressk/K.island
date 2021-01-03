@@ -7,7 +7,6 @@
 </template>
 
 <script lang="ts">
-import { onMounted } from 'vue'
 import { backLogout } from '@/api/api'
 import { ElButton } from 'element-plus'
 import { Notify } from '@/utils/util'
@@ -16,9 +15,6 @@ export default {
   name: 'Reply',
   components: { ElButton },
   setup () {
-    onMounted(() => {
-      document.title = '漂流瓶 - K.island'
-    })
     function handleLogout () {
       backLogout({
         username: 'sure',

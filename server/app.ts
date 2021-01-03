@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { CallBack } from './common/types'
 import cors from 'cors'
-import permission from './routes/permission'
+import permission from './routes/back/permission'
 
 const app = express()
 
