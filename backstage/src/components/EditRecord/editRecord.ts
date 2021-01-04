@@ -82,10 +82,11 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
   watch(() => recordInfo.content, content => {
     if (preViewTimer) {
       clearTimeout(preViewTimer)
+      preViewTimer = null
     }
     preViewTimer = setTimeout(() => {
       previewContent.value = marked(content)
-    }, 200)
+    }, 300)
   })
 
   // 请求文章详情数据成功获取 => modelValue 置为 true 触发
@@ -223,7 +224,8 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
   function handleEmitRecord () {
     ctx.emit('upload-article', {
       ...recordInfo,
-      ctime: new Date(recordInfo.ctime).getTime()
+      // ctime: new Date(recordInfo.ctime).getTime()
+      ctime: new Date().getTime()
     })
   }
 

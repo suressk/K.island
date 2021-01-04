@@ -52,12 +52,50 @@ export function getStorageToken (): null | string {
   return null
 }
 
+export function setStorageItem (name: string, value: string): void {
+  localStorage.setItem(name, value)
+}
+
+export function getStorageItem (name: string): null | string {
+  return localStorage.getItem(name)
+}
+
 /**
- * 移除 LocalStorage 的 token 信息
+ * 移除 LocalStorage 中的相关项
  * */
-export function removeStorageToken (): void {
-  const tokenInfoStr: null | string = localStorage.getItem(ACCESS_TOKEN)
-  if (tokenInfoStr) {
-    localStorage.removeItem(ACCESS_TOKEN)
+export function removeStorageItem (name: string): void {
+  const infoStr: null | string = localStorage.getItem(name)
+  if (infoStr) {
+    localStorage.removeItem(name)
+  }
+}
+
+/**
+ * 设置 cookie
+ * @param {*} name cookie 名
+ * @param {*} value cookie 值
+ * @param {*} expireTime cookie 过期时长（s）
+ * */
+export function setCookie (name: string, value: string, expireTime: number) {
+  const expire: Date = new Date()
+  expire.setTime(expire.getTime() + expireTime * 1000)
+  document.cookie = name + '=' + escape(value) + ';path=/' + ';expires=' + expire.toUTCString()
+}
+
+export function getCookie(name: string): string | null {
+  const arr: null | string[] = document.cookie.match(new RegExp('(^| )' + name + '=([^;]*)(;|$)'))
+  if (arr !== null) {
+    return arr[2]
+  } else {
+    return null
+  }
+}
+
+export function deleteCookie (name: string): void {
+  const cookieVal = getCookie(name)
+  if (cookieVal !== null) {
+    const expired = new Date()
+    expired.setTime(expired.getTime() - 1)
+    document.cookie = name + '=' + cookieVal + ';expires=' + expired.toUTCString()
   }
 }
