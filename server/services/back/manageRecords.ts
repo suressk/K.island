@@ -1,0 +1,1 @@
+export { addRecord } from '../recordService'

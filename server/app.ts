@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express'
 import { CallBack } from './common/types'
 import cors from 'cors'
 import permission from './routes/back/permission'
+import manageRecord from './routes/back/record'
 
 const app = express()
 
@@ -45,7 +46,11 @@ app.use(express.urlencoded({
 // 解析 json 格式请求体
 app.use(express.json());
 
-app.use('/back', permission)
+// 系统登录 / 退出登录
+app.use('/sys', permission)
+
+// 文章管理 —— 增删改查 文章信息
+app.use('/back/record', manageRecord)
 
 app.listen(port, () => {
     console.log(`server is listening at ${host}:${port}...`)

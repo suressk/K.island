@@ -1,12 +1,12 @@
 import { connectQuery } from '../dao/DBUtil'
 import { v4 as uuid } from 'uuid'
 import Query from 'mysql2/typings/mysql/lib/protocol/sequences/Query'
-
-interface QueryListOptions {
-    pageNo: number; // 当前页码
-    pageSize: number; // 每页数量
-    range?: string;
-}
+import {
+    QueryListOptions,
+    RecordIdOptions,
+    AddRecordOptions,
+    UpdateRecordOptions
+} from '../common/types'
 
 /**
  * 分页查询文章列表
@@ -25,11 +25,6 @@ export function queryRecordList (options: QueryListOptions, success: (result: an
     connectQuery(sqlStr, params, success, error)
 }
 
-interface RecordIdOptions {
-    id: number;
-    uid: string;
-}
-
 /**
  * 查询文章详情信息
  * */
@@ -38,14 +33,6 @@ export function queryRecordDetail (options: RecordIdOptions, success: (result: a
     const sqlStr = 'SELECT id, uid, title, introduce, content, tag, cover, ctime, utime FROM `records` WHERE id = ? and uid = ?'
     const params = [id, uid]
     connectQuery(sqlStr, params, success, error)
-}
-
-interface AddRecordOptions {
-    title: string;
-    tag: string;
-    introduce: string;
-    content: string;
-    cover: string;
 }
 
 /**
@@ -58,11 +45,6 @@ export function addRecord (options: AddRecordOptions, success: (result: any) => 
     const uid = uuid()
     const params = [uid, title, content, introduce, 10, tag, cover, ctime, ctime, 0]
     connectQuery(sqlStr, params, success, error)
-}
-
-interface UpdateRecordOptions extends AddRecordOptions {
-    id: number;
-    uid: string;
 }
 
 /**

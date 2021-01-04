@@ -93,9 +93,9 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
   watch(() => props.modelValue, val => {
     if (val) {
       initRecord(props)
-      nextTick(() => {
+      nextTick((): void => {
         ctx.emit('update:modelValue') // 更新父级状态
-      })
+      }).then()
     }
   })
   // 从 props 初始化
@@ -143,8 +143,8 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
   function handleInsertContent (files: FileList) {
     if (files.length) {
       const file: File = files[0]
-      if (!file.type.includes('md') || !file.type.includes('js')) {
-        Notify('warning', 'WARNING', '请导入 .md 文件或 .js 文件')
+      if (!file.name.includes('md') && !file.name.includes('js')) {
+        Notify('warning', 'WARNING', '最好导入 .md 文件或 .js 文件')
         return
       }
       readFileAsTxt(file).then(txt => {
@@ -212,10 +212,10 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
         imgStr +
         recordInfo.content.substring(endPoint)
     }
-    // `![file.name](${res.imgUrl})`
+    // 清空 input 控件内容；解决再次选择同一文件无法触发 input 的 change 事件的问题
     nextTick((): void => {
       e.target.value = ''
-    })
+    }).then()
   }
 
   /**
@@ -224,7 +224,6 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
   function handleEmitRecord () {
     ctx.emit('upload-article', {
       ...recordInfo,
-      // ctime: new Date(recordInfo.ctime).getTime()
       ctime: new Date().getTime()
     })
   }
