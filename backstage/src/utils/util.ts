@@ -8,7 +8,7 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
  * @param {*} message 提示信息内容
  * @param {*} duration 持续时长（s）
  * */
-export function Notify (type = 'success', title: string, message: string, duration = 4500) {
+export function Notify (type = 'success', title: string, message: string, duration = 3000) {
   /* eslint-disable */
   // @ts-ignore
   ElNotification({ type, title, message, duration })

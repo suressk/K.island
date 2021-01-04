@@ -1,12 +1,12 @@
 import mysql from 'mysql2'
 import Query from "mysql2/typings/mysql/lib/protocol/sequences/Query";
 
-export function createConnection () {
+function createConnection () {
     return mysql.createConnection({
         host: "127.0.0.1",
         port: 3306,
         user: "root",
-        password: "NdMexHd.Qwert...",
+        password: "xxx",
         database: "k_island"
     });
 }
