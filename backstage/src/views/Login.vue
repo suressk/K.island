@@ -22,7 +22,8 @@
 <script lang="ts">
 import { reactive, toRefs, getCurrentInstance } from 'vue'
 import { backLogin } from '@/api/api'
-import { Notify, setStorageToken } from '@/utils/util'
+import { Notify, setStorageToken, setCookie } from '@/utils/util'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 interface LoginInfo {
   username: string;
@@ -47,6 +48,7 @@ export default {
           // @ts-ignore
           Notify('success', 'SUCCESS', res.message)
           setStorageToken(res.data)
+          setCookie(ACCESS_TOKEN, res.data.token, res.data.expireTime)
           // 1s 后跳转至后台管理首页
           setTimeout(() => {
             ctx.$router.push('/')

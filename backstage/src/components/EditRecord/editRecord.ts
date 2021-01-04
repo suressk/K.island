@@ -49,7 +49,7 @@ function readFileAsTxt (file: File): Promise<any> {
 // 判断是否是图片类型
 function isImage (file: File): boolean {
   if (!file.type.match(/image/g)) {
-    Notify('warning', '警告', '上传的封面图片文件格式不太对哦~')
+    Notify('warning', '抱歉', '您上传的封面图片文件格式不太对哦~')
     return false
   }
   return true
@@ -82,10 +82,11 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
   watch(() => recordInfo.content, content => {
     if (preViewTimer) {
       clearTimeout(preViewTimer)
+      preViewTimer = null
     }
     preViewTimer = setTimeout(() => {
       previewContent.value = marked(content)
-    }, 200)
+    }, 300)
   })
 
   // 请求文章详情数据成功获取 => modelValue 置为 true 触发
@@ -223,7 +224,8 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
   function handleEmitRecord () {
     ctx.emit('upload-article', {
       ...recordInfo,
-      ctime: new Date(recordInfo.ctime).getTime()
+      // ctime: new Date(recordInfo.ctime).getTime()
+      ctime: new Date().getTime()
     })
   }
 

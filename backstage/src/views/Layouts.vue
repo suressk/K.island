@@ -49,7 +49,8 @@ import { getCurrentInstance } from 'vue'
 import AsideMenu from '@/components/AsideMenu.vue'
 import LoadingProgress from '@/components/custom/LoadingProgress.vue'
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus'
-import { Notify, removeStorageToken } from '@/utils/util'
+import { deleteCookie, Notify, removeStorageItem } from '@/utils/util'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 export default {
   name: 'Layouts',
@@ -65,7 +66,8 @@ export default {
     // @ts-ignore
     const { ctx } = getCurrentInstance()
     function handleLogout () {
-      removeStorageToken()
+      removeStorageItem(ACCESS_TOKEN)
+      deleteCookie(ACCESS_TOKEN)
       Notify('success', 'SUCCESS', '退出登录')
       // 1s 后跳转到登录页
       setTimeout(() => {

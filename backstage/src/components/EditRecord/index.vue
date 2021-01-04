@@ -10,10 +10,10 @@
         <el-input class="tag-inp" type="text" v-model="tag" size="small" clearable />
       </el-form-item>
 
-      <el-form-item label="时间:">
-        <!--    ctime => Date, String, Array 均可，number 也可解析   -->
-        <el-date-picker class="date-picker" v-model="ctime" size="small" clearable />
-      </el-form-item>
+      <!--<el-form-item label="时间:">-->
+      <!--      ctime => Date, String, Array 均可，number 也可解析 -->
+      <!--  <el-date-picker class="date-picker" v-model="ctime" size="small" clearable />-->
+      <!--</el-form-item>-->
 
       <el-form-item>
         <upload-file-button
@@ -89,9 +89,9 @@
 <script lang="ts">
 import UploadFileButton from '@/components/custom/UploadFileButton.vue'
 import tabIndent from '@/directives/tabIndent'
-import { PropsType } from '../../types/articleDetail'
+import { PropsType } from '@/types/articleDetail'
 import { SetupContext } from '@vue/runtime-core'
-import { ElForm, ElFormItem, ElButton, ElInput, ElDatePicker, ElRow, ElCol, ElTag } from 'element-plus'
+import { ElForm, ElFormItem, ElButton, ElInput, ElRow, ElCol, ElTag } from 'element-plus'
 // eslint-disable-next-line import/no-named-default
 import { default as useEdit } from './editRecord'
 
@@ -103,7 +103,6 @@ export default {
     ElFormItem,
     ElButton,
     ElInput,
-    ElDatePicker,
     ElRow,
     ElCol,
     ElTag,
