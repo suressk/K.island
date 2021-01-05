@@ -38,3 +38,17 @@ export function deleteAction (url: URL, params: Params, data: Params = {}) {
     data
   })
 }
+
+export function postUploadImage (url: string, data: FormData) {
+  return axios({
+    url,
+    data,
+    method: 'post',
+    headers: {
+      cache: false,
+      'Content-Type': 'multipart/form-data',
+      contentType: false,
+      processData: false
+    }
+  })
+}

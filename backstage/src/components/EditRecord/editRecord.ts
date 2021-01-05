@@ -4,6 +4,14 @@ import { marked, parseMarkdownFile } from '@/utils/marked'
 import { RecordInfo } from './editTypes'
 import { PropsType } from '@/types/articleDetail'
 import { SetupContext } from '@vue/runtime-core'
+import { uploadCover } from '@/api/api'
+import { AxiosResponse } from 'axios'
+
+interface ResponseInfo {
+  success: boolean;
+  message: string;
+  data: object;
+}
 
 // import dayjs from 'dayjs'
 
@@ -164,33 +172,46 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
       if (!isImage(file)) {
         return
       }
+      // 封面图片上传 method
       new Promise(resolve => {
-        // 1. 创建 blob 图片 url
-        resolve(window.URL.createObjectURL(file))
-        /**
-         * 2. 读取文件为 base64 编码
-         const fr = createFileReader()
-         fr.readAsDataURL(file)
-         fr.onload = e => {
-          resolve(e.target.result)
-        }
-         */
-      }).then(urlStr => {
-        // console.log(urlStr)
-        if (typeof urlStr === 'string') {
+        // 创建上传图片的数据对象
+        const formData = new FormData()
+        formData.append('cover', file)
+        formData.append('filename', file.name)
+        uploadCover(formData).then((res :AxiosResponse<ResponseInfo>) => {
+          // @ts-ignore
+          if (res.success) {
+            // @ts-ignore
+            Notify('success', 'SUCCESS', res.message)
+            // @ts-ignore
+            resolve(res.data.cover)
+          } else {
+            // @ts-ignore
+            Notify('warning', 'WARNING', res.message)
+          }
+        }).catch(err => {
+          // @ts-ignore
+          Notify('error', 'ERROR', err.message)
+        })
+      }).then(cover => {
+        if (typeof cover === 'string') {
           // previewCoverUrl.value = urlStr
-          recordInfo.cover = urlStr
+          recordInfo.cover = cover
         }
       })
-      // 创建上传图片的数据对象
-      const formData = new FormData()
-      formData.append('imageFile', file)
-      formData.append('filename', file.name)
-      // 封面图片上传 method
-      //
     }
   }
 
+  // 1. 创建 blob 图片 url
+  // resolve(window.URL.createObjectURL(file))
+  /**
+   * 2. 读取文件为 base64 编码
+   const fr = createFileReader()
+   fr.readAsDataURL(file)
+   fr.onload = e => {
+          resolve(e.target.result)
+        }
+   */
   /**
    * 文章内部插入图片
    * */

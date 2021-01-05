@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { getAction, postAction } from '@/api/manage'
+import { getAction, postAction, postUploadImage } from '@/api/manage'
 import axios from 'axios'
 
 import { LoginInfo, RecordInfo } from '@/types/record'
@@ -21,11 +21,14 @@ const backLogout = (params: LoginInfo) => postAction('/sys/logout', params)
 
 const addRecord = (params: RecordInfo) => postAction('/back/record/add', params)
 
+const uploadCover = (fileData: FormData) => postUploadImage('/upload/cover', fileData)
+
 export {
   getBg,
   getHello,
   postCompressImage,
   backLogin,
   backLogout,
-  addRecord
+  addRecord,
+  uploadCover
 }
