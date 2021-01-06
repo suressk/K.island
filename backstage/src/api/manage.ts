@@ -30,11 +30,10 @@ export function putAction (url: URL, data: Params) {
   })
 }
 
-export function deleteAction (url: URL, params: Params, data: Params = {}) {
+export function deleteAction (url: URL, data: Params = {}) {
   return axios({
     url: url,
     method: 'delete',
-    params,
     data
   })
 }

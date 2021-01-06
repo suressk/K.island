@@ -7,13 +7,15 @@
       </el-form-item>
 
       <el-form-item label="标签:">
-        <el-input class="tag-inp" type="text" v-model="tag" size="small" clearable />
+        <el-select v-model="tag" size="small" clearable>
+          <el-option
+            v-for="item in tagOptions"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
+        </el-select>
       </el-form-item>
-
-      <!--<el-form-item label="时间:">-->
-      <!--      ctime => Date, String, Array 均可，number 也可解析 -->
-      <!--  <el-date-picker class="date-picker" v-model="ctime" size="small" clearable />-->
-      <!--</el-form-item>-->
 
       <el-form-item>
         <upload-file-button
@@ -28,6 +30,7 @@
 
       <el-form-item>
         <el-button type="primary" icon="el-icon-upload" size="small" @click="handleEmitRecord" />
+        <!--<el-button type="primary" icon="el-icon-upload" size="small" @click="handleDelete" />-->
       </el-form-item>
     </el-form>
     <!--  编辑区  -->
@@ -89,11 +92,13 @@
 <script lang="ts">
 import UploadFileButton from '@/components/custom/UploadFileButton.vue'
 import tabIndent from '@/directives/tabIndent'
-import { PropsType } from '@/types/articleDetail'
+import { PropsType } from '@/types/paramsType'
 import { SetupContext } from '@vue/runtime-core'
-import { ElForm, ElFormItem, ElButton, ElInput, ElRow, ElCol, ElTag } from 'element-plus'
+import { ElForm, ElFormItem, ElButton, ElInput, ElRow, ElCol, ElTag, ElSelect, ElOption } from 'element-plus'
 // eslint-disable-next-line import/no-named-default
 import { default as useEdit } from './editRecord'
+// import { deleteImage } from '@/api/api'
+// import { Notify } from '@/utils/util'
 
 export default {
   name: 'EditRecord',
@@ -106,6 +111,8 @@ export default {
     ElRow,
     ElCol,
     ElTag,
+    ElSelect,
+    ElOption,
     UploadFileButton
   },
   props: {
@@ -118,6 +125,17 @@ export default {
     }
   },
   setup (props: PropsType, ctx: SetupContext) {
+    // function handleDelete () {
+    //   deleteImage({
+    //     filename: 'cd6ea064-6366-4d3f-b293-fec8f8118d01.webp',
+    //     path: '/images/illustration'
+    //   }).then(res => {
+    //     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    //     // @ts-ignore
+    //     Notify('success', 'SUCCESS', res.message)
+    //   })
+    // }
+    // handleDelete
     return {
       ...useEdit(props, ctx)
     }

@@ -1,6 +1,6 @@
 import { reactive, ref, nextTick } from 'vue'
 import { Notify } from '@/utils/util'
-import { PropsType } from '@/types/articleDetail'
+import { PropsType } from '@/types/paramsType'
 
 interface RecordsItem {
   id?: string;

@@ -21,7 +21,8 @@
 
 <script lang="ts">
 import { reactive, toRefs, getCurrentInstance } from 'vue'
-import { backLogin } from '@/api/api'
+import md5 from 'md5'
+import { login } from '@/api/api'
 import { Notify, setStorageToken, setCookie } from '@/utils/util'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
@@ -42,7 +43,10 @@ export default {
       password: ''
     })
     function handleLogin () {
-      backLogin({ ...loginInfo }).then(res => {
+      login({
+        username: loginInfo.username,
+        password: md5(loginInfo.password)
+      }).then(res => {
         // @ts-ignore
         if (res.success) {
           // @ts-ignore

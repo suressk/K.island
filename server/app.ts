@@ -3,7 +3,7 @@ import { CallBack } from './common/types'
 import cors from 'cors'
 import permission from './routes/back/permission'
 import manageRecord from './routes/back/record'
-import uploadImage from './routes/back/uploadImage'
+import manageImage from './routes/back/manageImage'
 
 const app = express()
 
@@ -54,7 +54,7 @@ app.use('/sys', permission)
 app.use('/back/record', manageRecord)
 
 // 上传图片
-app.use('/upload', uploadImage)
+app.use('/img', manageImage)
 
 app.listen(port, () => {
     console.log(`server is listening at ${host}:${port}...`)

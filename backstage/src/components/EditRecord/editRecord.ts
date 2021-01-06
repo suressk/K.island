@@ -1,8 +1,7 @@
 import { reactive, ref, toRefs, watch, onMounted, getCurrentInstance, nextTick } from 'vue'
 import { Notify } from '@/utils/util'
 import { marked, parseMarkdownFile } from '@/utils/marked'
-import { RecordInfo } from './editTypes'
-import { PropsType } from '@/types/articleDetail'
+import { PropsType, RecordInfo } from '@/types/paramsType'
 import { SetupContext } from '@vue/runtime-core'
 import { uploadCover, uploadIllustration } from '@/api/api'
 import { AxiosResponse } from 'axios'
@@ -69,12 +68,12 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
   // 文章所有信息
   const recordInfo = reactive<RecordInfo>({
     title: '',
-    tag: '',
+    tag: 'JS',
     introduce: '',
-    ctime: '',
     cover: '',
     content: ''
   })
+  const tagOptions = ref(['JS', 'NodeJs', 'Mood', 'Express', 'Interview'])
   // 预览 markdown HTML 内容
   const previewContent = ref<string>('')
   let preViewTimer: NodeJS.Timeout | null = null
@@ -111,7 +110,6 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
     recordInfo.title = articleInfo.title
     recordInfo.tag = articleInfo.tag
     recordInfo.introduce = articleInfo.introduce
-    recordInfo.ctime = articleInfo.ctime
     recordInfo.cover = articleInfo.cover
     recordInfo.content = articleInfo.content
     previewContent.value = parseMarkdownFile(recordInfo.content)
@@ -124,7 +122,6 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
     recordInfo.title = ''
     recordInfo.tag = ''
     recordInfo.introduce = ''
-    recordInfo.ctime = ''
     recordInfo.cover = ''
     recordInfo.content = ''
     previewContent.value = parseMarkdownFile(recordInfo.content)
@@ -269,6 +266,7 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
     ...toRefs(recordInfo),
     previewContent,
     ready,
+    tagOptions,
     clearRecord,
     handleInsertContent,
     handleUploadCover,

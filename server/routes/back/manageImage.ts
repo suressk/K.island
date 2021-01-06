@@ -1,7 +1,8 @@
 import express from 'express'
 import multer from 'multer'
-import { writeResult } from '../../utils/writeResponse'
+import { writeHead, writeResult } from '../../utils/writeResponse'
 import { v4 as uuid } from 'uuid'
+import { deleteImage } from '../../services/back/deleteImage'
 
 const router = express.Router()
 const imgSuffixReg = /[.][a-z]+/
@@ -31,7 +32,7 @@ const coverStorage = multer.diskStorage({
 const uploadCover = multer({ storage: coverStorage })
 
 // 封面图上传
-router.post('/cover', uploadCover.single('cover'), (req, res) => {
+router.post('/upload/cover', uploadCover.single('cover'), (req, res) => {
     const coverUrl = `http://${req.headers.host}/images/cover/${req.file.filename}`
     res.writeHead(200)
     res.write(writeResult(true, "上传成功", {
@@ -55,13 +56,29 @@ const illustrationStorage = multer.diskStorage({
 })
 const uploadIllustration = multer({ storage: illustrationStorage })
 // 文章内部插图
-router.post('/illustration', uploadIllustration.single('illustration'), (req, res) => {
+router.post('/upload/illustration', uploadIllustration.single('illustration'), (req, res) => {
     const url = `http://${req.headers.host}/images/illustration/${req.file.filename}`
-    res.writeHead(200)
+    writeHead(res, 200)
     res.write(writeResult(true, "上传成功", {
         url
     }));
     res.end()
+})
+
+// 删除图片文件
+router.delete('/', (req, res) => {
+    const { path, filename } = req.body
+    deleteImage(path, filename).then(() => {
+        // 删除成功
+        writeHead(res, 200)
+        res.write(writeResult(true, '删除成功'));
+        res.end()
+    }).catch(err => {
+        // 删除失败
+        writeHead(res, 500)
+        res.write(writeResult(true, "删除失败", err));
+        res.end()
+    })
 })
 
 export default router

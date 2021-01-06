@@ -1,38 +1,38 @@
 /* eslint-disable */
-import { getAction, postAction, postUploadImage } from '@/api/manage'
-import axios from 'axios'
+import { postAction, postUploadImage, deleteAction } from '@/api/manage'
+// import axios from 'axios'
 
-import { LoginInfo, RecordInfo } from '@/types/record'
+// types
+import { DeleteImageParams, LoginInfo, RecordInfo } from '@/types/paramsType'
 
-const getBg = (params: string | object) => getAction('/images/bg.webp', params = {})
-const getHello = (params: string | object | undefined) => getAction('/', params = {})
+// const postCompressImage = (params: FormData) => axios('https://zhitu.isux.us/index.php/preview/imgcompress', {
+//   data: params,
+//   method: 'post',
+//   headers: {
+//     'Content-Type': 'multipart/form-data'
+//   }
+// })
 
-const postCompressImage = (params: FormData) => axios('https://zhitu.isux.us/index.php/preview/imgcompress', {
-  data: params,
-  method: 'post',
-  headers: {
-    'Content-Type': 'multipart/form-data'
-  }
-})
+// 登录
+const login = (params: LoginInfo) => postAction('/sys/login', params)
+const logout = (params: LoginInfo) => postAction('/sys/logout', params)
 
-// 登录 后台
-const backLogin = (params: LoginInfo) => postAction('/sys/login', params)
-const backLogout = (params: LoginInfo) => postAction('/sys/logout', params)
-
+// 新增文章
 const addRecord = (params: RecordInfo) => postAction('/back/record/add', params)
 
 // 上传封面图
-const uploadCover = (fileData: FormData) => postUploadImage('/upload/cover', fileData)
+const uploadCover = (fileData: FormData) => postUploadImage('/img/upload/cover', fileData)
 // 上传文章插图
-const uploadIllustration = (fileData: FormData) => postUploadImage('/upload/illustration', fileData)
+const uploadIllustration = (fileData: FormData) => postUploadImage('/img/upload/illustration', fileData)
+
+// 删除图片
+const deleteImage = (data: DeleteImageParams | undefined) => deleteAction('/img', data)
 
 export {
-  getBg,
-  getHello,
-  postCompressImage,
-  backLogin,
-  backLogout,
+  login,
+  logout,
   addRecord,
   uploadCover,
-  uploadIllustration
+  uploadIllustration,
+  deleteImage
 }

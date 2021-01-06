@@ -31,7 +31,7 @@
 import { ElTag } from 'element-plus'
 import { computed } from 'vue'
 import { parseMarkdownFile } from '@/utils/marked'
-import { PropsType } from '../../types/articleDetail'
+import { PropsType } from '../../types/paramsType'
 
 export default {
   name: 'ArticleDetailDrawer',
