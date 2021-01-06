@@ -21,7 +21,10 @@ const backLogout = (params: LoginInfo) => postAction('/sys/logout', params)
 
 const addRecord = (params: RecordInfo) => postAction('/back/record/add', params)
 
+// 上传封面图
 const uploadCover = (fileData: FormData) => postUploadImage('/upload/cover', fileData)
+// 上传文章插图
+const uploadIllustration = (fileData: FormData) => postUploadImage('/upload/illustration', fileData)
 
 export {
   getBg,
@@ -30,5 +33,6 @@ export {
   backLogin,
   backLogout,
   addRecord,
-  uploadCover
+  uploadCover,
+  uploadIllustration
 }

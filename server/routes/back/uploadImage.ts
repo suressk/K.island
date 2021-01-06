@@ -18,7 +18,32 @@ const coverStorage = multer.diskStorage({
          *     mimetype: "image/webp" // 文件类型
          * }
          * */
-        cb(null, "./images/cover"); // 图片存储路径
+        cb(null, "./images/cover") // 图片存储路径
+    },
+    filename(req, file, cb) {
+        const matchRes = file.originalname.match(imgSuffixReg)
+        if (matchRes !== null) {
+            file.filename = uuid() + matchRes[0]
+            cb(null, file.filename)
+        }
+    }
+})
+const uploadCover = multer({ storage: coverStorage })
+
+// 封面图上传
+router.post('/cover', uploadCover.single('cover'), (req, res) => {
+    const coverUrl = `http://${req.headers.host}/images/cover/${req.file.filename}`
+    res.writeHead(200)
+    res.write(writeResult(true, "上传成功", {
+        cover: coverUrl
+    }));
+    res.end()
+})
+
+// TODO 存储文章内容插图 => 重复代码精简 ===> 并存放于不同文件夹下！！！
+const illustrationStorage = multer.diskStorage({
+    destination(req, file, cb) {
+        cb(null, "./images/illustration"); // 图片存储路径
     },
     filename(req, file, cb) {
         const matchRes = file.originalname.match(imgSuffixReg)
@@ -28,33 +53,15 @@ const coverStorage = multer.diskStorage({
         }
     }
 })
-const uploadCover = multer({ storage: coverStorage })
-
-// 封面图上传
-router.post('/cover', uploadCover.single('cover'), (req, res) => {
-    const coverUrl = `http://${req.headers.host}/images/cover/${req.file.filename}`
-    res.writeHead(200);
-    res.write(writeResult(true, "上传成功", {
-        cover: coverUrl
-    }));
-    res.end();
-})
-
-// TODO 存储文章内容插图 => 重复代码精简 ===> 并存放于不同文件夹下！！！
-// const illustrationStorage = multer.diskStorage({
-//     destination(req, file, cb) {
-//         cb(null, "./images/cover"); // 图片存储路径
-//     },
-//     filename(req, file, cb) {
-//         const matchRes = file.originalname.match(imgSuffixReg)
-//         if (matchRes !== null) {
-//             file.filename = uuid() + matchRes[0]
-//             cb(null, file.filename);
-//         }
-//     }
-// })
-// const uploadIllustration = multer({ storage: illustrationStorage })
+const uploadIllustration = multer({ storage: illustrationStorage })
 // 文章内部插图
-// router.post('/illustration')
+router.post('/illustration', uploadIllustration.single('illustration'), (req, res) => {
+    const url = `http://${req.headers.host}/images/illustration/${req.file.filename}`
+    res.writeHead(200)
+    res.write(writeResult(true, "上传成功", {
+        url
+    }));
+    res.end()
+})
 
 export default router

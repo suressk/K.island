@@ -1,7 +1,7 @@
 import express from 'express'
 import { addRecord } from '../../services/recordService'
 import { verifyToken } from '../../utils/jwt'
-import {writeHead, writeResult} from '../../utils/writeResponse'
+import { writeHead, writeResult } from '../../utils/writeResponse'
 
 const router = express.Router()
 
@@ -22,7 +22,12 @@ router.post('/add', (req, res) => {
             res.end()
         })
     }
-
 })
+
+// 修改文章详情
+// router.put('/')
+
+// 删除文章
+// router.delete('/')
 
 export default router

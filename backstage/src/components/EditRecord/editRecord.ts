@@ -4,7 +4,7 @@ import { marked, parseMarkdownFile } from '@/utils/marked'
 import { RecordInfo } from './editTypes'
 import { PropsType } from '@/types/articleDetail'
 import { SetupContext } from '@vue/runtime-core'
-import { uploadCover } from '@/api/api'
+import { uploadCover, uploadIllustration } from '@/api/api'
 import { AxiosResponse } from 'axios'
 
 interface ResponseInfo {
@@ -209,13 +209,13 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
    const fr = createFileReader()
    fr.readAsDataURL(file)
    fr.onload = e => {
-          resolve(e.target.result)
-        }
+     resolve(e.target.result)
+   }
    */
   /**
    * 文章内部插入图片
    * */
-  function handleInsertContentImage (e: any) {
+  function handleInsertContentImage (e: any): undefined {
     const files = e.target.files
     const el = vm.refs.contentRef
     if (files.length) {
@@ -225,13 +225,29 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
         return
       }
       // el.focus()
-      // 上传图片
-      const startPoint = el.selectionStart || recordInfo.content.length
-      const endPoint = el.selectionEnd || recordInfo.content.length
-      const imgStr = `\n![${file.name}](https://tse2-mm.cn.bing.net/th/id/OIP.2qQECtS2brOCBsrxHhmJ_wHaE8?pid=Api&rs=1)\n`
-      recordInfo.content = recordInfo.content.substring(0, startPoint) +
-        imgStr +
-        recordInfo.content.substring(endPoint)
+      // 上传插图
+      new Promise(resolve => {
+        // 创建上传图片的数据对象
+        const formData = new FormData()
+        formData.append('illustration', file)
+        formData.append('filename', file.name)
+        uploadIllustration(formData).then(res => {
+          // @ts-ignore
+          if (res.success) {
+            resolve(res.data.url)
+          } else {
+            // @ts-ignore
+            Notify('warning', 'WARNING', res.message)
+          }
+        })
+      }).then(url => {
+        const startPoint = el.selectionStart || recordInfo.content.length
+        const endPoint = el.selectionEnd || recordInfo.content.length
+        const imgStr = `\n![${file.name}](${url})\n`
+        recordInfo.content = recordInfo.content.substring(0, startPoint) +
+          imgStr +
+          recordInfo.content.substring(endPoint)
+      })
     }
     // 清空 input 控件内容；解决再次选择同一文件无法触发 input 的 change 事件的问题
     nextTick((): void => {
