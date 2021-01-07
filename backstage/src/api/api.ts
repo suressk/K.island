@@ -21,12 +21,12 @@ const logout = (params: LoginInfo) => postAction('/sys/logout', params)
 const addRecord = (params: RecordInfo) => postAction('/back/record/add', params)
 
 // 上传封面图
-const uploadCover = (fileData: FormData) => postUploadImage('/img/upload/cover', fileData)
+const uploadCover = (fileData: FormData) => postUploadImage('/image/upload/cover', fileData)
 // 上传文章插图
-const uploadIllustration = (fileData: FormData) => postUploadImage('/img/upload/illustration', fileData)
+const uploadIllustration = (fileData: FormData) => postUploadImage('/image/upload/illustration', fileData)
 
 // 删除图片
-const deleteImage = (data: DeleteImageParams | undefined) => deleteAction('/img', data)
+const deleteImage = (data: DeleteImageParams | undefined) => deleteAction('/image', data)
 
 export {
   login,
