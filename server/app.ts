@@ -4,6 +4,8 @@ import { createCorsOptionsDelegate } from './utils/util'
 import permission from './routes/back/permission'
 import manageRecord from './routes/back/records'
 import manageImage from './routes/back/manageImage'
+import viewRecords from './routes/web/records'
+import addComments from './routes/web/comments'
 
 const app = express()
 
@@ -45,8 +47,10 @@ app.use('/image', manageImage)
 /**
  * 前端展示
  * */
-app.use('/records', )
-app.use('/comments', )
+// 文章信息
+app.use('/records', viewRecords)
+// 用户评论
+app.use('/comments', addComments)
 
 app.listen(port, () => {
     console.log(`server is listening at ${host}:${port}...`)
