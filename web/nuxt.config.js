@@ -16,6 +16,9 @@ export default {
   css: [
   ],
 
+  // Loading 加载动画
+  loading: '~/components/Loading.vue',
+
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
   ],
