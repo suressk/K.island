@@ -3,6 +3,7 @@ import multer from 'multer'
 import { writeHead, writeResult } from '../../utils/writeResponse'
 import { v4 as uuid } from 'uuid'
 import { deleteImage } from '../../services/back/deleteImage'
+import { verifyToken } from '../../utils/jwt'
 
 const router = express.Router()
 const imgSuffixReg = /[.][a-z]+/
@@ -67,18 +68,32 @@ router.post('/upload/illustration', uploadIllustration.single('illustration'), (
 
 // 删除图片文件
 router.delete('/', (req, res) => {
-    const { path, filename } = req.body
-    deleteImage(path, filename).then(() => {
-        // 删除成功
+    const verified = verifyToken(req)
+    if (verified === null) {
         writeHead(res, 200)
-        res.write(writeResult(true, '删除成功'));
+        res.write(writeResult(false, '看看是不是 Token 失效啦？'))
         res.end()
-    }).catch(err => {
-        // 删除失败
-        writeHead(res, 500)
-        res.write(writeResult(true, "删除失败", err));
-        res.end()
-    })
+    } else {
+        const { relativePath } = req.body
+        deleteImage(relativePath).then(() => {
+            // 删除成功
+            writeHead(res, 200)
+            res.write(writeResult(true, '删除成功'));
+            res.end()
+        }).catch(err => {
+            // 文件不存在
+            if (typeof err === 'string' && err === 'not exist') {
+                writeHead(res, 200)
+                res.write(writeResult(false, "删除失败，文件不存在"));
+                res.end()
+            } else {
+                // 删除失败
+                writeHead(res, 500)
+                res.write(writeResult(false, "删除失败", err));
+                res.end()
+            }
+        })
+    }
 })
 
 export default router

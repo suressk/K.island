@@ -9,7 +9,7 @@ router.post('/add', (req, res) => {
     const verified = verifyToken(req)
     if (verified === null) {
         writeHead(res, 200)
-        res.write(writeResult(false, 'Token 失效或无 Token'))
+        res.write(writeResult(false, '看看是不是 Token 失效啦？'))
         res.end()
     } else {
         addRecord(req.body, result => {

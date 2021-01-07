@@ -3,7 +3,7 @@ import { Notify } from '@/utils/util'
 import { marked, parseMarkdownFile } from '@/utils/marked'
 import { PropsType, RecordInfo } from '@/types/paramsType'
 import { SetupContext } from '@vue/runtime-core'
-import { uploadCover, uploadIllustration } from '@/api/api'
+import { uploadCover, uploadIllustration, deleteImage } from '@/api/api'
 import { AxiosResponse } from 'axios'
 
 interface ResponseInfo {
@@ -138,7 +138,23 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
    * 删除封面图
    * */
   function handleDeleteCoverImg () {
-    recordInfo.cover = ''
+    const index = recordInfo.cover.indexOf('/images')
+    const relativePath = recordInfo.cover.substring(index)
+    deleteImage({
+      relativePath
+    }).then(res => {
+      // @ts-ignore
+      if (res.success) {
+        // @ts-ignore
+        Notify('success', 'SUCCESS', res.message)
+        recordInfo.cover = ''
+      } else {
+        // @ts-ignore
+        Notify('warning', 'WARNING', res.message)
+      }
+    }).catch(() => {
+      Notify('error', 'ERROR', '文件删除失败！')
+    })
   }
 
   /**

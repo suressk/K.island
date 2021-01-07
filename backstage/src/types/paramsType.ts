@@ -24,6 +24,5 @@ export interface LoginInfo {
 }
 
 export interface DeleteImageParams {
-  filename?: string;
-  path?: string;
+  relativePath?: string;
 }
