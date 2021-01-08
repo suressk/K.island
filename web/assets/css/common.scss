@@ -1,0 +1,122 @@
+@import "./colors.scss";
+
+/* flex 布局 */
+.d-flex,
+.flex-between,
+.flex-around,
+.flex-center,
+.flex-end,
+.flex-col,
+.flex-col-between {
+  display: flex;
+  align-items: center;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+.flex-around {
+  justify-content: space-around;
+}
+.flex-center {
+  justify-content: center;
+}
+
+.flex-end {
+  justify-content: flex-end;
+}
+
+.flex-col {
+  flex-direction: column;
+  justify-content: center;
+}
+.flex-col-between {
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+/**
+ 文字溢出隐藏
+ */
+.txt-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trans-all-05 {
+  transition: all 0.5s;
+}
+
+/**
+  scroll
+*/
+.scroller-light::-webkit-scrollbar,
+.scroller::-webkit-scrollbar,
+.scroller-light::-webkit-scrollbar-corner,
+.scroller::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+.scroller-light::-webkit-scrollbar:vertical,
+.scroller::-webkit-scrollbar:vertical {
+  cursor: default;
+  width: 6px;
+}
+.scroller-light::-webkit-scrollbar:horizontal,
+.scroller::-webkit-scrollbar:horizontal {
+  cursor: default;
+  height: 6px;
+}
+.scroller-light::-webkit-scrollbar-button,
+.scroller-light::-webkit-scrollbar-corner,
+.scroller::-webkit-scrollbar-button,
+.scroller::-webkit-scrollbar-corner {
+  display: none;
+}
+
+.scroller-light::-webkit-scrollbar-thumb,
+.scroller::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  cursor: pointer;
+}
+.scroller-light::-webkit-scrollbar-thumb {
+  background-color: #a2a2a2;
+}
+.scroller::-webkit-scrollbar-thumb {
+  background-color: #545454;
+}
+
+.scroller-light::-webkit-scrollbar-thumb:hover {
+  background-color: #9a9a9a;
+}
+.scroller::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}
+
+/**
+  <transition name="trans"></transition>
+  偏移淡入
+*/
+.trans-enter-active {
+  transition: all 0.5s ease;
+}
+.trans-enter-from {
+  opacity: 0;
+  transform: translateX(200px);
+}
+
+// 自定义偏移淡入 - 留在最终位置
+.translate-fade-in {
+  animation: translateFadeIn 0.5s ease forwards;
+}
+
+@keyframes translateFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

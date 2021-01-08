@@ -83,9 +83,9 @@ export function setCookie (name: string, value: string, expireTime: number) {
 }
 
 export function getCookie(name: string): string | null {
-  const arr: null | string[] = document.cookie.match(new RegExp('(^| )' + name + '=([^;]*)(;|$)'))
-  if (arr !== null) {
-    return arr[2]
+  const matchRes: null | string[] = document.cookie.match(new RegExp('(^| )' + name + '=([^;]*)(;|$)'))
+  if (matchRes !== null) {
+    return matchRes[2]
   } else {
     return null
   }

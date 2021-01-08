@@ -2,13 +2,17 @@
   <section class="login-container flex-center">
     <form class="login-form flex-col">
       <div class="form-item">
-        <label class="ipt">
-          <input type="text" placeholder="Username" v-model="username" />
+        <label class="ipt-item">
+          <input type="text" required v-model="username" />
+          <span class="tip-label trans-all-05">Username</span>
+          <span class="border-line trans-all-05"></span>
         </label>
       </div>
       <div class="form-item">
-        <label class="ipt">
-          <input type="password" :autocomplete="false"  placeholder="Password" v-model="password" />
+        <label class="ipt-item">
+          <input type="password" :autocomplete="false" required v-model="password" />
+          <span class="tip-label trans-all-05">Password</span>
+          <span class="border-line trans-all-05"></span>
         </label>
       </div>
       <div class="form-item">
@@ -56,7 +60,7 @@ export default {
           // 1s 后跳转至后台管理首页
           setTimeout(() => {
             ctx.$router.push('/')
-          }, 1000)
+          }, 500)
         } else {
           // @ts-ignore
           Notify('warning', 'WARNING', res.message)

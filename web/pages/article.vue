@@ -1,7 +1,7 @@
 <template>
-  <div class="article">
+  <section class="article">
     文章
-  </div>
+  </section>
 </template>
 
 <script>
@@ -10,6 +10,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>

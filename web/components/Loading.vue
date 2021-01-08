@@ -27,7 +27,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .loading{
   position: fixed;
   z-index: 9999;
@@ -40,20 +40,33 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  span{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    background: lightgreen;
+    transform-origin: right bottom;
+    animation: load 1s ease infinite;
+    &:first-child {
+      animation-delay:0.13s;
+    }
+    &:nth-child(2) {
+      animation-delay:0.26s;
+    }
+    &:nth-child(3) {
+      animation-delay:0.39s;
+    }
+    &:nth-child(4) {
+      animation-delay:0.52s;
+    }
+    &:last-child {
+      animation-delay:0.65s;
+      margin-right: 0;
+    }
+  }
 }
-.loading span{
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  background: lightgreen;
-  transform-origin: right bottom;
-  animation: load 1s ease infinite;
-}
-.loading span:last-child{
-  margin-right: 0;
-}
-@keyframes load{
+@keyframes load {
   0%{
     opacity: 1;
     transform: scale(1);
@@ -62,20 +75,5 @@ export default {
     opacity: 0;
     transform: rotate(90deg) scale(.3);
   }
-}
-.loading span:nth-child(1){
-  animation-delay:0.13s;
-}
-.loading span:nth-child(2){
-  animation-delay:0.26s;
-}
-.loading span:nth-child(3){
-  animation-delay:0.39s;
-}
-.loading span:nth-child(4){
-  animation-delay:0.52s;
-}
-.loading span:nth-child(5){
-  animation-delay:0.65s;
 }
 </style>
