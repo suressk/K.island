@@ -1,7 +1,7 @@
 import { Notify } from '@/utils/util'
 import { addRecord } from '@/api/api'
 
-import { RecordInfo } from '@/types/paramsType'
+import { RecordInfo } from '@/@types'
 
 export function handleAddRecord (info: RecordInfo) {
   addRecord(info).then(res => {

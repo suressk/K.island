@@ -46,14 +46,10 @@
           outline: none;
           padding-right: 15px;
           width: 100%;
-          transition: border-bottom-color .3s cubic-bezier(.645,.045,.355,1);
-          //&:focus {
-          //  border-bottom-color: #00ccff;
-          //}
         }
         .tip-label {
           position: absolute;
-          left: 0;
+          left: 2px;
           top: 3px;
           color: #9a9a9a;
           pointer-events: none;
@@ -64,14 +60,15 @@
           left: 0;
           width: 0;
           height: 4px;
-          background-color: #14ffec;
+          background-color: #00bc12;
           border-radius: 2px;
+          transition: width .5s cubic-bezier(.645,.045,.355,1);
         }
         input:focus + .tip-label,
         input:valid + .tip-label {
           top: -15px;
           font-size: 12px;
-          color: #14ffec;
+          color: #00bc12;
         }
         input:focus ~ .border-line,
         input:valid ~ .border-line {
@@ -86,11 +83,12 @@
         height: 40px;
         line-height: 40px;
         border-radius: 5px;
-        //color: #fff;
-        color: transparent;
-        -webkit-background-clip: text;
-        font-size: 50px;
-        font-weight: 700;
+        color: #fff;
+        //color: transparent;
+        //-webkit-background-clip: text;
+        //font-size: 50px;
+        font-size: 20px;
+        font-weight: 500;
         position: relative;
         background-image: linear-gradient(90deg,
                 #03a9f4,
@@ -115,13 +113,21 @@
                   #03a9f4
           );
         }
-        &:hover {
-          animation: bgAnimate 8s infinite linear;
+        &::after {
+          content: "LOGIN";
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
         }
-        //&:hover::before {
-        //  filter: blur(10px);
-        //  opacity: 0.8;
-        //}
+        &:hover {
+          animation: LoginBtnBgScroll 8s infinite linear;
+        }
+        &:hover::before {
+          filter: blur(10px);
+          opacity: 0.8;
+        }
       }
     }
   }
@@ -138,7 +144,7 @@
   }
 }
 
-@keyframes bgAnimate {
+@keyframes LoginBtnBgScroll {
   0% {
     background-position: 0;
   }

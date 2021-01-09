@@ -2,8 +2,8 @@
 import { postAction, postUploadImage, deleteAction } from '@/api/manage'
 // import axios from 'axios'
 
-// types
-import { DeleteImageParams, LoginInfo, RecordInfo } from '@/types/paramsType'
+// @types
+import { DeleteImageParams, LoginInfo, RecordInfo } from '@/@types'
 
 // const postCompressImage = (params: FormData) => axios('https://zhitu.isux.us/index.php/preview/imgcompress', {
 //   data: params,

@@ -1,7 +1,7 @@
 import { reactive, ref, toRefs, watch, onMounted, getCurrentInstance, nextTick } from 'vue'
 import { Notify } from '@/utils/util'
 import { marked, parseMarkdownFile } from '@/utils/marked'
-import { PropsType, RecordInfo } from '@/types/paramsType'
+import { PropsType, RecordInfo } from '@/@types'
 import { SetupContext } from '@vue/runtime-core'
 import { uploadCover, uploadIllustration, deleteImage } from '@/api/api'
 import { AxiosResponse } from 'axios'

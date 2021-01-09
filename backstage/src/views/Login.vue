@@ -5,14 +5,14 @@
         <label class="ipt-item">
           <input type="text" required v-model="username" />
           <span class="tip-label trans-all-05">Username</span>
-          <span class="border-line trans-all-05"></span>
+          <span class="border-line"></span>
         </label>
       </div>
       <div class="form-item">
         <label class="ipt-item">
           <input type="password" :autocomplete="false" required v-model="password" />
           <span class="tip-label trans-all-05">Password</span>
-          <span class="border-line trans-all-05"></span>
+          <span class="border-line"></span>
         </label>
       </div>
       <div class="form-item">
@@ -25,23 +25,20 @@
 
 <script lang="ts">
 import { reactive, toRefs, getCurrentInstance } from 'vue'
+import { ComponentInternalInstance } from '@vue/runtime-core'
 import md5 from 'md5'
 import { login } from '@/api/api'
 import { Notify, setStorageToken, setCookie } from '@/utils/util'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-
-interface LoginInfo {
-  username: string;
-  password: string;
-}
+import { LoginInfo } from '@/@types'
+// import { AxiosResponse } from 'axios', ResponseData
 
 export default {
   name: 'Login',
-  components: {},
   setup () {
     /* eslint-disable */
     // @ts-ignore
-    const { ctx } = getCurrentInstance()
+    const { ctx }: ComponentInternalInstance = getCurrentInstance!()
     const loginInfo: LoginInfo = reactive({
       username: '',
       password: ''

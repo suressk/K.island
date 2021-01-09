@@ -3,7 +3,13 @@ export interface PropsType {
   modelValue: boolean;
 }
 
-export interface ResponseRes {
+export interface ErrorResponse {
+  code: string;
+  message: string;
+  response: Response;
+}
+
+export interface ResponseData {
   success: boolean;
   data: object;
   message: string;
@@ -24,5 +30,5 @@ export interface LoginInfo {
 }
 
 export interface DeleteImageParams {
-  relativePath?: string;
+  relativePath: string;
 }
