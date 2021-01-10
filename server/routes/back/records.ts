@@ -1,25 +1,22 @@
 import express from 'express'
-import { addRecord, deleteRecord, queryRecordList, updateRecord } from '../../services/recordService'
+import {addRecord, deleteRecord, updateRecord} from '../../services/recordService'
 import { writeHead, writeResult } from '../../utils/writeResponse'
-import {verifyTokenResponse} from "../../utils/util";
+import { verifyTokenResponse } from '../../utils/util'
+import {recordDetailResponse, recordListResponse} from '../common'
 
 const router = express.Router()
 
 // 查询文章列表
 router.get('/list', (req, res) => {
     verifyTokenResponse(req, res, () => {
-        queryRecordList({
-            ...req.body,
-            range: 'all'
-        }, result => {
-            writeHead(res, 200)
-            res.write(writeResult(true, '查询成功！', result))
-            res.end()
-        }, err => {
-            writeHead(res, 500)
-            res.write(writeResult(false, '文章列表查询失败咯~', err))
-            res.end()
-        })
+        recordListResponse(req, res, 'all')
+    })
+})
+
+// 查询文章详情
+router.get('/detail', (req, res) => {
+    verifyTokenResponse(req, res, () => {
+        recordDetailResponse(req, res)
     })
 })
 
@@ -32,7 +29,7 @@ router.post('/add', (req, res) => {
             res.end()
         }, err => {
             writeHead(res, 500)
-            res.write(writeResult(false, '哇哦~ 文章上传失败啦！去看看哪里出问题了吧', err))
+            res.write(writeResult(false, '文章上传失败！去看看哪里出问题了吧', err))
             res.end()
         })
     })

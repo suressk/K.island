@@ -1,15 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { ElNotification } from 'element-plus'
 import { getStorageToken } from '@/utils/util'
 import { ResponseData, ErrorResponse } from '@/@types'
 
-declare module 'axios' {
-  interface AxiosResponse {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
-    data: ResponseData;
-  }
-}
 /* eslint-disable */
 // @ts-ignore
 const BASE_URL = window.__CONFIG.domainURL
@@ -20,7 +13,7 @@ const service: AxiosInstance = axios.create({
 })
 
 const handleError = (err: ErrorResponse) => {
-  if (err.code === "ECONNABORTED" && err.message.includes("timeout")) {
+  if (err.code === 'ECONNABORTED' && err.message.includes('timeout')) {
     ElNotification({
       type: 'error',
       title: 'Timeout',
@@ -71,17 +64,17 @@ const handleError = (err: ErrorResponse) => {
  */
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    if (config.method === "get") {
+    if (config.method === 'get') {
       config.params = {
         _t: Math.floor(Date.now() / 1000),
         ...config.params
-      };
+      }
     }
     const token: string | null = getStorageToken()
     if (token) {
       config.headers.authorization = token
     }
-    return config;
+    return config
   },
   err => Promise.reject(err)
 )
@@ -90,13 +83,13 @@ service.interceptors.request.use(
  * response interceptor
  */
 // @ts-ignore
-service.interceptors.response.use((resp :AxiosResponse) => {
+service.interceptors.response.use((resp): Promise<ResponseData> => {
   // const data = resp.data.data;
   // if (data.token) {
   //   // LocalStorage 存储 token
   //   setStorageToken(data.token)
   // }
-  return resp.data;
-}, handleError);
+  return resp.data
+}, handleError)
 
 export { service as axios }

@@ -12,7 +12,7 @@ function fileExist (filePath: string) {
             if (err) {
                 reject()
             } else {
-                resolve()
+                resolve('')
             }
         })
     })
@@ -27,7 +27,7 @@ export function deleteImage (relativePath: string) {
         fileExist(fullPath).then(() => {
             fs.unlink(fullPath, err => {
                 if (!err) {
-                    resolve()
+                    resolve('')
                 } else {
                     reject(err)
                 }

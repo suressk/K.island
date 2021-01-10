@@ -15,10 +15,10 @@ const uploadIllustration = multer({ storage: createMulterStorage('illustration')
 
 // 封面图上传
 router.post('/upload/cover', uploadCover.single('cover'), (req, res) => {
-    const coverUrl = `http://${req.headers.host}/images/cover/${req.file.filename}`
+    const cover = `http://${req.headers.host}/images/cover/${req.file.filename}`
     res.writeHead(200)
     res.write(writeResult(true, "上传成功", {
-        cover: coverUrl
+        cover
     }));
     res.end()
 })

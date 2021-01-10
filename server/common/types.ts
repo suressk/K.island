@@ -30,7 +30,14 @@ export interface AddRecordOptions {
     cover: string;
 }
 
-export interface UpdateRecordOptions extends AddRecordOptions {
+export interface UpdateRecordOptions {
     id: number;
     uid: string;
+    title?: string;
+    tag?: string;
+    introduce?: string;
+    content?: string;
+    cover?: string;
+    is_delete?: number;
+    views?: number;
 }

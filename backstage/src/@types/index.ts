@@ -1,3 +1,4 @@
+
 export interface PropsType {
   articleInfo: RecordInfo;
   modelValue: boolean;
@@ -9,9 +10,19 @@ export interface ErrorResponse {
   response: Response;
 }
 
+/*
+* 响应数据体
+* */
 export interface ResponseData {
   success: boolean;
   data: object;
+  message: string;
+}
+
+// res.data
+export interface LoginResponse extends Promise<ResponseData> {
+  success: boolean;
+  data: TokenInfo;
   message: string;
 }
 
@@ -29,6 +40,20 @@ export interface LoginInfo {
   password: string;
 }
 
+export interface TokenInfo {
+  token: string; // token 信息
+  expireTime: number; // 过期时间（s）
+}
+
 export interface DeleteImageParams {
   relativePath: string;
+}
+
+/* store =================================== */
+export interface StoreTypes {
+  state: object;
+}
+
+export interface RootState {
+  state: object;
 }

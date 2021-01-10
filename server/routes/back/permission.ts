@@ -3,7 +3,7 @@ import { login } from '../../services/back/permissionService'
 import { writeHead, writeResult } from '../../utils/writeResponse'
 import { publishToken, verifyToken } from '../../utils/jwt'
 const cookieKey = 'token'
-const expireTime = 3600 // 过期时间 - 1h
+const expireTime = 3600 // 过期时间(s) - 1h
 const router = express.Router()
 
 // 后台管理系统登录
@@ -13,7 +13,6 @@ router.post('/login', (req, res) => {
         // 未查询到 username 的用户
         if (result.length === 0) {
             writeHead(res, 200)
-            // res.writeHead(200, { 'Content-Type':'text/html;charset=utf-8' })
             res.write(writeResult(false, `未匹配到用户：${username} ，检查一下是不是用户名拼写错误？`))
             res.end()
         } else if (password === result[0].password) {
@@ -47,7 +46,6 @@ router.post('/login', (req, res) => {
 // 后台管理退出登录
 router.post('/logout', (req, res) => {
     const verifyRes = verifyToken(req)
-    console.log(verifyRes)
     /**
      * verifyRes = {
      *     username: string,

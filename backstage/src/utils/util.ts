@@ -1,5 +1,6 @@
 import { ElNotification } from 'element-plus'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { TokenInfo } from '@/@types'
 
 /**
  * Notification 消息通知
@@ -12,11 +13,6 @@ export function Notify (type = 'success', title: string, message: string, durati
   /* eslint-disable */
   // @ts-ignore
   ElNotification({ type, title, message, duration })
-}
-
-interface TokenInfo {
-  token: string; // token 本身
-  expireTime: number; // 过期时间（s）
 }
 
 /**
@@ -82,7 +78,7 @@ export function setCookie (name: string, value: string, expireTime: number) {
   document.cookie = name + '=' + escape(value) + ';path=/' + ';expires=' + expire.toUTCString()
 }
 
-export function getCookie(name: string): string | null {
+export function getCookie (name: string): string | null {
   const matchRes: null | string[] = document.cookie.match(new RegExp('(^| )' + name + '=([^;]*)(;|$)'))
   if (matchRes !== null) {
     return matchRes[2]

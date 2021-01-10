@@ -5,14 +5,20 @@
         <label class="ipt-item">
           <input type="text" required v-model="username" />
           <span class="tip-label trans-all-05">Username</span>
-          <span class="border-line"></span>
+          <span class="border-line" />
         </label>
       </div>
       <div class="form-item">
         <label class="ipt-item">
-          <input type="password" :autocomplete="false" required v-model="password" />
+          <input
+            type="password"
+            :autocomplete="false"
+            required
+            v-model="password"
+            @keyup.enter="handleLogin"
+          />
           <span class="tip-label trans-all-05">Password</span>
-          <span class="border-line"></span>
+          <span class="border-line" />
         </label>
       </div>
       <div class="form-item">
@@ -24,21 +30,18 @@
 </template>
 
 <script lang="ts">
-import { reactive, toRefs, getCurrentInstance } from 'vue'
-import { ComponentInternalInstance } from '@vue/runtime-core'
+import { reactive, toRefs } from 'vue'
 import md5 from 'md5'
 import { login } from '@/api/api'
 import { Notify, setStorageToken, setCookie } from '@/utils/util'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-import { LoginInfo } from '@/@types'
-// import { AxiosResponse } from 'axios', ResponseData
+import { LoginInfo, LoginResponse } from '@/@types'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Login',
   setup () {
-    /* eslint-disable */
-    // @ts-ignore
-    const { ctx }: ComponentInternalInstance = getCurrentInstance!()
+    const useRouterInstance = useRouter()
     const loginInfo: LoginInfo = reactive({
       username: '',
       password: ''
@@ -47,19 +50,19 @@ export default {
       login({
         username: loginInfo.username,
         password: md5(loginInfo.password)
-      }).then(res => {
+        /* eslint-disable */
         // @ts-ignore
+      }).then((res: LoginResponse) => {
         if (res.success) {
-          // @ts-ignore
           Notify('success', 'SUCCESS', res.message)
           setStorageToken(res.data)
           setCookie(ACCESS_TOKEN, res.data.token, res.data.expireTime)
           // 1s 后跳转至后台管理首页
           setTimeout(() => {
-            ctx.$router.push('/')
+            // ctx.$router.push('/')
+            useRouterInstance.push('/')
           }, 500)
         } else {
-          // @ts-ignore
           Notify('warning', 'WARNING', res.message)
         }
       }).catch(err => {

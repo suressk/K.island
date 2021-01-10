@@ -1,6 +1,4 @@
-/* eslint-disable */
-import { postAction, postUploadImage, deleteAction } from '@/api/manage'
-// import axios from 'axios'
+import { postAction, postUploadImage, deleteAction, getAction } from '@/api/manage'
 
 // @types
 import { DeleteImageParams, LoginInfo, RecordInfo } from '@/@types'
@@ -14,25 +12,27 @@ import { DeleteImageParams, LoginInfo, RecordInfo } from '@/@types'
 // })
 
 // 登录
-const login = (params: LoginInfo) => postAction('/sys/login', params)
-const logout = (params: LoginInfo) => postAction('/sys/logout', params)
+export const login = (params: LoginInfo) => postAction('/sys/login', params)
+// const logout = (params: LoginInfo) => postAction('/sys/logout', params)
 
-// 新增文章
-const addRecord = (params: RecordInfo) => postAction('/back/record/add', params)
+// 文章管理
+export const addRecord = (params: RecordInfo) => postAction('/back/record/add', params)
+export const getRecordList = (params: RecordInfo) => getAction('/back/record/list', params)
+export const getRecordDetail = (params: RecordInfo) => getAction('/back/record/list', params)
 
 // 上传封面图
-const uploadCover = (fileData: FormData) => postUploadImage('/image/upload/cover', fileData)
+export const uploadCover = (fileData: FormData) => postUploadImage('/image/upload/cover', fileData)
 // 上传文章插图
-const uploadIllustration = (fileData: FormData) => postUploadImage('/image/upload/illustration', fileData)
+export const uploadIllustration = (fileData: FormData) => postUploadImage('/image/upload/illustration', fileData)
 
 // 删除图片
-const deleteImage = (data: DeleteImageParams | undefined) => deleteAction('/image', data)
+export const deleteImage = (data: DeleteImageParams | undefined) => deleteAction('/image', data)
 
-export {
-  login,
-  logout,
-  addRecord,
-  uploadCover,
-  uploadIllustration,
-  deleteImage
-}
+// export {
+//   login,
+//   logout,
+//   addRecord,
+//   uploadCover,
+//   uploadIllustration,
+//   deleteImage
+// }

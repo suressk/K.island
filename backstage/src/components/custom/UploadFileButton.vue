@@ -5,9 +5,11 @@
   </el-button>
 </template>
 
-<script>
-import { getCurrentInstance, nextTick } from 'vue'
+<script lang="ts">
+import { nextTick } from 'vue'
 import { ElButton } from 'element-plus'
+import { SetupContext } from '@vue/runtime-core'
+import { PropsType } from '@/@types'
 
 export default {
   name: 'UploadFile',
@@ -21,10 +23,9 @@ export default {
     }
   },
   components: { ElButton },
-  setup () {
-    const { ctx } = getCurrentInstance()
-    function handleFileChange (e) {
-      ctx.$emit('change', e.target.files)
+  setup (props: PropsType, ctx: SetupContext) {
+    function handleFileChange (e: any) {
+      ctx.emit('change', e.target.files)
       nextTick(() => {
         e.target.value = ''
       })

@@ -7,6 +7,7 @@ import {
     AddRecordOptions,
     UpdateRecordOptions
 } from '../common/types'
+import {getUpdateRecordParams} from "../utils/util";
 
 /**
  * 分页查询文章列表
@@ -17,10 +18,10 @@ export function queryRecordList (options: QueryListOptions, success: (result: an
     let sqlStr: string
     // 后台管理查询所有文章列表
     if (options.range && options.range === 'all') {
-        sqlStr = 'SELECT id, uid, title, introduce, tag, cover, ctime, utime, is_delete FROM `records` ORDER BY ctime DESC LIMIT ?, ?'
+        sqlStr = 'SELECT id, uid, title, introduce, tag, views, cover, ctime, utime, is_delete FROM `records` ORDER BY ctime DESC LIMIT ?, ?'
     } else {
         // 前端展示未删除文章
-        sqlStr = 'SELECT id, uid, title, introduce, tag, cover, ctime, utime FROM `records` WHERE is_delete = 0 ORDER BY ctime DESC LIMIT ?, ?'
+        sqlStr = 'SELECT id, uid, title, introduce, tag, views, cover, ctime, utime FROM `records` WHERE is_delete = 0 ORDER BY ctime DESC LIMIT ?, ?'
     }
     connectQuery(sqlStr, params, success, error)
 }
@@ -30,7 +31,7 @@ export function queryRecordList (options: QueryListOptions, success: (result: an
  * */
 export function queryRecordDetail (options: RecordIdOptions, success: (result: any) => void, error: (err: Query.QueryError) => void) {
     const { id, uid } = options
-    const sqlStr = 'SELECT id, uid, title, introduce, content, tag, cover, ctime, utime FROM `records` WHERE id = ? and uid = ?'
+    const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, cover, ctime, utime FROM `records` WHERE id = ? and uid = ?'
     const params = [id, uid]
     connectQuery(sqlStr, params, success, error)
 }
@@ -51,10 +52,11 @@ export function addRecord (options: AddRecordOptions, success: (result: any) => 
  * 修改（更新）文章信息
  * */
 export function updateRecord (options: UpdateRecordOptions, success: (result: any) => void, error: (err: Query.QueryError) => void) {
-    const { id, uid, title, tag, introduce, content, cover } = options
-    const sqlStr = 'UPDATE records SET title = ?, content = ?, introduce = ?, tag = ?, cover = ?, utime = ? WHERE id = ? and uid = ?'
-    const utime = new Date().getTime()
-    const params = [title, content, introduce, tag, cover, utime, id, uid]
+    // 三种情况:
+    // 1. 修改 is_delete —— 文章显示与否；
+    // 2. 修改 views —— 文章访问量；
+    // 3. 修改文章详情内容（title, tag, introduce, content, cover）
+    const { sqlStr, params } = getUpdateRecordParams(options)
     connectQuery(sqlStr, params, success, error)
 }
 

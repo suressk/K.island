@@ -1,9 +1,9 @@
 import multer from 'multer'
 import { v4 as uuid } from 'uuid'
-import { Request, Response } from "express";
-import { CallBack } from "../common/types";
-import { verifyToken } from "./jwt";
-import { writeHead, writeResult } from "./writeResponse";
+import { Request, Response } from 'express'
+import { CallBack, UpdateRecordOptions } from '../common/types'
+import { verifyToken } from './jwt'
+import { writeHead, writeResult } from './writeResponse'
 
 const imgSuffixReg = /[.][a-z]+/
 
@@ -52,5 +52,27 @@ export function verifyTokenResponse (req: Request, res: Response, callback: () =
         res.end()
     } else {
         callback()
+    }
+}
+
+export function getUpdateRecordParams (options: UpdateRecordOptions) {
+    const { id, uid } = options
+    let sqlStr!: string
+    const params: any[] = []
+    const utime = new Date().getTime()
+    if (options.is_delete) {
+        sqlStr = 'UPDATE records SET is_delete = ?, utime = ? WHERE id = ? and uid = ?'
+        params.push(options.is_delete)
+    } else if (options.views) {
+        sqlStr = 'UPDATE records SET views = ?, utime = ? WHERE id = ? and uid = ?'
+        params.push(options.views)
+    } else {
+        sqlStr = 'UPDATE records SET title = ?, tag = ?, introduce = ?, content = ?, cover = ?, utime = ? WHERE id = ? and uid = ?'
+        params.push(options.title, options.tag, options.introduce, options.content, options.cover)
+    }
+    params.push(utime, id, uid)
+    return {
+        sqlStr,
+        params
     }
 }
