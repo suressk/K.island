@@ -6,7 +6,7 @@ function createConnection () {
         host: "127.0.0.1",
         port: 3306,
         user: "root",
-        password: "xxx",
+        password: "NdMexHd.Qwert...",
         database: "k_island"
     });
 }
@@ -16,6 +16,7 @@ export function connectQuery (sqlStr: string, params: any[], success: (result: a
     connection.connect()
     connection.query(sqlStr, params, ((err, result) => {
         if (!err) {
+            console.log(result)
             success(result)
         } else {
             error(err)

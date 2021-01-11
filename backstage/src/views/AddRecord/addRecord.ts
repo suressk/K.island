@@ -1,13 +1,18 @@
 import { Notify } from '@/utils/util'
 import { addRecord } from '@/api/api'
 
-import { RecordInfo } from '@/@types'
+import { RecordInfo, ResponseData } from '@/@types'
 
 export function handleAddRecord (info: RecordInfo) {
-  addRecord(info).then(res => {
-    console.log(res)
-    Notify('success', 'SUCCESS', '新增文章！')
+  /* eslint-disable */
+  // @ts-ignore
+  addRecord(info).then((res: ResponseData) => {
+    if (res.success) {
+      Notify('success', 'SUCCESS', res.message)
+    } else {
+      Notify('warning', 'WARNING', res.message)
+    }
   }).catch(err => {
-    console.log(err)
+    Notify('success', 'SUCCESS', err.message)
   })
 }

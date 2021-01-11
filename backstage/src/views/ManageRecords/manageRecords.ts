@@ -1,52 +1,54 @@
-import { reactive, ref, nextTick } from 'vue'
+import { reactive, ref, nextTick, onMounted } from 'vue'
 import { Notify } from '@/utils/util'
-import { PropsType } from '@/@types'
+import { GetListParams, PropsType, RecordInfo, RecordItem } from '@/@types'
+import { getRecordList } from '@/api/api'
 
-interface RecordsItem {
-  id?: string;
-  title: string;
-  introduce: string;
-  tag: string;
-  cover: string;
-  ctime: string;
-}
+// interface RecordsItem {
+//   id?: string;
+//   title: string;
+//   introduce: string;
+//   tag: string;
+//   cover: string;
+//   ctime: string;
+// }
+//
+// interface RecordInfo extends RecordsItem {
+//   content: string;
+// }
 
-interface RecordInfo extends RecordsItem {
-  content: string;
+/* 查询文章列表 */
+function loadRecords (params: GetListParams) {
+  getRecordList(params).then(res => {
+    /* eslint-disable */
+    // @ts-ignore
+    if (res.success) {
+      // @ts-ignore
+      Notify('success', 'SUCCESS', res.message)
+      console.log(res)
+    } else {
+      // @ts-ignore
+      Notify('warning', 'WARNING', res.message)
+    }
+  }).catch(err => {
+    Notify('error', 'ERROR', err.message)
+  })
 }
 
 export default function useManage () {
-  const records = ref<RecordsItem[]>([
-    {
-      title: '醒不来的梦',
-      id: 'uuid0001',
-      introduce: '忘不了的某某某',
-      ctime: '2020/10/08',
-      tag: 'mood',
-      cover: 'https://tse2-mm.cn.bing.net/th/id/OIP.2qQECtS2brOCBsrxHhmJ_wHaE8?pid=Api&rs=1'
-    },
-    {
-      title: '踏江河',
-      id: 'uuid0002',
-      introduce: '长枪刺破云霞，放下一身牵挂',
-      ctime: '2020/10/08',
-      tag: 'mood',
-      cover: ''
-    }
-  ])
-  const articleDetail = reactive({
+  const records = ref<RecordInfo[]>([])
+  const articleDetail: RecordItem = reactive({
     title: '',
     tag: '',
     introduce: '',
     cover: '',
     content: '',
-    ctime: ''
+    ctime: 0
   })
   const detailVisible = ref<boolean>(false)
   const editVisible = ref<boolean>(false)
   const detailReady = ref<boolean>(false)
 
-  function assignArticle (info: RecordInfo) {
+  function assignArticle (info: RecordItem) {
     const { title, tag, introduce, cover, ctime, content } = info
     articleDetail.title = title
     articleDetail.tag = tag
@@ -60,13 +62,24 @@ export default function useManage () {
    * 页码切换
    * */
   function handlePageChange (curPage: number) {
+    loadRecords({
+      pageNo: curPage,
+      pageSize: 10
+    })
     console.log(curPage)
   }
+
+  onMounted(() => {
+    loadRecords({
+      pageNo: 1,
+      pageSize: 10
+    })
+  })
 
   /**
    * 详情按钮点击事件
    * */
-  function handleShowDetail (selectionRow: RecordsItem) {
+  function handleShowDetail (selectionRow: RecordItem) {
     detailVisible.value = true
     console.log(selectionRow)
   }
@@ -74,18 +87,11 @@ export default function useManage () {
   /**
    * 编辑按钮点击事件
    * */
-  function handleShowEdit (selectionRow: RecordsItem) {
+  function handleShowEdit (selectionRow: RecordItem) {
     editVisible.value = true
     Notify('success', 'SUCCESS', '请求成功！')
     nextTick(() => {
-      assignArticle({
-        title: '醒不来的梦',
-        tag: 'TypeScript',
-        introduce: '你是我触碰不到的风，醒不来的梦；寻不到的天堂，医不好的痛；点不着的香烟，松不开的手；忘不了的某某某...',
-        cover: 'https://tse2-mm.cn.bing.net/th/id/OIP.2qQECtS2brOCBsrxHhmJ_wHaE8?pid=Api&rs=1',
-        content: '# MarkDown Detail',
-        ctime: '2020/10/08'
-      })
+      // assignArticle()
     }).then(() => {
       detailReady.value = true
     })
@@ -95,7 +101,7 @@ export default function useManage () {
   /**
    * 删除文章
    * */
-  function handleDeleteRecord (selectionRow: RecordsItem) {
+  function handleDeleteRecord (selectionRow: RecordItem) {
     console.log(selectionRow)
     Notify('error', 'DELETE', `Delete 《${selectionRow.title}》`)
   }

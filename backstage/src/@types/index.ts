@@ -33,6 +33,12 @@ export interface RecordInfo {
   content: string;
   cover: string;
   ctime?: number;
+  id?: number;
+  uid?: string;
+}
+
+export interface RecordItem extends RecordInfo {
+  ctime: number;
 }
 
 export interface LoginInfo {
@@ -56,4 +62,9 @@ export interface StoreTypes {
 
 export interface RootState {
   state: object;
+}
+
+export interface GetListParams {
+  pageNo: number;
+  pageSize: number;
 }
