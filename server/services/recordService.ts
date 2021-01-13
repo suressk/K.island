@@ -1,4 +1,4 @@
-import { connectQuery } from '../dao/DBUtil'
+import { connectQuery, createConnection } from '../dao/DBUtil'
 import { v4 as uuid } from 'uuid'
 import Query from 'mysql2/typings/mysql/lib/protocol/sequences/Query'
 import {
@@ -16,14 +16,46 @@ export function queryRecordList (options: QueryListOptions, success: (result: an
     const { pageNo, pageSize } = options
     const params = [(pageNo - 1) * pageSize, pageSize]
     let sqlStr: string
+    const sqlTotalStr: string = 'SELECT COUNT(uid) as total from `records`'
     // 后台管理查询所有文章列表
     if (options.range && options.range === 'all') {
-        sqlStr = 'SELECT SQL_CALC_FOUND_ROWS id, uid, title, introduce, tag, views, cover, ctime, utime, is_delete FROM `records` ORDER BY ctime DESC LIMIT ?, ?'
+        sqlStr = 'SELECT id, uid, title, introduce, tag, views, cover, ctime, utime, is_delete FROM `records` ORDER BY ctime DESC LIMIT ?, ?'
     } else {
         // 前端展示未删除文章
-        sqlStr = 'SELECT SQL_CALC_FOUND_ROWS id, uid, title, introduce, tag, views, cover, ctime, utime FROM `records` WHERE is_delete = 0 ORDER BY ctime DESC LIMIT ?, ?'
+        sqlStr = 'SELECT id, uid, title, introduce, tag, views, cover, ctime, utime FROM `records` WHERE is_delete = 0 ORDER BY ctime DESC LIMIT ?, ?'
     }
-    connectQuery(sqlStr, params, success, error)
+    const connection = createConnection()
+    connection.connect()
+    // 查列表数据
+    const listPro = new Promise((resolve, reject) => {
+        connection.query(sqlStr, params, ((err, result) => {
+            if (!err) {
+                resolve(result)
+            } else {
+                reject(err)
+            }
+        }))
+    })
+    const totalPro = new Promise((resolve, reject) => {
+        connection.query(sqlTotalStr, [], ((err, result) => {
+            if (!err) {
+                resolve(result)
+            } else {
+                reject(err)
+            }
+        }))
+    })
+    Promise.all([listPro, totalPro]).then(([list, totalRes]) => {
+        success({
+            list,
+            // @ts-ignore
+            total: totalRes[0].total
+        })
+        connection.end()
+    }).catch(err => {
+        error(err)
+        connection.end()
+    })
 }
 
 /**
@@ -31,7 +63,7 @@ export function queryRecordList (options: QueryListOptions, success: (result: an
  * */
 export function queryRecordDetail(options: RecordIdOptions, success: (result: any) => void, error: (err: Query.QueryError) => void) {
     const { id, uid } = options
-    const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, cover, ctime, utime FROM `records` WHERE id = ? and uid = ?'
+    const sqlStr = 'SELECT content FROM `records` WHERE id = ? and uid = ?'
     const params = [id, uid]
     connectQuery(sqlStr, params, success, error)
 }

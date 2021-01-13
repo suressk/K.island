@@ -11,7 +11,9 @@
     </div>
     <div class="d-flex">
       <span class="info-title">时间：</span>
-      <el-tag v-show="articleInfo.ctime" type="primary">{{ articleInfo.ctime }}</el-tag>
+      <el-tag v-show="articleInfo.ctime" type="primary">
+        {{ articleInfo.ctime ? dayjs(articleInfo.ctime).format(timeFormat) : '' }}
+      </el-tag>
     </div>
     <div class="d-flex">
       <span class="info-title">简介：</span>
@@ -31,7 +33,10 @@
 import { ElTag } from 'element-plus'
 import { computed } from 'vue'
 import { parseMarkdownFile } from '@/utils/marked'
-import { PropsType } from '../../@types'
+import { PropsType } from '@/@types'
+import dayjs from 'dayjs'
+
+const timeFormat = 'YYYY-MM-DD HH:mm:ss'
 
 export default {
   name: 'ArticleDetailDrawer',
@@ -53,7 +58,9 @@ export default {
     // marked.js 解析
     const previewContent = computed(() => parseMarkdownFile(props.articleInfo.content))
     return {
-      previewContent
+      previewContent,
+      timeFormat,
+      dayjs
     }
   }
 }

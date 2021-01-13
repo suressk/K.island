@@ -9,12 +9,14 @@ export function recordListResponse (req: Request, res: Response, range: string |
         pageSize: Number(pageSize),
         range
     }, result => {
+        // success
         writeHead(res, 200)
         res.write(writeResult(true, '查询成功！', result))
         res.end()
     }, err => {
+        // fail
         writeHead(res, 500)
-        res.write(writeResult(false, '文章列表查询失败咯~', err))
+        res.write(writeResult(false, '文章列表查询失败', err))
         res.end()
     })
 }
@@ -28,7 +30,7 @@ export function recordDetailResponse (req: Request, res: Response) {
             uid
         }, result => {
             writeHead(res, 200)
-            res.write(writeResult(true, '查询成功！', result))
+            res.write(writeResult(true, '查询成功！', result[0]))
             res.end()
         }, err => {
             writeHead(res, 500)

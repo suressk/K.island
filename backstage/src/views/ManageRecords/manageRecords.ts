@@ -1,41 +1,31 @@
 import { reactive, ref, nextTick, onMounted } from 'vue'
 import { Notify } from '@/utils/util'
-import { GetListParams, PropsType, RecordInfo, RecordItem } from '@/@types'
-import { getRecordList } from '@/api/api'
+import { RecordIds, GetListParams, PropsType, RecordInfo, RecordItem } from '@/@types'
+import { getRecordList, getRecordDetail } from '@/api/api'
+import dayjs from 'dayjs'
 
-// interface RecordsItem {
-//   id?: string;
-//   title: string;
-//   introduce: string;
-//   tag: string;
-//   cover: string;
-//   ctime: string;
-// }
-//
-// interface RecordInfo extends RecordsItem {
-//   content: string;
-// }
+const timeFormat = 'YYYY-MM-DD HH:mm:ss'
 
-/* 查询文章列表 */
-function loadRecords (params: GetListParams) {
-  getRecordList(params).then(res => {
-    /* eslint-disable */
-    // @ts-ignore
-    if (res.success) {
-      // @ts-ignore
-      Notify('success', 'SUCCESS', res.message)
-      console.log(res)
-    } else {
-      // @ts-ignore
-      Notify('warning', 'WARNING', res.message)
-    }
-  }).catch(err => {
-    Notify('error', 'ERROR', err.message)
-  })
+// eslint-disable-next-line @typescript-eslint/class-name-casing
+interface RecordBaseInfo {
+  title: string;
+  tag: string;
+  introduce: string;
+  cover: string;
+  ctime: number;
+  id?: number;
+  uid?: string;
+  content?: string;
+}
+
+interface AssignInfo extends RecordBaseInfo {
+  id: number;
+  uid: string;
 }
 
 export default function useManage () {
   const records = ref<RecordInfo[]>([])
+  const total = ref<number>(0)
   const articleDetail: RecordItem = reactive({
     title: '',
     tag: '',
@@ -48,16 +38,48 @@ export default function useManage () {
   const editVisible = ref<boolean>(false)
   const detailReady = ref<boolean>(false)
 
-  function assignArticle (info: RecordItem) {
-    const { title, tag, introduce, cover, ctime, content } = info
+  function assignArticle (info: RecordBaseInfo) {
+    const { title, tag, introduce, cover, ctime } = info
     articleDetail.title = title
     articleDetail.tag = tag
     articleDetail.introduce = introduce
     articleDetail.cover = cover
     articleDetail.ctime = ctime
-    articleDetail.content = content
   }
 
+  /* 查询文章列表 */
+  function loadRecords (params: GetListParams) {
+    getRecordList(params).then(res => {
+      /* eslint-disable */
+      // @ts-ignore
+      if (res.success) {
+        records.value = res.data.list
+        total.value = res.data.total
+      } else {
+        // @ts-ignore
+        Notify('warning', 'WARNING', res.message)
+      }
+    }).catch(err => {
+      Notify('error', 'ERROR', err.message)
+    })
+  }
+
+  /* 查询文章内容详情 */
+  function loadRecordDetail (params: RecordIds) {
+    getRecordDetail(params).then(res => {
+      // @ts-ignore
+      if (res.success) {
+        // @ts-ignore
+        Notify('success', 'SUCCESS', res.message)
+        articleDetail.content = res.data.content // 文章详情
+      } else {
+        // @ts-ignore
+        Notify('warning', 'WARNING', res.message)
+      }
+    }).catch(err => {
+      Notify('error', 'ERROR', err.message)
+    })
+  }
   /**
    * 页码切换
    * */
@@ -79,9 +101,14 @@ export default function useManage () {
   /**
    * 详情按钮点击事件
    * */
-  function handleShowDetail (selectionRow: RecordItem) {
+  function handleShowDetail (selectionRow: AssignInfo) {
     detailVisible.value = true
-    console.log(selectionRow)
+    const { id, uid, title, cover, ctime, introduce, tag } = selectionRow
+    assignArticle({ title, cover, ctime, introduce, tag })
+    loadRecordDetail({
+      id,
+      uid
+    })
   }
 
   /**
@@ -115,14 +142,17 @@ export default function useManage () {
   }
   return {
     records,
+    total,
     articleDetail,
     detailVisible,
     editVisible,
     detailReady,
+    timeFormat,
     handlePageChange,
     handleShowDetail,
     handleShowEdit,
     handleDeleteRecord,
-    handleSaveRecord
+    handleSaveRecord,
+    dayjs
   }
 }

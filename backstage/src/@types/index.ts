@@ -68,3 +68,8 @@ export interface GetListParams {
   pageNo: number;
   pageSize: number;
 }
+
+export interface RecordIds {
+  id: number;
+  uid: string;
+}

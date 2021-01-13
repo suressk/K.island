@@ -20,7 +20,7 @@
         >
           <template #default="scope">
             <!--<i class="el-icon-time"></i>-->
-            <span style="margin-left: 10px">{{ scope.row.ctime }}</span>
+            <span style="margin-left: 10px">{{ dayjs(scope.row.ctime).format(timeFormat) }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -91,7 +91,7 @@
         class="records-pagination"
         background
         layout="prev, pager, next"
-        :total="100"
+        :total="total"
         @current-change="handlePageChange"
       >
       </el-pagination>
