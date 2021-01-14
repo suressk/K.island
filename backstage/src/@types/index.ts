@@ -37,6 +37,17 @@ export interface RecordInfo {
   uid?: string;
 }
 
+export interface RecordItemInfo {
+  title: string;
+  tag: string;
+  introduce: string;
+  cover: string;
+  ctime: number;
+  id: number;
+  uid: string;
+  content?: string;
+}
+
 export interface RecordItem extends RecordInfo {
   ctime: number;
 }
@@ -63,6 +74,7 @@ export interface StoreTypes {
 export interface RootState {
   state: object;
 }
+/* store =================================== */
 
 export interface GetListParams {
   pageNo: number;

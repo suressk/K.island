@@ -1,32 +1,17 @@
 import { reactive, ref, nextTick, onMounted } from 'vue'
 import { Notify } from '@/utils/util'
-import { RecordIds, GetListParams, PropsType, RecordInfo, RecordItem } from '@/@types'
-import { getRecordList, getRecordDetail } from '@/api/api'
+import { RecordIds, GetListParams, PropsType, RecordInfo, RecordItemInfo } from '@/@types'
+import { getRecordList, getRecordDetail, deleteRecord } from '@/api/api'
 import dayjs from 'dayjs'
 
 const timeFormat = 'YYYY-MM-DD HH:mm:ss'
 
-// eslint-disable-next-line @typescript-eslint/class-name-casing
-interface RecordBaseInfo {
-  title: string;
-  tag: string;
-  introduce: string;
-  cover: string;
-  ctime: number;
-  id?: number;
-  uid?: string;
-  content?: string;
-}
-
-interface AssignInfo extends RecordBaseInfo {
-  id: number;
-  uid: string;
-}
-
 export default function useManage () {
   const records = ref<RecordInfo[]>([])
   const total = ref<number>(0)
-  const articleDetail: RecordItem = reactive({
+  const articleDetail: RecordItemInfo = reactive({
+    id: -1,
+    uid: '',
     title: '',
     tag: '',
     introduce: '',
@@ -38,8 +23,13 @@ export default function useManage () {
   const editVisible = ref<boolean>(false)
   const detailReady = ref<boolean>(false)
 
-  function assignArticle (info: RecordBaseInfo) {
-    const { title, tag, introduce, cover, ctime } = info
+  // 文章详情信息赋值
+  function assignArticle (info: RecordItemInfo): void | undefined {
+    const { id, uid, title, tag, introduce, cover, ctime } = info
+    // 内容存在，且当前点击的与前一次点击的是同一行
+    if (articleDetail.content && articleDetail.uid === uid && articleDetail.id === id) {
+      return
+    }
     articleDetail.title = title
     articleDetail.tag = tag
     articleDetail.introduce = introduce
@@ -69,8 +59,6 @@ export default function useManage () {
     getRecordDetail(params).then(res => {
       // @ts-ignore
       if (res.success) {
-        // @ts-ignore
-        Notify('success', 'SUCCESS', res.message)
         articleDetail.content = res.data.content // 文章详情
       } else {
         // @ts-ignore
@@ -78,6 +66,15 @@ export default function useManage () {
       }
     }).catch(err => {
       Notify('error', 'ERROR', err.message)
+    })
+  }
+
+  function deleteRecordInfo ({ id, uid }: RecordIds) {
+    deleteRecord({ id, uid }).then(res => {
+      // @ts-ignore
+      if (res.success) {
+
+      }
     })
   }
   /**
@@ -101,35 +98,33 @@ export default function useManage () {
   /**
    * 详情按钮点击事件
    * */
-  function handleShowDetail (selectionRow: AssignInfo) {
+  function handleShowDetail (selectionRow: RecordItemInfo) {
     detailVisible.value = true
     const { id, uid, title, cover, ctime, introduce, tag } = selectionRow
-    assignArticle({ title, cover, ctime, introduce, tag })
-    loadRecordDetail({
-      id,
-      uid
-    })
+    loadRecordDetail({ id, uid })
+    assignArticle({ id, uid, title, cover, ctime, introduce, tag })
   }
 
   /**
    * 编辑按钮点击事件
    * */
-  function handleShowEdit (selectionRow: RecordItem) {
+  function handleShowEdit (selectionRow: RecordItemInfo) {
     editVisible.value = true
-    Notify('success', 'SUCCESS', '请求成功！')
     nextTick(() => {
-      // assignArticle()
+      const { id, uid, title, cover, ctime, introduce, tag } = selectionRow
+      loadRecordDetail({ id, uid })
+      assignArticle({ id, uid, title, cover, ctime, introduce, tag })
     }).then(() => {
       detailReady.value = true
     })
-    console.log(selectionRow)
   }
 
   /**
    * 删除文章
    * */
-  function handleDeleteRecord (selectionRow: RecordItem) {
-    console.log(selectionRow)
+  function handleDeleteRecord (selectionRow: RecordItemInfo) {
+    const { id, uid } = selectionRow
+    deleteRecordInfo({ id, uid })
     Notify('error', 'DELETE', `Delete 《${selectionRow.title}》`)
   }
 

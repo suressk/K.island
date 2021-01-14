@@ -19,6 +19,7 @@ export const login = (params: LoginInfo) => postAction('/sys/login', params)
 export const addRecord = (params: RecordInfo) => postAction('/back/record/add', params)
 export const getRecordList = (params: GetListParams) => getAction('/back/record/list', params)
 export const getRecordDetail = (params: RecordIds) => getAction('/back/record/detail', params)
+export const deleteRecord = (params: RecordIds) => postAction('/back/record/update', params)
 
 // 上传封面图
 export const uploadCover = (fileData: FormData) => postUploadImage('/image/upload/cover', fileData)
