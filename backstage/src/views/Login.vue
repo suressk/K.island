@@ -31,12 +31,12 @@
 
 <script lang="ts">
 import { reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 import md5 from 'md5'
 import { login } from '@/api/api'
 import { Notify, setStorageToken, setCookie } from '@/utils/util'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { LoginInfo, LoginResponse } from '@/@types'
-import { useRouter } from 'vue-router'
 
 export default {
   name: 'Login',
@@ -59,7 +59,6 @@ export default {
           setCookie(ACCESS_TOKEN, res.data.token, res.data.expireTime)
           // 1s 后跳转至后台管理首页
           setTimeout(() => {
-            // ctx.$router.push('/')
             useRouterInstance.push('/')
           }, 500)
         } else {

@@ -22,19 +22,19 @@ export interface RecordIdOptions {
     uid: string;
 }
 
-export interface recordItem {
-    id: number;
-    uid: string;
-    title: string;
-    tag: string;
-    introduce: string;
-    cover: string;
-    ctime: number;
-    utime: number;
-    views: number;
-    is_delete?: number;
-    // content?: string;
-}
+// export interface recordItem {
+//     id: number;
+//     uid: string;
+//     title: string;
+//     tag: string;
+//     introduce: string;
+//     cover: string;
+//     ctime: number;
+//     utime: number;
+//     views: number;
+//     is_delete?: number;
+//     // content?: string;
+// }
 
 export interface AddRecordOptions {
     title: string;

@@ -1,4 +1,3 @@
-
 export interface PropsType {
   articleInfo: RecordInfo;
   modelValue: boolean;
@@ -46,10 +45,6 @@ export interface RecordItemInfo {
   id: number;
   uid: string;
   content?: string;
-}
-
-export interface RecordItem extends RecordInfo {
-  ctime: number;
 }
 
 export interface LoginInfo {
