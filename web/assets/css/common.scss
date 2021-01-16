@@ -36,6 +36,22 @@
 }
 
 /**
+ 垂直 水平居中定位
+*/
+.fixed-center {
+  position: fixed;
+}
+.absolute-center {
+  position: absolute;
+}
+.fixed-center,
+.absolute-center {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/**
  文字溢出隐藏
  */
 .txt-overflow {

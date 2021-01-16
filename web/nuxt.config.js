@@ -14,19 +14,21 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
-    '~/assets/css/initial.css'
+    '~/assets/css/initial.css',
+    '~/assets/css/common.scss'
   ],
 
-  // css 预处理
-  styleResources: {
-    scss: ''
-  },
+  // // css 预处理
+  // styleResources: {
+  //   scss: ''
+  // },
 
   // Loading 加载动画
   loading: '~/components/Loading.vue',
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
+    { src: '@/plugins/router.js', ssr: false }
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -49,5 +51,10 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+  },
+
+  // Run development port Configuration
+  server: {
+    port: '8888'
   }
 }

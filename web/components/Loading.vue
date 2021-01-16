@@ -1,5 +1,5 @@
 <template>
-  <div v-show="loading" class="loading">
+  <div class="loader flex-center fixed-center">
     <span />
     <span />
     <span />
@@ -28,24 +28,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.loading{
-  position: fixed;
+@import "assets/css/colors";
+.loader {
   z-index: 9999;
-  background-color: #fff;
+  background-color: $white;
   width: 100vw;
   height: 100vh;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  span{
+  display: none;
+  span {
     display: inline-block;
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    background: lightgreen;
+    background: $green;
     transform-origin: right bottom;
     animation: load 1s ease infinite;
     &:first-child {

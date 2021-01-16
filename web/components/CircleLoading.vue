@@ -1,5 +1,5 @@
 <template>
-  <div v-show="loading" class="spinner flex-center">
+  <div v-show="loading" class="spinner flex-center fixed-center">
     <div class="spinner-container">
       <span />
       <span />
@@ -42,16 +42,11 @@ export default {
 
 <style scoped lang="scss">
 @import "assets/css/colors";
-
 .spinner {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   width: 100vw;
   height: 100vh;
   z-index: 9999;
-  background-color: #fff;
+  background-color: $white;
   .spinner-container {
     position: absolute;
     width: 50px;
