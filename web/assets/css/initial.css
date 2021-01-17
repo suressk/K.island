@@ -17,6 +17,7 @@ time, mark, audio, video {
   font: inherit;
   font-size: 100%;
   vertical-align: baseline;
+  font-family: Consolas,eafont,Hiragino Sans GB,Hiragino Sans GB W3,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
 }
 
 *,
@@ -33,6 +34,19 @@ footer, header, hgroup, menu, nav, section {
 
 body {
   line-height: 1;
+  overflow-x: hidden;
+  background: #fff;
+}
+/* body 滚动条样式 */
+body::-webkit-scrollbar{
+  width: 6px;
+}
+body::-webkit-scrollbar-thumb{
+  background: #c5c6c7;
+  border-radius: 3px;
+}
+body::-webkit-scrollbar-track{
+  background: #f6f6f6;
 }
 
 ol, ul {

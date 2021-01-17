@@ -1,5 +1,5 @@
 <template>
-  <Nuxt class="k-page" keep-alive :keep-alive-props="{include: includeArr}" />
+  <Nuxt class="trans-all-05" keep-alive :keep-alive-props="{include: includeArr}" />
 </template>
 
 <script>
