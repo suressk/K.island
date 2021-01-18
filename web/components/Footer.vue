@@ -11,5 +11,7 @@ export default {
 </script>
 
 <style scoped>
-
+.k-footer {
+  padding: 10px 0;
+}
 </style>

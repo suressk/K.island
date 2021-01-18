@@ -6,6 +6,7 @@
   --lightBg: #f2f2f2; // 浅色背景
   --border: #d9d9d9;
   --tipColor: #999;
+  --lightTxt: #656565;
   --lightInk: rgba(22, 24, 35, 0.5); // 淡墨色
   --ink: #161823; // 墨色
   --cinnabar: #ff461f; // 朱砂
@@ -75,9 +76,24 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.two-line-txt,
+.three-line-txt {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+.two-line-txt {
+  -webkit-line-clamp: 2;
+}
+.three-line-txt {
+  -webkit-line-clamp: 3;
+}
 
 .trans-all-05 {
   transition: all 0.5s;
+}
+.trans-all-03 {
+  transition: all 0.3s;
 }
 
 .tip {

@@ -1,14 +1,18 @@
 <template>
   <header class="k-header flex-between">
-    <h1 class="k-logo flex-center" @click="handleJumpIn('/')">
-      K.
+    <h1 class="k-logo flex-center">
+      <nuxt-link to="/">
+        K.
+      </nuxt-link>
     </h1>
     <ul class="header-r-nav flex-center">
       <li class="r-nav-item">
-        <i class="iconfont iconfont-qrcode" />
+        <i class="iconfont icon-qrcode" />
       </li>
-      <li class="r-nav-item d-flex" @click="handleJumpIn('/about')">
-        <img class="avatar" src="~@/static/images/avatar.png" alt="K.">
+      <li class="r-nav-item">
+        <nuxt-link class="link flex-center" to="/about">
+          <img class="avatar" src="~@/static/images/avatar.png" alt="K.">
+        </nuxt-link>
       </li>
     </ul>
   </header>
@@ -19,7 +23,7 @@ export default {
   name: 'Header',
   methods: {
     // 简单的编程式跳转或使用 nuxt-link 组件
-    handleJumpIn (path) {
+    handleToPage (path) {
       this.$router.push(path)
     }
   }
@@ -31,7 +35,8 @@ export default {
   height: 50px;
   margin-bottom: 20px;
   padding: 0 20px;
-  border-bottom: 1px solid #f2f3f4;
+  //border-bottom: 1px solid var(--lightBg);
+  background-color: var(--lightBg);
   .k-logo {
     background-image: url("~@/static/images/logo.svg");
     background-size: 36px;
@@ -44,7 +49,8 @@ export default {
   }
   // 右侧菜单项
   .header-r-nav,
-  .r-nav-item {
+  .r-nav-item,
+  .link {
     height: 100%;
     .avatar {
       height: 80%;
