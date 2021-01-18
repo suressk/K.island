@@ -28,10 +28,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "assets/css/colors";
 .loader {
   z-index: 9999;
-  background-color: $white;
+  background-color: var(--white);
   width: 100vw;
   height: 100vh;
   display: none;
@@ -40,7 +39,7 @@ export default {
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    background: $green;
+    background: var(--darkGreen);
     transform-origin: right bottom;
     animation: load 1s ease infinite;
     &:first-child {

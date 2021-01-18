@@ -3,8 +3,10 @@
     <!--<CircleLoading />-->
     <!--  封面图  -->
     <div class="cover">
-      <div id="scene" class="wh-100 flex-center">
-        <img data-depth="0.4" src="~@/static/images/scene_bg.webp" alt="cover">
+      <div id="scene" class="wh-100 flex-center" :style="{ height: sceneHeight }">
+        <div class="layer" data-depth="0.4" :style="layerStyle">
+          <img src="~@/static/images/scene_bg.webp" alt="cover" width="1920" height="1080" :style="imgStyle">
+        </div>
       </div>
       <!--   头部菜单按钮   -->
       <div class="head-bar flex-between">
@@ -55,6 +57,7 @@
       </li>
     </ul>
 
+    <BackToTop />
     <Footer />
   </div>
 </template>
@@ -72,21 +75,76 @@ export default Vue.extend({
   data () {
     return {
       navList,
-      showNav: false
+      showNav: false,
+      sceneHeight: '100%',
+      sceneWidth: '100%',
+      layerStyle: {},
+      imgStyle: {}
     }
   },
   mounted () {
+    this.init()
     // document.addEventListener('mousemove', this.parallax)
     const scene = document.getElementById('scene')
-    // eslint-disable-next-line no-new
+    /* eslint-disable */
     new Parallax(scene, {
       relativeInput: true,
       clipRelativeInput: true
     })
   },
+  beforeRouteEnter (to, from, next) {
+    next((vm) => {
+      vm.init()
+      window.onresize = () => vm.init()
+    })
+  },
+  beforeRouteLeave (to, from, next) {
+    window.onresize = null
+    next()
+  },
   methods: {
     handleTriggerNav () {
       this.showNav = !this.showNav
+    },
+    init () {
+      this.sceneHeight = document.documentElement.clientHeight + 'px'
+      this.sceneWidth = document.documentElement.clientWidth + 'px'
+      this.coverLayer()
+    },
+    coverLayer () {
+      const sceneWidth = parseInt(this.sceneWidth)
+      const sceneHeight = parseInt(this.sceneHeight)
+      const e = (sceneWidth > 1000 || sceneHeight > 1000) ? 1000 : 500
+      let x, y, i
+      if (sceneWidth >= sceneHeight) {
+        i = sceneWidth / e * 50
+        y = i
+        x = i * sceneWidth / sceneHeight
+      } else {
+        i = sceneHeight / e * 50
+        x = i
+        y = i * sceneHeight / sceneWidth
+      }
+      const style = {
+        width: sceneWidth + x + 'px',
+        height: sceneHeight + y + 'px',
+        marginLeft: -0.5 * x + 'px',
+        marginTop: -0.5 * y + 'px'
+      }
+      this.layerStyle = { ...this.layerStyle, ...style }
+      this.coverImg()
+    },
+    coverImg () {
+      const width = parseInt(this.layerStyle.width)
+      const height = parseInt(this.layerStyle.height)
+      const scale = 1080 / 1920
+      const style = {}
+      const compute = height / width > scale
+      style.width = compute ? `${height / scale}px` : `${width}px`
+      style.height = compute ? `${height}px` : `${width * scale}px`
+      style.left = (width - parseInt(style.width)) / 2 + 'px'
+      style.top = (height - parseInt(style.height)) / 2 + 'px'
+      this.imgStyle = { ...this.imgStyle, ...style }
     }
     // parallax (e) {
     //   const scene = document.querySelector('#scene')
@@ -108,7 +166,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import url('https://at.alicdn.com/t/font_2332190_piak1vlt0jk.css');
+  @import url('https://at.alicdn.com/t/font_2332190_piak1vlt0jk.css');
 .main-page {
   min-height: 100vh;
   //background-color: #008c8c;
@@ -121,7 +179,7 @@ export default Vue.extend({
     .head-bar {
       position: absolute;
       left: 0;
-      top: 70px;
+      top: 60px;
       padding: 0 40px;
       width: 100%;
       z-index: 10;
@@ -152,9 +210,12 @@ export default Vue.extend({
       }
     }
     #scene {
+      height: 100%;
+      position: relative;
       overflow: hidden;
       img {
-        margin: 0 -100px;
+        position: absolute;
+        max-width: none;
       }
     }
   }
@@ -186,6 +247,10 @@ export default Vue.extend({
       position: absolute;
       bottom: 10px;
     }
+  }
+
+  .content {
+    height: 300vh;
   }
 }
 </style>

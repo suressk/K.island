@@ -1,4 +1,20 @@
-@import "./colors.scss";
+/**
+  colors variable
+*/
+:root {
+  --white: #fff;
+  --lightBg: #f2f2f2; // 浅色背景
+  --border: #d9d9d9;
+  --tipColor: #999;
+  --lightInk: rgba(22, 24, 35, 0.5); // 淡墨色
+  --ink: #161823; // 墨色
+  --cinnabar: #ff461f; // 朱砂
+  --azure: #70f3ff; // 蔚蓝
+  --darkGreen: #2add9c; // 碧绿
+  --oilGreen: #00bc12; // 油绿
+  --lightCyan: #14ffec; // 淡青
+  --cyanogen: #0095d9;
+}
 
 /* flex 布局 */
 .d-flex,
@@ -65,7 +81,7 @@
 }
 
 .tip {
-  color: #999;
+  color: var(--tipColor);
   font-size: 14px;
   text-align: center;
 }
@@ -102,18 +118,18 @@
   cursor: pointer;
 }
 .scroller-light::-webkit-scrollbar-thumb {
-  background-color: #a2a2a2;
+  background-color: var(--lightBg);
 }
 .scroller::-webkit-scrollbar-thumb {
-  background-color: #545454;
+  background-color: var(--tipColor);
 }
 
-.scroller-light::-webkit-scrollbar-thumb:hover {
-  background-color: #9a9a9a;
-}
-.scroller::-webkit-scrollbar-thumb:hover {
-  background-color: #777;
-}
+//.scroller-light::-webkit-scrollbar-thumb:hover {
+//  background-color: #9a9a9a;
+//}
+//.scroller::-webkit-scrollbar-thumb:hover {
+//  background-color: #777;
+//}
 
 /**
   偏移淡入

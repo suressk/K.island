@@ -41,12 +41,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "assets/css/colors";
 .spinner {
   width: 100vw;
   height: 100vh;
   z-index: 9999;
-  background-color: $white;
+  background-color: var(--white);
   .spinner-container {
     position: absolute;
     width: 50px;
@@ -97,7 +96,7 @@ export default {
       width: 15px;
       height: 15px;
       border-radius: 50%;
-      background-color: $green;
+      background-color: var(--darkGreen);
       animation: bounceDelay 1.2s infinite ease-in-out both;
       &:first-child {
         top: 0; left: 0;
