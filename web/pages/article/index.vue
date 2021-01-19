@@ -10,7 +10,12 @@
 
 <script>
 export default {
-  name: 'Article'
+  name: 'Article',
+  head () {
+    return {
+      title: 'Article | K.island'
+    }
+  }
 }
 </script>
 

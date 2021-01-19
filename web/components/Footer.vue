@@ -12,6 +12,9 @@ export default {
 
 <style scoped>
 .k-footer {
+  position: relative;
+  z-index: 1;
+  background-color: var(--white);
   padding: 10px 0;
 }
 </style>

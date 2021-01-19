@@ -1,5 +1,6 @@
 .main-page {
   min-height: 100vh;
+  //background-color: var(--lightBg);
   //background-color: #008c8c;
   // 封面 区域
   .page-cover {
@@ -16,12 +17,15 @@
       z-index: 10;
       .logo {
         height: 40px;
-        color: #666;
+        color: var(--white);
         font-size: 25px;
         font-style: italic;
         border-radius: 5px;
         cursor: default;
         user-select: none;
+        &.nav-show {
+          color: var(--lightTxt);
+        }
         img {
           height: 100%;
           margin-right: 20px;
@@ -32,8 +36,8 @@
         width: 40px;
         height: 40px;
         cursor: pointer;
-        color: #ff3600;
-        background-color: #fff;
+        color: var(--cinnabar);
+        background-color: var(--white);
         border-radius: 5px;
         .iconfont {
           font-size: 25px;
@@ -76,7 +80,7 @@
     }
     .nav-item {
       user-select: none;
-      color: #666;
+      color: var(--lightTxt);
       margin: 0 10px;
       cursor: pointer;
       &:hover {
@@ -91,9 +95,12 @@
   // 文章列表
   .content {
     width: 1200px;
-    margin: 20px auto;
-    border: 1px solid var(--border);
+    margin: 0 auto;
+    padding: 80px 0;
+    //border: 1px solid var(--border);
+    //background-color: var(--white);
     height: 300vh;
+    position: relative;
     .content-item {
       position: relative;
       margin-top: 100px;
@@ -102,18 +109,17 @@
         width: 680px;
         height: 440px;
         font-size: 0;
-        //display: inline-block;
         position: relative;
         cursor: pointer;
         z-index: 3;
         overflow: hidden;
-        border-radius: 6px;
-        border: 1px solid var(--azure);
-        &:hover img {
-          opacity: 0.8;
-        }
+        border-radius: 5px;
+        border: 1px solid var(--border);
+        //&:hover {
+        //  opacity: 0.8;
+        //}
         img {
-          background-color: var(--cinnabar);
+          background-color: var(--lightBg);
           width: 100%;
           height: 100%;
         }
@@ -151,23 +157,52 @@
           position: absolute;
           bottom: 80px;
           left: 80px;
+          &>span {
+            cursor: pointer;
+            transition: all .3s;
+            &:nth-child(1):hover {
+              color: var(--cinnabar);
+            }
+            &:nth-child(2):hover {
+              color: var(--darkGreen);
+            }
+          }
+          .iconfont {
+            padding: 5px;
+          }
         }
       }
-      // 左右分布
+      // 奇数项 content-item
       &:nth-child(odd) {
-        text-align: left;
+        .cover {
+          left: 40px;
+        }
         .info {
           left: 660px;
         }
       }
-
+      // 偶数项 content-item
       &:nth-child(even) {
         text-align: right;
+        .cover {
+          left: 480px;
+        }
         .info {
           text-align: left;
           right: 660px;
         }
       }
+    }
+
+    .more::after {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      z-index: 0;
+      content: "";
+      width: 1px;
+      height: calc(100% + 100px);
+      background-color: var(--lightBg);
     }
   }
 }

@@ -71,11 +71,13 @@
 /**
  文字溢出隐藏
  */
+// 单行
 .txt-overflow {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+// 多行
 .two-line-txt,
 .three-line-txt {
   display: -webkit-box;
@@ -153,7 +155,7 @@
 .page-enter,
 .page-leave-active {
   opacity: 0;
-  transform: translateX(100px);
+  transform: translateX(200px);
 }
 
 .wh-100 {

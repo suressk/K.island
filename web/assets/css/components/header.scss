@@ -1,0 +1,88 @@
+
+.k-header {
+  height: 50px;
+  margin-bottom: 20px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--lightBg);
+  //background-color: var(--lightBg);
+  .k-logo {
+    background-image: url("~@/static/images/logo.svg");
+    background-size: 36px;
+    background-position: 10px, 0;
+    background-repeat: no-repeat;
+    width: 60px;
+    height: 100%;
+    cursor: pointer;
+    .link {
+      width: 100%;
+      height: 100%;
+      color: transparent;
+    }
+  }
+  // 右侧菜单项
+  .header-r-nav,
+  .r-nav-item,
+  .link {
+    height: 100%;
+    .avatar {
+      height: 80%;
+      border-radius: 50%;
+    }
+  }
+  .r-nav-item {
+    position: relative;
+    margin-left: 10px;
+    cursor: pointer;
+    width: 50px;
+    height: 100%;
+    .icon-qrcode {
+      font-size: 25px;
+      color: var(--tipColor);
+    }
+    &:hover .icon-qrcode {
+      color: var(--lightTxt);
+    }
+    &:hover .drop-down {
+      opacity: 1;
+      top: 55px;
+    }
+    .drop-down {
+      position: absolute;
+      right: -33px;
+      top: -250%;
+      opacity: 0;
+      width: 100px;
+      height: 100px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      transition: opacity .3s ease;
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -30px;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border: 15px solid transparent;
+        border-bottom-color: var(--border);
+      }
+      &::after {
+        border-bottom-color: var(--white);
+        top: -28px;
+      }
+      #qrcode {
+        width: 100%;
+        height: 100%;
+        transform: scale(0.6);
+      }
+      .tip {
+        position: absolute;
+        transform: scale(0.8);
+        white-space: nowrap;
+        bottom: -20px;
+      }
+    }
+  }
+}

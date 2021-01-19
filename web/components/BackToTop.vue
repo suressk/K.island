@@ -1,6 +1,6 @@
 <template>
   <div class="back-to-top trans-all-05" :class="{ show: isBack }" @click="handleBackTop">
-    <i class="iconfont icon-top" />
+    <i class="iconfont icon-toTop" />
   </div>
 </template>
 
@@ -69,7 +69,7 @@ export default {
   opacity: 0;
   visibility: hidden;
   color: var(--darkGreen);
-  .icon-top {
+  .icon-toTop {
     font-size: 36px;
   }
   &:hover {

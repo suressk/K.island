@@ -4,13 +4,13 @@
     <!--  封面图  -->
     <div class="page-cover">
       <div id="scene" class="wh-100 flex-center" :style="{ height: sceneHeight }">
-        <div class="layer" data-depth="0.4" :style="layerStyle">
+        <div class="layer" data-depth="0.2" :style="layerStyle">
           <img src="~@/static/images/scene_bg.webp" alt="cover" width="1920" height="1080" :style="imgStyle">
         </div>
       </div>
       <!--   头部菜单按钮   -->
       <div class="head-bar flex-between">
-        <span class="logo flex-center">
+        <span class="logo trans-all-05 flex-center" :class="{ 'nav-show': showNav }">
           <img src="~@/static/images/logo.svg" alt="logo">
           K.island
         </span>
@@ -35,28 +35,51 @@
       <div class="mask" />
     </div>
     <!--  文章列表 content  -->
-    <ul class="content">
-      <li class="content-item">
-        <div class="cover flex-center trans-all-03">
-          <img class="trans-all-03" src="" alt="">
-        </div>
-        <div class="info">
-          <span class="time">2021-01-01</span>
-          <span class="title two-line-txt">文章 title</span>
-          <span class="introduce">文章简介</span>
-          <div class="suffix flex-center">
-            <span class="views">
-              <i class="iconfont icon-views" />
-              1203
-            </span>
-            <span class="tag">
-              <i class="iconfont icon-tag" />
-              Mood
-            </span>
+    <div class="content">
+      <ul class="content-list">
+        <li class="content-item">
+          <div class="cover flex-center trans-all-03">
+            <img src="" alt="">
           </div>
-        </div>
-      </li>
-    </ul>
+          <div class="info">
+            <span class="time">2021-01-01</span>
+            <span class="title two-line-txt">文章 title</span>
+            <span class="introduce three-line-txt">文章简介</span>
+            <div class="suffix d-flex">
+              <span class="views d-flex">
+                <i class="iconfont icon-view" />
+                1203
+              </span>
+              <span class="tag d-flex">
+                <i class="iconfont icon-tag" />
+                Mood
+              </span>
+            </div>
+          </div>
+        </li>
+        <li class="content-item">
+          <div class="cover flex-center trans-all-03">
+            <img src="" alt="">
+          </div>
+          <div class="info">
+            <span class="time">2021-01-01</span>
+            <span class="title two-line-txt">文章 title</span>
+            <span class="introduce three-line-txt">文章简介</span>
+            <div class="suffix d-flex">
+              <span class="views d-flex">
+                <i class="iconfont icon-view" />
+                1203
+              </span>
+              <span class="tag d-flex">
+                <i class="iconfont icon-tag" />
+                Mood
+              </span>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <LoadMore class="more" />
+    </div>
 
     <BackToTop />
     <Footer />
@@ -103,13 +126,13 @@ export default Vue.extend({
     next()
   },
   methods: {
-    handleTriggerNav () {
-      this.showNav = !this.showNav
-    },
     init () {
       this.sceneHeight = document.documentElement.clientHeight + 'px'
       this.sceneWidth = document.documentElement.clientWidth + 'px'
       this.coverLayer()
+    },
+    handleTriggerNav () {
+      this.showNav = !this.showNav
     },
     coverLayer () {
       const sceneWidth = parseInt(this.sceneWidth)
@@ -149,17 +172,25 @@ export default Vue.extend({
   },
   head () {
     return {
-      title: 'K.island'
-      // meta: [
-      //   { hid: 'keywords', name: 'keywords', content: 'keywords' },
-      //   { hid: 'description', name: 'description', content: 'web_describe' }
-      // ]
+      title: 'K.island',
+      meta: [
+        {
+          hid: 'keywords',
+          name: 'keywords',
+          content: 'K.,blog,mood island,web,前端,个人博客,心情记录小站'
+        },
+        {
+          hid: 'description',
+          name: 'description',
+          content: '世界上每个角落都有人过着相似的人生。愿所有的美好如约而至，愿所有的黑暗都能看到希望，我们都能微笑前行，人生没有完美，也许有些遗憾才美...'
+        }
+      ]
     }
   }
 })
 </script>
 
 <style lang="scss">
-@import url('https://at.alicdn.com/t/font_2332190_piak1vlt0jk.css');
+@import url('https://at.alicdn.com/t/font_2332190_xf4z5im8p5m.css');
 @import "assets/css/pages/index.scss";
 </style>

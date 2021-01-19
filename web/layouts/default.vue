@@ -1,5 +1,5 @@
 <template>
-  <Nuxt class="trans-all-05" keep-alive :keep-alive-props="{include: includeArr}" />
+  <Nuxt class="k-page" keep-alive :keep-alive-props="{include: includeArr}" />
 </template>
 
 <script>
@@ -11,3 +11,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.k-page {
+  transition: transform 0.5s ease, opacity 0.3s ease 0.2s;
+}
+</style>
