@@ -4,7 +4,6 @@
   margin-bottom: 20px;
   padding: 0 20px;
   border-bottom: 1px solid var(--lightBg);
-  //background-color: var(--lightBg);
   .k-logo {
     background-image: url("~@/static/images/logo.svg");
     background-size: 36px;
@@ -48,7 +47,7 @@
     }
     .drop-down {
       position: absolute;
-      right: -33px;
+      left: -25px;
       top: -250%;
       opacity: 0;
       width: 100px;

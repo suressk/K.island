@@ -11,7 +11,7 @@
         <div class="drop-down flex-center">
           <canvas id="qrcode" />
           <span class="tip">
-            本页面内容二维码，扫码在手机上查看
+            在手机上查看本页内容
           </span>
         </div>
       </li>
