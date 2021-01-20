@@ -11,7 +11,12 @@
 
 <script>
 export default {
-  name: 'About'
+  name: 'About',
+  head () {
+    return {
+      title: "Hi!I'm K. | K.island"
+    }
+  }
 }
 </script>
 
