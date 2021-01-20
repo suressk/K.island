@@ -5,7 +5,8 @@
     <div class="page-cover">
       <div id="scene" class="wh-100 flex-center" :style="{ height: sceneHeight }">
         <div class="layer" data-depth="0.2" :style="layerStyle">
-          <img src="~@/static/images/scene_bg.webp" alt="cover" width="1920" height="1080" :style="imgStyle">
+          <!--<img src="~@/static/images/scene_bg.webp" alt="cover" width="1920" height="1080" :style="imgStyle">-->
+          <img src="~@/static/images/cover-es36sme-50as.webp" alt="cover" width="1920" height="1080" :style="imgStyle">
         </div>
       </div>
       <!--   头部菜单按钮   -->
@@ -14,7 +15,7 @@
           <img src="~@/static/images/logo.svg" alt="logo">
           K.island
         </span>
-        <span class="menu-btn flex-center" @click="handleTriggerNav">
+        <span class="menu-btn flex-center" @click="handleToggleNav">
           <i class="iconfont icon-menu" />
         </span>
       </div>
@@ -37,7 +38,7 @@
     <!--  文章列表 content  -->
     <div class="content">
       <ul class="content-list">
-        <li class="content-item">
+        <li v-for="item in 4" :key="item" class="content-item">
           <div class="cover flex-center trans-all-03">
             <img src="" alt="">
           </div>
@@ -46,31 +47,11 @@
             <span class="title two-line-txt">文章 title</span>
             <span class="introduce three-line-txt">文章简介</span>
             <div class="suffix d-flex">
-              <span class="views d-flex">
+              <span class="r-border views d-flex">
                 <i class="iconfont icon-view" />
                 1203
               </span>
-              <span class="tag d-flex">
-                <i class="iconfont icon-tag" />
-                Mood
-              </span>
-            </div>
-          </div>
-        </li>
-        <li class="content-item">
-          <div class="cover flex-center trans-all-03">
-            <img src="" alt="">
-          </div>
-          <div class="info">
-            <span class="time">2021-01-01</span>
-            <span class="title two-line-txt">文章 title</span>
-            <span class="introduce three-line-txt">文章简介</span>
-            <div class="suffix d-flex">
-              <span class="views d-flex">
-                <i class="iconfont icon-view" />
-                1203
-              </span>
-              <span class="tag d-flex">
+              <span class="g-border tag d-flex">
                 <i class="iconfont icon-tag" />
                 Mood
               </span>
@@ -131,7 +112,7 @@ export default Vue.extend({
       this.sceneWidth = document.documentElement.clientWidth + 'px'
       this.coverLayer()
     },
-    handleTriggerNav () {
+    handleToggleNav () {
       this.showNav = !this.showNav
     },
     coverLayer () {

@@ -30,9 +30,7 @@ import QRCode from 'qrcode'
 export default {
   name: 'Header',
   data () {
-    return {
-      showCode: false
-    }
+    return {}
   },
   mounted () {
     const qrCodeContainer = document.getElementById('qrcode')
