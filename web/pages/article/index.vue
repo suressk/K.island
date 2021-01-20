@@ -2,9 +2,11 @@
   <div class="k-article-page">
     <Header />
     <!--  文章列表页  -->
-    <section class="article-list">
+    <section class="content">
       文章列表
     </section>
+
+    <Footer />
   </div>
 </template>
 
@@ -20,5 +22,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+@import "assets/css/pages/article.scss";
 </style>

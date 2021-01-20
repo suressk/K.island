@@ -1,7 +1,11 @@
 <template>
   <div class="k-about">
     <Header />
-    你好，我是 K.
+    <div class="content">
+      你好，我是 K.
+    </div>
+
+    <Footer />
   </div>
 </template>
 
@@ -11,6 +15,6 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+@import "assets/css/pages/about.scss";
 </style>

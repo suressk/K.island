@@ -11,7 +11,7 @@
       </div>
       <!--   头部菜单按钮   -->
       <div class="head-bar flex-between">
-        <span class="logo trans-all-05 flex-center" :class="{ 'nav-show': showNav }">
+        <span class="logo trans-all-03 flex-center" :class="{ 'nav-show': showNav }">
           <img src="~@/static/images/logo.svg" alt="logo">
           K.island
         </span>
@@ -77,6 +77,21 @@ const navList = [
 ]
 
 export default Vue.extend({
+  // fetch ({ $axios }) {
+  //   // 测试 axios
+  //   $axios.get('/record/list', {
+  //     params: {
+  //       a: 1,
+  //       b: 2,
+  //       c: 'index'
+  //     }
+  //   }).then((res) => {
+  //     console.log(res)
+  //   })
+  // },
+  // asyncData (ctx) {
+  //   console.log(ctx)
+  // },
   data () {
     return {
       navList,
@@ -89,9 +104,8 @@ export default Vue.extend({
   },
   mounted () {
     this.init()
-    const scene = document.getElementById('scene')
     /* eslint-disable */
-    new Parallax(scene, {
+    new Parallax(document.getElementById('scene'), {
       relativeInput: true,
       clipRelativeInput: true
     })
