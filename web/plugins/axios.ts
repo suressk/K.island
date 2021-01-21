@@ -2,6 +2,10 @@
  * @nuxt/axios 封装
  * store, router,
  * */
+import { AxiosResponse } from 'axios'
+import { ErrorResponse } from '@/@types'
+
+// @ts-ignore
 export default function ({ redirect, req, app: { $axios } }) {
   $axios.defaults.baseURL = 'https://www.suressk.com' // 默认请求路径
   // if (process.server) {
@@ -20,7 +24,7 @@ export default function ({ redirect, req, app: { $axios } }) {
 
   // response拦截器，数据返回后，可以先在这里进行一个简单的判断
   $axios.interceptors.response.use(
-    (response) => {
+    (response: AxiosResponse) => {
       if (process.client) {
         // 客户端下， 请求进度条结束
         // NProgress.done()
@@ -44,7 +48,7 @@ export default function ({ redirect, req, app: { $axios } }) {
       //   return response.data
       // }
     },
-    (error) => {
+    (error: ErrorResponse) => {
       if (process.client) {
         // NProgress.done()
       }

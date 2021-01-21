@@ -89,6 +89,7 @@ export default Vue.extend({
   //     console.log(res)
   //   })
   // },
+  // merge to data: () => ({})
   // asyncData (ctx) {
   //   console.log(ctx)
   // },
@@ -104,7 +105,6 @@ export default Vue.extend({
   },
   mounted () {
     this.init()
-    /* eslint-disable */
     new Parallax(document.getElementById('scene'), {
       relativeInput: true,
       clipRelativeInput: true
@@ -172,7 +172,7 @@ export default Vue.extend({
         {
           hid: 'keywords',
           name: 'keywords',
-          content: 'K.,blog,mood island,web,前端,个人博客,心情记录小站'
+          content: 'K.,K.island,blog,mood island,web,前端,个人博客,心情记录小站,堃'
         },
         {
           hid: 'description',

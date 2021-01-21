@@ -163,13 +163,15 @@
 .r-border,
 .g-border {
   cursor: pointer;
-  display: inline-block;
+  padding: 3px 5px;
+  position: relative;
+  // display: inline-block;
   transition: all .3s;
 }
 .r-border:hover {
   color: var(--cinnabar);
 }
-.g-border :hover {
+.g-border:hover {
   color: var(--darkGreen);
 }
 .r-border:hover::before,
@@ -185,8 +187,8 @@
 .r-border::after,
 .g-border::before,
 .g-border::after {
-  transition: all .3s;
   content: "";
+  transition: all .3s;
   position: absolute;
   width: 10px;
   height: 10px;
@@ -253,4 +255,16 @@
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+
+/**
+  content 内容区
+*/
+
+.content {
+  width: 1200px;
+  min-height: 100vh;
+  border: 1px solid var(--border);
+  margin: auto;
 }

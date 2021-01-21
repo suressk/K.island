@@ -17,18 +17,18 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '~/assets/css/initial.css',
+    '~/assets/css/initial.scss',
     '~/assets/css/common.scss'
   ],
-  
+
   // Loading 加载动画
   loading: '~/components/Loading.vue',
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '@/plugins/router.js', ssr: false },
-    { src: '@/plugins/common.js', ssr: false },
-    '@/plugins/axios.js'
+    { src: '@/plugins/router.ts', ssr: false },
+    { src: '@/plugins/common.ts', ssr: false },
+    '@/plugins/axios.ts'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
