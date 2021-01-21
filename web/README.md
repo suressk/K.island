@@ -1,4 +1,4 @@
-# nuxt-ssr
+# web
 
 ## Build Setup
 
