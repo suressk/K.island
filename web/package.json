@@ -2,6 +2,8 @@
   "name": "K.island",
   "version": "1.0.0",
   "private": true,
+  "author": "K.",
+  "description": "愿世间美好都能如约而至...",
   "scripts": {
     "dev": "nuxt-ts",
     "build": "nuxt-ts build",

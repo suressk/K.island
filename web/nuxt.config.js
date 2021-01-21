@@ -7,8 +7,10 @@ export default {
     },
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
+      { name: 'Author', content: 'K.' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1, shrink-to-fit=no, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no' },
+      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
+      { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -18,7 +20,8 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '~/assets/css/initial.scss',
-    '~/assets/css/common.scss'
+    '~/assets/css/common.scss',
+    '~/assets/css/media.scss'
   ],
 
   // Loading 加载动画
@@ -26,9 +29,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '@/plugins/router.ts', ssr: false },
-    { src: '@/plugins/common.ts', ssr: false },
-    '@/plugins/axios.ts'
+    { src: '@/plugins/router.ts', ssr: true },
+    { src: '@/plugins/common.ts', ssr: true },
+    { src: '@/plugins/axios.ts', ssr: true }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -1,3 +1,5 @@
+import { AxiosResponse } from 'axios'
+
 export interface PropsType {
   articleInfo: RecordInfo;
   modelValue: boolean;
@@ -14,15 +16,15 @@ export interface ErrorResponse {
 * */
 export interface ResponseData {
   success: boolean;
-  data: object;
   message: string;
+  data: object;
 }
 
 // res.data
 export interface LoginResponse extends Promise<ResponseData> {
-  success: boolean;
+  // success: boolean;
+  // message: string;
   data: TokenInfo;
-  message: string;
 }
 
 export interface RecordInfo {

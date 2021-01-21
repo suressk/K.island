@@ -67,6 +67,16 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
+// position
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.fixed {
+  position: fixed;
+}
 
 /**
  文字溢出隐藏
@@ -140,23 +150,6 @@
 }
 .scroller::-webkit-scrollbar-thumb {
   background-color: var(--tipColor);
-}
-
-//.scroller-light::-webkit-scrollbar-thumb:hover {
-//  background-color: #9a9a9a;
-//}
-//.scroller::-webkit-scrollbar-thumb:hover {
-//  background-color: #777;
-//}
-
-.relative {
-  position: relative;
-}
-.absolute {
-  position: absolute;
-}
-.fixed {
-  position: fixed;
 }
 
 // btn-border

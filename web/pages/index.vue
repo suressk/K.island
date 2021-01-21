@@ -172,12 +172,12 @@ export default Vue.extend({
         {
           hid: 'keywords',
           name: 'keywords',
-          content: 'K.,K.island,blog,mood island,web,前端,个人博客,心情记录小站,堃'
+          content: 'K.,K.island,blog,mood island,web,前端,个人网站,心情记录小站,堃'
         },
         {
           hid: 'description',
           name: 'description',
-          content: '世界上每个角落都有人过着相似的人生。愿所有的美好如约而至，愿所有的黑暗都能看到希望，我们都能微笑前行，人生没有完美，也许有些遗憾才美...'
+          content: '愿世间美好都能如约而至，砥砺前行...'
         }
       ]
     }
