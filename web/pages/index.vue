@@ -37,23 +37,23 @@
     </div>
     <!--  文章列表 content  -->
     <div class="content">
-      <ul class="content-list">
-        <li v-for="item in 4" :key="item" class="content-item">
+      <ul class="content-list" v-if="info && info.length > 0">
+        <li v-for="item in info" :key="item.uid" class="content-item">
           <div class="cover flex-center trans-all-03">
-            <img src="" alt="">
+            <img :src="item.cover" alt="">
           </div>
           <div class="info">
-            <span class="time">2021-01-01</span>
-            <span class="title two-line-txt">文章 title</span>
-            <span class="introduce three-line-txt">文章简介</span>
+            <span class="time">{{ item.time }}</span>
+            <span class="title two-line-txt">{{ item.title }}</span>
+            <span class="introduce three-line-txt">{{ item.introduce }}</span>
             <div class="suffix d-flex">
               <span class="r-border views d-flex">
                 <i class="iconfont icon-view" />
-                1203
+                {{ item.views }}
               </span>
               <span class="g-border tag d-flex">
                 <i class="iconfont icon-tag" />
-                Mood
+                {{ item.tag }}
               </span>
             </div>
           </div>
@@ -78,21 +78,24 @@ const navList = [
 
 export default Vue.extend({
   // fetch ({ $axios }) {
-  //   // 测试 axios
-  //   $axios.get('/record/list', {
-  //     params: {
-  //       a: 1,
-  //       b: 2,
-  //       c: 'index'
-  //     }
-  //   }).then((res) => {
-  //     console.log(res)
-  //   })
   // },
   // merge to data: () => ({})
-  // asyncData (ctx) {
-  //   console.log(ctx)
-  // },
+  async asyncData ({ $axios }) {
+    // 测试 axios
+    const { success, data, message } = await $axios.get('/records/list', {
+      params: {
+        pageNo: 1,
+        pageSize: 10
+      }
+    })
+    if (success) {
+      return {
+        info: data.list
+      }
+    } else {
+      console.log(message)
+    }
+  },
   data () {
     return {
       navList,

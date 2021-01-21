@@ -2,6 +2,12 @@ import Vue from 'vue'
 // @ts-ignore
 import { ComponentInternalInstance } from '@vue/runtime-core'
 
+interface NotifyOptions {
+  type: 'success'|'warning'|'info'|'error';
+  title: string;
+  message: string;
+}
+
 const common = {
   install (Vue: ComponentInternalInstance) {
     // 防抖函数
@@ -19,6 +25,15 @@ const common = {
           }, interval)
         }
       }
+    }
+
+    // 消息提示弹窗
+    Vue.prototype.$notify = (options: NotifyOptions = {
+      type: 'success',
+      title: 'Notify',
+      message: ''
+    }) => {
+
     }
   }
 }

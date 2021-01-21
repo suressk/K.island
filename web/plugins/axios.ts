@@ -7,7 +7,8 @@ import { ErrorResponse } from '@/@types'
 
 // @ts-ignore
 export default function ({ redirect, req, app: { $axios } }) {
-  $axios.defaults.baseURL = 'https://www.suressk.com' // 默认请求路径
+  // $axios.defaults.baseURL = 'https://www.suressk.com' // 默认请求路径
+  $axios.defaults.baseURL = 'http://localhost:9527' // 默认请求路径
   // if (process.server) {
   //   // 获取服务端的token
   //   const token = getCookie.getcookiesInServer(req).token
