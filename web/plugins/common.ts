@@ -1,14 +1,16 @@
 import Vue from 'vue'
-import { NotifyOptions, CreateNotify } from '@/uitls'
+import { NotifyOptions, createNotify } from '../uitls/notify'
 
 // @ts-ignore
-import { ComponentInternalInstance } from '@vue/runtime-core'
+// import { ComponentInternalInstance } from '@vue/runtime-core'
 
-const notifications: any[] = [] // 存储所有 notify 弹窗
+// 存储所有 notify 弹窗 Element 元素
+const notifications: HTMLElement[] = []
 let notifyContainer: HTMLElement | undefined
 
 const common = {
-  install (Vue: ComponentInternalInstance) {
+  // @ts-ignore
+  install (Vue) {
     // 防抖函数
     Vue.prototype.$throttle = (fn: Function, interval: number) => {
       let flag = true
@@ -26,17 +28,42 @@ const common = {
       }
     }
 
+    /**
+     * options
+    {
+      type: 'success',
+      title: 'Notify',
+      message: 'Attention Please'
+    }
+    */    
     // 消息提示弹窗
-    Vue.prototype.$notify = (options = {}) => {
+    Vue.prototype.$notify = (options: NotifyOptions) => {
       if (typeof window == undefined) return
+      const defaultTimeout = 4500
       if (notifyContainer === undefined) {
         notifyContainer = document.createElement('div')
         notifyContainer.className = 'notify-container'
+        document.body.appendChild(notifyContainer)
       }
-      // let verticalOffset = 0 // 默认垂直偏移为 0
-      // const 
-      const curPositionNotifications = notifications.forEach((item, index) => {
-        
+      const notifyEl = createNotify(options)
+      notifications.push(notifyEl)
+      notifyContainer.appendChild(notifyEl)
+      new Promise((resolve) => {
+        setTimeout(() => {
+          notifyEl.classList.remove('notify-enter')
+        }, 100)
+        setTimeout(() => {
+          const index = notifications.findIndex(item => item === notifyEl)
+          notifyContainer && notifyContainer.removeChild(notifyEl)
+          notifications.splice(index, 1) // 移除 notifyEl
+          resolve(1)
+        }, defaultTimeout)
+      }).then(() => {
+        // console.log('success: ', val);
+        if (notifications.length === 0) {
+          notifyContainer && document.body.removeChild(notifyContainer)
+          notifyContainer = undefined
+        }
       })
     }
   }

@@ -62,6 +62,10 @@
       <LoadMore class="more" />
     </div>
 
+    <button @click="handleNotify">
+      TEST
+    </button>
+
     <BackToTop />
     <Footer />
   </div>
@@ -76,26 +80,37 @@ const navList = [
   { title: 'About Me', path: '/about' }
 ]
 
+// interface StyleOption {
+//   width?: string;
+//   height?: string;
+//   left?: string;
+//   top?: string;
+// }
+
+// let layerStyle: StyleOption
+// let imgStyle: StyleOption
+
 export default Vue.extend({
   // fetch ({ $axios }) {
   // },
   // merge to data: () => ({})
-  async asyncData ({ $axios }) {
-    // 测试 axios
-    const { success, data, message } = await $axios.get('/records/list', {
-      params: {
-        pageNo: 1,
-        pageSize: 10
-      }
-    })
-    if (success) {
-      return {
-        info: data.list
-      }
-    } else {
-      console.log(message)
-    }
-  },
+  // @ts-ignore
+  // async asyncData ({ $axios }) {
+  //   // 测试 axios
+  //   const { success, data, message } = await $axios.get('/records/list', {
+  //     params: {
+  //       pageNo: 1,
+  //       pageSize: 10
+  //     }
+  //   })
+  //   if (success) {
+  //     return {
+  //       info: data.list
+  //     }
+  //   } else {
+  //     console.log(message)
+  //   }
+  // },
   data () {
     return {
       navList,
@@ -159,6 +174,7 @@ export default Vue.extend({
       const width = parseInt(this.layerStyle.width)
       const height = parseInt(this.layerStyle.height)
       const scale = 1080 / 1920
+      // const style: StyleOption = {}
       const style = {}
       const compute = height / width > scale
       style.width = compute ? `${height / scale}px` : `${width}px`
@@ -166,6 +182,28 @@ export default Vue.extend({
       style.left = (width - parseInt(style.width)) / 2 + 'px'
       style.top = (height - parseInt(style.height)) / 2 + 'px'
       this.imgStyle = { ...this.imgStyle, ...style }
+    },
+    handleNotify () {
+      this.$notify({
+        type: 'success',
+        title: '测试',
+        message: 'Just test the notify methods'
+      })
+      this.$notify({
+        type: 'info',
+        title: '测试',
+        message: 'Just test the notify methods'
+      })
+      this.$notify({
+        type: 'error',
+        title: '测试',
+        message: 'Just test the notify methods'
+      })
+      this.$notify({
+        type: 'warning',
+        title: '测试',
+        message: 'Just test the notify methods'
+      })
     }
   },
   head () {
@@ -189,6 +227,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import url('https://at.alicdn.com/t/font_2332190_xf4z5im8p5m.css');
+@import url('https://at.alicdn.com/t/font_2332190_4dcqptq9px8.css');
 @import "assets/css/pages/index.scss";
 </style>
