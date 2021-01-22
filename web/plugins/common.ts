@@ -1,12 +1,11 @@
 import Vue from 'vue'
+import { NotifyOptions, CreateNotify } from '@/uitls'
+
 // @ts-ignore
 import { ComponentInternalInstance } from '@vue/runtime-core'
 
-interface NotifyOptions {
-  type: 'success'|'warning'|'info'|'error';
-  title: string;
-  message: string;
-}
+const notifications: any[] = [] // 存储所有 notify 弹窗
+let notifyContainer: HTMLElement | undefined
 
 const common = {
   install (Vue: ComponentInternalInstance) {
@@ -28,12 +27,17 @@ const common = {
     }
 
     // 消息提示弹窗
-    Vue.prototype.$notify = (options: NotifyOptions = {
-      type: 'success',
-      title: 'Notify',
-      message: ''
-    }) => {
-
+    Vue.prototype.$notify = (options = {}) => {
+      if (typeof window == undefined) return
+      if (notifyContainer === undefined) {
+        notifyContainer = document.createElement('div')
+        notifyContainer.className = 'notify-container'
+      }
+      // let verticalOffset = 0 // 默认垂直偏移为 0
+      // const 
+      const curPositionNotifications = notifications.forEach((item, index) => {
+        
+      })
     }
   }
 }
