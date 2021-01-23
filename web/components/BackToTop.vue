@@ -65,7 +65,7 @@ export default {
   bottom: 20px;
   right: 30px;
   cursor: pointer;
-  z-index: 1;
+  z-index: 12;
   opacity: 0;
   visibility: hidden;
   color: var(--darkGreen);

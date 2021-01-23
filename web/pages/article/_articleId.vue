@@ -1,6 +1,6 @@
 <template>
   <div class="k-article-info">
-    <Header />
+    <KHeader />
 
     <section class="content">
       <h1 class="title">
@@ -33,7 +33,7 @@
       </div>
     </section>
 
-    <Footer />
+    <KFooter />
   </div>
 </template>
 

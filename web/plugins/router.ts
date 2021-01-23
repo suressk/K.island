@@ -1,6 +1,6 @@
 // @ts-ignore
 export default ({ app: { router }, store }) => {
-  console.log('store: ============', store)
+  // console.log('store: ============', store)
   // 前置守卫 => loader 显示加载状态
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   router.beforeEach((to: any, from: any, next: () => void) => {

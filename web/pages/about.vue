@@ -1,11 +1,11 @@
 <template>
   <div class="k-about">
-    <Header />
+    <KHeader />
     <div class="content">
       你好，我是 K.
     </div>
 
-    <Footer />
+    <KFooter />
   </div>
 </template>
 

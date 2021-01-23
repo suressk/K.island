@@ -1,3 +1,4 @@
+@import "./components/notify.scss";
 /**
   colors variable
 */
@@ -255,64 +256,9 @@
 /**
   content 内容区
 */
-
 .content {
   width: 1200px;
   min-height: 100vh;
   border: 1px solid var(--border);
   margin: auto;
-}
-
-/**
-  notify
-*/
-.notify-container {
-  position: fixed;
-  height: 100vh;
-  right: 0;
-  top: 0;
-  padding: 10px;
-  overflow: hidden;
-  z-index: 11;
-  .notify {
-    margin: 10px 0;
-    transition: all .5s;
-    max-width: 220px;
-    box-shadow: 0 0 10px 3px rgba($color: #000, $alpha: 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    &.notify-enter {
-      transform: translateX(250px);
-      opacity: 0;
-    }
-    .notify-header {
-      margin-bottom: 5px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      .iconfont {
-        margin-right: 5px;
-        font-size: 14px;
-        font-weight: 400;
-        color: inherit;
-      }
-    }
-    &.notify-success .notify-header {
-      color: var(--darkGreen);
-    }
-    &.notify-info .notify-header {
-      color: var(--cyanogen);
-    }
-    &.notify-error .notify-header {
-      color: var(--cinnabar);
-    }
-    &.notify-warning .notify-header {
-      color: var(--warning);
-    }
-    .notify-body {
-      font-size: 14px;
-      margin: 5px 0;
-      color: var(--lightTxt);
-    }
-  }
 }

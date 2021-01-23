@@ -1,12 +1,15 @@
 <template>
   <div class="k-article-page">
-    <Header />
+    <KHeader />
     <!--  文章列表页  -->
     <section class="content">
+      <nuxt-link to="/article/12">
+        detail
+      </nuxt-link>
       文章列表
     </section>
 
-    <Footer />
+    <KFooter />
   </div>
 </template>
 

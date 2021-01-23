@@ -67,7 +67,7 @@
     </button>
 
     <BackToTop />
-    <Footer />
+    <KFooter />
   </div>
 </template>
 
@@ -80,15 +80,12 @@ const navList = [
   { title: 'About Me', path: '/about' }
 ]
 
-// interface StyleOption {
-//   width?: string;
-//   height?: string;
-//   left?: string;
-//   top?: string;
+// interface IStyleOption {
+//   [prop: string]: string;
 // }
 
-// let layerStyle: StyleOption
-// let imgStyle: StyleOption
+let layerStyle = {}
+let imgStyle = {}
 
 export default Vue.extend({
   // fetch ({ $axios }) {
@@ -117,8 +114,9 @@ export default Vue.extend({
       showNav: false,
       sceneHeight: '100%',
       sceneWidth: '100%',
-      layerStyle: {},
-      imgStyle: {}
+      layerStyle,
+      imgStyle,
+      info: []
     }
   },
   mounted () {
@@ -174,7 +172,7 @@ export default Vue.extend({
       const width = parseInt(this.layerStyle.width)
       const height = parseInt(this.layerStyle.height)
       const scale = 1080 / 1920
-      // const style: StyleOption = {}
+      // const style: IStyleOption = {}
       const style = {}
       const compute = height / width > scale
       style.width = compute ? `${height / scale}px` : `${width}px`
@@ -186,21 +184,6 @@ export default Vue.extend({
     handleNotify () {
       this.$notify({
         type: 'success',
-        title: '测试',
-        message: 'Just test the notify methods'
-      })
-      this.$notify({
-        type: 'info',
-        title: '测试',
-        message: 'Just test the notify methods'
-      })
-      this.$notify({
-        type: 'error',
-        title: '测试',
-        message: 'Just test the notify methods'
-      })
-      this.$notify({
-        type: 'warning',
         title: '测试',
         message: 'Just test the notify methods'
       })
@@ -218,7 +201,7 @@ export default Vue.extend({
         {
           hid: 'description',
           name: 'description',
-          content: '愿世间美好都能如约而至，砥砺前行...'
+          content: '愿世间美好都能如约而至，愿我们都能变为自己期愿的样子...'
         }
       ]
     }

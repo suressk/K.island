@@ -35,11 +35,11 @@ const common = {
       title: 'Notify',
       message: 'Attention Please'
     }
-    */    
+    */
     // 消息提示弹窗
     Vue.prototype.$notify = (options: NotifyOptions) => {
       if (typeof window == undefined) return
-      const defaultTimeout = 4500
+      const defaultTimeout = 5000
       if (notifyContainer === undefined) {
         notifyContainer = document.createElement('div')
         notifyContainer.className = 'notify-container'
@@ -52,6 +52,9 @@ const common = {
         setTimeout(() => {
           notifyEl.classList.remove('notify-enter')
         }, 100)
+        setTimeout(() => {
+          notifyEl.classList.add('notify-enter')
+        }, defaultTimeout - 600)
         setTimeout(() => {
           const index = notifications.findIndex(item => item === notifyEl)
           notifyContainer && notifyContainer.removeChild(notifyEl)
