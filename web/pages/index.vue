@@ -192,6 +192,11 @@ export default Vue.extend({
         title: '测试',
         message: 'Just test the notify methods'
       })
+      this.$notification({
+        type: 'success',
+        title: '测试',
+        message: 'Just test the notify methods'
+      })
     }
   },
   head () {
