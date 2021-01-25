@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { NotifyOptions, createNotify } from '../uitls/notify'
+import Notification from '../components/notification'
 
 // @ts-ignore
 // import { ComponentInternalInstance } from '@vue/runtime-core'
@@ -68,6 +69,10 @@ const common = {
           notifyContainer = undefined
         }
       })
+    }
+
+    Vue.prototype.$notification = (options: NotifyOptions) => {
+      Notification(options)
     }
   }
 }

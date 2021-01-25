@@ -1,8 +1,8 @@
 <template>
-  <transition name="k-notify-fade">
+  <transition name="notify">
     <div class="notify" v-show="visible">
       <div class="notify-header">
-        <i class="iconfont" :class="'icon-notify-' + type" />
+        <i class="iconfont" :class="'icon-' + type" />
         <span class="notify-title">{{ title }}</span>
       </div>
       <div class="notify-body">
@@ -12,7 +12,7 @@
   </transition>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'Notify',
   data () {
@@ -21,11 +21,27 @@ export default {
       type: 'success',
       title: 'Notify',
       message: 'success',
+      timer: null,
+      duration: 5000,
+      onClose: null
     }
+  },
+  methods: {
+    // close () {
+
+    // }
+  },
+  mounted () {
+    this.timer = setTimeout(() => {
+      this.onClose()
+    }, this.duration)
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+/* .notify {
+  padding: 20px;
+  border-radius: 10px;
+} */
 </style>

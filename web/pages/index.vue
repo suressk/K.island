@@ -187,6 +187,11 @@ export default Vue.extend({
         title: '测试',
         message: 'Just test the notify methods'
       })
+      this.$notification({
+        type: 'error',
+        title: '测试',
+        message: 'Just test the notify methods'
+      })
     }
   },
   head () {
@@ -210,6 +215,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import url('https://at.alicdn.com/t/font_2332190_4dcqptq9px8.css');
+@import url('https://at.alicdn.com/t/font_2332190_d92mmalv49j.css');
 @import "assets/css/pages/index.scss";
 </style>
