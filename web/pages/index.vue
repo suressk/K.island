@@ -182,18 +182,13 @@ export default Vue.extend({
       this.imgStyle = { ...this.imgStyle, ...style }
     },
     handleNotify () {
-      this.$notify({
-        type: 'success',
-        title: '测试',
-        message: 'Just test the notify methods'
-      })
+      // this.$notify({
+      //   type: 'success',
+      //   title: '测试',
+      //   message: 'Just test the notify methods'
+      // })
       this.$notification({
         type: 'error',
-        title: '测试',
-        message: 'Just test the notify methods'
-      })
-      this.$notification({
-        type: 'success',
         title: '测试',
         message: 'Just test the notify methods'
       })
@@ -220,6 +215,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@import url('https://at.alicdn.com/t/font_2332190_d92mmalv49j.css');
+@import url('https://at.alicdn.com/t/font_2332190_7zmx9vl8cra.css');
 @import "assets/css/pages/index.scss";
 </style>

@@ -26,11 +26,15 @@
   opacity: 0;
 }
 
+.notification {
+  position: fixed;
+  right: 10px;
+}
 
 .notify {
   margin: 10px 0;
   transition: all .5s;
-  max-width: 220px;
+  max-width: 230px;
   box-shadow: 0 0 10px 3px rgba($color: #000, $alpha: 0.1);
   background-color: var(--white);
   border-radius: 10px;
@@ -40,14 +44,24 @@
     opacity: 0;
   }
   .notify-header {
-    margin-bottom: 5px;
-    font-weight: 700;
+    margin-bottom: 10px;
+    font-weight: 400;
     display: flex;
     align-items: center;
+    &.notification-success {
+      color: var(--darkGreen);
+    }
+    &.notification-info {
+      color: var(--cyanogen);
+    }
+    &.notification-warning {
+      color: var(--warning);
+    }
+    &.notification-error {
+      color: var(--cinnabar);
+    }
     .iconfont {
       margin-right: 5px;
-      font-size: 14px;
-      font-weight: 400;
       color: inherit;
     }
   }

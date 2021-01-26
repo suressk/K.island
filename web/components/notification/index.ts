@@ -12,16 +12,16 @@ interface IOptions {
 }
 
 interface IInstance {
-  [prop: string]: any
+  [prop: string]: any;
 }
 
-let seed = 1
+let key = 1
 let instance: IInstance
 let instances: IInstance[] = []
 
 const Notification = (options: IOptions): IInstance | undefined => {
   if (typeof window === 'undefined') return
-  const id = 'notification_' + seed++
+  const id = 'notification_' + key++
 
   options.onClose = () => {
     Notification.close(id);
@@ -54,7 +54,6 @@ const Notification = (options: IOptions): IInstance | undefined => {
 //     // Notification[type] = options => {
 //     //
 //     // }
-//
 //   }
 // })
 
@@ -77,9 +76,9 @@ Notification.close = (id: string) => {
   
   const removedHeight = instance.$el.offsetHeight
   for (let i = 0; i < len - 1; i++) {
-    const verticalOffset = instances[i].$el.style[instance.verticalOffset]
+    const verticalOffset = instances[i].$el.style['top']
     console.log('verticalOffset', verticalOffset);
-    instances[i].$el.style[instance.offset] = parseInt(verticalOffset) - removedHeight - 16 + 'px'
+    instances[i].$el.style['top'] = parseInt(verticalOffset) - removedHeight - 16 + 'px'
   }
 }
 
