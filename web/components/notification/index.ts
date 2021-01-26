@@ -39,7 +39,7 @@ const Notification = (options: IOptions): IInstance | undefined => {
   let offset = 0
   // instance.$el.style.zIndex = PopupManager.nextZIndex();
   instances.forEach(item => {
-    console.log('offsetHeight ==============', item.$el.offsetHeight);
+    // console.log('offsetHeight ==============', item.$el.offsetHeight);
     offset += item.$el.offsetHeight + 16
   })
   offset += 16
