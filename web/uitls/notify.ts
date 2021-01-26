@@ -14,7 +14,7 @@ export function createNotify (options: NotifyOptions): HTMLElement {
     el.className = className
     const header = document.createElement('div')
     const icon = document.createElement('i')
-    icon.className = 'iconfont icon-notice'
+    icon.className = 'iconfont icon-' + options.type
     header.className = 'notify-header'
     const titleNode = document.createTextNode(options.title)
     header.appendChild(icon)
