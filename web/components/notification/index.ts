@@ -39,7 +39,7 @@ const Notification = (options: IOptions): IInstance | undefined => {
   let offset = 0
   // instance.$el.style.zIndex = PopupManager.nextZIndex();
   instances.forEach(item => {
-    console.log('offsetHeight ==============', item.$el.offsetHeight);
+    // console.log('offsetHeight ==============', item.$el.offsetHeight);
     offset += item.$el.offsetHeight + 16
   })
   offset += 16
@@ -77,7 +77,7 @@ Notification.close = (id: string) => {
   const removedHeight = instance.$el.offsetHeight
   for (let i = 0; i < len - 1; i++) {
     const verticalOffset = instances[i].$el.style['top']
-    console.log('verticalOffset', verticalOffset);
+    // console.log('verticalOffset', verticalOffset);
     instances[i].$el.style['top'] = parseInt(verticalOffset) - removedHeight - 16 + 'px'
   }
 }

@@ -3,12 +3,8 @@ import { ElNotification } from 'element-plus'
 import { getStorageToken } from '@/utils/util'
 import { ResponseData, ErrorResponse } from '@/@types'
 
-/* eslint-disable */
-// @ts-ignore
-const BASE_URL = window.__CONFIG.domainURL
-
 const service: AxiosInstance = axios.create({
-  baseURL: BASE_URL || '/',
+  baseURL: 'http://localhost:9527' || '/',
   timeout: 9000
 })
 
@@ -82,8 +78,7 @@ service.interceptors.request.use(
 /**
  * response interceptor
  */
-// @ts-ignore
-service.interceptors.response.use((resp): Promise<ResponseData> => {
+service.interceptors.response.use((resp: AxiosResponse): AxiosResponse<ResponseData> => {
   // const data = resp.data.data;
   // if (data.token) {
   //   // LocalStorage 存储 token

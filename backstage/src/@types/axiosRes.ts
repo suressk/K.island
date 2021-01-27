@@ -1,6 +1,13 @@
-export interface ResponseRes<T> {
+/**
+ * res => {
+    success: boolean;
+    data: object;
+    message: string;
+  }
+ */
+export interface ResponseRes {
   success: boolean;
-  data: T;
+  data: any;
   message: string;
 }
 
@@ -16,8 +23,6 @@ interface ListRes<T> {
   total: number;
 }
 
-export interface ResponseListRes<T> {
-  success: boolean;
+export interface ResponseListRes<T> extends ResponseRes {
   data: ListRes<T>;
-  message: string;
 }
