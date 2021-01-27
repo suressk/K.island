@@ -1,25 +1,15 @@
 import Vue from 'vue'
-// @ts-ignore
+
 import Main from './main.vue'
+import { NotificationOptions, NotificationInstance } from '~/@types'
 
 const NotificationConstructor = Vue.extend(Main)
 
-interface IOptions {
-  [prop: string]: any;
-  type: 'success' | 'info' | 'warning' | 'error';
-  title: string;
-  message: string;
-}
-
-interface IInstance {
-  [prop: string]: any;
-}
-
 let key = 1
-let instance: IInstance
-let instances: IInstance[] = []
+let instance: NotificationInstance
+let instances: NotificationInstance[] = []
 
-const Notification = (options: IOptions): IInstance | undefined => {
+const Notification = (options: NotificationOptions): NotificationInstance | undefined => {
   if (typeof window === 'undefined') return
   const id = 'notification_' + key++
 
@@ -43,7 +33,7 @@ const Notification = (options: IOptions): IInstance | undefined => {
     offset += item.$el.offsetHeight + 16
   })
   offset += 16
-  
+
   instance.offset = offset
   instances.push(instance)
   return instance
@@ -73,11 +63,11 @@ Notification.close = (id: string) => {
   if (len <= 1) return
   // const position = curInstance.position
   // console.log('position ====', position);
-  
+
   const removedHeight = instance.$el.offsetHeight
   for (let i = 0; i < len - 1; i++) {
     const verticalOffset = instances[i].$el.style['top']
-    console.log('verticalOffset', verticalOffset);
+    // console.log('verticalOffset', verticalOffset);
     instances[i].$el.style['top'] = parseInt(verticalOffset) - removedHeight - 16 + 'px'
   }
 }

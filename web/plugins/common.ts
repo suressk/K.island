@@ -3,7 +3,7 @@ import { NotifyOptions, createNotify } from '../uitls/notify'
 import Notification from '../components/notification'
 
 // @ts-ignore
-// import { ComponentInternalInstance } from '@vue/runtime-core'
+import { ComponentInternalInstance } from '@vue/runtime-core'
 
 // 存储所有 notify 弹窗 Element 元素
 const notifications: HTMLElement[] = []
@@ -11,7 +11,7 @@ let notifyContainer: HTMLElement | undefined
 
 const common = {
   // @ts-ignore
-  install (Vue) {
+  install (Vue: ComponentInternalInstance) {
     // 防抖函数
     Vue.prototype.$throttle = (fn: Function, interval: number) => {
       let flag = true

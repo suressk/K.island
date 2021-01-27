@@ -49,7 +49,7 @@ export default {
     }, this.duration)
   },
   watch: {
-    closed (val) {
+    closed (val: boolean) {
       // 已关闭
       if (val) {
         this.visible = false

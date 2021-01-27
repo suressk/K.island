@@ -49,10 +49,12 @@
       position: absolute;
       left: -25px;
       top: -250%;
+      z-index: 9;
       opacity: 0;
       width: 100px;
       height: 100px;
       border: 1px solid var(--border);
+      background-color: var(--white);
       border-radius: 5px;
       transition: opacity .3s ease;
       &::before,
