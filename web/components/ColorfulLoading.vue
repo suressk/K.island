@@ -1,5 +1,5 @@
 <template>
-  <div class="loader flex-center">
+  <div class="loader fixed flex-center">
     <div class="loading">
       <span style="--i: 1;" />
       <span style="--i: 2;" />
@@ -37,6 +37,7 @@ export default {
   height: 100vh;
   background-color: #042104;
   animation: animateBg 10s linear infinite;
+  z-index: 100;
   .loading {
     position: relative;
     width: 150px;

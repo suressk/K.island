@@ -72,12 +72,18 @@
 // position
 .relative {
   position: relative;
+  left: 0;
+  top: 0;
 }
 .absolute {
   position: absolute;
+  left: 0;
+  top: 0;
 }
 .fixed {
   position: fixed;
+  left: 0;
+  top: 0;
 }
 
 /**

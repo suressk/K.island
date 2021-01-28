@@ -1,6 +1,7 @@
 <template>
   <div class="main-page">
     <!--<CircleLoading />-->
+    <!-- <colorful-loading /> -->
     <!--  封面图  -->
     <div class="page-cover">
       <div id="scene" class="wh-100 flex-center" :style="{ height: sceneHeight }">
@@ -74,6 +75,7 @@
 <script>
 import Vue from 'vue'
 import Parallax from 'parallax-js'
+import ColorfulLoading from '../components/ColorfulLoading.vue'
 
 const navList = [
   { title: 'Article', path: '/article' },
@@ -88,6 +90,7 @@ let layerStyle = {}
 let imgStyle = {}
 
 export default Vue.extend({
+  components: { ColorfulLoading },
   // fetch ({ $axios }) {
   // },
   // merge to data: () => ({})
