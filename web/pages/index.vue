@@ -1,6 +1,6 @@
 <template>
   <div class="main-page">
-    <!--<CircleLoading />-->
+    <!-- <CircleLoading /> -->
     <!-- <colorful-loading /> -->
     <!--  封面图  -->
     <div class="page-cover">
