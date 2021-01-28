@@ -5,6 +5,7 @@
         K.
       </nuxt-link>
     </h1>
+    <span class="k-title flex-center">{{ title }}</span>
     <ul class="header-r-nav flex-center">
       <li class="r-nav-item flex-center qrcode">
         <i class="iconfont icon-qrcode trans-all-03" />
@@ -29,9 +30,15 @@ import QRCode from 'qrcode'
 
 export default {
   name: 'Header',
-  data () {
-    return {}
+  props: {
+    title: {
+      type: String,
+      default: 'K'
+    }
   },
+  // data () {
+  //   return {}
+  // },
   mounted () {
     const qrCodeContainer = document.getElementById('qrcode')
     QRCode.toCanvas(qrCodeContainer, window.location.href)

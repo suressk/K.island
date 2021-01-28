@@ -28,14 +28,13 @@ const common = {
         }
       }
     }
-
     /**
      * options
-    {
-      type: 'success',
-      title: 'Notify',
-      message: 'Attention Please'
-    }
+      {
+        type: 'success',
+        title: 'Notify',
+        message: 'Attention Please'
+      }
     */
     // 消息提示弹窗
     Vue.prototype.$notify = (options: NotifyOptions) => {

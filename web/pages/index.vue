@@ -105,6 +105,11 @@ export default Vue.extend({
   //     }
   //   })
   //   if (success) {
+  //     this.$notification({
+  //       type: 'success',
+  //       title: 'SUCCESS',
+  //       message
+  //     })
   //     return {
   //       info: data.list
   //     }
@@ -131,7 +136,7 @@ export default Vue.extend({
     })
   },
   beforeRouteEnter (to: any, from: any, next: any): void {
-    next((vm) => {
+    next((vm: { init: () => void }) => {
       vm.init()
       window.onresize = () => vm.init()
     })
