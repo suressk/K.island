@@ -5,7 +5,7 @@
     <!--  封面图  -->
     <div class="page-cover">
       <div id="scene" class="wh-100 flex-center" :style="{ height: sceneHeight }">
-        <div class="layer" data-depth="0.2" :style="layerStyle">
+        <div class="layer flex-center" data-depth="0.2" :style="layerStyle">
           <!--<img src="~@/static/images/scene_bg.webp" alt="cover" width="1920" height="1080" :style="imgStyle">-->
           <img src="~@/static/images/cover-es36sme-50as.webp" alt="cover" width="1920" height="1080" :style="imgStyle">
         </div>
@@ -72,8 +72,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
+// @ts-ignore
 import Parallax from 'parallax-js'
 import ColorfulLoading from '../components/ColorfulLoading.vue'
 
@@ -82,12 +83,12 @@ const navList = [
   { title: 'About Me', path: '/about' }
 ]
 
-// interface IStyleOption {
-//   [prop: string]: string;
-// }
+interface IStyleOption {
+  [prop: string]: string;
+}
 
-let layerStyle = {}
-let imgStyle = {}
+let layerStyle: IStyleOption = {}
+let imgStyle: IStyleOption = {}
 
 export default Vue.extend({
   components: { ColorfulLoading },
@@ -175,8 +176,8 @@ export default Vue.extend({
       const width = parseInt(this.layerStyle.width)
       const height = parseInt(this.layerStyle.height)
       const scale = 1080 / 1920
-      // const style: IStyleOption = {}
-      const style = {}
+      const style: IStyleOption = {}
+      // const style = {}
       const compute = height / width > scale
       style.width = compute ? `${height / scale}px` : `${width}px`
       style.height = compute ? `${height}px` : `${width * scale}px`
