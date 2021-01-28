@@ -130,7 +130,7 @@ export default Vue.extend({
       clipRelativeInput: true
     })
   },
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter (to: any, from: any, next: any): void {
     next((vm) => {
       vm.init()
       window.onresize = () => vm.init()
