@@ -98,24 +98,26 @@ export default Vue.extend({
   // @ts-ignore
   // async asyncData ({ $axios }) {
   //   // 测试 axios
-  //   const { success, data, message } = await $axios.get('/records/list', {
+  //   // const { success, data, message } = await $axios.get('/records/list', {
+  //   const res = await $axios.get('/records/list', {
   //     params: {
   //       pageNo: 1,
   //       pageSize: 10
   //     }
   //   })
-  //   if (success) {
-  //     this.$notification({
-  //       type: 'success',
-  //       title: 'SUCCESS',
-  //       message
-  //     })
-  //     return {
-  //       info: data.list
-  //     }
-  //   } else {
-  //     console.log(message)
-  //   }
+  //   console.log('RESPONSE ===== ', res);
+  //   // if (success) {
+  //   //   this.$notification({
+  //   //     type: 'success',
+  //   //     title: 'SUCCESS',
+  //   //     message
+  //   //   })
+  //   //   return {
+  //   //     info: data.list
+  //   //   }
+  //   // } else {
+  //   //   console.log(message)
+  //   // }
   // },
   data () {
     return {
@@ -135,6 +137,7 @@ export default Vue.extend({
       clipRelativeInput: true
     })
   },
+  // @ts-ignore
   beforeRouteEnter (to: any, from: any, next: any): void {
     next((vm: { init: () => void }) => {
       vm.init()

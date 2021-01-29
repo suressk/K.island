@@ -11,7 +11,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import Vue from 'vue'
+
+export default Vue.extend({
   name: 'Notify',
   data () {
     return {
@@ -44,7 +46,7 @@ export default {
     }
   },
   mounted () {
-    this.timer = setTimeout(() => {
+    this.timer = window.setTimeout(() => {
       this.close()
     }, this.duration)
   },
@@ -58,5 +60,5 @@ export default {
       }
     }
   }
-}
+})
 </script>

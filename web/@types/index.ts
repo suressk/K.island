@@ -14,3 +14,8 @@ export interface NotificationOptions {
 export interface NotificationInstance {
   [prop: string]: any;
 }
+
+export interface ILoadImageItem {
+  el: HTMLImageElement;
+  src: string;
+}

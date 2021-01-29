@@ -13,15 +13,18 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   name: 'Article',
+  // @ts-ignore
   head () {
     return {
       title: 'Article | K.island'
     }
   }
-}
+})
 </script>
 
 <style scoped lang="scss">

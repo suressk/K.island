@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { NotifyOptions, createNotify } from '../uitls/notify'
+import { ILoadImageItem } from '~/@types'
 import Notification from '../components/notification'
 
 // @ts-ignore
@@ -12,19 +13,60 @@ let notifyContainer: HTMLElement | undefined
 const common = {
   // @ts-ignore
   install (Vue: ComponentInternalInstance) {
-    // 防抖函数
-    Vue.prototype.$throttle = (fn: Function, interval: number) => {
-      let flag = true
-      let timer: any
+    // 节流
+    Vue.prototype.$throttle = (fn: Function, delay: number = 3000) => {
+      // let flag = true
+      // let timer: any
+      // return function (...args: any[]) {
+      //   if (flag) {
+      //     flag = false
+      //     timer && clearTimeout(timer)
+      //     timer = setTimeout(() => {
+      //       // @ts-ignore
+      //       fn.apply(this, args)
+      //       flag = true
+      //     }, interval)
+      //   }
+      // }
+      let timer: null | number = null
+      let startTime: number
       return function (...args: any[]) {
-        if (flag) {
-          flag = false
-          timer && clearTimeout(timer)
-          timer = setTimeout(() => {
-            // @ts-ignore
-            fn.apply(this, args)
-            flag = true
-          }, interval)
+        // @ts-ignore
+        const ctx = this,
+          now = new Date().getTime()
+        if (startTime && now < startTime + delay) {
+          if (timer) clearTimeout(timer)
+          timer = window.setTimeout(() => {
+            startTime = now
+            fn.apply(ctx, args)
+          }, delay)
+        } else {
+          startTime = now
+          fn.apply(ctx, args)
+        }
+      }
+    }
+
+    // 防抖
+    Vue.prototype.$debounce = (fn: Function, delay: number, immediate: boolean) => {
+      let timer: null | number = null
+      return function () {
+        // @ts-ignore
+        let ctx = this
+        let callNow
+        if (timer) clearTimeout(timer)
+        if (immediate) {
+          callNow = !timer
+          if (callNow) {
+            fn.apply(ctx, arguments)
+          }
+          timer = window.setTimeout(() => {
+            timer = null
+          }, delay)
+        } else {
+          timer = window.setTimeout(() => {
+            fn.apply(ctx, arguments)
+          }, delay)
         }
       }
     }
@@ -36,7 +78,7 @@ const common = {
         message: 'Attention Please'
       }
     */
-    // 消息提示弹窗
+    // Message Notification - Native JS achieve
     Vue.prototype.$notify = (options: NotifyOptions) => {
       if (typeof window == undefined) return
       const defaultTimeout = 5000
@@ -69,9 +111,49 @@ const common = {
         }
       })
     }
-
+    // Message Notification Vue.extend() API achieve
     Vue.prototype.$notification = (options: NotifyOptions) => {
       Notification(options)
+    }
+
+    /**
+     * 首页图片懒加载
+     */
+    let listenList: ILoadImageItem[] = []
+
+    Vue.directive('lazy', {
+      inserted: (el: HTMLImageElement, binding: { value: any }) => {
+        const src = binding.value
+        listenList.push({ el, src })
+        window.addEventListener('scroll', watch)
+        lazyLoadImg({ el, src })
+      },
+      unbind: () => {
+        window.removeEventListener('scroll', watch)
+      }
+    })
+
+    // 使用函数，切换路由，可清除监听事件
+    const watch = () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      Vue.prototype.$throttle(() => listenList.map(img => lazyLoadImg(img)) , 50)()
+  }
+
+    // 图片懒加载
+    const lazyLoadImg = (loadItem: ILoadImageItem) => {
+      const { el, src } = loadItem
+      const windowHeight = document.documentElement.clientHeight || document.body.clientHeight
+      const elTop = el.getBoundingClientRect().top
+      const show = elTop <= windowHeight + 500 // 屏幕高度 + 500px 范围内加载
+      if (src && show) {
+        let img = new Image()
+        img.src = src
+        img.onload = e => {
+          el.src = src
+          const index = listenList.indexOf(loadItem)
+          index > -1 && listenList.splice(index, 1)
+        }
+      }
     }
   }
 }

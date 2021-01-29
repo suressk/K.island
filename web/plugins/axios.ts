@@ -3,7 +3,8 @@
  * store, router,
  * */
 import { AxiosResponse } from 'axios'
-import { ErrorResponse } from '@/@types'
+import { ErrorResponse } from '~/@types'
+import Vue from 'vue'
 
 // @ts-ignore
 export default function ({ redirect, req, app: { $axios } }) {
@@ -26,10 +27,10 @@ export default function ({ redirect, req, app: { $axios } }) {
   // response拦截器，数据返回后，可以先在这里进行一个简单的判断
   $axios.interceptors.response.use(
     (response: AxiosResponse) => {
-      if (process.client) {
-        // 客户端下， 请求进度条结束
-        // NProgress.done()
-      }
+      // if (process.client) {
+      //   // 客户端下， 请求进度条结束
+      //   // NProgress.done()
+      // }
       return response.data
       // return response
       // if (response.data.code === 401) {
@@ -50,15 +51,16 @@ export default function ({ redirect, req, app: { $axios } }) {
       // }
     },
     (error: ErrorResponse) => {
-      if (process.client) {
-        // NProgress.done()
-      }
-      if (error.response.status === 500) {
+      const { response } = error
+      // if (process.client) {
+      //   // NProgress.done()
+      // }
+      if (response && response.status === 500) {
         redirect('/')
       }
-      if (error.response.status === 404) {
+      if (response && response.status === 404) {
         redirect('/404')
       }
-      return Promise.reject(error.response) // 返回接口返回的错误信息
+      return Promise.reject(response) // 返回接口返回的错误信息
     })
 }

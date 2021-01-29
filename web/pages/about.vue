@@ -9,15 +9,17 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
   name: 'About',
+  // @ts-ignore
   head () {
     return {
       title: "Hi!I'm K. | K.island"
     }
   }
-}
+})
 </script>
 
 <style scoped lang="scss">
