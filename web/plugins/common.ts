@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { NotifyOptions, createNotify } from '../uitls/notify'
+import { NotifyOptions, createNotify } from '../utils/notify'
 import { ILoadImageItem } from '~/@types'
 import Notification from '../components/notification'
 
