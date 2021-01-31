@@ -1,6 +1,12 @@
 <template>
   <transition name="notify">
-    <div class="notify notification" v-show="visible" :style="verticalOffset">
+    <div
+      class="notify notification"
+      v-show="visible"
+      :style="verticalOffset"
+      @mouseenter="stopDestroy"
+      @mouseleave="startDestroy"
+    >
       <div class="notify-header" :class="'notification-' + type">
         <i class="iconfont" :class="'icon-' + type" />
         <span class="notify-title" v-text="title" />
@@ -10,80 +16,123 @@
   </transition>
 </template>
 
-<script lang="ts">
-import {
-  defineComponent,
-  ref,
-  computed,
-  onMounted,
-  watch,
-  getCurrentInstance,
-  PropType
-} from '@vue/composition-api'
+<script>
 import { addListener, removeListener } from '@/utils/util'
-
-export default defineComponent({
-  name: 'Notification',
-  props: {
-    offset: { type: Number, default: 0 },
-    onClose: {
-      type: Function as PropType<() => void>,
-      required: true
-    },
-    message: { type: String, default: '' },
-    title: { type: String, default: '' },
-    type: { type: String, default: '' },
+export default {
+  name: 'Notify',
+  data () {
+    return {
+      visible: false,
+      type: '',
+      title: '',
+      message: '',
+      timer: null,
+      duration: 5000,
+      // onClose: null,
+      offset: 0,
+      closed: false
+    }
   },
-  setup (props) {
-    console.log('props', props)
-    const { proxy } = getCurrentInstance()
-    console.log(proxy);
-    let closed = ref<boolean>(false)
-    let visible = ref<boolean>(false)
-    // let type = ref<string>('success')
-    // let title = ref<string>('Notification')
-    // let message = ref<string>('success')
-    const timer = ref<null | number>(null)
-    const duration = ref<number>(5000)
-    // let onClose = ref<null | Function>(null)
-    // let offset = ref<number>(0)
-
-    // 销毁组件
-    function destroyElement() {
-      removeListener(proxy.$el, 'transitionend', destroyElement)
-      // proxy.$el.removeEventListener('transitionend', destroyElement);
-      // this.$destroy(true);
-      props.onClose() // 全局实例数组中移除当前实例
-      proxy.$el.parentNode.removeChild(proxy.$el);
+  computed: {
+    verticalOffset () {
+      return `top: ${this.offset}px;`
     }
-    function close () {
-      closed.value = true
-      props.onClose()
+  },
+  methods: {
+    destroyElement() {
+      removeListener(this.$el, 'transitionend', this.destroyElement)
+      this.$destroy();
+      // this.$el.parentNode.removeChild(this.$el);
+    },
+    close () {
+      this.closed = true
+      this.onClose()
+    },
+    startDestroy () {
+      this.timer = setTimeout(() => {
+        !this.closed && this.close()
+      }, this.duration)
+    },
+    stopDestroy () {
+      clearTimeout(this.timer)
+      this.timer = null
     }
-
-    const verticalOffset = computed(() => `top: ${props.offset}px;`)
-    watch(closed, (val: boolean) => {
-      console.log('closed', val);
+  },
+  mounted () {
+    this.timer = setTimeout(() => {
+      this.close()
+    }, this.duration)
+  },
+  watch: {
+    closed (val) {
       // 已关闭
       if (val) {
-        visible.value = false
+        this.visible = false
         // transition 结束移除 $el
-        addListener(proxy.$el, 'transitionend', destroyElement)
-        // proxy.$el.addEventListener('transitionend', destroyElement)
+        addListener(this.$el, 'transitionend', this.destroyElement)
       }
-    })
-    onMounted(() => {
-      timer.value = window.setTimeout(() => {
-        !closed.value && close()
-      }, duration.value)
-    })
-    return {
-      visible,
-      // type,
-      // title,
-      // message,
-      verticalOffset
     }
   }
-})
+}
+
+// import {
+//   defineComponent,
+//   ref,
+//   computed,
+//   onMounted,
+//   watch,
+//   getCurrentInstance,
+//   PropType
+// } from '@vue/composition-api'
+// export default defineComponent({
+//   name: 'Notification',
+//   setup (props) {
+//     console.log('props', props)
+//     const { proxy } = getCurrentInstance()
+//     console.log(proxy);
+//     const closed = ref<boolean>(false)
+//     const visible = ref<boolean>(false)
+//     const timer = ref<null | number>(null)
+//     const duration = ref<number>(5000)
+//     // let type = ref<string>('success')
+//     // let title = ref<string>('Notification')
+//     // let message = ref<string>('success')
+//     // let onClose = ref<null | Function>(null)
+//     // let offset = ref<number>(0)
+//
+//     // 销毁组件
+//     function destroyElement() {
+//       removeListener(proxy.$el, 'transitionend', destroyElement)
+//       // proxy.$el.removeEventListener('transitionend', destroyElement);
+//       // this.$destroy(true);
+//       proxy.onClose && proxy.onClose() // 全局实例数组中移除当前实例
+//       // proxy.$el.parentNode.removeChild(proxy.$el);
+//     }
+//     function close () {
+//       closed.value = true
+//       // props.onClose()
+//       timer.value = null
+//     }
+//
+//     const verticalOffset = computed(() => `top: ${proxy.offset}px;`)
+//     watch(closed, (val: boolean) => {
+//       // 已关闭
+//       if (val) {
+//         visible.value = false
+//         // transition 结束移除 $el
+//         addListener(proxy.$el, 'transitionend', destroyElement)
+//         // proxy.$el.addEventListener('transitionend', destroyElement)
+//       }
+//     })
+//     onMounted(() => {
+//       timer.value = window.setTimeout(() => {
+//         !closed.value && close()
+//       }, duration.value)
+//     })
+//     return {
+//       visible,
+//       verticalOffset
+//     }
+//   }
+// })
 </script>

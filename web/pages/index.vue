@@ -77,7 +77,15 @@ import Vue from 'vue'
 // @ts-ignore
 import Parallax from 'parallax-js'
 import ColorfulLoading from '../components/ColorfulLoading.vue'
-
+import {
+  defineComponent,
+  // ref,
+  // computed,
+  // onMounted,
+  // watch,
+  // getCurrentInstance,
+  // PropType
+} from '@vue/composition-api'
 const navList = [
   { title: 'Article', path: '/article' },
   { title: 'About Me', path: '/about' }
@@ -90,8 +98,16 @@ interface IStyleOption {
 let layerStyle: IStyleOption = {}
 let imgStyle: IStyleOption = {}
 
+defineComponent({
+  components: { ColorfulLoading },
+  setup () {
+
+  }
+})
+
 export default Vue.extend({
   components: { ColorfulLoading },
+  // commit / dispatch => store
   // fetch ({ $axios }) {
   // },
   // merge to data: () => ({})
