@@ -81,13 +81,13 @@
     }
     .nav-item {
       user-select: none;
-      // color: var(--lightTxt);
-      color: var(--cinnabar);
+      color: var(--lightTxt);
+      //color: var(--cinnabar);
       margin: 0 10px;
       cursor: pointer;
       &:hover {
-        // color: #222;
-        filter: hue-rotate(calc(45deg * var(--i)))
+         color: #222;
+        //filter: hue-rotate(calc(45deg * var(--i)))
       }
     }
     .tip {

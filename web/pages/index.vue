@@ -27,7 +27,6 @@
           :key="nav.title"
           :to="nav.path"
           class="nav-item"
-          :style="`--i: ${index + 1};`"
         >
           {{ nav.title }}
         </nuxt-link>
@@ -94,7 +93,7 @@ export default defineComponent({
   // beforeRouteEnter (to: any, from: any, next: any): void {
   //   next((vm: { init: () => void }) => {
   //     console.log('beforeRouteEnter', vm)
-      
+
   //     vm.init()
   //     window.onresize = () => vm.init()
   //   })
@@ -237,7 +236,7 @@ export default defineComponent({
 //         title: '测试',
 //         message: 'Just test the notify methods'
 //       })
-      
+
 //     }
 //   },
 //   head () {

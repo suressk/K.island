@@ -1,8 +1,7 @@
 # <center>K.island</center>
 <!-- # <div align="center">K.island</div> -->
 
-<!-- <div align="center"> -->
- <center>
+<div align="center">
     <img src="https://img.shields.io/badge/Nuxt-v2.0.1-blue">
     <img src="https://img.shields.io/badge/@vue/cli-v4.5.9-blue">
     <img src="https://img.shields.io/badge/vuex-v4.0.0-blue">
@@ -10,8 +9,7 @@
     <img src="https://img.shields.io/badge/ElementPlus-v1.0.1.bate.11-blue">
     <img src="https://img.shields.io/badge/Node-v12.18.3-blue">
     <img src="https://img.shields.io/badge/MySQL-v8.0.19-blue">
-</center>
-<!-- </div> -->
+</div>
 
 [toc]
 
