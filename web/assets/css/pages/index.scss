@@ -22,6 +22,7 @@
         border-radius: 5px;
         cursor: default;
         user-select: none;
+        filter: drop-shadow(5px 0px 5px var(--cyanogen)) invert(0%);
         &.nav-show {
           color: var(--lightTxt);
         }
@@ -80,11 +81,13 @@
     }
     .nav-item {
       user-select: none;
-      color: var(--lightTxt);
+      // color: var(--lightTxt);
+      color: var(--cinnabar);
       margin: 0 10px;
       cursor: pointer;
       &:hover {
-        color: #222;
+        // color: #222;
+        filter: hue-rotate(calc(45deg * var(--i)))
       }
     }
     .tip {

@@ -1,19 +1,14 @@
 import {
-    // defineComponent,
     ref,
     onMounted,
     reactive,
-    onBeforeUnmount,
-    onGlobalSetup
-    // computed,
-    // watch,
-    // getCurrentInstance,
-    // PropType
+    onBeforeUnmount
 } from '@nuxtjs/composition-api'
 // @ts-ignore
 import Parallax from 'parallax-js'
-import Notification from '../components/notification'
-import { throttle } from '../utils/util'
+// import Notification from '../components/notification'
+import { preventDefault, throttle } from '../utils/util'
+// import {  } from '../'
 
 interface IStyleOption {
     [prop: string]: string;
@@ -88,15 +83,23 @@ export default function useIndex () {
 
     function handleToggleNav () {
         showNav.value = !showNav.value
+        // 菜单可见
+        if (showNav.value) {
+            document.addEventListener('touchmove', preventDefault, { passive: false })
+        } else {
+            document.removeEventListener('touchmove', preventDefault)
+        }
+        // 下拉菜单可见 => 整页不可滚动
+        document.body.style.overflowY = showNav.value ? 'hidden' : ''
     }
 
-    function handleNotify () {
-        Notification({
-            type: 'error',
-            title: '测试',
-            message: 'Just test the notify methods'
-        })
-    }
+    // function handleNotify () {
+    //     Notification({
+    //         type: 'error',
+    //         title: '测试',
+    //         message: 'Just test the notify methods'
+    //     })
+    // }
 
     onMounted(() => {
         init()
@@ -120,7 +123,6 @@ export default function useIndex () {
         sceneHeight,
         layerStyle,
         coverStyle,
-        handleToggleNav,
-        handleNotify
+        handleToggleNav
     }
 }

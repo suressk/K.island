@@ -31,7 +31,7 @@ export function removeListener (
  * @param delay
  * @param immediate
  */
-export const debounce = (fn: Function, delay: number, immediate: boolean) => {
+export function debounce (fn: Function, delay: number, immediate: boolean) {
   let timer: null | number = null
   return function () {
     // @ts-ignore
@@ -59,7 +59,7 @@ export const debounce = (fn: Function, delay: number, immediate: boolean) => {
  * @param fn
  * @param delay
  */
-export const throttle = (fn: Function, delay: number = 3000) => {
+export function throttle (fn: Function, delay: number = 3000) {
   let timer: null | number = null
   let startTime: number
   return function (...args: any[]) {

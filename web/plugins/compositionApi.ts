@@ -1,4 +1,4 @@
 // import Vue from 'vue'
-// import NuxtCompositionApi from '@nuxtjs/composition-api'
+// import VueCompositionApi from '@vue/composition-api'
 
-// Vue.use(NuxtCompositionApi)
+// Vue.use(VueCompositionApi)

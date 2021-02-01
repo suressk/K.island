@@ -23,13 +23,15 @@
       <!--   导航菜单   -->
       <div class="nav flex-center" :class="{ 'is-show': showNav }">
         <nuxt-link
-          v-for="nav in navList"
+          v-for="(nav, index) in navList"
           :key="nav.title"
           :to="nav.path"
           class="nav-item"
+          :style="`--i: ${index + 1};`"
         >
           {{ nav.title }}
         </nuxt-link>
+        <a href="https://github.com/suerssk" target="_blank" class="nav-item">GitHub</a>
         <div class="tip">
           Everywhere in the world has a similar life.
         </div>
@@ -63,29 +65,15 @@
       <LoadMore class="more" />
     </div>
 
-    <button @click="handleNotify">
-      TEST
-    </button>
-
     <BackToTop />
     <KFooter />
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-// @ts-ignore
-import Parallax from 'parallax-js'
+// import Vue from 'vue'
 import ColorfulLoading from '../components/ColorfulLoading.vue'
-import {
-  defineComponent,
-  ref,
-  onMounted,
-  // computed,
-  // watch,
-  // getCurrentInstance,
-  // PropType
-} from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from './useIndex'
 
 const navList = [
@@ -93,17 +81,9 @@ const navList = [
   { title: 'About Me', path: '/about' }
 ]
 
-interface IStyleOption {
-  [prop: string]: string;
-}
-
-let layerStyle: IStyleOption = {}
-let coverStyle: IStyleOption = {}
-
 export default defineComponent({
   components: { ColorfulLoading },
   setup () {
-
     return {
       navList,
       ...useIndex(),
