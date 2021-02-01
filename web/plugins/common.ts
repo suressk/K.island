@@ -137,7 +137,7 @@ const common = {
     const watch = () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       Vue.prototype.$throttle(() => listenList.map(img => lazyLoadImg(img)) , 50)()
-  }
+    }
 
     // 图片懒加载
     const lazyLoadImg = (loadItem: ILoadImageItem) => {

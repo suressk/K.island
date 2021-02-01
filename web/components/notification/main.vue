@@ -83,7 +83,7 @@ export default {
 //   watch,
 //   getCurrentInstance,
 //   PropType
-// } from '@vue/composition-api'
+// } from '@nuxtjs/composition-api'
 // export default defineComponent({
 //   name: 'Notification',
 //   setup (props) {
