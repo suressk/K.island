@@ -1,5 +1,5 @@
 <template>
-  <div class="back-to-top trans-all-05" :class="{ show: isBack }" @click="handleBackTop">
+  <div class="back-top trans-all-05" :class="{ show: isBack }" @click="handleBackTop">
     <i class="iconfont icon-toTop" />
   </div>
 </template>
@@ -58,7 +58,7 @@ export default {
 </script>
 
 <style lang="scss">
-.back-to-top {
+.back-top {
   padding: 5px;
   border-radius: 5px;
   position: fixed;

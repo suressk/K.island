@@ -33,7 +33,7 @@ export function removeListener (
  */
 export function debounce (fn: Function, delay: number, immediate: boolean) {
   let timer: null | number = null
-  return function () {
+  return function (...args: any[]) {
     // @ts-ignore
     let ctx = this
     let callNow
@@ -41,14 +41,14 @@ export function debounce (fn: Function, delay: number, immediate: boolean) {
     if (immediate) {
       callNow = !timer
       if (callNow) {
-        fn.apply(ctx, arguments)
+        fn.apply(ctx, args)
       }
       timer = window.setTimeout(() => {
         timer = null
       }, delay)
     } else {
       timer = window.setTimeout(() => {
-        fn.apply(ctx, arguments)
+        fn.apply(ctx, args)
       }, delay)
     }
   }
@@ -64,8 +64,8 @@ export function throttle (fn: Function, delay: number = 3000) {
   let startTime: number
   return function (...args: any[]) {
     // @ts-ignore
-    const ctx = this,
-      now = new Date().getTime()
+    const ctx = this
+    const now = new Date().getTime()
     if (startTime && now < startTime + delay) {
       if (timer) clearTimeout(timer)
       timer = window.setTimeout(() => {

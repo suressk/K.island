@@ -8,7 +8,6 @@ import {
 import Parallax from 'parallax-js'
 // import Notification from '../components/notification'
 import { preventDefault, throttle } from '../utils/util'
-// import {  } from '../'
 
 interface IStyleOption {
     [prop: string]: string;
@@ -26,8 +25,6 @@ export default function useIndex () {
     let layerStyle = reactive<IStyleOption>({})
     let coverStyle = reactive<IStyleOption>({})
 
-    // const { proxy } = getCurrentInstance()
-
     // 封面图宽高及位置计算
     function computeCover () {
         const width = parseInt(layerStyle.width)
@@ -40,7 +37,7 @@ export default function useIndex () {
         style.left = (width - parseInt(style.width)) / 2 + 'px'
         style.top = (height - parseInt(style.height)) / 2 + 'px'
         // coverStyle = reactive({ ...coverStyle, ...style })
-        coverStyle.width = style.width //  = { ...layerStyle, ...style }
+        coverStyle.width = style.width
         coverStyle.height = style.height
         coverStyle.marginLeft = style.left
         coverStyle.marginTop = style.top
@@ -68,7 +65,7 @@ export default function useIndex () {
           marginTop: -0.5 * y + 'px'
         }
         // layerStyle = reactive({ ...layerStyle, ...style })
-        layerStyle.width = style.width //  = { ...layerStyle, ...style }
+        layerStyle.width = style.width
         layerStyle.height = style.height
         layerStyle.marginLeft = style.marginLeft
         layerStyle.marginTop = style.marginTop
@@ -93,14 +90,6 @@ export default function useIndex () {
         document.body.style.overflowY = showNav.value ? 'hidden' : ''
     }
 
-    // function handleNotify () {
-    //     Notification({
-    //         type: 'error',
-    //         title: '测试',
-    //         message: 'Just test the notify methods'
-    //     })
-    // }
-
     onMounted(() => {
         init()
         // 图片根据鼠标方向略微偏移
@@ -116,6 +105,7 @@ export default function useIndex () {
 
     onBeforeUnmount(() => {
         window.onresize = null
+        document.body.style.overflowY = ''
     })
 
     return {

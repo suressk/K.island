@@ -23,7 +23,7 @@
       <!--   导航菜单   -->
       <div class="nav flex-center" :class="{ 'is-show': showNav }">
         <nuxt-link
-          v-for="(nav, index) in navList"
+          v-for="nav in navList"
           :key="nav.title"
           :to="nav.path"
           class="nav-item"
@@ -64,16 +64,16 @@
       <LoadMore class="more" />
     </div>
 
-    <BackToTop />
+    <BackTop />
     <KFooter />
   </div>
 </template>
 
 <script lang="ts">
-// import Vue from 'vue'
 import ColorfulLoading from '../components/ColorfulLoading.vue'
 import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from './useIndex'
+// import html2canvas from 'html2canvas'
 
 const navList = [
   { title: 'Article', path: '/article' },
@@ -82,6 +82,34 @@ const navList = [
 
 export default defineComponent({
   components: { ColorfulLoading },
+  // // @ts-ignore
+  // fetch ({ $axios }) {
+  // },
+  // // merge to data: () => ({})
+  // // @ts-ignore
+  // async asyncData ({ $axios }) {
+  //   // 测试 axios
+  //   // const { success, data, message } = await $axios.get('/records/list', {
+  //   const res = await $axios.get('/records/list', {
+  //     params: {
+  //       pageNo: 1,
+  //       pageSize: 10
+  //     }
+  //   })
+  //   console.log('RESPONSE ===== ', res);
+  //   // if (success) {
+  //   //   this.$notification({
+  //   //     type: 'success',
+  //   //     title: 'SUCCESS',
+  //   //     message
+  //   //   })
+  //   //   return {
+  //   //     info: data.list
+  //   //   }
+  //   // } else {
+  //   //   console.log(message)
+  //   // }
+  // },
   setup () {
     return {
       navList,
@@ -89,6 +117,13 @@ export default defineComponent({
       info: []
     }
   },
+  // mounted() {
+  //   setTimeout(() => {
+  //     html2canvas(document.body).then(canvas => {
+  //       document.body.appendChild(canvas)
+  //     })
+  //   }, 5000)
+  // },
   // // @ts-ignore
   // beforeRouteEnter (to: any, from: any, next: any): void {
   //   next((vm: { init: () => void }) => {
@@ -120,143 +155,6 @@ export default defineComponent({
     }
   }
 })
-
-// export default Vue.extend({
-//   components: { ColorfulLoading },
-//   // commit / dispatch => store
-//   // fetch ({ $axios }) {
-//   // },
-//   // merge to data: () => ({})
-//   // @ts-ignore
-//   // async asyncData ({ $axios }) {
-//   //   // 测试 axios
-//   //   // const { success, data, message } = await $axios.get('/records/list', {
-//   //   const res = await $axios.get('/records/list', {
-//   //     params: {
-//   //       pageNo: 1,
-//   //       pageSize: 10
-//   //     }
-//   //   })
-//   //   console.log('RESPONSE ===== ', res);
-//   //   // if (success) {
-//   //   //   this.$notification({
-//   //   //     type: 'success',
-//   //   //     title: 'SUCCESS',
-//   //   //     message
-//   //   //   })
-//   //   //   return {
-//   //   //     info: data.list
-//   //   //   }
-//   //   // } else {
-//   //   //   console.log(message)
-//   //   // }
-//   // },
-//   data () {
-//     return {
-//       navList,
-//       showNav: false,
-//       sceneHeight: '100%',
-//       sceneWidth: '100%',
-//       layerStyle,
-//       coverStyle,
-//       info: []
-//     }
-//   },
-//   mounted () {
-//     this.init()
-//     new Parallax(document.getElementById('scene'), {
-//       relativeInput: true,
-//       clipRelativeInput: true
-//     })
-//   },
-//   // @ts-ignore
-//   beforeRouteEnter (to: any, from: any, next: any): void {
-//     next((vm: { init: () => void }) => {
-//       vm.init()
-//       window.onresize = () => vm.init()
-//     })
-//   },
-//   beforeRouteLeave (to, from, next) {
-//     window.onresize = null
-//     next()
-//   },
-//   methods: {
-//     init () {
-//       this.sceneHeight = document.documentElement.clientHeight + 'px'
-//       this.sceneWidth = document.documentElement.clientWidth + 'px'
-//       this.coverLayer()
-//     },
-//     handleToggleNav () {
-//       this.showNav = !this.showNav
-//     },
-//     coverLayer () {
-//       const sceneWidth = parseInt(this.sceneWidth)
-//       const sceneHeight = parseInt(this.sceneHeight)
-//       const e = (sceneWidth > 1000 || sceneHeight > 1000) ? 1000 : 500
-//       let x, y, i
-//       if (sceneWidth >= sceneHeight) {
-//         i = sceneWidth / e * 50
-//         y = i
-//         x = i * sceneWidth / sceneHeight
-//       } else {
-//         i = sceneHeight / e * 50
-//         x = i
-//         y = i * sceneHeight / sceneWidth
-//       }
-//       const style = {
-//         width: sceneWidth + x + 'px',
-//         height: sceneHeight + y + 'px',
-//         marginLeft: -0.5 * x + 'px',
-//         marginTop: -0.5 * y + 'px'
-//       }
-//       this.layerStyle = { ...this.layerStyle, ...style }
-//       this.coverImg()
-//     },
-//     coverImg () {
-//       const width = parseInt(this.layerStyle.width)
-//       const height = parseInt(this.layerStyle.height)
-//       const scale = 1080 / 1920
-//       const style: IStyleOption = {}
-//       // const style = {}
-//       const compute = height / width > scale
-//       style.width = compute ? `${height / scale}px` : `${width}px`
-//       style.height = compute ? `${height}px` : `${width * scale}px`
-//       style.left = (width - parseInt(style.width)) / 2 + 'px'
-//       style.top = (height - parseInt(style.height)) / 2 + 'px'
-//       this.coverStyle = { ...this.coverStyle, ...style }
-//     },
-//     handleNotify () {
-//       // this.$notify({
-//       //   type: 'success',
-//       //   title: '测试',
-//       //   message: 'Just test the notify methods'
-//       // })
-//       this.$notification({
-//         type: 'error',
-//         title: '测试',
-//         message: 'Just test the notify methods'
-//       })
-
-//     }
-//   },
-//   head () {
-//     return {
-//       title: 'K.island',
-//       meta: [
-//         {
-//           hid: 'keywords',
-//           name: 'keywords',
-//           content: 'K.,K.island,blog,mood island,web,前端,个人网站,心情记录小站,堃'
-//         },
-//         {
-//           hid: 'description',
-//           name: 'description',
-//           content: '愿世间美好都能如约而至，愿我们都能变为自己期愿的样子...'
-//         }
-//       ]
-//     }
-//   }
-// })
 </script>
 
 <style lang="scss">
