@@ -29,8 +29,8 @@
 
 <script lang="ts">
 import QRCode from 'qrcode'
-import { defineComponent, ref, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
-import { addListener, removeListener, throttle } from '../../utils/util'
+import { ref, defineComponent, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
+import { addListener, removeListener, throttle } from '~/utils/util'
 
 export default defineComponent({
   name: 'KHeader',
