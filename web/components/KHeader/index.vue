@@ -14,7 +14,7 @@
           />
         </span>
       </h1>
-      <span class="k-title flex-center txt-overflow" :class="{ active: showTitle }">{{ kTitle }}</span>
+      <span class="k-title flex-center txt-overflow" :class="{ active: showTitle }">{{ customTitle }}</span>
       <ul class="header-r-nav flex-center">
         <li class="r-nav-item flex-center qrcode">
           <i class="iconfont icon-qrcode trans-all-03" />
@@ -38,13 +38,13 @@
 <script lang="ts">
 import QRCode from 'qrcode'
 import { ref, defineComponent, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
-import { addListener, removeListener, throttle } from '../../utils/util' // '~/utils/util'
-import Notification from '../../components/notification'
+import { addListener, removeListener, throttle } from '~/utils/util' // '../../utils/util'
+import Notification from '~/components/notification'
 
 export default defineComponent({
   name: 'KHeader',
   props: {
-    kTitle: {
+    customTitle: {
       type: String,
       default: 'K. (≖ᴗ≖)✧'
     }

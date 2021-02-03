@@ -1,6 +1,6 @@
 <template>
   <div class="k-about">
-    <KHeader k-title="(≖ᴗ≖)✧" />
+    <KHeader custom-title="(≖ᴗ≖)✧" />
     <div class="content">
       你好，我是 K.
     </div>
