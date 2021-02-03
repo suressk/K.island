@@ -1,5 +1,4 @@
-# <center>K.island</center>
-<!-- # <div align="center">K.island</div> -->
+# <div align="center">K.island</div>
 
 <div align="center">
     <img src="https://img.shields.io/badge/Nuxt-v2.0.1-blue">
