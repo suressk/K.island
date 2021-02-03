@@ -6,7 +6,7 @@
           K.
         </nuxt-link>
       </h1>
-      <span class="k-title flex-center" :class="{ active: showTitle }">{{ title }}</span>
+      <span class="k-title flex-center" :class="{ active: showTitle }">{{ kTitle }}</span>
       <ul class="header-r-nav flex-center">
         <li class="r-nav-item flex-center qrcode">
           <i class="iconfont icon-qrcode trans-all-03" />
@@ -30,14 +30,14 @@
 <script lang="ts">
 import QRCode from 'qrcode'
 import { ref, defineComponent, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
-import { addListener, removeListener, throttle } from '~/utils/util'
+import { addListener, removeListener, throttle } from '../../utils/util' // '~/utils/util'
 
 export default defineComponent({
   name: 'KHeader',
   props: {
-    title: {
+    kTitle: {
       type: String,
-      default: 'K'
+      default: 'K. (≖ᴗ≖)✧'
     }
   },
   setup () {

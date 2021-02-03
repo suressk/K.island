@@ -1,7 +1,8 @@
 <template>
   <div class="main-page">
-    <!-- <CircleLoading /> -->
-    <!-- <colorful-loading /> -->
+    <!-- <CircleLoading />
+    <ColorfulLoading />
+    <Loading /> -->
     <!--  封面图  -->
     <div class="page-cover">
       <div id="scene" class="wh-100 flex-center" :style="{ height: sceneHeight }">
@@ -61,7 +62,7 @@
           </div>
         </li>
       </ul>
-      <LoadMore class="more" />
+      <LoadMore class="more" :load-status="loadStatus" @load-more="handleLoadMore" />
     </div>
 
     <BackTop />
@@ -70,7 +71,6 @@
 </template>
 
 <script lang="ts">
-import ColorfulLoading from '../components/ColorfulLoading.vue'
 import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from './useIndex'
 // import html2canvas from 'html2canvas'
@@ -81,7 +81,6 @@ const navList = [
 ]
 
 export default defineComponent({
-  components: { ColorfulLoading },
   // // @ts-ignore
   // fetch ({ $axios }) {
   // },

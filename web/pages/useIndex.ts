@@ -22,8 +22,9 @@ export default function useIndex () {
     const sceneHeight = ref<string>('100%')
     const sceneWidth = ref<string>('100%')
     const showNav = ref<boolean>(false)
-    let layerStyle = reactive<IStyleOption>({})
-    let coverStyle = reactive<IStyleOption>({})
+    const loadStatus = ref<string>('loadMore')
+    const layerStyle = reactive<IStyleOption>({})
+    const coverStyle = reactive<IStyleOption>({})
 
     // 封面图宽高及位置计算
     function computeCover () {
@@ -90,6 +91,17 @@ export default function useIndex () {
         document.body.style.overflowY = showNav.value ? 'hidden' : ''
     }
 
+    function handleLoadMore () {
+        // console.log('load more')
+        loadStatus.value = 'loading'
+        setTimeout(() => {
+            loadStatus.value = 'noMore'
+        }, 6000)
+        setTimeout(() => {
+            loadStatus.value = 'loadMore'
+        }, 8000)
+    }
+
     onMounted(() => {
         init()
         // 图片根据鼠标方向略微偏移
@@ -110,9 +122,11 @@ export default function useIndex () {
 
     return {
         showNav,
+        loadStatus,
         sceneHeight,
         layerStyle,
         coverStyle,
-        handleToggleNav
+        handleToggleNav,
+        handleLoadMore
     }
 }

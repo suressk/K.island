@@ -1,16 +1,28 @@
 // 媒体查询 - 响应式样式
-@media screen and (max-width: 900px) {
-  div.main-page {
-    .page-cover {
-      //.mask {
-      //  clip-path: polygon(0 0, 30% 0, 70% 100%, 0% 100%);
-      //}
+@media screen and (max-width: 1200px) {
+  div.k-page {
+    // .page-cover {
+    //   //.mask {
+    //   //  clip-path: polygon(0 0, 30% 0, 70% 100%, 0% 100%);
+    //   //}
+    // }
+    .content {
+      width: 100%;
     }
   }
 }
+@media screen and (max-width: 900px) {
+  // div.k-page {
+  //   .page-cover {
+  //     //.mask {
+  //     //  clip-path: polygon(0 0, 30% 0, 70% 100%, 0% 100%);
+  //     //}
+  //   }
+  // }
+}
 
 @media screen and (max-width: 500px) {
-  div.main-page {
+  div.k-page {
     .page-cover {
       .mask {
         clip-path: none;
