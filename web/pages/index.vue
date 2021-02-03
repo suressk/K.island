@@ -157,6 +157,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import url('https://at.alicdn.com/t/font_2332190_7zmx9vl8cra.css');
+@import url('https://at.alicdn.com/t/font_2332190_ouxgc89654n.css');
 @import "assets/css/pages/index.scss";
 </style>

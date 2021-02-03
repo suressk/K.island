@@ -16,5 +16,6 @@ export default {
   z-index: 1;
   background-color: var(--white);
   padding: 10px 0;
+  height: 40px;
 }
 </style>

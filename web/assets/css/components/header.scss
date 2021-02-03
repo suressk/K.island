@@ -15,26 +15,36 @@
     z-index: 20;
     background-color: var(--white);
     box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
-  }
-  .k-logo {
-    background-image: url("~@/static/images/logo.svg");
-    background-size: 36px;
-    background-position: 10px, 0;
-    background-repeat: no-repeat;
-    width: 60px;
-    height: 100%;
-    cursor: pointer;
-    // filter: drop-shadow(5px 0px 5px var(--cyanogen)) invert(10%);
-    .link {
-      width: 100%;
+    .header-l-nav {
       height: 100%;
-      color: transparent;
+      .logo {
+        background-image: url("~@/static/images/logo.svg");
+        background-size: 36px;
+        background-position: 10px, 0;
+        background-repeat: no-repeat;
+        display: inline-block;
+        width: 60px;
+        height: 100%;
+        cursor: pointer;
+        color: transparent;
+      }
+      .k-play {
+        width: 60px;
+        height: 100%;
+        .iconfont {
+          font-size: 25px;
+          padding: 10px;
+          cursor: pointer;
+        }
+      }
     }
   }
   .k-title {
     opacity: 0;
     transition: all .5s ease-in-out;
     transform: translateY(20px);
+    flex: 1;
+    height: 100%;
     &.active {
       opacity: 1;
       transform: translateY(0);
@@ -48,6 +58,7 @@
     .avatar {
       height: 80%;
       border-radius: 50%;
+      border: 1px solid var(--lightBg);
     }
   }
   .r-nav-item {

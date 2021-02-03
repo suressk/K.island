@@ -1,12 +1,20 @@
 <template>
   <header class="k-header">
     <div class="header-content flex-between fixed">
-      <h1 class="k-logo">
-        <nuxt-link class="link flex-center" to="/">
-          K.
-        </nuxt-link>
+      <h1 class="header-l-nav d-flex">
+        <nuxt-link class="logo flex-center" to="/">K.</nuxt-link>
+        <span class="k-play flex-center">
+          <i
+            class="iconfont"
+            :class="{
+              'icon-play': !playing,
+              'icon-paused': playing
+            }"
+            @click="handlePlayMusic"
+          />
+        </span>
       </h1>
-      <span class="k-title flex-center" :class="{ active: showTitle }">{{ kTitle }}</span>
+      <span class="k-title flex-center txt-overflow" :class="{ active: showTitle }">{{ kTitle }}</span>
       <ul class="header-r-nav flex-center">
         <li class="r-nav-item flex-center qrcode">
           <i class="iconfont icon-qrcode trans-all-03" />
@@ -31,6 +39,7 @@
 import QRCode from 'qrcode'
 import { ref, defineComponent, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
 import { addListener, removeListener, throttle } from '../../utils/util' // '~/utils/util'
+import Notification from '../../components/notification'
 
 export default defineComponent({
   name: 'KHeader',
@@ -42,6 +51,7 @@ export default defineComponent({
   },
   setup () {
     const showTitle = ref<boolean>(false)
+    const playing = ref<boolean>(false)
 
     function handleScroll () {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
@@ -50,6 +60,15 @@ export default defineComponent({
         return
       }
       showTitle.value && (showTitle.value = false)
+    }
+
+    function handlePlayMusic () {
+      playing.value = !playing.value
+      Notification({
+        type: 'success',
+        title: 'Notice',
+        message: 'Play status changed...'
+      })
     }
 
     const fnScroll = throttle(handleScroll, 100)
@@ -63,7 +82,9 @@ export default defineComponent({
       removeListener(document, 'scroll', fnScroll)
     })
     return {
-      showTitle
+      showTitle,
+      playing,
+      handlePlayMusic
     }
   }
 })

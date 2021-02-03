@@ -12,13 +12,18 @@
   }
 }
 @media screen and (max-width: 900px) {
-  // div.k-page {
-  //   .page-cover {
-  //     //.mask {
-  //     //  clip-path: polygon(0 0, 30% 0, 70% 100%, 0% 100%);
-  //     //}
-  //   }
-  // }
+  div.k-page {
+    .k-header {
+      .header-content {
+        padding: 0;
+      }
+    }
+    // .page-cover {
+    //   //.mask {
+    //   //  clip-path: polygon(0 0, 30% 0, 70% 100%, 0% 100%);
+    //   //}
+    // }
+  }
 }
 
 @media screen and (max-width: 500px) {

@@ -1,6 +1,3 @@
-// .content {
-//   width: 1200px;
-//   min-height: 100vh;
-//   border: 1px solid var(--border);
-//   margin: auto;
-// }
+.content {
+  min-height: calc(100vh - 130px);
+}

@@ -5,7 +5,6 @@ export interface ErrorResponse {
 }
 
 export interface NotificationOptions {
-  [prop: string]: any;
   type: 'success' | 'info' | 'warning' | 'error';
   title: string;
   message: string;

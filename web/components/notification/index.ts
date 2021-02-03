@@ -20,18 +20,22 @@ const Notification = (options: NotificationOptions): NotificationInstance | unde
     offset += item.$el.offsetHeight + 16
   })
   offset += 16
-  options = {
-    duration: 5000,
-    ...options,
-    id,
-    offset,
-    onClose: () => {
-      close(id)
-    }
-  }
+  // options = {
+  //   duration: 5000,
+  //   ...options,
+  //   id,
+  //   offset,
+  //   onClose: () => {
+  //     close(id)
+  //   }
+  // }
   instance = new NotificationConstructor({
     data: options
   })
+  instance.onClose = () => {
+    close(id)
+  }
+  instance.offset = offset
 
   instance.id = id
   instance.$mount()
