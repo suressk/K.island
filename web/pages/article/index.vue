@@ -1,8 +1,13 @@
 <template>
-  <div class="k-article-page">
+  <div class="k-article">
     <KHeader custom-title="(≖ᴗ≖)✧" />
     <!--  文章列表页  -->
-    <section class="content">
+    <section v-if="!list" class="nothing-content tip flex-center">
+        空无一物
+      <canvas ref="animateCanvas" width="100%" height="100%" class="animation-canvas" />
+    </section>
+    <!--  有内容  -->
+    <section v-else class="content">
       <nuxt-link to="/article/12">
         detail
       </nuxt-link>
@@ -14,10 +19,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, computed } from '@nuxtjs/composition-api'
+import useArticle from './useArticle'
 
 export default defineComponent({
   name: 'Article',
+  setup (props, ctx) {
+    const list = computed(() => false)
+    return {
+      list,
+      ...useArticle(ctx)
+    }
+  },
   head () {
     return {
       title: 'Article | K.island'
