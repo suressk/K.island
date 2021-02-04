@@ -37,9 +37,9 @@
 
 <script lang="ts">
 import QRCode from 'qrcode'
+import Notification from '~/components/notification'
 import { ref, defineComponent, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
 import { addListener, removeListener, throttle } from '~/utils/util' // '../../utils/util'
-import Notification from '~/components/notification'
 
 export default defineComponent({
   name: 'KHeader',

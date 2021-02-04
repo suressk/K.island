@@ -1,4 +1,4 @@
-# <div align="center">K.island</div>
+# <div align="center">K.island</div> {ignore=true}
 
 <div align="center">
     <img src="https://img.shields.io/badge/Nuxt-v2.0.1-blue">
@@ -22,7 +22,7 @@
 
 ## 🎃 欢迎来到 "对抗路"
 
-1. vue 3.0 (全家桶) + Element-plus (按需引入)
+1. vue 3.0 (全家桶) + Element-plus (按需引入) + 自定义组件
 2. typescript 类型检查系统初试
 
 ## 🌞 好戏开场了
