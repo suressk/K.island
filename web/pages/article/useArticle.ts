@@ -95,7 +95,7 @@ export default function useArticle (context: SetupContext) {
     canvasRef.width = width
     canvasRef.height = height
     // loop()
-    waveRecord(canvasRef)
+    // waveRecord(canvasRef)
   })
   return {}
 }
