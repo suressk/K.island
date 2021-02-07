@@ -1,5 +1,6 @@
 import createCanvas from './createCanvas'
-import {change, random, callFuncTimes} from './util'
+import {chance, random, callFuncTimes} from './util'
+import {ISource} from './types'
 
 let dropSize = 64
 const Drop = {
@@ -52,8 +53,8 @@ class RainDrops {
     protected width: number,
     protected height: number,
     protected scale: number,
-    protected dropAlpha: number,
-    protected dropColor: string,
+    protected dropAlpha: ISource,
+    protected dropColor: ISource,
     protected options: IOptions = {}
   ) {
     this.options = {...defaultOptions, ...options}
@@ -223,7 +224,7 @@ class RainDrops {
     if (this.options.raining) {
       const limit = this.options.rainLimit * timeScale * this.areaMultiplier
       let count = 0
-      while (change(this.options.rainChance * timeScale * this.areaMultiplier) && count < limit) {
+      while (chance(this.options.rainChance * timeScale * this.areaMultiplier) && count < limit) {
         count++
         const r = random(this.options.minR, this.options.maxR, (n: number) => {
           return n ** 3
@@ -297,12 +298,12 @@ class RainDrops {
         // update gravity (重力)
         // chance of drops "creeping down" (顺着玻璃流下来)
         if (
-          change(drop.r - (this.options.minR * this.options.dropFallMultiplier) * (0.1 / this.deltaR) * timeScale)
+          chance(drop.r - (this.options.minR * this.options.dropFallMultiplier) * (0.1 / this.deltaR) * timeScale)
         ) {
           drop.momentum += random((drop.r / this.options.maxR) * 4)
         }
 
-        if (this.options.autoShink && drop.r <= this.options.minR && change(0.05 * timeScale)) {
+        if (this.options.autoShink && drop.r <= this.options.minR && chance(0.05 * timeScale)) {
           drop.shrink += 0.01
         }
 

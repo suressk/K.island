@@ -61,7 +61,13 @@ function close (id: string) {
   })[0]
   if (!curInstance) return
   notifications.splice(index, 1)
-  curInstance.$el.parentNode.removeChild(curInstance.$el)
+  /**
+   * TODO ==========================================
+   * 此方法移除 element 将无过渡效果
+   * 不加则会遗留一个 notification 组件不会移除
+   * TODO ==========================================
+   * */
+  // curInstance.$el.parentNode.removeChild(curInstance.$el)
   // 移除实例前，实例列表只剩当前实例，就不存在需变动其他实例的 position 偏移量
   if (len <= 1) return
 

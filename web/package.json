@@ -15,6 +15,7 @@
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/composition-api": "^0.19.0",
     "core-js": "^3.8.2",
+    "glslify": "^7.1.1",
     "nuxt": "^2.14.12",
     "parallax-js": "^3.1.0",
     "qrcode": "^1.4.4"

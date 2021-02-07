@@ -26,7 +26,7 @@ export function random(
 /**
  *
  * */
-export function change(controlNum: number) {
+export function chance(controlNum: number) {
   return random() <= controlNum
 }
 

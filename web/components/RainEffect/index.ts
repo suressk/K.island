@@ -1,14 +1,30 @@
-import RainDrops from "./rainDrops";
+import RainDrops from './RainDrops'
+import loadImages from './ImageLoader'
+import { ISource } from './types'
 
 let rainDrops,
   canvasDom: HTMLCanvasElement,
   renderer,
-  dropAlpha: number = 1,
-  dropColor: string = ''
+  dropAlpha: ISource,
+  dropColor: ISource
+
+function loadTextures() {
+  loadImages([
+    { name: 'dropAlpha', src: '~/static/images/drop-alpha.png' },
+    { name: 'dropColor', src: '~/static/images/drop-color.png' }
+  ]).then(images => {
+    // @ts-ignore
+    dropColor = images.dropColor.img
+    // @ts-ignore
+    dropAlpha = images.dropAlpha.img
+    init()
+  })
+}
+
+loadTextures()
 
 function init() {
-  // @ts-ignore
-  canvasDom = document.getElementById('coverContainer')!
+  canvasDom = document.getElementById('coverContainer') as HTMLCanvasElement
   let dpi: number = window.devicePixelRatio
   canvasDom.width = window.innerWidth * dpi
   canvasDom.height = window.innerHeight * dpi

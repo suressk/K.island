@@ -42,7 +42,7 @@ export default {
     destroyElement() {
       removeListener(this.$el, 'transitionend', this.destroyElement)
       this.$destroy();
-      // this.$el.parentNode.removeChild(this.$el);
+      this.$el.parentNode.removeChild(this.$el);
     },
     close () {
       this.closed = true
