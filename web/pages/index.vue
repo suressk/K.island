@@ -65,6 +65,8 @@
       <LoadMore class="more" :load-status="loadStatus" @load-more="handleLoadMore" />
     </div>
 
+    <canvas id="container"></canvas>
+
     <BackTop />
     <KFooter />
   </div>
@@ -117,11 +119,11 @@ export default defineComponent({
     }
   },
   // mounted() {
-  //   setTimeout(() => {
-  //     html2canvas(document.body).then(canvas => {
-  //       document.body.appendChild(canvas)
-  //     })
-  //   }, 5000)
+  //   // setTimeout(() => {
+  //   //   html2canvas(document.body).then(canvas => {
+  //   //     document.body.appendChild(canvas)
+  //   //   })
+  //   // }, 5000)
   // },
   // // @ts-ignore
   // beforeRouteEnter (to: any, from: any, next: any): void {
