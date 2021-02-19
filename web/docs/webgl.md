@@ -77,6 +77,39 @@
         </tbody>
     </table>
 
+6. 坐标系统区别
+
+    - `<canvas>` 坐标系统：与网页坐标系统一致（canvas 元素左上角为 (0, 0) 点，单位长度为 1 个像素值(即1px)）
+    - `WebGL` 坐标系统：为空间直角坐标系，原点在 `canvas 元素` 正中心位置，区间范围为 `[-1, 1]`
+
+    如下图所示：
+
+    ![坐标系统示意图](./imgs/canvas_coordinate.png)
+
+7. 获取声明的变量及变量赋值
+
+    ```js
+    // GLSL 声明的变量 如：
+    // attribute vec2 a_position;
+    // uniform vec2 screenSize;
+    const a_position = gl.getAttribLocation(program, 'a_position');
+    const screenSize = gl.getUniformLocation(program, 'screenSize');
+
+    // 将数据 (v0, v1, v2) 传给 location 参数指定的 attribute 变量
+    // gl.vertexAttrib3f(location, v0, v1, v2); // vertexAttrib2f / vertexAttrib4f
+    // gl.uniform2f(location, v0, v1); // uniform3f / uniform4f
+
+    // 赋值
+    gl.vertexAttrib2f(a_position, x, y);
+    gl.uniform2f(screenSize, canvasDom.width, canvasDom.height);
+    ```
+
+    WebGL 同 OpenGL，函数名由三部分组成，以 gl.vertexAttrib3f(location, v0, v1, v2) 为例：
+
+    - 基础函数名：`gl.vertexAttrib`
+    - 参数个数：`3` → 即：`v0, v1, v2` 这三个参数
+    - 参数类型：`f (浮点型)`；`i (整型)`
+
 ## Example
 
 ### 一、绘制点
@@ -85,9 +118,9 @@
 
     ```GLSL
     // 顶点着色器 vertex
-    // attribute vec4 a_Position; // 存储限定符 变量类型 变量名;
+    // attribute vec4 a_position; // 存储限定符 变量类型 变量名;
     void main() {
-        gl_Position = vec4(0, 0, 0, 0);
+        gl_Position = vec4(0, 0, 0, 1);
         gl_PointSize = 10.0;
     }
     // 片元着色器 fragment
@@ -150,8 +183,12 @@
 ```html
 <canvas width="500" height="500" id="oCanvas"></canvas>
 <script type="notjs" id="vertex">
+    attribute vec2 a_position;
+    uniform vec2 screenSize;
     void main() {
-        gl_Position = vec4(0, 0, 0, 1);
+        float x = a_position.x * 2.0 / screenSize.x - 1.0;
+        float y = 1.0 - (a_position.y * 2.0 / screenSize.y);
+        gl_Position = vec4(x, y, 0, 1);
         gl_PointSize = 10.0;
     }
 </script>
@@ -197,6 +234,19 @@
     }
     const program = createProgram(gl, vertexShader, fragmentShader);
     gl.useProgram(program);
+
+    // 获取变量
+    const a_position = gl.getAttribLocation(program, 'a_position');
+    const screenSize = gl.getUniformLocation(program, 'screenSize');
+
+    function bindEvent() {
+        canvasDom.onmousedown = function(e) {
+            const { offsetX, offsetY } = e;
+            gl.vertexAttrib2f(a_position, offsetX, offsetY);
+            gl.drawArrays(gl.POINTS, 0, 1);
+        }
+    }
+    bindEvent();
     
     gl.clearColor(0, 0.5, 0.5, 1);
     gl.clear(gl.COLOR_BUFFER_BIT); // 清空颜色缓冲区
