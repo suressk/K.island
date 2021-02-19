@@ -8,13 +8,12 @@ import {
 import Parallax from 'parallax-js'
 // import Notification from '../components/notification'
 import {preventDefault, throttle} from '~/utils/util'
+import RainInit from '~/components/RainEffect'
 
 interface IStyleOption {
   [prop: string]: string;
 }
 
-// let layerStyle: IStyleOption = {}
-// let coverStyle: IStyleOption = {}
 /**
  * 首页 composition-api 写法抽离
  */
@@ -25,6 +24,8 @@ export default function useIndex() {
   const loadStatus = ref<string>('loadMore')
   const layerStyle = reactive<IStyleOption>({})
   const coverStyle = reactive<IStyleOption>({})
+
+  RainInit()
 
   // 封面图宽高及位置计算
   function computeCover() {

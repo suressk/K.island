@@ -25,11 +25,6 @@
 
       <div class="info">
         在以前的Android Studio版本中，我们介绍过一个Database Inspector，它主要用来帮助开发者理解和调试数据库，Database Inspector是基于一个APP Inspector 系统开发的，它支持很多不同的Inspector类型，比如下面介绍的WorkManager Inspector。
-
-        作者：依然范特稀西
-        链接：https://juejin.cn/post/6919852371275317256
-        来源：掘金
-        著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
       </div>
     </section>
 
@@ -42,6 +37,7 @@ import Vue from 'vue'
 
 export default Vue.extend({
   name: 'ArticleId'
+  // validate() {}
 })
 </script>
 

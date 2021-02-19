@@ -76,7 +76,7 @@ class RainDrops {
   clearDropletsGfx: HTMLCanvasElement | null = null
 
   lastRender: number | null = null // 上次渲染时间戳
-  textureCleaningIterations: number = 0 // 迭代清理纹理次数 ？
+  textureCleaningIterations: number = 0 // 迭代清理纹理次数 TODO ？
   // 飞沫数量
   dropletsCounter = 0
 
@@ -105,7 +105,6 @@ class RainDrops {
     // create & save canvas DOM
     this.canvas = createCanvas(this.width, this.height)
     this.ctx = this.canvas.getContext('2d')!
-
     this.droplets = createCanvas(this.width * this.dropletsPixelDensity, this.height * this.dropletsPixelDensity)
     this.dropletsCtx = this.droplets.getContext('2d')!
     this.renderDropsGfx()

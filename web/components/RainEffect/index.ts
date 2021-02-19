@@ -1,4 +1,6 @@
 import RainDrops from './RainDrops'
+import RainRenderer from './RainRenderer'
+
 import loadImages from './ImageLoader'
 import { ISource } from './types'
 
@@ -8,12 +10,12 @@ let rainDrops,
   dropAlpha: ISource,
   dropColor: ISource
 
-function loadTextures() {
+export default function loadTextures() {
   loadImages([
-    { name: 'dropAlpha', src: '~/static/images/drop-alpha.png' },
-    { name: 'dropColor', src: '~/static/images/drop-color.png' }
+    { name: 'dropAlpha', src: require('~/static/images/drop-alpha.png') },
+    { name: 'dropColor', src: require('~/static/images/drop-color.png') }
   ]).then(images => {
-    // @ts-ignore
+    // @ts-ignore imageDom
     dropColor = images.dropColor.img
     // @ts-ignore
     dropAlpha = images.dropAlpha.img
@@ -21,11 +23,12 @@ function loadTextures() {
   })
 }
 
-loadTextures()
+// loadTextures()
 
 function init() {
   canvasDom = document.getElementById('coverContainer') as HTMLCanvasElement
-  let dpi: number = window.devicePixelRatio
+  // 确定应添加多少额外的像素密度以使图像更清晰
+  const dpi: number = window.devicePixelRatio
   canvasDom.width = window.innerWidth * dpi
   canvasDom.height = window.innerHeight * dpi
   canvasDom.style.width = window.innerWidth * dpi + 'px'
@@ -43,4 +46,25 @@ function init() {
       dropletsCleaningRadiusMultiplier: 0.28
     }
   )
+
+  // renderer = new RainRenderer(
+  //  canvasDom,
+  //  rainDrops.canvas,
+  //  null,
+  //  {
+  //    brightness:1.04,
+  //    alphaMultiply:6,
+  //    alphaSubtract:3,
+  //  }
+  // )
+  renderer = new RainRenderer(canvasDom, rainDrops.canvas!, null, {
+    brightness:1.04,
+    alphaMultiply:6,
+    alphaSubtract:3
+  })
+  // setupEvents()
 }
+
+// function setupEvents() {
+//
+// }

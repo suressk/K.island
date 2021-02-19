@@ -65,7 +65,7 @@
       <LoadMore class="more" :load-status="loadStatus" @load-more="handleLoadMore" />
     </div>
 
-    <canvas id="container"></canvas>
+    <canvas id="coverContainer"></canvas>
 
     <BackTop />
     <KFooter />
@@ -84,20 +84,20 @@ const navList = [
 
 export default defineComponent({
   // // @ts-ignore
-  // fetch ({ $axios }) {
+  // fetch () {
   // },
   // // merge to data: () => ({})
-  // // @ts-ignore
+  // @ts-ignore
   // async asyncData ({ $axios }) {
   //   // 测试 axios
   //   // const { success, data, message } = await $axios.get('/records/list', {
-  //   const res = await $axios.get('/records/list', {
-  //     params: {
-  //       pageNo: 1,
-  //       pageSize: 10
-  //     }
-  //   })
-  //   console.log('RESPONSE ===== ', res);
+  //   // const res = await $axios.get('/records/list', {
+  //   //   params: {
+  //   //     pageNo: 1,
+  //   //     pageSize: 10
+  //   //   }
+  //   // })
+  //   // console.log('RESPONSE ===== ', res);
   //   // if (success) {
   //   //   this.$notification({
   //   //     type: 'success',
