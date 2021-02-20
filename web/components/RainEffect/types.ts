@@ -1,4 +1,4 @@
-export type ISource = ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas
+export type ISource = null | ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas
 
 export interface IImage {
   src: string;

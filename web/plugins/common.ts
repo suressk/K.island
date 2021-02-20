@@ -3,8 +3,8 @@ import { NotifyOptions, createNotify } from '../utils/notify'
 import { ILoadImageItem } from '~/@types'
 import Notification from '../components/notification'
 
-// @ts-ignore
-import { ComponentInternalInstance } from '@vue/runtime-core'
+// // @ts-ignore
+// import { ComponentInternalInstance } from '@vue/runtime-core'
 
 // 存储所有 notify 弹窗 Element 元素
 const notifications: HTMLElement[] = []
@@ -12,7 +12,7 @@ let notifyContainer: HTMLElement | undefined
 
 const common = {
   // @ts-ignore
-  install (Vue: ComponentInternalInstance) {
+  install (Vue) {
     // 节流
     Vue.prototype.$throttle = (fn: Function, delay: number = 3000) => {
       // let flag = true

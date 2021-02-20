@@ -29,7 +29,6 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '@/plugins/compositionApi.ts', ssr: true },
     { src: '@/plugins/router.ts', ssr: true },
     { src: '@/plugins/common.ts', ssr: true },
     { src: '@/plugins/axios.ts', ssr: true }

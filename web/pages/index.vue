@@ -3,13 +3,10 @@
     <!-- <CircleLoading />
     <ColorfulLoading />
     <Loading /> -->
-    <!--  封面图  -->
+    <!--  封面雨幕  -->
     <div class="page-cover">
-      <div id="scene" class="wh-100 flex-center" :style="{ height: sceneHeight }">
-        <div class="layer flex-center" data-depth="0.2" :style="layerStyle">
-          <!--<img src="~@/static/images/scene_bg.webp" alt="cover" width="1920" height="1080" :style="coverStyle">-->
-          <img src="~@/static/images/cover-es36sme-50as.webp" alt="cover" width="1920" height="1080" :style="coverStyle">
-        </div>
+      <div class="cover-container" :width="sceneWidth" :height="sceneHeight">
+        <canvas id="coverContainer" class="rain-effect" />
       </div>
       <!--   头部菜单按钮   -->
       <div class="head-bar flex-between">
@@ -64,8 +61,6 @@
       </ul>
       <LoadMore class="more" :load-status="loadStatus" @load-more="handleLoadMore" />
     </div>
-
-    <canvas id="coverContainer"></canvas>
 
     <BackTop />
     <KFooter />

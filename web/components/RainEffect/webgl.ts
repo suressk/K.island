@@ -109,11 +109,11 @@ export function activeTexture(gl: WebGL2RenderingContext, i: number) {
 }
 
 export function updateTexture(gl: WebGL2RenderingContext, source: ISource) {
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source!);
 }
 
 export function createUniform(gl: WebGL2RenderingContext, program: WebGLProgram, type: string, name: string, ...args: any[]) {
-  let location = gl.getUniformLocation(program, "u_" + name);
+  const location = gl.getUniformLocation(program, "u_" + name);
   // @ts-ignore
   gl["uniform" + type](location, ...args)
 }

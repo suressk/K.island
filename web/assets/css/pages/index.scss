@@ -44,11 +44,11 @@
         }
       }
     }
-    #scene {
+    .cover-container {
       height: 100%;
       position: relative;
       overflow: hidden;
-      img {
+      .rain-effect {
         position: absolute;
         max-width: none;
       }
@@ -59,9 +59,10 @@
       left: 0;
       height: 100%;
       width: 100%;
-      //background-color: rgba(15, 84, 187, 0.7);
-      background-color: rgba(176, 14, 37, 0.7);
-      clip-path: polygon(0 0, 25% 0, 60% 100%, 0% 100%);
+      // background-color: rgba(15, 84, 187, 0.2);
+      background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2), transparent);
+      // background-color: rgba(176, 14, 37, 0.7);
+      // clip-path: polygon(0 0, 25% 0, 60% 100%, 0% 100%);
     }
   }
   // 菜单导航
