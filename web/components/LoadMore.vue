@@ -4,7 +4,7 @@
       <div class="load-more-btn" @click="handleLoad">Load More</div>
     </template>
     <template v-else-if="loadStatus === 'noMore'">
-      <div class="tip trans-all-03">没有更多了 ~~</div>
+      <div class="tip trans-all-03">没有更多了 ~</div>
     </template>
     <template v-else>
       <span class="dot" />
@@ -50,12 +50,14 @@ export default defineComponent({
   .load-more-btn {
     border: 1px solid var(--border);
     border-radius: 5px;
-    padding: 5px 10px;
+    padding: 6px 10px;
     color: var(--tipColor);
     cursor: pointer;
-    transition: border-color .3s, color .3s;
+    transition: background-color .3s, color .3s, border-color .3s;
     &:hover {
-      color: var(--cyanogen);
+      //color: var(--cyanogen);
+      color: var(--white);
+      background-color: var(--cyanogen);
       border-color: var(--cyanogen);
     }
   }
@@ -78,23 +80,23 @@ export default defineComponent({
       background-color: inherit;
     }
     &:first-child {
-      animation-delay: 0;
+      animation-delay: -0.4s;
       background-color: var(--cinnabar);
     }
     &:nth-child(2) {
-      animation-delay: 0.2s;
+      animation-delay: -0.2s;
       background-color: var(--warning);
     }
     &:nth-child(3) {
-      animation-delay: 0.4s;
+      //animation-delay: 0s;
       background-color: var(--oilGreen);
     }
     &:nth-child(4) {
-      animation-delay: 0.6s;
+      animation-delay: 0.2s;
       background-color: var(--lightCyan);
     }
     &:nth-child(5) {
-      animation-delay: 0.8s;
+      animation-delay: 0.4s;
       background-color: var(--cyanogen);
     }
   }

@@ -51,8 +51,7 @@ export default {
         }
       })
     },
-    handleScroll (e) {
-      console.log(e);
+    handleScroll () {
       this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
     }
   }

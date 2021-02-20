@@ -7,6 +7,12 @@
     <div class="page-cover">
       <div class="cover-container" :width="sceneWidth" :height="sceneHeight">
         <canvas id="coverContainer" class="rain-effect" />
+
+        <div class="cover-introduce flex-col" :style="{ opacity: showNav ? '0' : '1' }">
+          <span class="time">一月 23, 2021</span>
+          <span class="title txt-overflow">要么孤独，要么庸俗</span>
+          <span class="introduce">愿所有的美好如约而至，愿所有的黑暗都能看到希望，我们都能微笑前行，人生没有完美，有些遗憾才美...</span>
+        </div>
       </div>
       <!--   头部菜单按钮   -->
       <div class="head-bar flex-between">
@@ -33,7 +39,7 @@
           Everywhere in the world has a similar life.
         </div>
       </div>
-      <div class="mask" />
+      <!--<div class="mask" />-->
     </div>
     <!--  文章列表 content  -->
     <div class="content">
