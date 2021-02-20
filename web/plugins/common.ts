@@ -116,6 +116,27 @@ const common = {
       Notification(options)
     }
 
+    function getWin(type: string) {
+      // @ts-ignore
+      return document.documentElement[type] || document.body[type]
+    }
+    // 设置滚动条位置
+    Vue.prototype.$scroll = (domSelector: string, type: string, speed = 10) => {
+      // DOM元素 计算位置
+      const dom = document.querySelector(domSelector) as HTMLElement
+      const top = dom.offsetTop
+      let target: number
+      if (type === 'top') {
+        target = 0
+      } else if (type === 'comment') {
+        const commentDom = <HTMLElement>document.querySelector('.comment-form')
+        const h = commentDom.offsetHeight
+        target = top - getWin('clientHeight') + h
+      } else {
+        
+      }
+    }
+
     /**
      * 首页图片懒加载
      */

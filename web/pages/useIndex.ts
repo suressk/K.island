@@ -14,7 +14,7 @@ interface IStyleOption {
 }
 
 /**
- * 首页 composition-api 写法抽离
+ * 首页 composition-api 代码风格 写法抽离
  */
 export default function useIndex() {
   const sceneHeight = ref<string>('100%')

@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { log } from 'util'
 export default {
   name: 'BackToTop',
   data () {
@@ -16,7 +17,7 @@ export default {
   },
   computed: {
     isBack () {
-      return this.scrollTop >= 500
+      return this.scrollTop >= 200
     }
   },
   mounted () {
@@ -50,7 +51,8 @@ export default {
         }
       })
     },
-    handleScroll () {
+    handleScroll (e) {
+      console.log(e);
       this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
     }
   }
