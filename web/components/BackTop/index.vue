@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import { log } from 'util'
 export default {
   name: 'BackToTop',
   data () {
@@ -29,27 +28,7 @@ export default {
   },
   methods: {
     handleBackTop () {
-      const vm = this
-      let topCache = 0
-      this.rafId = window.requestAnimationFrame(() => {
-        // 当前 scrollTop 值
-        const curTop = document.documentElement.scrollTop || document.body.scrollTop
-        const distance = curTop / 10 // 减速回滚 —— 每次滚动距离
-        // const distance = (curTop / 10) | 0 // 取整
-        // const distance = ~~(curTop / 10) // 取整
-        // const distance = Math.floor(curTop / 6)
-        if (topCache && topCache <= curTop) {
-          window.cancelAnimationFrame(vm.rafId)
-        } else {
-          topCache = document.documentElement.scrollTop = document.body.scrollTop = curTop - distance
-          if (distance <= 0 || curTop <= 0) {
-            window.cancelAnimationFrame(vm.rafId)
-            document.documentElement.scrollTop = document.body.scrollTop = 0
-            return
-          }
-          window.requestAnimationFrame(vm.handleBackTop)
-        }
-      })
+      this.$scroll('body', 'top')
     },
     handleScroll () {
       this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop

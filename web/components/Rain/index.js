@@ -23,7 +23,7 @@ const textureFgSize = {
   height: 64
 }
 
-const parallax = {x: 0, y: 0};
+const parallax = {x: 0, y: 0}
 
 let raindrops,
   renderer,

@@ -9,10 +9,6 @@ import {preventDefault, throttle} from '~/utils/util'
 // import RainInit from '~/components/RainEffect'
 import RainInit from '~/components/Rain'
 
-interface IStyleOption {
-  [prop: string]: string;
-}
-
 /**
  * 首页 composition-api 代码风格 写法抽离
  */
@@ -21,8 +17,6 @@ export default function useIndex() {
   const sceneWidth = ref<string>('100%')
   const showNav = ref<boolean>(false)
   const loadStatus = ref<string>('loadMore')
-  const layerStyle = reactive<IStyleOption>({})
-  const coverStyle = reactive<IStyleOption>({})
 
   function init() {
     sceneHeight.value = document.documentElement.clientHeight + 'px'
@@ -69,8 +63,6 @@ export default function useIndex() {
     loadStatus,
     sceneHeight,
     sceneWidth,
-    layerStyle,
-    coverStyle,
     handleToggleNav,
     handleLoadMore
   }

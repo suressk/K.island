@@ -19,8 +19,8 @@
       height: 100%;
       .logo {
         background-image: url("~@/static/images/logo.svg");
-        background-size: 36px;
-        background-position: 10px, 0;
+        background-size: 30px;
+        background-position: 15px, 0;
         background-repeat: no-repeat;
         display: inline-block;
         width: 60px;
@@ -32,7 +32,7 @@
         width: 60px;
         height: 100%;
         .iconfont {
-          font-size: 25px;
+          font-size: 22px;
           padding: 10px;
           cursor: pointer;
         }
