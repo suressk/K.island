@@ -83,17 +83,17 @@ function loop () {
 export default function useArticle (context: SetupContext) {
   // 页面挂载完毕 => 绘制
   onMounted(() => {
-    canvasRef = context.refs.animateCanvas
-    ctx = canvasRef.getContext('2d')!
-    const rect: DOMRect = canvasRef.getBoundingClientRect()
-    width = rect.width
-    height = rect.height
-    /**
-     * 设置 canvas DOM 元素宽高属性，因其初始宽高为(300, 150)
-     * 后续绘制若坐标点超出此范围，会看不到绘制效果
-     * */
-    canvasRef.width = width
-    canvasRef.height = height
+    // canvasRef = context.refs.animateCanvas
+    // ctx = canvasRef.getContext('2d')!
+    // const rect: DOMRect = canvasRef.getBoundingClientRect()
+    // width = rect.width
+    // height = rect.height
+    // /**
+    //  * 设置 canvas DOM 元素宽高属性，因其初始宽高为(300, 150)
+    //  * 后续绘制若坐标点超出此范围，会看不到绘制效果
+    //  * */
+    // canvasRef.width = width
+    // canvasRef.height = height
     // loop()
     // waveRecord(canvasRef)
   })

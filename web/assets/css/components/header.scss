@@ -2,6 +2,10 @@
   Header Component
 */
 .k-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
   height: 50px;
   width: 100%;
   margin-bottom: 20px;

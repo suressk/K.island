@@ -1,5 +1,5 @@
 <template>
-  <div class="k-about">
+  <section class="k-about">
     <KHeader custom-title="(≖ᴗ≖)✧" />
     <div class="content">
       <h3 class="title">你好！我是 K.</h3>
@@ -28,7 +28,7 @@
     </div>
 
     <KFooter />
-  </div>
+  </section>
 </template>
 
 <script lang="ts">

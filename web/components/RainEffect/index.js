@@ -1,7 +1,7 @@
 import createCanvas from './createCanvas'
 import RainRenderer from "./RainRenderer"
 import Raindrops from "./RainDrops"
-import Gsap from 'gsap'
+import Gsap, { Quint } from 'gsap'
 import loadImages from "./ImageLoader"
 
 let textureRainFg, textureRainBg,
@@ -98,14 +98,15 @@ function init() {
 }
 
 function setupParallax() {
-  document.addEventListener('mousemove', (event) => {
-    let x = event.pageX;
-    let y = event.pageY;
+  document.addEventListener('mousemove', e => {
+    let { pageX, pageY } = e
+
+    pageY = pageY >= 980 ? 980 : pageY
 
     Gsap.to(parallax, 1, {
-      x: (x * 2 / canvas.width) - 1,
-      y: (y * 2 / canvas.height) - 1,
-      // ease: Quint.easeOut,
+      x: (pageX * 2 / canvas.width) - 1,
+      y: (pageY * 2 / canvas.height) - 1,
+      ease: Quint.easeOut,
       onUpdate: () => {
         renderer.parallaxX = parallax.x;
         renderer.parallaxY = parallax.y;

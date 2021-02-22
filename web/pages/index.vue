@@ -80,7 +80,8 @@ import useIndex from './useIndex'
 
 const navList = [
   { title: 'Article', path: '/article' },
-  { title: 'About Me', path: '/about' }
+  { title: 'About Me', path: '/about' },
+  { title: 'Subscription', path: '/subscription' }
 ]
 
 export default defineComponent({

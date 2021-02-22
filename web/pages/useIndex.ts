@@ -1,13 +1,11 @@
 import {
   ref,
-  reactive,
   onMounted,
   onBeforeUnmount
 } from '@nuxtjs/composition-api'
-// import Notification from '../components/notification'
 import {preventDefault, throttle} from '~/utils/util'
-// import RainInit from '~/components/RainEffect'
-import RainInit from '~/components/Rain'
+import RainInit from '~/components/RainEffect'
+// import Notification from '../components/notification'
 
 /**
  * 首页 composition-api 代码风格 写法抽离

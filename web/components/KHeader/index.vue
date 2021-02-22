@@ -108,6 +108,6 @@ export default defineComponent({
 // }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "assets/css/components/header.scss";
 </style>

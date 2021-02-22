@@ -3,8 +3,8 @@
     <KHeader custom-title="(≖ᴗ≖)✧" />
     <!--  文章列表页  -->
     <section v-if="!list" class="nothing-content tip flex-center">
-        空无一物 (≖ᴗ≖)✧
-      <canvas ref="animateCanvas" width="100%" height="100%" class="animation-canvas" />
+      空无一物 (≖ᴗ≖)✧
+      <!--<canvas ref="animateCanvas" width="100%" height="100%" class="animation-canvas" />-->
       <KWave />
     </section>
     <!--  有内容  -->
