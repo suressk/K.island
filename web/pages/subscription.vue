@@ -11,26 +11,64 @@
         </p>
         <div class="d-flex" style="margin-top: 40px">
           <label class="subscription-inp">
-            <input type="text" placeholder="Enter your Email" v-model="email">
+            <input type="text" placeholder="Enter your Email" @blur="handleCheckEmail" v-model="email">
+            <span v-show="!isEmail" class="warning-tip">邮箱格式好像不对呢 ~</span>
           </label>
-          <button class="subscription-btn">Subscribe</button>
+          <button class="subscription-btn" @click="handleSubscribe">
+            Subscribe
+            <span class="empty-tip" :class="{ show: emptyEmail }">邮箱为空哦~，是不是忘记填啦？</span>
+          </button>
         </div>
       </div>
+
+      <KWave />
     </div>
-    <KWave />
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { checkEmail } from '~/utils/util'
 
 export default defineComponent({
   name: 'subscription',
   setup() {
-    const email = ref('')
+    const email = ref<string>('')
+    const isEmail = ref<boolean>(false)
+    const emptyEmail = ref<boolean>(false)
+    let timer: number
+
+    function handleCheckEmail () {
+      email.value = email.value.trim()
+      // email 为空
+      // if (email.value === '') {
+      //   isEmail.value = true // 不提示邮箱格式错误
+      //   return
+      // }
+      isEmail.value = checkEmail(email.value)
+    }
+
+    function handleSubscribe () {
+      // email 为空
+      if (email.value === '') {
+        emptyEmail.value = true
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+          emptyEmail.value = false
+        }, 3000)
+      }
+      // email 格式正确
+      if (isEmail.value && email.value !== '') {
+        console.log('订阅')
+      }
+    }
 
     return {
-      email
+      email,
+      isEmail,
+      emptyEmail,
+      handleCheckEmail,
+      handleSubscribe
     }
   },
   head() {

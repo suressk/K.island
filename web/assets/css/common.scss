@@ -87,6 +87,14 @@
 }
 
 /**
+  错误提示文字
+*/
+.warning-tip {
+  color: var(--warning);
+  font-size: 12px;
+}
+
+/**
  文字溢出隐藏
  */
 // 单行

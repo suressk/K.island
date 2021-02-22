@@ -37,7 +37,7 @@ export function debounce (fn: Function, delay: number, immediate: boolean) {
     // @ts-ignore
     let ctx = this
     let callNow
-    if (timer) clearTimeout(timer)
+    if (timer !== null) clearTimeout(timer)
     if (immediate) {
       callNow = !timer
       if (callNow) {
@@ -85,4 +85,13 @@ export function throttle (fn: Function, delay: number = 3000) {
  */
 export function preventDefault (e: Event) {
   e.preventDefault()
+}
+
+/**
+ * 校验 Email 格式
+ * */
+export function checkEmail (email: string): boolean {
+  // const emailReg = /^([a-zA-Z]|[0-9])(\w|-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+  const emailReg = /\w+@([0-9a-zA-Z]+[-0-9a-zA-Z]*)(\.[0-9a-zA-Z]+[-0-9a-zA-Z]*)+/
+  return emailReg.test(email)
 }
