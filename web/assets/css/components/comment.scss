@@ -1,0 +1,47 @@
+.comment {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  width: 100%;
+  margin: 20px 0;
+  padding: 10px;
+  label {
+    width: 100%;
+  }
+  .chat-container {
+    height: 40px;
+    margin-bottom: 10px;
+    // name / email
+    .name-txt,
+    .email-txt {
+      height: 100%;
+      width: 50%;
+      input {
+        height: 100%;
+        width: 100%;
+        border: none;
+        outline: none;
+        border-bottom: 1px dashed var(--border);
+      }
+    }
+    .name-txt {
+      padding-right: 10px;
+    }
+    .email-txt {
+      padding-left: 10px;
+    }
+  }
+  // 评论内容
+  .content-txt {
+    padding: 10px 0;
+    display: flex;
+    textarea {
+      min-height: 200px;
+      max-height: 200px;
+      min-width: 100%;
+      max-width: 100%;
+      padding: 10px 15px;
+      outline: none;
+      border: 1px dashed var(--border);
+    }
+  }
+}

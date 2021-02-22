@@ -3,18 +3,24 @@
     <KHeader custom-title="(≖ᴗ≖)✧" />
 
     <div class="main-content flex-col scroller-light">
-      <h2 class="tip-title flex-center">[ 沉舟侧畔千帆过，病树前头万木春 ]</h2>
+      <h2 class="tip-title flex-center">[ 人生如逆旅，我亦是行人 ]</h2>
       <div class="subscription-form">
-        <h3 class="subscription-title">会当凌绝顶，一览众山小</h3>
+        <h3 class="subscription-title">浮生如梦，为欢几何？</h3>
         <p class="subscription-txt">
-          茫茫人海中，人与人相遇、相知、相爱、相守是一件十分不易的事情，大家要珍惜缘分，生命的轮转就是轮回，一个人的生命只有一次！<br>佛没说今世该如何做，但佛也算说了，因果就在轮回之中...
+          佛曰：前世五百次的回眸才换得今世的擦肩而过。
+        </p>
+        <p class="subscription-txt">
+          茫茫人海中，人与人的相遇、相知皆是一件十分不易的事情，珍惜缘分，一个人的生命只有一次，莫要等到失去之后才去后悔！而那时，那个人或许已经不再具有之前的勇气与豪情壮志了
+        </p>
+        <p class="subscription-txt">
+          佛曰：世间所有的相遇皆因缘起。你我，亦是如此...
         </p>
         <div class="d-flex" style="margin-top: 40px">
           <label class="subscription-inp">
             <input type="text" placeholder="Enter your Email" @blur="handleCheckEmail" v-model="email">
             <span v-show="!isEmail" class="warning-tip">邮箱格式好像不对呢 ~</span>
           </label>
-          <button class="subscription-btn" @click="handleSubscribe">
+          <button class="subscription-btn btn" @click="handleSubscribe">
             Subscribe
             <span class="empty-tip" :class="{ show: emptyEmail }">邮箱为空哦~，是不是忘记填啦？</span>
           </button>
@@ -34,17 +40,17 @@ export default defineComponent({
   name: 'subscription',
   setup() {
     const email = ref<string>('')
-    const isEmail = ref<boolean>(false)
+    const isEmail = ref<boolean>(true)
     const emptyEmail = ref<boolean>(false)
     let timer: number
 
     function handleCheckEmail () {
       email.value = email.value.trim()
       // email 为空
-      // if (email.value === '') {
-      //   isEmail.value = true // 不提示邮箱格式错误
-      //   return
-      // }
+      if (email.value === '') {
+        isEmail.value = true // 不提示邮箱格式错误
+        return
+      }
       isEmail.value = checkEmail(email.value)
     }
 
@@ -53,7 +59,7 @@ export default defineComponent({
       if (email.value === '') {
         emptyEmail.value = true
         if (timer) clearTimeout(timer)
-        timer = setTimeout(() => {
+        timer = window.setTimeout(() => {
           emptyEmail.value = false
         }, 3000)
       }

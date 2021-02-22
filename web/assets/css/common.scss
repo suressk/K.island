@@ -168,6 +168,20 @@
   background-color: var(--tipColor);
 }
 
+/**
+  Button 通用样式
+*/
+.btn {
+  background-color: var(--cyanogen);
+  border-radius: 5px;
+  color: var(--white);
+  border: none;
+  outline: none;
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
 // btn-border
 .r-border,
 .g-border {

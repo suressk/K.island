@@ -53,6 +53,7 @@
         letter-spacing: 2px;
         font-size: 14px;
         color: var(--ink);
+        text-indent: 2rem;
       }
       .subscription-inp {
         width: 75%;
@@ -76,12 +77,12 @@
         }
       }
       .subscription-btn {
-        background-color: var(--cyanogen);
-        border-radius: 5px;
-        color: var(--white);
-        border: none;
-        outline: none;
-        display: inline-block;
+        //background-color: var(--cyanogen);
+        //border-radius: 5px;
+        //color: var(--white);
+        //border: none;
+        //outline: none;
+        //display: inline-block;
         flex: 1;
         height: 40px;
         margin-left: 10px;
@@ -99,7 +100,6 @@
           transform: translateX(-50%);
           border-radius: 5px;
           visibility: hidden;
-          //opacity: 0;
           &.show {
             animation: bounceOut 1s forwards;
           }
