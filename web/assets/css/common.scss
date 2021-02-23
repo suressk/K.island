@@ -87,11 +87,29 @@
 }
 
 /**
-  错误提示文字
+  提示信息
 */
+.error-tip,
+.warning-tip,
+.success-tip {
+  font-size: 12px;
+  margin: 0 10px;
+}
+
+.error-tip {
+  color: var(--cinnabar);
+}
 .warning-tip {
   color: var(--warning);
-  font-size: 12px;
+}
+.success-tip {
+  color: var(--darkGreen);
+}
+
+.tip {
+  color: var(--tipColor);
+  font-size: 14px;
+  text-align: center;
 }
 
 /**
@@ -122,12 +140,6 @@
 }
 .trans-all-03 {
   transition: all 0.3s;
-}
-
-.tip {
-  color: var(--tipColor);
-  font-size: 14px;
-  text-align: center;
 }
 
 /**
@@ -180,70 +192,29 @@
   display: inline-block;
   padding: 10px 20px;
   cursor: pointer;
+  &.disabled {
+    background-color: var(--lightBg);
+    color: var(--tipColor);
+    cursor: not-allowed;
+  }
 }
 
 // btn-border
-.r-border,
-.g-border {
+.r-hover,
+.g-hover {
   cursor: pointer;
   padding: 3px 5px;
   margin: 0 10px;
   position: relative;
   transition: all .3s;
 }
-.r-border:hover {
+.r-hover:hover {
   color: var(--cinnabar);
 }
-.g-border:hover {
+.g-hover:hover {
   color: var(--darkGreen);
 }
-// .r-border:hover::before,
-// .r-border:hover::after,
-// .g-border:hover::before,
-// .g-border:hover::after {
-//   width: 100%;
-//   height: 100%;
-// }
-.r-border::before,
-.r-border::after,
-.g-border::before,
-.g-border::after {
-  content: "";
-  transition: all .3s;
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border: 1px solid transparent;
-  border-radius: 3px;
-}
-.r-border::before,
-.g-border::before {
-  padding: 3px 5px;
-  left: 0;
-  top: 0;
-}
-.r-border::before {
-  border-left-color: var(--cinnabar);
-  border-top-color: var(--cinnabar);
-}
-.g-border::before {
-  border-left-color: var(--darkGreen);
-  border-top-color: var(--darkGreen);
-}
-.r-border::after,
-.g-border::after {
-  padding: 3px 5px;
-  right: 0;
-  bottom: 0;
-}
-.g-border::after {
-  border-right-color: var(--darkGreen);
-  border-bottom-color: var(--darkGreen);
-}
-.r-border::after {
-  border-right-color: var(--cinnabar);
-  border-bottom-color: var(--cinnabar);
-}
+
 /**
   偏移淡入
 */

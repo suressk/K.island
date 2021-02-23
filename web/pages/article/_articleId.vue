@@ -9,11 +9,11 @@
 
       <div class="stuffix d-flex">
         <span class="time tip">January 21 2021</span>
-        <span class="r-border tip views d-flex">
+        <span class="r-hover tip views d-flex">
           <i class="iconfont icon-view" />
           1314
         </span>
-        <span class="g-border tip tag d-flex">
+        <span class="g-hover tip tag d-flex">
           <i class="iconfont icon-tag" />
           Mood
         </span>

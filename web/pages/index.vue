@@ -53,11 +53,11 @@
             <span class="title two-line-txt">{{ item.title }}</span>
             <span class="introduce three-line-txt">{{ item.introduce }}</span>
             <div class="suffix d-flex">
-              <span class="r-border views d-flex">
+              <span class="r-hover views d-flex">
                 <i class="iconfont icon-view" />
                 {{ item.views }}
               </span>
-              <span class="g-border tag d-flex">
+              <span class="g-hover tag d-flex">
                 <i class="iconfont icon-tag" />
                 {{ item.tag }}
               </span>

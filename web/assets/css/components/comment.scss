@@ -1,4 +1,7 @@
 .comment {
+}
+
+.comment-form {
   border: 1px solid var(--border);
   border-radius: 5px;
   width: 100%;
@@ -21,6 +24,9 @@
         border: none;
         outline: none;
         border-bottom: 1px dashed var(--border);
+        &:focus {
+          border-bottom-color: var(--cyanogen);
+        }
       }
     }
     .name-txt {
@@ -42,6 +48,10 @@
       padding: 10px 15px;
       outline: none;
       border: 1px dashed var(--border);
+      border-radius: 10px;
+      &:focus {
+        border-color: var(--cyanogen);
+      }
     }
   }
 }
