@@ -18,3 +18,16 @@ export interface ILoadImageItem {
   el: HTMLImageElement;
   src: string;
 }
+
+/**
+ * 评论
+ * */
+export interface CommentProps {
+  submitting: boolean;
+}
+
+export interface CommentInfo {
+  name: string;
+  email: string;
+  comment: string;
+}

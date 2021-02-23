@@ -36,14 +36,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Comment from "~/components/Comment/index.vue";
+import { defineComponent } from '@nuxtjs/composition-api'
+import Comment from '~/components/Comment/index.vue'
+import KFooter from '~/components/KFooter.vue'
+import KHeader from '~/components/KHeader/index.vue'
 
-export default Vue.extend({
+export default defineComponent({
   name: 'ArticleId',
-  components: {Comment}
-
-  // validate() {}
+  components: { KHeader, Comment, KFooter },
+  // validate() {},
+  setup() {}
 })
 </script>
 

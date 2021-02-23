@@ -9,9 +9,9 @@
         <canvas id="coverContainer" class="rain-effect" />
 
         <div class="cover-introduce flex-col" :style="{ opacity: showNav ? '0' : '1' }">
-          <span class="time">一月 23, 2021</span>
+          <span class="time">{{ curTime }}</span>
           <span class="title txt-overflow">要么孤独，要么庸俗</span>
-          <span class="introduce">愿所有的美好如约而至，愿所有的黑暗都能看到希望，我们都能微笑前行，人生没有完美，有些遗憾才美...</span>
+          <span class="introduce">人生不过二两酒，一两心酸一两愁。昨日心酸酿成酒，苦酒入喉今日愁。浮生溺毙杯中物，今日不做明日愁...</span>
         </div>
       </div>
       <!--   头部菜单按钮   -->
@@ -76,6 +76,9 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from './useIndex'
+import LoadMore from '~/components/LoadMore.vue'
+import BackTop from '~/components/BackTop/index.vue'
+import KFooter from '~/components/KFooter.vue'
 // import html2canvas from 'html2canvas'
 
 const navList = [
@@ -85,6 +88,8 @@ const navList = [
 ]
 
 export default defineComponent({
+  name: 'Index',
+  components: { LoadMore, BackTop, KFooter },
   // // @ts-ignore
   // fetch () {
   // },

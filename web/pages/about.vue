@@ -3,13 +3,19 @@
     <KHeader custom-title="(≖ᴗ≖)✧" />
     <div class="content">
       <h3 class="title">你好！我是 K.</h3>
-      <p class="part">TEXT PART</p>
+      <p class="part">PART 1</p>
       <ul class="introduce-list">
         <li class="item">生于一九九五年 母亲河（长江）边</li>
         <li class="item">屋后尚有群山环绕，门前也有小河潺潺</li>
         <li class="item">常年佛系人生，却也偶叹人生几何</li>
         <li class="item">偶有重温经典，但无热血追捧</li>
         <li class="item">心有指点江山之意，却扰倦怠缠身之难</li>
+      </ul>
+      <p class="part">PART 2</p>
+      <ul class="introduce-list">
+        <li class="item">人生不过二两酒，一两心酸一两愁</li>
+        <li class="item">昨日心酸酿成酒，苦酒入喉今日愁</li>
+        <li class="item">浮生溺毙杯中物，今日不做明日愁</li>
       </ul>
       <p class="part">你好，陌生人，承蒙遇见，三生有幸~</p>
       <p class="part">佛曰：前世五百次的回眸才换得今世的擦肩而过，我用一千次回眸换得今生在你面前的驻足停留</p>

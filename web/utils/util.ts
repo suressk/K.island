@@ -1,3 +1,6 @@
+import { months } from './variable'
+// import dayjs from 'dayjs'
+
 /**
  * 添加事件监听
  * */
@@ -94,4 +97,15 @@ export function checkEmail (email: string): boolean {
   // const emailReg = /^([a-zA-Z]|[0-9])(\w|-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
   const emailReg = /\w+@([0-9a-zA-Z]+[-0-9a-zA-Z]*)(\.[0-9a-zA-Z]+[-0-9a-zA-Z]*)+/
   return emailReg.test(email)
+}
+
+/**
+ * 获取当前时间：月 日 年 格式返回
+ * */
+export function getCurrentTime () {
+  const date: Date = new Date()
+  const year: number = date.getFullYear()
+  const month: number = date.getMonth()
+  const day: number = date.getDate()
+  return `${months[month]} ${day} ${year}`
 }

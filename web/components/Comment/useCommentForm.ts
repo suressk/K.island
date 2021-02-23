@@ -1,13 +1,10 @@
 import { ref, reactive, computed, SetupContext, nextTick } from '@nuxtjs/composition-api'
 import { checkEmail } from '~/utils/util'
-
-interface PropsType {
-  modelValue: boolean;
-}
+import { CommentProps } from '~/@types'
 
 let timer: number
 
-export default function (props: PropsType, ctx: SetupContext) {
+export default function (props: CommentProps, ctx: SetupContext) {
   const name = ref<string>('')
   const email = ref<string>('')
   const comment = ref<string>('')

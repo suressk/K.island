@@ -3,7 +3,7 @@ import {
   onMounted,
   onBeforeUnmount
 } from '@nuxtjs/composition-api'
-import {preventDefault, throttle} from '~/utils/util'
+import { preventDefault, throttle, getCurrentTime } from '~/utils/util'
 import RainInit from '~/components/RainEffect'
 // import Notification from '../components/notification'
 
@@ -15,6 +15,7 @@ export default function useIndex() {
   const sceneWidth = ref<string>('100%')
   const showNav = ref<boolean>(false)
   const loadStatus = ref<string>('loadMore')
+  const curTime = ref<string>('')
 
   function init() {
     sceneHeight.value = document.documentElement.clientHeight + 'px'
@@ -44,6 +45,7 @@ export default function useIndex() {
   }
 
   onMounted(() => {
+    curTime.value = getCurrentTime()
     RainInit()
     const windowResize = throttle(init, 100)
     window.onresize = () => {
@@ -57,6 +59,7 @@ export default function useIndex() {
   })
 
   return {
+    curTime,
     showNav,
     loadStatus,
     sceneHeight,

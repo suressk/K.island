@@ -13,19 +13,60 @@
         padding: 0;
       }
     }
+    // 首页雨幕上的文字内容
+    .cover-introduce {
+      .time,
+      .introduce {
+        color: var(--ink);
+      }
+    }
+    // 首页导航菜单
     div.nav {
       flex-direction: column;
+      font-size: 20px;
     }
+    .head-bar {
+      .logo {
+        transform-origin: left center;
+        transform: scale(0.8);
+      }
+    }
+    // 关于我
     &.k-about {
       .content {
         margin: 0;
+        padding: 50px 10px 0;
+        min-height: calc(100vh - 40px);
+        .title {
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin: 20px 0;
+        }
+        .introduce-list {
+          padding-left: 20px;
+          margin-bottom: 10px;
+          .item {
+            font-size: 0.8rem;
+          }
+        }
+        .part {
+          font-size: 0.8rem;
+        }
       }
     }
-    //div.content {
-    //  min-height: calc(100vh - 40px);
-    //}
+    // 文章详情
+    &.k-article-info{
+      .content {
+        padding: 50px 10px 0;
+        width: 100%;
+      }
+    }
+    // 订阅页面
     &.subscription {
       .main-content {
+        .subscription-form {
+          padding: 50px 30px;
+        }
         .tip-title {
           font-size: 1.2rem;
         }

@@ -37,14 +37,15 @@
 
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
 import useCommentForm from './useCommentForm'
+import { CommentProps } from '~/@types'
 
 export default defineComponent({
   name: 'CommentForm',
-  setup(props, ctx) {
+  setup(props: CommentProps, ctx: SetupContext) {
     return {
-      ...useCommentForm(ctx)
+      ...useCommentForm(props, ctx)
     }
   }
 })

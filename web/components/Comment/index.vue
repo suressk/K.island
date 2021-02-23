@@ -6,11 +6,14 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
+import { CommentInfo } from '~/@types'
+import CommentForm from './CommentForm.vue'
 
 export default defineComponent({
   name: 'Comment',
+  components: { CommentForm },
   setup() {
-    function handleGetComment(info) {
+    function handleGetComment(info: CommentInfo) {
       console.log('Comment info: ', info)
     }
 
