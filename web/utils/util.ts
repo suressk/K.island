@@ -1,4 +1,4 @@
-import { months } from './variable'
+import { zhMonths } from './variable'
 // import dayjs from 'dayjs'
 
 /**
@@ -107,5 +107,5 @@ export function getCurrentTime () {
   const year: number = date.getFullYear()
   const month: number = date.getMonth()
   const day: number = date.getDate()
-  return `${months[month]} ${day} ${year}`
+  return `${zhMonths[month]} ${day} ${year}`
 }

@@ -28,6 +28,7 @@ export default {
     display: inline-block;
     width: 10px;
     height: 10px;
+    border-radius: 2px;
     background-color: var(--cyanogen);
     animation: cubeScale 1.3s infinite ease-in-out;
     &:first-child {
@@ -61,9 +62,11 @@ export default {
 }
 @keyframes cubeScale {
   0%, 70%, 100% {
+    //opacity: 1;
     transform: scale(1);
   }
   35% {
+    //opacity: 0;
     transform: scale(0);
   }
 }

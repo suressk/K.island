@@ -166,6 +166,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import url("https://at.alicdn.com/t/font_2332190_2wwtjn30ium.css");
+@import url("https://at.alicdn.com/t/font_2332190_mgbefmywrv7.css");
 @import "assets/css/pages/index.scss";
 </style>

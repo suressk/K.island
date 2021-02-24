@@ -14,7 +14,7 @@
           />
         </span>
       </h1>
-      <span class="k-title flex-center txt-overflow" :class="{ active: showTitle }">{{ customTitle }}</span>
+      <span class="k-title txt-overflow" :title="customTitle" :class="{ active: showTitle }">{{ customTitle }}</span>
       <ul class="header-r-nav flex-center">
         <li class="r-nav-item flex-center qrcode">
           <i class="iconfont icon-qrcode trans-all-03" />

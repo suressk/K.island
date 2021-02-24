@@ -35,9 +35,12 @@
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import { checkEmail } from '~/utils/util'
+import KHeader from '~/components/KHeader/index.vue'
+import KWave from '~/components/KWave/index.vue'
 
 export default defineComponent({
   name: 'subscription',
+  components: { KHeader, KWave },
   setup() {
     const email = ref<string>('')
     const isEmail = ref<boolean>(true)

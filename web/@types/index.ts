@@ -23,7 +23,7 @@ export interface ILoadImageItem {
  * 评论
  * */
 export interface CommentProps {
-  submitting: boolean;
+  submitting: number;
 }
 
 export interface CommentInfo {

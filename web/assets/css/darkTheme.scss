@@ -1,0 +1,33 @@
+/**
+  暗色系颜色值
+*/
+:root {
+  --color-dark-body: #0d1117;
+  --color-dark-header: #161b22;
+  //--header-dark-txt: rgba(240, 246, 252, 0.7);
+  --color-dark-txt: rgb(201, 209, 217);
+  --color-dark-tip: rgb(139, 148, 158);
+  --color-dark-border: #30363d;
+}
+
+body.dark {
+  color: var(--color-dark-txt);
+  .k-page {
+    background-color: var(--color-dark-body);
+    .k-header {
+      .header-content {
+        background-color: var(--color-dark-header);
+      }
+    }
+    .content {
+      border-color: var(--color-dark-border);
+    }
+    .k-footer,
+    .load-more {
+      background-color: var(--color-dark-body);
+      .load-more-btn {
+        border-color: var(--color-dark-border);
+      }
+    }
+  }
+}

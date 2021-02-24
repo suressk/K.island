@@ -1,9 +1,9 @@
 // @ts-ignore
 import { SetupContext } from '@vue/runtime-core'
 import { onMounted } from '@nuxtjs/composition-api'
-import { waveRecord } from '~/utils/wave'
+// import { waveRecord } from '~/utils/wave'
 
-let canvasRef: HTMLCanvasElement
+// let canvasRef: HTMLCanvasElement
 let ctx: CanvasRenderingContext2D
 let width: number
 let height: number

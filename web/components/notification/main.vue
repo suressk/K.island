@@ -19,7 +19,7 @@
 <script>
 import { addListener, removeListener } from '@/utils/util'
 export default {
-  name: 'Notify',
+  name: 'Notification',
   data () {
     return {
       visible: false,

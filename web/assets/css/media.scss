@@ -6,11 +6,17 @@
     }
   }
 }
+
+// < 800px
 @media screen and (max-width: 800px) {
   .k-page {
     .k-header {
       .header-content {
         padding: 0;
+        .header-l-nav,
+        .header-r-nav {
+          transform: scale(0.8);
+        }
       }
     }
     // 首页雨幕上的文字内容

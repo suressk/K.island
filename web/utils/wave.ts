@@ -1,16 +1,22 @@
 export function waveRecord(canvasRef: HTMLCanvasElement) {
   //获取画布
-  const ctx = canvasRef.getContext('2d')! //设置波浪海域（海浪宽度，高度）
+  const ctx = canvasRef.getContext('2d')!
+  //设置波浪海域（海浪宽度，高度）
   const bezierWidth = canvasRef.width
   const bezierHeight = canvasRef.height
   const bezierLineWidth = 2//曲线
   const sinX = 0
-  const sinY = bezierHeight / 2//轴长
-  const axisLength = bezierWidth//弧度宽度
-  const waveWidth = 0.014//海浪高度
+  const sinY = bezierHeight / 2
+  //轴长
+  const axisLength = bezierWidth
+  //弧度宽度
+  const waveWidth = 0.014
+  //海浪高度
   const waveHeight = bezierHeight / 15.0
-  const speed = 0.1 //数值越大速率越快
-  let xSpeed = 0 //波浪横向的偏移量
+  const speed = 0.1
+  //数值越大速率越快
+  let xSpeed = 0
+  //波浪横向的偏移量
   let rand = bezierHeight //波浪高度
 
   ctx.lineWidth = bezierLineWidth

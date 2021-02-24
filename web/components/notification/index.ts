@@ -20,23 +20,14 @@ const Notification = (options: NotificationOptions): NotificationInstance | unde
     offset += item.$el.offsetHeight + 16
   })
   offset += 16
-  // options = {
-  //   duration: 5000,
-  //   ...options,
-  //   id,
-  //   offset,
-  //   onClose: () => {
-  //     close(id)
-  //   }
-  // }
   instance = new NotificationConstructor({
     data: options
   })
+  // 当前 notification(vue 实例)添加属性
   instance.onClose = () => {
     close(id)
   }
   instance.offset = offset
-
   instance.id = id
   instance.$mount()
   document.body.appendChild(instance.$el)
@@ -60,6 +51,7 @@ function close (id: string) {
     return false
   })[0]
   if (!curInstance) return
+  // 若无当前实例，则移除数组中的最后一项
   notifications.splice(index, 1)
   /**
    * TODO ==========================================

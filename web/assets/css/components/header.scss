@@ -48,8 +48,10 @@
     visibility: hidden;
     transition: all .5s ease-in-out;
     transform: translateY(20px);
-    flex: 1;
+    width: calc(100% - 240px);
     height: 100%;
+    line-height: 50px;
+    text-align: center;
     &.active {
       opacity: 1;
       visibility: visible;

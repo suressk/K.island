@@ -1,31 +1,35 @@
 <template>
-  <div class="k-article">
+  <section class="k-article">
     <KHeader custom-title="(≖ᴗ≖)✧" />
     <!--  文章列表页  -->
-    <section v-if="!list" class="nothing-content tip flex-center">
-      空无一物 (≖ᴗ≖)✧
+    <div v-if="!list" class="nothing-content flex-center">
+      <span class="tip">空无一物 (≖ᴗ≖)✧</span>
       <!--<canvas ref="animateCanvas" width="100%" height="100%" class="animation-canvas" />-->
       <KWave />
-    </section>
+    </div>
     <!--  有内容  -->
-    <section v-else class="content">
+    <div v-else class="content">
       <nuxt-link to="/article/12">
         detail
       </nuxt-link>
       文章列表
-    </section>
+    </div>
 
     <KFooter />
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@nuxtjs/composition-api'
+import { defineComponent, computed, SetupContext } from '@nuxtjs/composition-api'
 import useArticle from './useArticle'
+import KFooter from '~/components/KFooter.vue'
+import KWave from '~/components/KWave/index.vue'
+import KHeader from '~/components/KHeader/index.vue'
 
 export default defineComponent({
   name: 'Article',
-  setup (props, ctx) {
+  components: { KHeader, KWave, KFooter },
+  setup (props, ctx: SetupContext) {
     const list = computed(() => false)
     return {
       list,
@@ -40,6 +44,6 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "assets/css/pages/article.scss";
 </style>

@@ -21,7 +21,8 @@ export default {
   css: [
     '~/assets/css/initial.scss',
     '~/assets/css/common.scss',
-    '~/assets/css/media.scss'
+    '~/assets/css/media.scss',
+    '~/assets/css/darkTheme.scss'
   ],
 
   // Loading 加载动画
