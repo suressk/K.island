@@ -4,6 +4,16 @@ import { CommentProps } from '~/@types'
 
 let timer: number
 
+function matchStationmasterEmail (email: string) {
+  switch (email) {
+    case 'sure_k@qq.com':
+    case 'songkun.1008@gmail.com':
+      return true
+    default:
+      return false
+  }
+}
+
 export default function (props: CommentProps, ctx: SetupContext) {
   const name = ref<string>('')
   const email = ref<string>('')
@@ -12,9 +22,9 @@ export default function (props: CommentProps, ctx: SetupContext) {
   const tipTxt = reactive([
     '您的名字是不是输入全空格啦？',
     '邮箱格式貌似不太对呢~',
+    '胆敢冒充站长，来人，拉出去枪毙五分钟！！!',
     '多说一点儿吧，至少能成一句诗~',
     '偷偷告诉我，你作文是不是 0 分~',
-    '胆敢冒充站长，来人，拉出去枪毙五分钟！！',
     '完成验证才可以提交哦~',
     'Submitting...',
     '哇哦！遇到错误，要不再试试？',
@@ -35,9 +45,12 @@ export default function (props: CommentProps, ctx: SetupContext) {
     if (!checkEmail(email.value)) {
       tipIndex.value = 1
       return
-    }
-    if (comment.value.length < 10) {
+    } else if (matchStationmasterEmail(email.value)) {
       tipIndex.value = 2
+      return
+    }
+    if (comment.value.length < 5) {
+      tipIndex.value = 3
       return
     }
     tipIndex.value = 8
@@ -50,7 +63,7 @@ export default function (props: CommentProps, ctx: SetupContext) {
       if (timer) clearTimeout(timer)
       timer = window.setTimeout(() => {
         tipIndex.value = -1 // 均满足条件
-      }, 2000)
+      }, 3000)
     })
   }
 

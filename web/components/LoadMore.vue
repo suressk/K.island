@@ -46,7 +46,10 @@ export default defineComponent({
   width: 100%;
   height: 70px;
   padding: 20px 0;
+  margin-top: 20px;
   background-color: var(--white);
+  position: relative;
+  z-index: 1;
   .load-more-btn {
     border: 1px solid var(--border);
     border-radius: 5px;
@@ -57,7 +60,7 @@ export default defineComponent({
     &:hover {
       //color: var(--cyanogen);
       color: var(--white);
-      background-color: var(--cyanogen);
+      background-color: var(--cyanogen)!important;
       border-color: var(--cyanogen);
     }
   }

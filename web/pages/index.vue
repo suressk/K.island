@@ -46,7 +46,7 @@
       <ul class="content-list" v-if="info && info.length > 0">
         <li v-for="item in info" :key="item.uid" class="content-item">
           <div class="cover flex-center trans-all-03">
-            <img :src="item.cover" alt="">
+            <img v-if="item.cover" :src="item.cover" :alt="item.title">
           </div>
           <div class="info">
             <span class="time">{{ item.time }}</span>
@@ -65,7 +65,7 @@
           </div>
         </li>
       </ul>
-      <LoadMore class="more" :load-status="loadStatus" @load-more="handleLoadMore" />
+      <LoadMore :load-status="loadStatus" @load-more="handleLoadMore" />
     </div>
 
     <BackTop />
@@ -79,6 +79,7 @@ import useIndex from './useIndex'
 import LoadMore from '~/components/LoadMore.vue'
 import BackTop from '~/components/BackTop/index.vue'
 import KFooter from '~/components/KFooter.vue'
+import notification from '~/components/notification'
 // import html2canvas from 'html2canvas'
 
 const navList = [
@@ -95,34 +96,34 @@ export default defineComponent({
   // },
   // // merge to data: () => ({})
   // @ts-ignore
-  // async asyncData ({ $axios }) {
-  //   // 测试 axios
-  //   // const { success, data, message } = await $axios.get('/records/list', {
-  //   // const res = await $axios.get('/records/list', {
-  //   //   params: {
-  //   //     pageNo: 1,
-  //   //     pageSize: 10
-  //   //   }
-  //   // })
-  //   // console.log('RESPONSE ===== ', res);
-  //   // if (success) {
-  //   //   this.$notification({
-  //   //     type: 'success',
-  //   //     title: 'SUCCESS',
-  //   //     message
-  //   //   })
-  //   //   return {
-  //   //     info: data.list
-  //   //   }
-  //   // } else {
-  //   //   console.log(message)
-  //   // }
-  // },
+  async asyncData ({ $axios }) {
+    // 测试 axios
+    const { success, data, message } = await $axios.get('/records/list', {
+    // const res = await $axios.get('/records/list', {
+      params: {
+        pageNo: 1,
+        pageSize: 10
+      }
+    })
+    // console.log('RESPONSE ===== ', res);
+    if (success) {
+      notification({
+        type: 'success',
+        title: 'SUCCESS',
+        message
+      })
+      return {
+        info: data.list
+      }
+    } else {
+      console.log(message)
+    }
+  },
   setup () {
     return {
       navList,
       ...useIndex(),
-      info: []
+      // info: []
     }
   },
   // mounted() {

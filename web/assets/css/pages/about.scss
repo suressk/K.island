@@ -2,7 +2,7 @@
 .k-about {
   .content {
     width: 800px;
-    min-height: calc(100vh - 80px);
+    min-height: calc(100vh - 40px);
     border: none;
     .title {
       font-size: 2rem;
@@ -32,6 +32,7 @@
     }
 
     .link-area {
+      margin: 20px 0;
       .link-item {
         color: var(--tipColor);
         margin-right: 10px;

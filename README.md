@@ -1,4 +1,4 @@
-# <div align="center">K.island</div> {ignore=true}
+# <div align="center">K.island</div>
 
 <div align="center">
     <img src="https://img.shields.io/badge/Nuxt-v2.0.1-blue">
@@ -25,6 +25,75 @@
 1. vue 3.0 (全家桶) + Element-plus (按需引入) + 自定义组件
 2. typescript 类型检查系统初试
 
-## 🌞 好戏开场了
+## ☠ 好戏开场了
 
 nuxt.js + typescript 开启服务端渲染
+
+## 🤩 才艺展示
+
+<style>
+.done {
+    color: #0095d9;
+}
+.todo {
+   color: #ff461f; 
+}
+</style>
+
+<ul>
+    <li style="color: #00bc12;">
+        HAVE ============================= DONE
+    </li>
+    <li class="done">
+        <label><input type="checkbox" checked disabled>首页雨幕</label>
+    </li>
+    <li class="done">
+        <label><input type="checkbox" checked disabled>首页文章列表查询</label>
+    </li>
+    <li class="done">
+        <label><input type="checkbox" checked disabled>关于我静态页</label>
+    </li>
+    <li class="done">
+        <label><input type="checkbox" checked disabled>文章列表无文章页</label>
+    </li>
+    <li class="done">
+        <label><input type="checkbox" checked disabled>订阅静态页</label>
+    </li>
+    <li class="done">
+        <label><input type="checkbox" checked disabled>回到顶部</label>
+    </li>
+    <li class="done">
+        <label><input type="checkbox" checked disabled>发表评论表单</label>
+    </li>
+    <li style="color: #ffa631;">
+        TODO ============================= TODO
+    </li>
+    <li class="todo">
+        <label><input type="checkbox" disabled>首页内容区响应式</label>
+    </li>
+    <li class="todo">
+        <label><input type="checkbox" disabled>文章列表跳转文章详情页面</label>
+    </li>
+    <li class="todo">
+        <label><input type="checkbox" disabled>首页加载更多文章</label>
+    </li>
+    <li class="todo">
+        <label><input type="checkbox" disabled>所有文章列表页 —— 计划分为两个版块 (心情文章 + 技术类文章)</label>
+    </li>
+    <li class="todo">
+        <label><input type="checkbox" disabled>明暗主题切换</label>
+    </li>
+    <li class="todo">
+        <label><input type="checkbox" disabled>Header 背景音乐</label>
+    </li>
+    <li class="todo">
+        <label><input type="checkbox" disabled>文章评论与回复</label>
+    </li>
+    <li class="todo">
+        <label><input type="checkbox" disabled>文章点赞</label>
+    </li>
+    <li class="todo">
+        <label><input type="checkbox" disabled>订阅功能</label>
+    </li>
+</ul>
+
