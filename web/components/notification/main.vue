@@ -1,7 +1,7 @@
 <template>
   <transition name="notify">
     <div
-      class="notify notification"
+      class="notification"
       v-show="visible"
       :style="verticalOffset"
       @mouseenter="stopDestroy"

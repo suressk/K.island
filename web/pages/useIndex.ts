@@ -4,7 +4,7 @@ import {
   onBeforeUnmount
 } from '@nuxtjs/composition-api'
 import { preventDefault, throttle, getCurrentTime } from '~/utils/util'
-import RainInit from '~/components/RainEffect'
+import RainInit from '~/components/rainEffect'
 // import Notification from '../components/notification'
 
 /**
