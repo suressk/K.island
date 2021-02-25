@@ -31,60 +31,23 @@ nuxt.js + typescript 开启服务端渲染
 
 ## 🤩 才艺展示
 
-<ul>
-    <li style="color: #00bc12;">
-        HAVE DONE
-    </li>
-    <li style="color: #0095d9;">
-        <label><input type="checkbox" checked disabled>首页雨幕</label>
-    </li>
-    <li style="color: #0095d9;">
-        <label><input type="checkbox" checked disabled>首页文章列表查询</label>
-    </li>
-    <li style="color: #0095d9;">
-        <label><input type="checkbox" checked disabled>关于我静态页</label>
-    </li>
-    <li style="color: #0095d9;">
-        <label><input type="checkbox" checked disabled>文章列表无文章页</label>
-    </li>
-    <li style="color: #0095d9;">
-        <label><input type="checkbox" checked disabled>订阅静态页</label>
-    </li>
-    <li style="color: #0095d9;">
-        <label><input type="checkbox" checked disabled>回到顶部</label>
-    </li>
-    <li style="color: #0095d9;">
-        <label><input type="checkbox" checked disabled>发表评论表单</label>
-    </li>
-    <li style="color: #ffa631;">
-        TODO
-    </li>
-    <li style="color: #ff461f;">
-        <label><input type="checkbox" disabled>首页内容区响应式</label>
-    </li>
-    <li style="color: #ff461f;">
-        <label><input type="checkbox" disabled>文章列表跳转文章详情页面</label>
-    </li>
-    <li style="color: #ff461f;">
-        <label><input type="checkbox" disabled>首页加载更多文章</label>
-    </li>
-    <li style="color: #ff461f;">
-        <label><input type="checkbox" disabled>所有文章列表页 —— 计划分为两个版块 (心情文章 + 技术类文章)</label>
-    </li>
-    <li style="color: #ff461f;">
-        <label><input type="checkbox" disabled>明暗主题切换</label>
-    </li>
-    <li style="color: #ff461f;">
-        <label><input type="checkbox" disabled>Header 背景音乐</label>
-    </li>
-    <li style="color: #ff461f;">
-        <label><input type="checkbox" disabled>文章评论与回复</label>
-    </li>
-    <li style="color: #ff461f;">
-        <label><input type="checkbox" disabled>文章点赞</label>
-    </li>
-    <li style="color: #ff461f;">
-        <label><input type="checkbox" disabled>订阅功能</label>
-    </li>
-</ul>
+- <font color="#00bc12">HAVE DONE</font>
+- [x] 首页雨幕
+- [x] 首页文章列表查询
+- [x] 关于我静态页
+- [x] 文章列表无文章页
+- [x] 订阅静态页
+- [x] 回到顶部组件
+- [x] 发表评论表单
+- <font color="#ff461f">TODO</font>
+- [ ] 首页内容区响应式
+- [ ] 文章列表跳转文章详情页面
+- [ ] 首页加载更多文章
+- [ ] 所有文章列表页 —— 计划分为两个版块 (心情文章 + 技术类文章)
+- [ ] 明暗主题切换
+- [ ] Header 背景音乐
+- [ ] 文章评论与回复
+- [ ] 文章点赞
+- [ ] 订阅功能
+    
 
