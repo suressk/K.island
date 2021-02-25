@@ -27,31 +27,33 @@
 .flex-center,
 .flex-end,
 .flex-col,
+.flex-col-center,
+.flex-col-around,
 .flex-col-between {
   display: flex;
   align-items: center;
 }
 
-.flex-between {
+.flex-between,
+.flex-col-between {
   justify-content: space-between;
 }
-.flex-around {
+.flex-around,
+.flex-col-around {
   justify-content: space-around;
 }
-.flex-center {
+.flex-center,
+.flex-col-center {
   justify-content: center;
 }
-
 .flex-end {
   justify-content: flex-end;
 }
 
-.flex-col {
-  flex-direction: column;
-  justify-content: center;
-}
-.flex-col-between {
-  justify-content: space-between;
+.flex-col,
+.flex-col-around,
+.flex-col-between,
+.flex-col-center {
   flex-direction: column;
 }
 
@@ -251,7 +253,7 @@
   content 内容区
 */
 .content {
-  width: 1200px;
+  width: 800px;
   border: 1px solid var(--border);
   border-left: none;
   border-right: none;

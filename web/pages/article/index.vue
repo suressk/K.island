@@ -2,17 +2,43 @@
   <section class="k-article">
     <KHeader custom-title="(≖ᴗ≖)✧" />
     <!--  文章列表页  -->
-    <div v-if="!list" class="nothing-content flex-center">
+    <div v-if="!data" class="nothing-content flex-center">
       <span class="tip">空无一物 (≖ᴗ≖)✧</span>
       <!--<canvas ref="animateCanvas" width="100%" height="100%" class="animation-canvas" />-->
       <KWave />
     </div>
     <!--  有内容  -->
     <div v-else class="content">
-      <nuxt-link to="/article/12">
-        detail
-      </nuxt-link>
-      文章列表
+      <!--   月份分组   -->
+      <div
+        class="year-list"
+        v-for="(yearsVal, year, idx) in data"
+        :key="idx"
+      >
+        <ul
+          class="month-list"
+          v-for="(monthsVal, month) in yearsVal"
+          :key="month"
+        >
+          <li class="month">{{ month + ', ' + year }}</li>
+          <li class="month-item">
+            <div
+              class="article-item"
+              v-for="articleItem in monthsVal"
+              :key="articleItem.uid"
+            >
+              <div class="img-box"></div>
+              <div class="article-content flex-col-around">
+                <span class="title">{{ articleItem.title }}</span>
+                <span class="tip-txt">{{ articleItem.views + '/' + articleItem.likes }}</span>
+              </div>
+              <div class="day-marker">
+                {{ articleItem.time.day }}
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <KFooter />
@@ -30,9 +56,7 @@ export default defineComponent({
   name: 'Article',
   components: { KHeader, KWave, KFooter },
   setup (props, ctx: SetupContext) {
-    const list = computed(() => false)
     return {
-      list,
       ...useArticle(ctx)
     }
   },
