@@ -1,10 +1,16 @@
 <template>
-  <div class="back-top trans-all-05 flex-center" :class="{ show: isBack }" @click="handleBackTop">
+  <div
+    class="back-top trans-all-05 flex-center"
+    :class="{ show: isBack }"
+    @click="handleBackTop"
+  >
     <i class="iconfont icon-toTop" />
   </div>
 </template>
 
 <script>
+import { singleScroll, addListener, removeListener } from '~/utils/util'
+
 export default {
   name: 'BackToTop',
   data () {
@@ -21,14 +27,14 @@ export default {
   },
   mounted () {
     this.fnScroll = this.$throttle(this.handleScroll, 100)
-    window.addEventListener('scroll', this.fnScroll)
+    addListener(window, 'scroll', this.fnScroll)
   },
   beforeDestroy () {
-    window.removeEventListener('scroll', this.fnScroll)
+    removeListener(window, 'scroll', this.fnScroll)
   },
   methods: {
     handleBackTop () {
-      this.$scroll('body', 'top')
+      singleScroll('body', 'top')
     },
     handleScroll () {
       this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop

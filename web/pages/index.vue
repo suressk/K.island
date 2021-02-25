@@ -96,34 +96,34 @@ export default defineComponent({
   // },
   // // merge to data: () => ({})
   // @ts-ignore
-  async asyncData ({ $axios }) {
-    // 测试 axios
-    const { success, data, message } = await $axios.get('/records/list', {
-    // const res = await $axios.get('/records/list', {
-      params: {
-        pageNo: 1,
-        pageSize: 10
-      }
-    })
-    // console.log('RESPONSE ===== ', res);
-    if (success) {
-      notification({
-        type: 'success',
-        title: 'SUCCESS',
-        message
-      })
-      return {
-        info: data.list
-      }
-    } else {
-      console.log(message)
-    }
-  },
+  // async asyncData ({ $axios }) {
+  //   // 测试 axios
+  //   const { success, data, message } = await $axios.get('/records/list', {
+  //   // const res = await $axios.get('/records/list', {
+  //     params: {
+  //       pageNo: 1,
+  //       pageSize: 10
+  //     }
+  //   })
+  //   // console.log('RESPONSE ===== ', res);
+  //   if (success) {
+  //     notification({
+  //       type: 'success',
+  //       title: 'SUCCESS',
+  //       message
+  //     })
+  //     return {
+  //       info: data.list
+  //     }
+  //   } else {
+  //     console.log(message)
+  //   }
+  // },
   setup () {
     return {
       navList,
       ...useIndex(),
-      // info: []
+      info: []
     }
   },
   // mounted() {

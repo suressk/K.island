@@ -1,197 +1,45 @@
 import Vue from 'vue'
-import { NotifyOptions, createNotify } from '../utils/notify'
-import { ILoadImageItem } from '~/@types'
-import Notification from '../components/notification'
-
-// // @ts-ignore
-// import { ComponentInternalInstance } from '@vue/runtime-core'
-
-// 存储所有 notify 弹窗 Element 元素
-const notifications: HTMLElement[] = []
-let notifyContainer: HTMLElement | undefined
-
-let rafId = -1
+import { ILoadImageItem, NotificationOptions } from '~/@types'
+import Notification from '~/components/notification'
+import { throttle, debounce, singleScroll, addListener, removeListener } from '~/utils/util'
+// import { ComponentInstance } from '@nuxtjs/composition-api'
 
 const common = {
   // @ts-ignore
   install (Vue) {
     // 节流
-    Vue.prototype.$throttle = (fn: Function, delay: number = 3000) => {
-      // let flag = true
-      // let timer: any
-      // return function (...args: any[]) {
-      //   if (flag) {
-      //     flag = false
-      //     timer && clearTimeout(timer)
-      //     timer = setTimeout(() => {
-      //       // @ts-ignore
-      //       fn.apply(this, args)
-      //       flag = true
-      //     }, interval)
-      //   }
-      // }
-      let timer: null | number = null
-      let startTime: number
-      return function (...args: any[]) {
-        // @ts-ignore
-        const ctx = this,
-          now = new Date().getTime()
-        if (startTime && now < startTime + delay) {
-          if (timer) clearTimeout(timer)
-          timer = window.setTimeout(() => {
-            startTime = now
-            fn.apply(ctx, args)
-          }, delay)
-        } else {
-          startTime = now
-          fn.apply(ctx, args)
-        }
-      }
-    }
+    Vue.prototype.$throttle = throttle
 
     // 防抖
-    Vue.prototype.$debounce = (fn: Function, delay: number, immediate: boolean) => {
-      let timer: null | number = null
-      return function () {
-        // @ts-ignore
-        const ctx = this
-        let callNow: boolean
-        if (timer) clearTimeout(timer)
-        if (immediate) {
-          callNow = !timer
-          if (callNow) {
-            fn.apply(ctx, arguments)
-          }
-          timer = window.setTimeout(() => {
-            timer = null
-          }, delay)
-        } else {
-          timer = window.setTimeout(() => {
-            fn.apply(ctx, arguments)
-          }, delay)
-        }
-      }
-    }
-    /**
-     * options
-      {
-        type: 'success',
-        title: 'Notify',
-        message: 'Attention Please'
-      }
-    */
-    // Message Notification - Native JS achieve
-    Vue.prototype.$notify = (options: NotifyOptions) => {
-      if (typeof window == undefined) return
-      const defaultTimeout = 5000
-      if (notifyContainer === undefined) {
-        notifyContainer = document.createElement('div')
-        notifyContainer.className = 'notify-container'
-        document.body.appendChild(notifyContainer)
-      }
-      const notifyEl = createNotify(options)
-      notifications.push(notifyEl)
-      notifyContainer.appendChild(notifyEl)
-      new Promise((resolve) => {
-        setTimeout(() => {
-          notifyEl.classList.remove('notify-enter')
-        }, 100)
-        setTimeout(() => {
-          notifyEl.classList.add('notify-enter')
-        }, defaultTimeout - 600)
-        setTimeout(() => {
-          const index = notifications.findIndex(item => item === notifyEl)
-          notifyContainer && notifyContainer.removeChild(notifyEl)
-          notifications.splice(index, 1) // 移除 notifyEl
-          resolve(1)
-        }, defaultTimeout)
-      }).then(() => {
-        // console.log('success: ', val);
-        if (notifications.length === 0) {
-          notifyContainer && document.body.removeChild(notifyContainer)
-          notifyContainer = undefined
-        }
-      })
-    }
+    Vue.prototype.$debounce = debounce
+
     // Message Notification Vue.extend() API achieve
-    Vue.prototype.$notification = (options: NotifyOptions) => {
+    Vue.prototype.$notification = (options: NotificationOptions) => {
       Notification(options)
     }
 
-    function getWindowProp(type: string) {
-      // @ts-ignore
-      return document.documentElement[type] || document.body[type]
-    }
     // 设置滚动条位置
-    Vue.prototype.$scroll = (domSelector: string, type: string, speed = 10) => {
-      // DOM元素 计算位置
-      const dom = document.querySelector(domSelector) as HTMLElement
-      const top = dom.offsetTop
-      let target: number // 滚动的目标位置
-      if (type === 'top') {
-        target = 0
-      } else if (type === 'comment') {
-        // 评论
-        const commentDom = <HTMLElement>document.querySelector('.comment-form')
-        const commentHeight = commentDom.offsetHeight
-        target = top - getWindowProp('clientHeight') + commentHeight
-      } else {
-        const index = type === 'index' ? 280 : -700
-        target = top + (getWindowProp('clientHeight') / 2) + index
-      }
-      let lastScrollTop = 0  // 上次滚动到的位置点
+    Vue.prototype.$singleScroll = singleScroll
 
-      rafId = window.requestAnimationFrame(handleScroll)
-
-      function handleScroll () {
-        let scrollTop = getWindowProp('scrollTop')
-        let len = (target - scrollTop) / speed
-        // const distance = scrollTop / speed // 减速回滚 —— 每次滚动距离
-        // const distance = (scrollTop / speed) | 0 // 取整
-        // const distance = ~~(scrollTop / speed) // 取整
-        // const distance = Math.floor(scrollTop / speed)
-        len = len > 0 ? Math.ceil(len) : Math.floor(len)
-        scrollTop = document.body.scrollTop = document.documentElement.scrollTop = scrollTop + len
-
-        let result = null
-        if (type === 'top') {
-          result = scrollTop === target || (lastScrollTop && scrollTop > lastScrollTop)
-        } else if (type === 'comment') {
-          result = (lastScrollTop && scrollTop > lastScrollTop) || scrollTop <= target || scrollTop === 0
-        } else {
-          result = scrollTop <= lastScrollTop || (scrollTop + len) >= target
-        }
-        // 到达目标位置或滚动滚轮取消滚动
-        if (result) {
-          window.cancelAnimationFrame(rafId)
-          return
-        }
-        lastScrollTop = scrollTop // 记录此次滚动的位置
-        window.requestAnimationFrame(handleScroll)
-      }
-    }
-
-    /**
-     * 首页图片懒加载
-     */
+    /** 首页图片懒加载 */
     let listenList: ILoadImageItem[] = []
 
     Vue.directive('lazy', {
       inserted: (el: HTMLImageElement, binding: { value: any }) => {
         const src = binding.value
         listenList.push({ el, src })
-        window.addEventListener('scroll', watch)
+        addListener(window, 'scroll', watch)
         lazyLoadImg({ el, src })
       },
       unbind: () => {
-        window.removeEventListener('scroll', watch)
+        removeListener(window, 'scroll', watch)
       }
     })
 
     // 使用函数，切换路由，可清除监听事件
     const watch = () => {
-      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      Vue.prototype.$throttle(() => listenList.map(img => lazyLoadImg(img)) , 50)()
+      // const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      throttle(() => listenList.map(img => lazyLoadImg(img)) , 50)()
     }
 
     // 图片懒加载
@@ -203,7 +51,7 @@ const common = {
       if (src && show) {
         let img = new Image()
         img.src = src
-        img.onload = e => {
+        img.onload = () => {
           el.src = src
           const index = listenList.indexOf(loadItem)
           index > -1 && listenList.splice(index, 1)

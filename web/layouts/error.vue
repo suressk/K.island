@@ -8,6 +8,15 @@
       回到首页？
     </span>
   </section>
+  <section v-else-if="error.statusCode === 500" class="not-found">
+    <span class="tip absolute-center">
+      哇哦，你好像迷路了呢？要不试试
+      <nuxt-link class="link" to="/">
+        点我
+      </nuxt-link>
+      回到首页？
+    </span>
+  </section>
 </template>
 
 <script>

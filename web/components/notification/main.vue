@@ -50,7 +50,7 @@ export default {
     },
     startDestroy () {
       this.timer = setTimeout(() => {
-        !this.closed && this.close()
+        this.close()
       }, this.duration)
     },
     stopDestroy () {
