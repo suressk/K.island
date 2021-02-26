@@ -4,7 +4,7 @@
 //   border: 1px solid var(--border);
 //   margin: auto;
 // }
-.k-article {
+.k-article-page {
   .nothing-content {
     width: 100%;
     height: calc(100vh - 40px);
@@ -30,23 +30,27 @@
         width: 12px;
         height: 12px;
         display: inline-block;
-        background-color: var(--lightCyan);
-        border: 3px solid var(--cyanogen);
+        background-color: var(--snowWhite);
+        border: 3px solid var(--silver);
         border-radius: 50%;
         margin-right: 22px;
       }
     }
     .month-item {
-      border-left: 1px solid var(--azure);
+      border-left: 1px solid var(--silver);
       margin-left: 6px;
+      padding-left: 30px;
       .article-item {
         display: flex;
-        padding: 10px 20px;
+        padding: 25px 0;
         position: relative;
+        border-bottom: 1px solid var(--snowWhite);
+        cursor: pointer;
+        margin: 20px 0;
         .img-box {
           width: 50px;
           height: 50px;
-          border: 1px solid var(--azure);
+          border: 1px solid var(--silver);
           border-radius: 5px;
           overflow: hidden;
         }
@@ -61,7 +65,7 @@
         .day-marker {
           position: absolute;
           right: 0;
-          top: 0;
+          top: 20px;
           color: var(--warning);
         }
       }

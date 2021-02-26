@@ -1,5 +1,5 @@
 <template>
-  <section class="k-article">
+  <section class="k-article-page">
     <KHeader custom-title="(≖ᴗ≖)✧" />
     <!--  文章列表页  -->
     <div v-if="!data" class="nothing-content flex-center">
@@ -26,11 +26,12 @@
               class="article-item"
               v-for="articleItem in monthsVal"
               :key="articleItem.uid"
+              @click="handleToDetail(articleItem.uid, articleItem.id)"
             >
               <div class="img-box"></div>
               <div class="article-content flex-col-around">
                 <span class="title">{{ articleItem.title }}</span>
-                <span class="tip-txt">{{ articleItem.views + '/' + articleItem.likes }}</span>
+                <span class="tip-txt">{{ articleItem.views + 'READ / ' + articleItem.likes + ' LIKED' }}</span>
               </div>
               <div class="day-marker">
                 {{ articleItem.time.day }}

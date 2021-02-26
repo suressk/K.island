@@ -1,4 +1,4 @@
-import {computed, onMounted, SetupContext} from '@nuxtjs/composition-api'
+import { onMounted, SetupContext } from '@nuxtjs/composition-api'
 // import { waveRecord } from '~/utils/wave'
 
 // const colors = ['rgba(0, 222, 255, 0.2)', 'rgba(157, 192, 249, 0.2)', 'rgba(0, 168, 255, 0.2)']
@@ -75,9 +75,13 @@ const data = {
 export default function useArticle (context: SetupContext) {
   // 页面挂载完毕 => 绘制
   onMounted(() => {
-
+    console.log('context: ', context)
   })
+  function handleToDetail (uid: string, id: number | string) {
+    console.log(uid, id)
+  }
   return {
-    data
+    data,
+    handleToDetail
   }
 }

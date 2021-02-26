@@ -2,31 +2,52 @@
   暗色系颜色值
 */
 :root {
-  --color-dark-body: #0d1117;
-  --color-dark-header: #161b22;
+  --dark-theme-body: #0d1117;
+  --dark-theme-header: #161b22;
   //--header-dark-txt: rgba(240, 246, 252, 0.7);
-  --color-dark-txt: rgb(201, 209, 217);
-  --color-dark-tip: rgb(139, 148, 158);
-  --color-dark-border: #30363d;
+  --dark-theme-txt: rgb(201, 209, 217);
+  --dark-theme-tip: rgb(139, 148, 158);
+  --dark-theme-border: #30363d;
 }
 
 body.dark {
-  color: var(--color-dark-txt);
+  color: var(--dark-theme-txt);
   .k-page {
-    background-color: var(--color-dark-body);
+    background-color: var(--dark-theme-body);
     .k-header {
       .header-content {
-        background-color: var(--color-dark-header);
+        background-color: var(--dark-theme-header);
       }
     }
     .content {
-      border-color: var(--color-dark-border);
+      border-color: var(--dark-theme-border);
     }
     .k-footer,
     .load-more {
-      background-color: var(--color-dark-body);
+      background-color: var(--dark-theme-body);
       .load-more-btn {
-        border-color: var(--color-dark-border);
+        border-color: var(--dark-theme-border);
+      }
+    }
+  }
+
+  // 文章列表页
+  .k-article-page {
+    .content {
+      .month {
+        &::before {
+          background-color: var(--lightBlue);
+          border: 3px solid var(--blue-border);
+        }
+      }
+      .month-item {
+        border-left-color: var(--dark-theme-border);
+        .article-item {
+          border-bottom-color: var(--dark-theme-border);
+          .img-box {
+            border-color: var(--dark-theme-border);
+          }
+        }
       }
     }
   }
