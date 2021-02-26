@@ -57,7 +57,13 @@
         .article-content {
           align-items: flex-start;
           padding: 0 20px;
-          flex: 1;
+          width: calc(100% - 50px);
+          span {
+            width: calc(100% - 10px);
+            &.title {
+              font-size: 1.2rem;
+            }
+          }
           .tip-txt {
             color: var(--tipColor);
           }

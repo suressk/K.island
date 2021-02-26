@@ -60,6 +60,23 @@
         }
       }
     }
+    &.k-article-page {
+      width: 100%;
+      padding: 0 10px;
+      .month-item {
+        padding-left: 10px !important;
+        .article-item {
+          margin: 0 !important;
+          padding: 10px 0 !important;
+        }
+        .title {
+          font-size: 1rem!important;
+        }
+        .day-marker {
+          font-size: 12px;
+        }
+      }
+    }
     // 文章详情
     &.k-article-info{
       .content {

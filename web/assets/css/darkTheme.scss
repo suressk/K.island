@@ -4,14 +4,15 @@
 :root {
   --dark-theme-body: #0d1117;
   --dark-theme-header: #161b22;
-  //--header-dark-txt: rgba(240, 246, 252, 0.7);
-  --dark-theme-txt: rgb(201, 209, 217);
+  --dark-txt: rgb(150, 156, 169);
+  --dark-hover-txt: rgb(201, 209, 217);
   --dark-theme-tip: rgb(139, 148, 158);
   --dark-theme-border: #30363d;
+  --dark-half-black: rgba(0, 0, 0, 0.5);
 }
 
 body.dark {
-  color: var(--dark-theme-txt);
+  color: var(--dark-txt);
   .k-page {
     background-color: var(--dark-theme-body);
     .k-header {
@@ -19,8 +20,30 @@ body.dark {
         background-color: var(--dark-theme-header);
       }
     }
+    .page-cover .head-bar .logo.nav-show {
+      color: var(--white);
+    }
+    .time,
+    .introduce {
+      color: inherit;
+    }
+    .cover-introduce,
+    .nav {
+      background-color: var(--dark-half-black);
+    }
+    .nav {
+      .nav-item {
+        color: var(--dark-theme-txt);
+        &:hover {
+          color: var(--dark-hover-txt);
+        }
+      }
+    }
     .content {
       border-color: var(--dark-theme-border);
+      &::after {
+        background-color: var(--dark-theme-border);
+      }
     }
     .k-footer,
     .load-more {

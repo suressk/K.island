@@ -97,6 +97,7 @@
       color: var(--lightTxt);
       margin: 10px;
       cursor: pointer;
+      transition: all .3s ease-in-out;
       &:hover {
          color: var(--ink);
       }

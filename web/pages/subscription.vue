@@ -2,7 +2,7 @@
   <section class="subscription">
     <KHeader custom-title="(≖ᴗ≖)✧" />
 
-    <div class="main-content flex-col scroller-light">
+    <div class="main-content flex-col-center scroller-light">
       <h2 class="tip-title flex-center">[ 人生如逆旅，我亦是行人 ]</h2>
       <div class="subscription-form">
         <h3 class="subscription-title">浮生如梦，为欢几何？</h3>

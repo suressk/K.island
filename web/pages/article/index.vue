@@ -30,8 +30,8 @@
             >
               <div class="img-box"></div>
               <div class="article-content flex-col-around">
-                <span class="title">{{ articleItem.title }}</span>
-                <span class="tip-txt">{{ articleItem.views + 'READ / ' + articleItem.likes + ' LIKED' }}</span>
+                <span class="title txt-overflow">{{ articleItem.title }}</span>
+                <span class="tip-txt txt-overflow">{{ articleItem.views + ' READED / ' + articleItem.likes + ' LIKED' }}</span>
               </div>
               <div class="day-marker">
                 {{ articleItem.time.day }}
