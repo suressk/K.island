@@ -44,7 +44,7 @@ export default {
 .spinner {
   width: 100vw;
   height: 100vh;
-  z-index: 9999;
+  z-index: 100;
   background-color: var(--white);
   .spinner-container {
     position: absolute;

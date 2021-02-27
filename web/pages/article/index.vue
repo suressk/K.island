@@ -12,7 +12,7 @@
       <!--   月份分组   -->
       <div
         class="year-list"
-        v-for="(yearsVal, year, idx) in data"
+        v-for="(yearsVal, year, idx) in listData"
         :key="idx"
       >
         <ul
@@ -31,7 +31,10 @@
               <div class="img-box"></div>
               <div class="article-content flex-col-around">
                 <span class="title txt-overflow">{{ articleItem.title }}</span>
-                <span class="tip-txt txt-overflow">{{ articleItem.views + ' READED / ' + articleItem.likes + ' LIKED' }}</span>
+                <span class="tip-txt txt-overflow">
+                  {{ articleItem.views + ' READED' }}
+                  {{ articleItem.likes ? (' / ' + articleItem.likes + ' LIKED') : '' }}
+                </span>
               </div>
               <div class="day-marker">
                 {{ articleItem.time.day }}
@@ -50,6 +53,10 @@
 
 <script lang="ts">
 import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
+import { Context } from '@nuxt/types'
+import { createArticleListData } from '~/utils/util'
+import Notification from "~/components/notification";
+// import { A_QUERY_ARTICLE_DETAIL } from '~/store/mutation-types'
 import useArticle from './useArticle'
 import KHeader from '~/components/KHeader/index.vue'
 import KFooter from '~/components/KFooter.vue'
@@ -59,6 +66,29 @@ import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 export default defineComponent({
   name: 'Article',
   components: { KHeader, KWave, KFooter, ThemeSwitch },
+  // store => state
+  // fetch({ store }: Context): Promise<void> | void {
+  //   store.dispatch(A_QUERY_ARTICLE_DETAIL)
+  // },
+  // @ts-ignore => merge to data
+  async asyncData(ctx: Context): Promise<object | void> | object | void {
+    // @ts-ignore
+    const res = await ctx.$axios.get('/records/list', { params: { pageNo: 1, pageSize: 10 } })
+    if (res.success) {
+      const result = createArticleListData(res.data)
+      return {
+        listData: result
+      }
+    }
+    Notification({
+      title: 'WARNING',
+      type: 'warning',
+      message: res.message
+    })
+    return {
+      listData: {}
+    }
+  },
   setup (props, ctx: SetupContext) {
     return {
       ...useArticle(ctx)

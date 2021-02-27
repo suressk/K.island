@@ -1,10 +1,10 @@
 <template>
   <div class="theme-switch" @click="handleChangeTheme">
     <span class="flex-center absolute-center">
-      <i class="iconfont icon-night" :class="{ active: dark }" />
+      <i class="iconfont icon-light" :class="{ active: dark }" />
     </span>
     <span class="flex-center absolute-center">
-      <i class="iconfont icon-light" :class="{ active: !dark }" />
+      <i class="iconfont icon-night" :class="{ active: !dark }" />
     </span>
   </div>
 </template>
@@ -27,6 +27,7 @@ export default defineComponent({
     onMounted(() => {
       const theme = getLocalStorage('theme') || 'light'
       dark.value = theme === 'night'
+      document.body.className = dark.value ? 'k-dark' : ''
     })
 
     return {
@@ -45,6 +46,7 @@ export default defineComponent({
   position: fixed;
   left: 10px;
   bottom: 45px;
+  z-index: 15;
   .iconfont {
     opacity: 0;
     visibility: hidden;

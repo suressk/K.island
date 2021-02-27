@@ -3,8 +3,8 @@
  * store, router,
  * */
 import { AxiosResponse } from 'axios'
-import { ErrorResponse } from '~/@types'
-import Vue from 'vue'
+import { ErrorResponse, ResponseRes } from '~/@types'
+// import Vue from 'vue'
 
 // @ts-ignore
 export default function ({ redirect, req, app: { $axios } }) {
@@ -15,24 +15,23 @@ export default function ({ redirect, req, app: { $axios } }) {
   //   const token = getCookie.getcookiesInServer(req).token
   // }
   // request拦截器
-  $axios.onRequest(() => {
-    if (process.client) {
-      // 客户端下，请求进度条开始
-      // NProgress.start()
-    }
-    // 将获取到token加入到请求头中
-    // config.headers.common.Authorization = token
-  })
+  // $axios.onRequest(() => {
+  //   if (process.client) {
+  //     // 客户端下，请求进度条开始
+  //     // NProgress.start()
+  //   }
+  //   // 将获取到token加入到请求头中
+  //   // config.headers.common.Authorization = token
+  // })
 
   // response拦截器，数据返回后，可以先在这里进行一个简单的判断
   $axios.interceptors.response.use(
-    (response: AxiosResponse) => {
+    (response: AxiosResponse): AxiosResponse<ResponseRes> => {
       // if (process.client) {
       //   // 客户端下， 请求进度条结束
       //   // NProgress.done()
       // }
       return response.data
-      // return response
       // if (response.data.code === 401) {
       //   // 返回401，token验证失败，清除客户端cookie
       //   // Cookie.remove('token')

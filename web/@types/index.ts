@@ -4,6 +4,17 @@ export interface ErrorResponse {
   response: Response;
 }
 
+export interface ResponseRes {
+  success: boolean;
+  data: any;
+  message: string;
+}
+
+export interface QueryArticleParams {
+  uid: string;
+  id: number | string;
+}
+
 export interface NotificationOptions {
   type: 'success' | 'info' | 'warning' | 'error';
   title: string;

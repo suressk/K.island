@@ -178,3 +178,63 @@ export function getLocalStorage (key: string): null | string {
 export function setLocalStorage (key: string, value: string): void {
   localStorage.setItem(key, value)
 }
+
+interface ArticleListInfo {
+  id: number;
+  uid: string;
+  time: {
+    year: string;
+    month: string;
+    day: string;
+    hour: string;
+    minute: string;
+  },
+  title: string;
+  introduce: string;
+  tag: string;
+  views: number;
+  cover: string;
+  ctime: number;
+  utime: number;
+}
+
+interface YearData<T> {
+  [prop: string]: T[];
+}
+
+/**
+ * create article list
+ * example:
+ * data: {
+ *   2020: {
+ *     Jan: [{}, {}, {}],
+ *     Feb: [{}]
+ *   },
+ *   2021: {
+ *     May: [{}, {}]
+ *   }
+ * }
+ * */
+export function createArticleListData (records: YearData<ArticleListInfo>) {
+  const years = Object.keys(records)
+  const result: any = {}
+  years.forEach(year => {
+    result[year] = createMonthGroup(records[year])
+  })
+  return result
+}
+
+/**
+ * 创建月分组
+ * */
+function createMonthGroup (data: ArticleListInfo[]) {
+  const result: any = {}
+  data.forEach(item => {
+    const { time: { month } } = item // 'Jan'
+    if (result[month] === undefined) {
+      result[month] = [] // { Jan: [] }
+    }
+    result[month].push(item)
+  })
+  return result
+}

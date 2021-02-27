@@ -1,5 +1,5 @@
-import { onMounted, SetupContext } from '@nuxtjs/composition-api'
-// import { waveRecord } from '~/utils/wave'
+import { SetupContext } from '@nuxtjs/composition-api'
+import { A_QUERY_ARTICLE_DETAIL } from '~/store/mutation-types'
 
 // const colors = ['rgba(0, 222, 255, 0.2)', 'rgba(157, 192, 249, 0.2)', 'rgba(0, 168, 255, 0.2)']
 
@@ -73,13 +73,20 @@ const data = {
 }
 
 export default function useArticle (context: SetupContext) {
-  // 页面挂载完毕 => 绘制
-  onMounted(() => {
-    console.log('context: ', context)
-  })
+
+  const { root: { $router, $store } } = context
+
   function handleToDetail (uid: string, id: number | string) {
-    console.log(uid, id)
+    // listData.value.filter()
+    $router.push('/article/' + uid)
+    $store.dispatch(
+      A_QUERY_ARTICLE_DETAIL,
+      {
+        uid,
+        id,
+      })
   }
+
   return {
     data,
     handleToDetail
