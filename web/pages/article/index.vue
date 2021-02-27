@@ -40,6 +40,8 @@
           </li>
         </ul>
       </div>
+
+      <ThemeSwitch />
     </div>
 
     <KFooter />
@@ -47,15 +49,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, SetupContext } from '@nuxtjs/composition-api'
+import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
 import useArticle from './useArticle'
+import KHeader from '~/components/KHeader/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import KWave from '~/components/KWave/index.vue'
-import KHeader from '~/components/KHeader/index.vue'
+import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 
 export default defineComponent({
   name: 'Article',
-  components: { KHeader, KWave, KFooter },
+  components: { KHeader, KWave, KFooter, ThemeSwitch },
   setup (props, ctx: SetupContext) {
     return {
       ...useArticle(ctx)

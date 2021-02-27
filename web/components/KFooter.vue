@@ -3,7 +3,7 @@
     <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42282302422860" target="_blank" class="link tip">
       鄂公安备 42282302422860
     </a>
-    <span class="tip">鄂ICP备20006909号</span>
+    <span class="tip">鄂 ICP 备 20006909 号</span>
   </footer>
 </template>
 
@@ -24,7 +24,7 @@ export default {
     padding: 0 10px;
     font-size: 12px;
     &:first-child {
-      margin-left: -36px;
+      margin-left: -10px;
     }
   }
   .link {

@@ -34,7 +34,7 @@ export function removeListener (
  * @param delay
  * @param immediate
  */
-export function debounce (fn: Function, delay: number, immediate: boolean) {
+export function debounce (fn: Function, delay: number, immediate: boolean = false) {
   let timer: null | number = null
   return function (...args: any[]) {
     // @ts-ignore
@@ -163,4 +163,18 @@ export function getCurrentTime () {
   const month: number = date.getMonth()
   const day: number = date.getDate()
   return `${zhMonths[month]} ${day} ${year}`
+}
+
+/**
+ * 获取 localstorage 存储的数据
+ * */
+export function getLocalStorage (key: string): null | string {
+  return localStorage.getItem(key)
+}
+
+/**
+ * 将数据存储到 localstorage
+ * */
+export function setLocalStorage (key: string, value: string): void {
+  localStorage.setItem(key, value)
 }

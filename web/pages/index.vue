@@ -79,7 +79,7 @@ import useIndex from './useIndex'
 import LoadMore from '~/components/LoadMore.vue'
 import BackTop from '~/components/BackTop/index.vue'
 import KFooter from '~/components/KFooter.vue'
-import notification from '~/components/notification'
+// import notification from '~/components/notification'
 // import html2canvas from 'html2canvas'
 
 const navList = [

@@ -51,7 +51,6 @@ export default function useIndex() {
     window.onresize = () => {
       windowResize()
     }
-    document.body.className = "dark"
   })
 
   onBeforeUnmount(() => {
