@@ -4,6 +4,7 @@ import { Request, Response } from 'express'
 import { CallBack, UpdateRecordOptions } from '../common/types'
 import { verifyToken } from './jwt'
 import { writeHead, writeResult } from './writeResponse'
+import dayjs from 'dayjs'
 
 const imgSuffixReg = /[.][a-z]+/
 
@@ -75,4 +76,85 @@ export function getUpdateRecordParams (options: UpdateRecordOptions) {
         sqlStr,
         params
     }
+}
+
+const enMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const specialDay = {
+    1: '1st',
+    2: '2nd',
+    3: '3rd',
+    21: '21st',
+    22: '22nd',
+    23: '23rd',
+    31: '31st'
+}
+
+/**
+ * 日期格式化
+ * */
+export function dateFormat (timeTemp: number) {
+    // 时间戳 => '2021-02-27 22:56' => ['2021', '02', '27', '22', '56']
+    let time: string | string[] = dayjs(timeTemp).format('YYYY-MM-DD HH:mm')
+    const reg = /-|:|\ /g
+    time = time.replace(reg, ',').split(',')
+    // 天数取整 => 英文天数记
+    const day = parseInt(time[2]) + ''
+    // @ts-ignore
+    const enDay = specialDay[day] ? specialDay[day] : (day + 'th') as string
+    return {
+        year: time[0],
+        month: enMonths[parseInt(time[1])],
+        monthNum: parseInt(time[1]) + 1,
+        day: enDay,
+        hour: time[3],
+        minute: time[4]
+    }
+}
+
+interface ArticleListInfo {
+    id: number;
+    uid: string;
+    title: string;
+    introduce: string;
+    tag: string;
+    views: number;
+    cover: string;
+    ctime: number;
+    utime: number;
+}
+
+/**
+ * 创建时间对象
+ * */
+export function mapCreateTime (dataList: ArticleListInfo[]) {
+    return dataList.map(item => {
+        return {
+            ...item,
+            time: dateFormat(item.ctime)
+        }
+    })
+}
+
+/**
+ * 插入 time: dateFormat() => time
+ * */
+export function mapYearGroup (dataList: ArticleListInfo[]) {
+    const mapData = mapCreateTime(dataList)
+    const data: any = {}
+    const years: string[] = [] // 所有年份
+    mapData.forEach(item => {
+        if (!years.includes(item.time.year)) {
+            years.push(item.time.year)
+        }
+    })
+    const yearLen = years.length
+    // 年份从大到小排序
+    years.sort((a, b) => Number(b) - Number(a))
+    for (let i = 0; i < yearLen; i++) {
+        const sortData = mapData.filter(item => item.time.year === years[i])
+        // 月份从大到小排序
+        sortData.sort((a, b) => (b.time.monthNum - a.time.monthNum))
+        data[years[i]] = sortData
+    }
+    return data
 }

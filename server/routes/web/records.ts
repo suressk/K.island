@@ -1,5 +1,5 @@
 import express from 'express'
-import { recordListResponse } from '../common'
+import { recordListResponse, recordDetailResponse } from '../common'
 
 const router = express.Router()
 
@@ -7,6 +7,9 @@ const router = express.Router()
 router.get('/list', (req, res) => {
     recordListResponse(req, res, undefined)
 })
-// router.get('/detail', (req, res) => {})
+
+router.get('/detail', (req, res) => {
+    recordDetailResponse(req, res)
+})
 
 export default router

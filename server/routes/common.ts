@@ -1,7 +1,11 @@
 import { queryRecordDetail, queryRecordList } from '../services/recordService'
 import { writeHead, writeResult } from '../utils/writeResponse'
 import { Request, Response } from 'express'
+import { mapCreateTime, mapYearGroup } from '../utils/util'
 
+/**
+ * res => article list
+ * */
 export function recordListResponse (req: Request, res: Response, range: string | undefined) {
     const { pageNo, pageSize } = req.query
     queryRecordList({
@@ -11,7 +15,7 @@ export function recordListResponse (req: Request, res: Response, range: string |
     }, result => {
         // success
         writeHead(res, 200)
-        res.write(writeResult(true, '查询成功！', result))
+        res.write(writeResult(true, '查询成功！', mapYearGroup(result.list)))
         res.end()
     }, err => {
         // fail
@@ -21,7 +25,9 @@ export function recordListResponse (req: Request, res: Response, range: string |
     })
 }
 
-// 响应文章详情
+/**
+ * res => article content detail
+ * */
 export function recordDetailResponse (req: Request, res: Response) {
     const { id, uid } = req.query
     if (typeof uid === 'string') {
@@ -30,7 +36,7 @@ export function recordDetailResponse (req: Request, res: Response) {
             uid
         }, result => {
             writeHead(res, 200)
-            res.write(writeResult(true, '查询成功！', result[0]))
+            res.write(writeResult(true, '查询成功！',  mapCreateTime(result)[0]))
             res.end()
         }, err => {
             writeHead(res, 500)
