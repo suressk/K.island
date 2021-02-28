@@ -1,67 +1,85 @@
 <template>
   <section class="k-article-info">
-    <KHeader />
+    <KHeader :custom-title="articleInfo.title" />
 
     <div class="content">
       <div class="article-content">
         <h1 class="title">
-          文章内容 Title
+          {{ articleInfo.title }}
         </h1>
         <div class="stuffix d-flex">
-          <span class="time tip">January 21 2021</span>
+          <span class="time tip">
+            {{ articleInfo.time.day }} {{articleInfo.time.month }} {{ articleInfo.time.year }}
+          </span>
           <span class="r-hover tip views d-flex">
-          <i class="iconfont icon-view" />
-          1314
-        </span>
+            <i class="iconfont icon-view" />
+            {{ articleInfo.views }}
+          </span>
           <span class="g-hover tip tag d-flex">
-          <i class="iconfont icon-tag" />
-          Mood
-        </span>
-          <span class="comments tip d-flex">
-          <i class="iconfont icon-comment" />
-          25
-        </span>
+            <i class="iconfont icon-tag" />
+            {{ articleInfo.tag }}
+          </span>
+          <!--<span class="comments tip d-flex">-->
+          <!--  <i class="iconfont icon-comment" />-->
+          <!--  {{ articleInfo.time.day }}-->
+          <!--</span>-->
         </div>
 
-        <div class="info">
-          在以前的Android Studio版本中，我们介绍过一个Database Inspector，它主要用来帮助开发者理解和调试数据库，Database Inspector是基于一个APP Inspector 系统开发的，它支持很多不同的Inspector类型，比如下面介绍的WorkManager Inspector。
-        </div>
+        <div
+          class="info"
+          :class="{
+            mood: articleInfo.tag === 'Mood',
+            code: articleInfo.tag !== 'Mood'
+          }"
+          v-html="htmlContent"
+        ></div>
       </div>
 
       <Comment />
 
       <ThemeSwitch />
     </div>
-
+    <BackTop />
     <KFooter />
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@nuxtjs/composition-api'
+import { defineComponent, ref, SetupContext } from '@nuxtjs/composition-api'
+import { useState } from '~/utils/useStore'
+import { parseMarkdownFile } from '~/utils/marked'
 import Comment from '~/components/Comment/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
-import {Context} from "@nuxt/types";
-// import { Context } from '@nuxt/types'
-// import { mapState } from 'vuex'
+import BackTop from '~/components/BackTop/index.vue'
 
 export default defineComponent({
   name: 'ArticleId',
-  components: { KHeader, Comment, KFooter, ThemeSwitch },
+  components: { KHeader, Comment, KFooter, ThemeSwitch, BackTop },
   // validate(ctx: Context) {
   //   console.log('validate: ==== ', ctx)
   //   return true
   // },
-  setup(props, { store }: Context) {
-    const articleInfo = computed(() => store.state.articleInfo)
-    console.log(articleInfo)
+  setup(props, { root }: SetupContext) {
+    const articleInfo = useState(root.$store.state, 'articleInfo')
+    const htmlContent = ref<string>('')
+    htmlContent.value = parseMarkdownFile(articleInfo.value.content)
+    // watch(() => articleInfo, (val: any) => {
+    //   console.log(val)
+    //   //
+    // })
+    return {
+      articleInfo,
+      htmlContent
+    }
   }
 })
 </script>
 
 <style lang="scss">
+@import "assets/css/components/marked.scss";
+
 .k-article-info {
   .content {
     width: 800px;
@@ -70,7 +88,7 @@ export default defineComponent({
   }
   .stuffix {
     padding: 10px 0;
-    >span {
+    &>span {
       margin-right: 10px;
     }
   }

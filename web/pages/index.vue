@@ -68,6 +68,7 @@
       <LoadMore :load-status="loadStatus" @load-more="handleLoadMore" />
     </div>
 
+    <ThemeSwitch />
     <BackTop />
     <KFooter />
   </div>
@@ -79,6 +80,7 @@ import useIndex from './useIndex'
 import LoadMore from '~/components/LoadMore.vue'
 import BackTop from '~/components/BackTop/index.vue'
 import KFooter from '~/components/KFooter.vue'
+import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 // import notification from '~/components/notification'
 // import html2canvas from 'html2canvas'
 
@@ -90,7 +92,7 @@ const navList = [
 
 export default defineComponent({
   name: 'Index',
-  components: { LoadMore, BackTop, KFooter },
+  components: { LoadMore, BackTop, KFooter, ThemeSwitch },
   // // @ts-ignore
   // fetch () {
   // },
@@ -167,6 +169,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import url("https://at.alicdn.com/t/font_2332190_mgbefmywrv7.css");
+@import url("https://at.alicdn.com/t/font_2332190_47i24zpfh49.css");
 @import "assets/css/pages/index.scss";
 </style>

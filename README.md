@@ -41,11 +41,11 @@ nuxt.js + typescript 开启服务端渲染
 - [x] 发表评论表单
 - [x] 明暗主题切换
 - [x] 首页内容区响应式
+- [x] 文章列表跳转文章详情页面 => 文章内容用 marked 解析为 html 字符串（文章内容样式待编写）
+- [x] 所有文章列表页 => （重构后台返回数据结构，按年、月分组）
 
 + TODO
-- [ ] 文章列表跳转文章详情页面
 - [ ] 首页加载更多文章
-- [ ] 所有文章列表页
 - [ ] Header 背景音乐
 - [ ] 文章评论与回复
 - [ ] 文章点赞
@@ -59,3 +59,10 @@ nuxt.js + typescript 开启服务端渲染
 三餐不定岂敢旭高堂，
 四季漂泊哪敢言家成。
 ```
+
+## 💪 Recent target
+
+> 1. Within half a month, the second version of the personal website will be launched.
+> 2. Rewrite my resume, prepare for a better personal development and jump to a better platform (get a higher salary).
+> 3. Interview preparation, including interview questions, technical knowledge combing, personal project combing, etc.
+> That's all right now...

@@ -45,8 +45,9 @@ export default defineComponent({
   cursor: pointer;
   position: fixed;
   left: 10px;
-  bottom: 45px;
+  bottom: 20px;
   z-index: 15;
+  border-radius: 0 5px 5px 0;
   .iconfont {
     opacity: 0;
     visibility: hidden;

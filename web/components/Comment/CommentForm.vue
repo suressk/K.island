@@ -3,9 +3,11 @@
   <div class="comment-form">
     <div class="flex-center chat-container">
       <label class="name-txt">
+        <i class="iconfont icon-name" />
         <input type="text" placeholder="Enter your name" v-model="name">
       </label>
       <label class="email-txt">
+        <i class="iconfont icon-email" />
         <input type="text" placeholder="Enter your email" v-model="email">
       </label>
     </div>

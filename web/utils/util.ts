@@ -1,4 +1,5 @@
 import { zhMonths } from './variable'
+import { ArticleListItem } from '~/@types'
 // import dayjs from 'dayjs'
 
 /**
@@ -179,25 +180,6 @@ export function setLocalStorage (key: string, value: string): void {
   localStorage.setItem(key, value)
 }
 
-interface ArticleListInfo {
-  id: number;
-  uid: string;
-  time: {
-    year: string;
-    month: string;
-    day: string;
-    hour: string;
-    minute: string;
-  },
-  title: string;
-  introduce: string;
-  tag: string;
-  views: number;
-  cover: string;
-  ctime: number;
-  utime: number;
-}
-
 interface YearData<T> {
   [prop: string]: T[];
 }
@@ -215,7 +197,7 @@ interface YearData<T> {
  *   }
  * }
  * */
-export function createArticleListData (records: YearData<ArticleListInfo>) {
+export function createArticleListData (records: YearData<ArticleListItem>) {
   const years = Object.keys(records)
   const result: any = {}
   years.forEach(year => {
@@ -227,7 +209,7 @@ export function createArticleListData (records: YearData<ArticleListInfo>) {
 /**
  * 创建月分组
  * */
-function createMonthGroup (data: ArticleListInfo[]) {
+function createMonthGroup (data: ArticleListItem[]) {
   const result: any = {}
   data.forEach(item => {
     const { time: { month } } = item // 'Jan'

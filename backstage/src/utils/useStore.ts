@@ -10,13 +10,13 @@ export function useState (...args: Array<string>) {
   return computed(() => state[name])
 }
 
-export function useGetter (...args: Array<string>) {
+export function useGetters (...args: Array<string>) {
   const withNamespace = args.length === 2
   const name = withNamespace ? args[0] + '/' + args[1] : args[0]
   return computed(() => store.getters[name])
 }
 
-export function useMutation (...args: Array<string>) {
+export function useMutations (...args: Array<string>) {
   const withNamespace = args.length === 2
   const name = withNamespace ? args[0] + '/' + args[1] : args[0]
   return (payload: any) => {

@@ -15,6 +15,25 @@ export interface QueryArticleParams {
   id: number | string;
 }
 
+export interface ArticleListItem {
+  id: number;
+  uid: string;
+  time: {
+    year: string;
+    month: string;
+    day: string;
+    hour: string;
+    minute: string;
+  },
+  title: string;
+  introduce: string;
+  tag: string;
+  views: number;
+  cover: string;
+  ctime: number;
+  utime: number;
+}
+
 export interface NotificationOptions {
   type: 'success' | 'info' | 'warning' | 'error';
   title: string;

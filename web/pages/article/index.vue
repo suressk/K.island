@@ -2,9 +2,9 @@
   <section class="k-article-page">
     <KHeader custom-title="(≖ᴗ≖)✧" />
     <!--  文章列表页  -->
-    <div v-if="!data" class="nothing-content flex-center">
+    <div v-if="Object.keys(listData).length === 0" class="nothing-content flex-center">
       <span class="tip">空无一物 (≖ᴗ≖)✧</span>
-      <!--<canvas ref="animateCanvas" width="100%" height="100%" class="animation-canvas" />-->
+      <!--<canvas ref="waveCanvas" width="100%" height="100%" class="animation-canvas" />-->
       <KWave />
     </div>
     <!--  有内容  -->
@@ -26,7 +26,7 @@
               class="article-item"
               v-for="articleItem in monthsVal"
               :key="articleItem.uid"
-              @click="handleToDetail(articleItem.uid, articleItem.id)"
+              @click="handleToDetail(articleItem)"
             >
               <div class="img-box"></div>
               <div class="article-content flex-col-around">

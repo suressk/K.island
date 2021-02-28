@@ -50,7 +50,7 @@ export default {
   border-radius: 5px;
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  right: 10px;
   cursor: pointer;
   z-index: 12;
   opacity: 0;
