@@ -72,21 +72,32 @@ export default defineComponent({
   // },
   // @ts-ignore => merge to data
   async asyncData(ctx: Context): Promise<object | void> | object | void {
-    // @ts-ignore
-    const res = await ctx.$axios.get('/records/list', { params: { pageNo: 1, pageSize: 10 } })
-    if (res.success) {
-      const result = createArticleListData(res.data)
-      return {
-        listData: result
+    try {
+      // @ts-ignore
+      const res = await ctx.$axios.get('/records/list', { params: { pageNo: 1, pageSize: 10 } })
+      if (res.success) {
+        const result = createArticleListData(res.data)
+        return {
+          listData: result
+        }
       }
-    }
-    Notification({
-      title: 'WARNING',
-      type: 'warning',
-      message: res.message
-    })
-    return {
-      listData: {}
+      Notification({
+        title: 'WARNING',
+        type: 'warning',
+        message: res.message
+      })
+      return {
+        listData: {}
+      }
+    } catch (e) {
+      Notification({
+        title: 'ERROR',
+        type: 'error',
+        message: 'Fail to get the article list'
+      })
+      return {
+        listData: {}
+      }
     }
   },
   setup (props, ctx: SetupContext) {

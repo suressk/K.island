@@ -53,7 +53,9 @@ export default {
         /* eslint-disable */
         // @ts-ignore
       }).then((res: LoginResponse) => {
+        // @ts-ignore
         if (res.success) {
+          // @ts-ignore
           Notify('success', 'SUCCESS', res.message)
           setStorageToken(res.data)
           setCookie(ACCESS_TOKEN, res.data.token, res.data.expireTime)
@@ -62,6 +64,7 @@ export default {
             useRouterInstance.push('/')
           }, 500)
         } else {
+          // @ts-ignore
           Notify('warning', 'WARNING', res.message)
         }
       }).catch(err => {
