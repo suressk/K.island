@@ -43,10 +43,21 @@ body.k-dark {
         }
       }
     }
-    .content {
+    &.main-page .content {
       border-color: var(--dark-theme-border);
+      padding: 50px 10px;
       &::after {
         background-color: var(--dark-theme-border);
+      }
+      .content-item {
+        .cover,
+        .info {
+          border-color: var(--dark-theme-border);
+          background-color: var(--dark-theme-border);
+        }
+        .info {
+          background-color: var(--dark-theme-body);
+        }
       }
     }
     .k-footer,
@@ -79,10 +90,7 @@ body.k-dark {
     }
   }
 
-  .comment-form,
-  .comment-form input,
-  .comment-form textarea
-  {
+  .comment-form {
     border-color: var(--dark-theme-border) !important;
   }
 

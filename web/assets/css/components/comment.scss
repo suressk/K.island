@@ -11,7 +11,8 @@
     width: 100%;
   }
   .chat-container {
-    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--dark-theme-border);
     // name / email
     .name-txt,
     .email-txt {

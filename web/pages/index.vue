@@ -43,13 +43,13 @@
     </div>
     <!--  文章列表 content  -->
     <div class="content">
-      <ul class="content-list" v-if="info && info.length > 0">
+      <ul class="content-list" v-if="info.length > 0">
         <li v-for="item in info" :key="item.uid" class="content-item">
           <div class="cover flex-center trans-all-03">
             <img v-if="item.cover" :src="item.cover" :alt="item.title">
           </div>
           <div class="info">
-            <span class="time">{{ item.time }}</span>
+            <span class="time">{{ item.time.month }} {{ item.time.day }}, {{ item.time.year }}</span>
             <span class="title two-line-txt">{{ item.title }}</span>
             <span class="introduce three-line-txt">{{ item.introduce }}</span>
             <div class="suffix d-flex">
@@ -82,6 +82,7 @@ import BackTop from '~/components/BackTop/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import Notification from '~/components/notification'
+import { plainArticleList } from '~/utils/util'
 // import html2canvas from 'html2canvas'
 
 const navList = [
@@ -109,7 +110,7 @@ export default defineComponent({
       })
       if (success) {
         return {
-          info: data.list
+          info: plainArticleList(data)
         }
       } else {
         Notification({
@@ -117,6 +118,9 @@ export default defineComponent({
           title: 'WARNING',
           message
         })
+        return {
+          info: []
+        }
       }
     } catch (e) {
       Notification({
@@ -124,13 +128,15 @@ export default defineComponent({
         title: 'ERROR',
         message: 'Fail to get article list, please contact the website owner. Thanks ~'
       })
+      return {
+        info: []
+      }
     }
   },
   setup () {
     return {
       navList,
-      ...useIndex(),
-      info: []
+      ...useIndex()
     }
   },
   // mounted() {

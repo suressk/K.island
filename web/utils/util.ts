@@ -220,3 +220,16 @@ function createMonthGroup (data: ArticleListItem[]) {
   })
   return result
 }
+
+/**
+ * 平铺按年分组的文章列表
+ * */
+export function plainArticleList (records: YearData<ArticleListItem>) {
+  const years = Object.keys(records)
+  const len = years.length
+  const result: ArticleListItem[] = []
+  for (let i = 0; i < len; i++) {
+    result.push(...records[years[i]])
+  }
+  return result
+}

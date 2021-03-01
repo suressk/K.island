@@ -108,5 +108,40 @@
         }
       }
     }
+    .comment-form {
+      .chat-container {
+        flex-direction: column;
+        .name-txt,
+        .email-txt {
+          width: 100%;
+        }
+      }
+    }
+
+    &.main-page .content {
+      padding: 0 10px 50px;
+      .content-item {
+        .cover,
+        .info {
+          width: 100%;
+          height: unset;
+          position: static;
+        }
+        .cover {
+          border-radius: 5px 5px 0 0;
+        }
+        .info {
+          background-color: var(--white);
+          border-top: none;
+          border-radius: 0 0 5px 5px;
+          padding: 10px;
+          .suffix {
+            position: relative;
+            left: 0;
+            bottom: 0;
+          }
+        }
+      }
+    }
   }
 }
