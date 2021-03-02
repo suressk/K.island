@@ -5,7 +5,13 @@ import {
   nextTick,
   getCurrentInstance
 } from '@nuxtjs/composition-api'
-import { preventDefault, throttle, getCurrentTime } from '~/utils/util'
+import {
+  preventDefault,
+  throttle,
+  getCurrentTime,
+  addListener,
+  removeListener
+} from '~/utils/util'
 import RainInit from '~/components/rainEffect'
 // import Notification from '../components/notification'
 
@@ -36,9 +42,10 @@ export default function useIndex() {
     showNav.value = !showNav.value
     // 菜单可见
     if (showNav.value) {
+      // addListener(document, 'touchmove', preventDefault)
       document.addEventListener('touchmove', preventDefault, {passive: false})
     } else {
-      document.removeEventListener('touchmove', preventDefault)
+      removeListener(document, 'touchmove', preventDefault)
     }
     // 下拉菜单可见 => 整页不可滚动
     document.body.style.overflowY = showNav.value ? 'hidden' : ''
