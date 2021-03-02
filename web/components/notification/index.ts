@@ -1,15 +1,15 @@
 import Vue from 'vue'
 
 import Main from './main.vue'
-import { NotificationOptions, NotificationInstance } from '~/@types'
+import { NotificationOptions, AnyInstance } from '~/@types'
 
 const NotificationConstructor = Vue.extend(Main)
 
 let key = 1
-let instance: NotificationInstance
-let notifications: NotificationInstance[] = []
+let instance: AnyInstance
+let notifications: AnyInstance[] = []
 
-const Notification = (options: NotificationOptions): NotificationInstance | undefined => {
+const Notification = (options: NotificationOptions): AnyInstance | undefined => {
   if (typeof window === 'undefined') return
   const id = 'notification_' + key++
 

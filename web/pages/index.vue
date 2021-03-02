@@ -43,8 +43,8 @@
     </div>
     <!--  文章列表 content  -->
     <div class="content">
-      <ul class="content-list" v-if="info.length > 0">
-        <li v-for="item in info" :key="item.uid" class="content-item">
+      <ul class="content-list" v-if="articleList.length > 0">
+        <li v-for="item in articleList" :key="item.uid" class="content-item">
           <div class="cover flex-center trans-all-03">
             <img v-if="item.cover" :src="item.cover" :alt="item.title">
           </div>
@@ -75,7 +75,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import {defineComponent, SetupContext} from '@nuxtjs/composition-api'
 import useIndex from './useIndex'
 import LoadMore from '~/components/LoadMore.vue'
 import BackTop from '~/components/BackTop/index.vue'
@@ -110,7 +110,7 @@ export default defineComponent({
       })
       if (success) {
         return {
-          info: plainArticleList(data)
+          articleList: plainArticleList(data)
         }
       } else {
         Notification({
@@ -119,7 +119,7 @@ export default defineComponent({
           message
         })
         return {
-          info: []
+          articleList: []
         }
       }
     } catch (e) {
@@ -129,7 +129,7 @@ export default defineComponent({
         message: 'Fail to get article list, please contact the website owner. Thanks ~'
       })
       return {
-        info: []
+        articleList: []
       }
     }
   },

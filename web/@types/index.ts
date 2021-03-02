@@ -21,6 +21,7 @@ export interface ArticleListItem {
   time: {
     year: string;
     month: string;
+    monthNum: number;
     day: string;
     hour: string;
     minute: string;
@@ -40,9 +41,17 @@ export interface NotificationOptions {
   message: string;
 }
 
-export interface NotificationInstance {
+export interface AnyInstance {
   [prop: string]: any;
 }
+
+// export interface NotificationInstance {
+//   id?: string;
+//   offset?: number;
+//   onClose?: () => void;
+//   visible?: boolean;
+//   $el?: HTMLElement;
+// }
 
 export interface ILoadImageItem {
   el: HTMLImageElement;

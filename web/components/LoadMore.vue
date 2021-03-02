@@ -1,9 +1,9 @@
 <template>
   <div class="load-more flex-center">
-    <template v-if="loadStatus === 'loadMore'">
+    <template v-if="loadStatus === 0">
       <div class="load-more-btn" @click="handleLoad">Load More</div>
     </template>
-    <template v-else-if="loadStatus === 'noMore'">
+    <template v-else-if="loadStatus === -1">
       <div class="tip trans-all-03">没有更多了 ~</div>
     </template>
     <template v-else>
@@ -23,8 +23,8 @@ export default defineComponent({
   name: 'LoadMore',
   props: {
     loadStatus: {
-      type: String,
-      default: 'loadMore'
+      type: Number,
+      default: 0
     }
   },
   setup (props, { emit }) {
@@ -58,7 +58,6 @@ export default defineComponent({
     cursor: pointer;
     transition: background-color .3s, color .3s, border-color .3s;
     &:hover {
-      //color: var(--cyanogen);
       color: var(--white);
       background-color: var(--cyanogen)!important;
       border-color: var(--cyanogen);

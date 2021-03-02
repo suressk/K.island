@@ -1,7 +1,9 @@
 import {
   ref,
   onMounted,
-  onBeforeUnmount
+  onBeforeUnmount,
+  nextTick,
+  getCurrentInstance
 } from '@nuxtjs/composition-api'
 import { preventDefault, throttle, getCurrentTime } from '~/utils/util'
 import RainInit from '~/components/rainEffect'
@@ -11,10 +13,18 @@ import RainInit from '~/components/rainEffect'
  * 首页 composition-api 代码风格 写法抽离
  */
 export default function useIndex() {
+  const vm = getCurrentInstance()!.proxy
+  // @ts-ignore
+  const axios = vm.$axios
   const sceneHeight = ref<string>('100%')
   const sceneWidth = ref<string>('100%')
   const showNav = ref<boolean>(false)
-  const loadStatus = ref<string>('loadMore')
+  /**
+   * -1 无可加载更多内容
+   *  0 可加载更多内容
+   *  1 正在加载...
+   * */
+  const loadStatus = ref<number>(0)
   const curTime = ref<string>('')
 
   function init() {
@@ -34,14 +44,26 @@ export default function useIndex() {
     document.body.style.overflowY = showNav.value ? 'hidden' : ''
   }
 
-  function handleLoadMore() {
-    loadStatus.value = 'loading'
-    setTimeout(() => {
-      loadStatus.value = 'noMore'
-    }, 6000)
-    setTimeout(() => {
-      loadStatus.value = 'loadMore'
-    }, 8000)
+  async function handleLoadMore() {
+    try {
+      loadStatus.value = 1
+      const res = await axios('/records/list', {
+        params: {
+          pageNo: 2,
+          pageSize: 10
+        }
+      })
+      if (res.succss) {
+        // @ts-ignore
+        console.log(vm.articleList)
+      }
+    } catch (e) {
+      // @ts-ignore
+      console.log(vm.articleList)
+      nextTick(() => {
+        loadStatus.value = 0
+      })
+    }
   }
 
   onMounted(() => {

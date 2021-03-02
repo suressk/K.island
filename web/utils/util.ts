@@ -69,7 +69,8 @@ export function singleScroll (domSelector: string, type: string, speed = 10) {
   // DOM元素 计算位置
   const dom = document.querySelector(domSelector) as HTMLElement
   const top = dom.offsetTop
-  let target: number // 滚动的目标位置
+  // 滚动的目标位置
+  let target: number
   if (type === 'top') {
     target = 0
   } else if (type === 'comment') {
@@ -83,7 +84,9 @@ export function singleScroll (domSelector: string, type: string, speed = 10) {
   }
   let lastScrollTop = 0  // 上次滚动到的位置点
 
-  rafId = window.requestAnimationFrame(handleScroll)
+  // rafId = window.requestAnimationFrame(handleScroll)
+
+  handleScroll()
 
   function handleScroll () {
     let scrollTop = getWindowProp('scrollTop')
@@ -109,7 +112,7 @@ export function singleScroll (domSelector: string, type: string, speed = 10) {
       return
     }
     lastScrollTop = scrollTop // 记录此次滚动的位置
-    window.requestAnimationFrame(handleScroll)
+    rafId = window.requestAnimationFrame(handleScroll)
   }
 }
 
