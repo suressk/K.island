@@ -33,8 +33,9 @@
       </ul>
     </div>
     <audio ref="kMusic" preload="auto" loop="loop">
-      <source type="audio/mpeg" src="static/music/lightMusic.mp3">
+      <source type="audio/mpeg" :src="musicSrc">
     </audio>
+    <div class="music-progress" :style="{ width: proWidth }"></div>
   </header>
 </template>
 
@@ -60,8 +61,13 @@ export default defineComponent({
   },
   setup () {
     const vm = getCurrentInstance()!
+    let audio: HTMLAudioElement | null = null
     const showTitle = ref<boolean>(false)
     const playing = ref<boolean>(false)
+    const musicSrc = ref<string>('')
+    const proWidth = ref<string>('0')
+
+    let rafId: null | number = null
 
     function handleScroll () {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
@@ -72,22 +78,32 @@ export default defineComponent({
       showTitle.value && (showTitle.value = false)
     }
 
+    function updateMusicProgress () {
+      const currentTime = audio.currentTime
+      const totalTime = audio.duration
+      proWidth.value = (currentTime / totalTime) * 100 + '%'
+      rafId = window.requestAnimationFrame(updateMusicProgress)
+    }
+
     function handlePlayMusic () {
-      // vm.refs.kMusic
+      if (!audio) return
       playing.value = !playing.value
       // 正在播放
       if (playing.value) {
-        // @ts-ignore
-        vm.refs.kMusic.play()
+        audio.play()
+        rafId = window.requestAnimationFrame(updateMusicProgress)
       } else {
-        // @ts-ignore
-        vm.refs.kMusic.pause()
+        audio.pause()
+        window.cancelAnimationFrame(rafId)
       }
     }
 
     const fnScroll = throttle(handleScroll, 100)
 
     onMounted(() => {
+      // @ts-ignore
+      audio = vm.refs.kMusic as HTMLAudioElement
+      musicSrc.value = 'http://localhost:9527/music/lightMusic.mp3'
       const qrCodeContainer = document.getElementById('qrcode')
       QRCode.toCanvas(qrCodeContainer, window.location.href)
       addListener(document, 'scroll', fnScroll)
@@ -98,6 +114,8 @@ export default defineComponent({
     return {
       showTitle,
       playing,
+      musicSrc,
+      proWidth,
       handlePlayMusic
     }
   }

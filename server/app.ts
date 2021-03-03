@@ -26,6 +26,10 @@ app.get('/images/*', (req, res) => {
     res.sendFile(__dirname + "/" + req.url)
 })
 
+// app.get('/music/*', (req, res) => {
+//     res.sendFile(__dirname + "/" + req.url)
+// })
+
 // 兼容旧的版本，使用新的 qs 库解析 body 消息体
 app.use(express.urlencoded({
     extended: true

@@ -127,4 +127,12 @@
       }
     }
   }
+  .music-progress {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--cinnabar);
+    height: 2px;
+    width: 0;
+  }
 }

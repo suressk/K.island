@@ -27,9 +27,12 @@ body.k-dark {
     .page-cover .head-bar .logo.nav-show {
       color: var(--white);
     }
-    .time,
-    .introduce {
-      color: inherit;
+    //.time,
+    //.introduce {
+    //  color: inherit;
+    //}
+    .content {
+      border-color: var(--dark-theme-border);
     }
     .cover-introduce,
     .nav {
@@ -92,6 +95,19 @@ body.k-dark {
 
   .comment-form {
     border-color: var(--dark-theme-border) !important;
+  }
+
+  // 文章详情
+  .k-article-info {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+      color: var(--dark-txt);
+    }
   }
 
 }
