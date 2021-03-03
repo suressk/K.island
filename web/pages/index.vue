@@ -9,7 +9,7 @@
         <canvas id="coverContainer" class="rain-effect" />
 
         <div class="cover-introduce flex-col-center" :style="{ opacity: showNav ? '0' : '1' }">
-          <span class="time">{{ curTime }}</span>
+          <span class="time">{{ today }}</span>
           <span class="title txt-overflow">要么孤独，要么庸俗</span>
           <span class="introduce">人生不过二两酒，一两心酸一两愁。昨日心酸酿成酒，苦酒入喉今日愁。浮生溺毙杯中物，今日不做明日愁...</span>
         </div>
@@ -166,7 +166,7 @@ export default defineComponent({
         {
           hid: 'keywords',
           name: 'keywords',
-          content: 'K.,K.island,blog,mood island,web,前端,个人网站,心情记录小站,堃'
+          content: 'K.,K.island,blog,Mood,Mood island,web,前端,个人网站,心情记录小站,堃'
         },
         {
           hid: 'description',

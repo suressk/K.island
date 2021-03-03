@@ -2,12 +2,13 @@ import fs from 'fs'
 import path from 'path'
 
 function resolvePath (relativePath: string) {
+    // @ts-ignore
     return path.join(__dirname, '../../', relativePath)
 }
 
 function fileExist (filePath: string) {
     return new Promise((resolve, reject) => {
-        fs.access(filePath, fs.constants.F_OK, err => {
+        fs.access(filePath, fs.constants.F_OK, (err: any) => {
             // 文件不存在
             if (err) {
                 reject()
@@ -25,7 +26,7 @@ export function deleteImage (relativePath: string) {
     fullPath = fullPath.replace('\\\\', '\\')
     return new Promise((resolve, reject) => {
         fileExist(fullPath).then(() => {
-            fs.unlink(fullPath, err => {
+            fs.unlink(fullPath, (err: any) => {
                 if (!err) {
                     resolve('')
                 } else {

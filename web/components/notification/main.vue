@@ -27,7 +27,7 @@ export default {
       title: '',
       message: '',
       timer: null,
-      duration: 5000,
+      duration: 4000,
       // onClose: null,
       offset: 0,
       closed: false

@@ -32,14 +32,23 @@
         </li>
       </ul>
     </div>
+    <audio ref="kMusic" preload="auto" loop="loop">
+      <source type="audio/mpeg" src="static/music/lightMusic.mp3">
+    </audio>
   </header>
 </template>
 
 <script lang="ts">
 import QRCode from 'qrcode'
-import Notification from '~/components/notification'
-import { ref, defineComponent, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
-import { addListener, removeListener, throttle } from '~/utils/util' // '../../utils/util'
+// import Notification from '~/components/notification'
+import {
+  ref,
+  defineComponent,
+  onMounted,
+  onBeforeUnmount,
+  getCurrentInstance
+} from '@nuxtjs/composition-api'
+import { addListener, removeListener, throttle } from '~/utils/util'
 
 export default defineComponent({
   name: 'KHeader',
@@ -50,6 +59,7 @@ export default defineComponent({
     }
   },
   setup () {
+    const vm = getCurrentInstance()!
     const showTitle = ref<boolean>(false)
     const playing = ref<boolean>(false)
 
@@ -63,12 +73,16 @@ export default defineComponent({
     }
 
     function handlePlayMusic () {
+      // vm.refs.kMusic
       playing.value = !playing.value
-      Notification({
-        type: 'success',
-        title: 'Notice',
-        message: 'Play status changed...'
-      })
+      // 正在播放
+      if (playing.value) {
+        // @ts-ignore
+        vm.refs.kMusic.play()
+      } else {
+        // @ts-ignore
+        vm.refs.kMusic.pause()
+      }
     }
 
     const fnScroll = throttle(handleScroll, 100)

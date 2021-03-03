@@ -9,11 +9,11 @@ import {
   preventDefault,
   throttle,
   getCurrentTime,
-  addListener,
-  removeListener
+  removeListener,
+  plainArticleList
 } from '~/utils/util'
 import RainInit from '~/components/rainEffect'
-// import Notification from '../components/notification'
+import Notification from '../components/notification'
 
 /**
  * 首页 composition-api 代码风格 写法抽离
@@ -31,7 +31,8 @@ export default function useIndex() {
    *  1 正在加载...
    * */
   const loadStatus = ref<number>(0)
-  const curTime = ref<string>('')
+  const today = ref<string>('')
+  const curPage = ref<number>(1)
 
   function init() {
     sceneHeight.value = document.documentElement.clientHeight + 'px'
@@ -52,21 +53,35 @@ export default function useIndex() {
   }
 
   async function handleLoadMore() {
+    curPage.value += 1
     try {
       loadStatus.value = 1
       const res = await axios('/records/list', {
         params: {
-          pageNo: 2,
+          pageNo: curPage.value,
           pageSize: 10
         }
       })
       if (res.succss) {
         // @ts-ignore
-        console.log(vm.articleList)
+        vm.articleList = [...vm.articleList, ...plainArticleList(res.data)]
+      }
+      // @ts-ignore
+      if (vm.articleList.length === res.total) {
+        nextTick(() => {
+          loadStatus.value = -1
+        })
+      } else {
+        nextTick(() => {
+          loadStatus.value = 0
+        })
       }
     } catch (e) {
-      // @ts-ignore
-      console.log(vm.articleList)
+      Notification({
+        title: 'Error',
+        type: 'error',
+        message: 'Fail to load more article, please contact the website owner, thanks ~'
+      })
       nextTick(() => {
         loadStatus.value = 0
       })
@@ -74,7 +89,7 @@ export default function useIndex() {
   }
 
   onMounted(() => {
-    curTime.value = getCurrentTime()
+    today.value = getCurrentTime()
     RainInit()
     const windowResize = throttle(init, 100)
     window.onresize = () => {
@@ -88,7 +103,7 @@ export default function useIndex() {
   })
 
   return {
-    curTime,
+    today,
     showNav,
     loadStatus,
     sceneHeight,

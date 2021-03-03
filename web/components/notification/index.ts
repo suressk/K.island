@@ -61,7 +61,7 @@ function close (id: string) {
    * */
   // curInstance.$el.parentNode.removeChild(curInstance.$el)
   // 移除实例前，实例列表只剩当前实例，就不存在需变动其他实例的 position 偏移量
-  if (len <= 1) return
+  if (len < 1) return
 
   const removedHeight = instance.$el.offsetHeight
   for (let i = 0; i < len - 1; i++) {

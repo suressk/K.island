@@ -3,7 +3,7 @@
     <KHeader :custom-title="articleInfo.title" />
 
     <div class="content">
-      <div class="article-content">
+      <div class="article-content" :class="articleClass">
         <h1 class="title">
           {{ articleInfo.title }}
         </h1>
@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, SetupContext } from '@nuxtjs/composition-api'
+import { defineComponent, ref, computed, SetupContext } from '@nuxtjs/composition-api'
 import { useState } from '~/utils/useStore'
 import { parseMarkdownFile } from '~/utils/marked'
 import Comment from '~/components/Comment/index.vue'
@@ -64,14 +64,20 @@ export default defineComponent({
   setup(props, { root }: SetupContext) {
     const articleInfo = useState(root.$store.state, 'articleInfo')
     const htmlContent = ref<string>('')
+
+    const articleClass = computed(() => {
+      if (articleInfo.value.tag.toLowerCase() === 'mood') {
+        return 'mood'
+      }
+      return 'code'
+    })
+
     htmlContent.value = parseMarkdownFile(articleInfo.value.content)
-    // watch(() => articleInfo, (val: any) => {
-    //   console.log(val)
-    //   //
-    // })
+
     return {
       articleInfo,
-      htmlContent
+      htmlContent,
+      articleClass
     }
   }
 })
