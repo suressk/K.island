@@ -1,25 +1,48 @@
-import { M_SET_ARTICLE_DETAIL, A_QUERY_ARTICLE_DETAIL } from './mutation-types'
-import { QueryArticleParams } from '~/@types'
+import {M_SET_ARTICLE_DETAIL, A_QUERY_ARTICLE_DETAIL, M_SET_ARTICLE_ITEM} from './mutation-types'
+import { QueryArticleParams, ArticleDetail, ArticleItem } from '~/@types'
 import { Store } from 'vuex'
 import Notification from '~/components/notification'
 
 interface State {
-  articleInfo: Object;
+  articleDetail: Object;
+  articleItem: ArticleItem;
 }
 
 /**
  * vuex state
  * */
 export const state = (): State => ({
-  articleInfo: {}
+  articleDetail: {},
+  articleItem: {
+    id: -1,
+    uid: '',
+    time: {
+      year: '',
+      month: '',
+      monthNum: 0,
+      day: '',
+      hour: '',
+      minute: '',
+    },
+    title: '',
+    introduce: '',
+    tag: '',
+    views: 0,
+    cover: '',
+    ctime: 0,
+    utime: 0,
+  }
 })
 
 /**
  * mutations
  * */
 export const mutations = {
-  [M_SET_ARTICLE_DETAIL] (state: State, payload: any) {
-    state.articleInfo = payload
+  [M_SET_ARTICLE_DETAIL] (state: State, payload: ArticleDetail) {
+    state.articleDetail = payload
+  },
+  [M_SET_ARTICLE_ITEM] (state: State, payload: ArticleItem) {
+    state.articleItem = payload
   }
 }
 

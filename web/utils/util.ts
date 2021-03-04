@@ -1,5 +1,6 @@
 import { zhMonths } from './variable'
-import { ArticleListItem } from '~/@types'
+import { ArticleItem } from '~/@types'
+import Notification from '~/components/notification'
 // import dayjs from 'dayjs'
 
 /**
@@ -183,6 +184,17 @@ export function setLocalStorage (key: string, value: string): void {
   localStorage.setItem(key, value)
 }
 
+/**
+ * 数据加载失败提示框
+ * */
+export function failLoadNotify (dataSource: string) {
+  Notification({
+    title: 'ERROR',
+    type: 'error',
+    message: `Fail to get ${dataSource}, please contact the website owner, thanks ~`
+  })
+}
+
 interface YearData<T> {
   [prop: string]: T[];
 }
@@ -200,7 +212,7 @@ interface YearData<T> {
  *   }
  * }
  * */
-export function createArticleListData (records: YearData<ArticleListItem>) {
+export function createArticleListData (records: YearData<ArticleItem>) {
   const years = Object.keys(records)
   const result: any = {}
   years.forEach(year => {
@@ -212,7 +224,7 @@ export function createArticleListData (records: YearData<ArticleListItem>) {
 /**
  * 创建月分组
  * */
-function createMonthGroup (data: ArticleListItem[]) {
+function createMonthGroup (data: ArticleItem[]) {
   const result: any = {}
   data.forEach(item => {
     const { time: { month } } = item // 'Jan'
@@ -227,10 +239,10 @@ function createMonthGroup (data: ArticleListItem[]) {
 /**
  * 平铺按年分组的文章列表
  * */
-export function plainArticleList (records: YearData<ArticleListItem>) {
+export function plainArticleList (records: YearData<ArticleItem>) {
   const years = Object.keys(records)
   const len = years.length
-  const result: ArticleListItem[] = []
+  const result: ArticleItem[] = []
   for (let i = 0; i < len; i++) {
     result.push(...records[years[i]])
   }

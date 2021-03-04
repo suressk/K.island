@@ -54,9 +54,8 @@
 <script lang="ts">
 import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
 import { Context } from '@nuxt/types'
-import { createArticleListData } from '~/utils/util'
-import Notification from "~/components/notification";
-// import { A_QUERY_ARTICLE_DETAIL } from '~/store/mutation-types'
+import { createArticleListData, failLoadNotify } from '~/utils/util'
+import Notification from '~/components/notification'
 import useArticle from './useArticle'
 import KHeader from '~/components/KHeader/index.vue'
 import KFooter from '~/components/KFooter.vue'
@@ -90,13 +89,31 @@ export default defineComponent({
         listData: {}
       }
     } catch (e) {
-      Notification({
-        title: 'ERROR',
-        type: 'error',
-        message: 'Fail to get the article list'
-      })
+      failLoadNotify('the article list')
       return {
-        listData: {}
+        listData: {
+          2021: {
+            Feb: [
+              {
+                id: 21,
+                uid: 'jVQFzALzn20IIK-0CKFa5vm-7niBxHv-Hgh9QEQ-fSSP8KWS',
+                title: 'Test title',
+                introduce: 'Introduce',
+                views: 90,
+                tag: 'JS',
+                time: {
+                  year: '2021',
+                  month: 'Feb',
+                  monthNum: 1,
+                  day: '21rd'
+                },
+                cover: '',
+                ctime: 123058589416,
+                utime: 123058589416
+              }
+            ]
+          }
+        }
       }
     }
   },

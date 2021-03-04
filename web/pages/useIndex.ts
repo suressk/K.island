@@ -10,10 +10,10 @@ import {
   throttle,
   getCurrentTime,
   removeListener,
-  plainArticleList
+  plainArticleList,
+  failLoadNotify
 } from '~/utils/util'
 import RainInit from '~/components/rainEffect'
-import Notification from '../components/notification'
 
 /**
  * 首页 composition-api 代码风格 写法抽离
@@ -77,11 +77,7 @@ export default function useIndex() {
         })
       }
     } catch (e) {
-      Notification({
-        title: 'Error',
-        type: 'error',
-        message: 'Fail to load more article, please contact the website owner, thanks ~'
-      })
+      failLoadNotify('more article')
       nextTick(() => {
         loadStatus.value = 0
       })

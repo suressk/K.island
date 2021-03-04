@@ -79,8 +79,8 @@ export default defineComponent({
     }
 
     function updateMusicProgress () {
-      const currentTime = audio.currentTime
-      const totalTime = audio.duration
+      const currentTime = audio!.currentTime
+      const totalTime = audio!.duration
       proWidth.value = (currentTime / totalTime) * 100 + '%'
       rafId = window.requestAnimationFrame(updateMusicProgress)
     }
@@ -94,7 +94,7 @@ export default defineComponent({
         rafId = window.requestAnimationFrame(updateMusicProgress)
       } else {
         audio.pause()
-        window.cancelAnimationFrame(rafId)
+        rafId && window.cancelAnimationFrame(rafId)
       }
     }
 

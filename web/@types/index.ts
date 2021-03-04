@@ -15,7 +15,7 @@ export interface QueryArticleParams {
   id: number | string;
 }
 
-export interface ArticleListItem {
+export interface ArticleItem {
   id: number;
   uid: string;
   time: {
@@ -33,6 +33,10 @@ export interface ArticleListItem {
   cover: string;
   ctime: number;
   utime: number;
+}
+
+export interface ArticleDetail extends ArticleItem {
+  content: string;
 }
 
 export interface NotificationOptions {

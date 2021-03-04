@@ -27,16 +27,16 @@ body.k-dark {
     .page-cover .head-bar .logo.nav-show {
       color: var(--white);
     }
-    //.time,
-    //.introduce {
-    //  color: inherit;
-    //}
     .content {
       border-color: var(--dark-theme-border);
     }
     .cover-introduce,
     .nav {
       background-color: var(--dark-half-black);
+      .time,
+      .introduce {
+        color: inherit;
+      }
     }
     .nav {
       .nav-item {
