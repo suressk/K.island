@@ -66,6 +66,5 @@ export interface SubscribeInfo {
     },
     base: {
         emailType: string;
-        name: string;
     }
 }

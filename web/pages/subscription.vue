@@ -10,7 +10,7 @@
           佛曰：前世五百次的回眸才换得今世的擦肩而过。
         </p>
         <p class="subscription-txt">
-          茫茫人海中，人与人的相遇、相知皆是一件十分不易的事情，望你珍惜缘分！一个人的生命只有一次，不要等到失去之后才感到后悔不已！而那时，那个人或许已经不再满怀壮志了，也或许是看得通透了
+          茫茫人海中，人与人的相遇、相知皆是一件十分不易的事情，望你能够珍惜缘分！一个人的生命只有一次，不要等到失去之后才感到后悔不已！而那时，那个人或许已经不再满怀壮志了，也或许是看得通透了
         </p>
         <p class="subscription-txt">
           佛曰：世间所有的相遇皆因缘起。你我，亦是如此...
@@ -18,7 +18,7 @@
         <div class="d-flex" style="margin-top: 40px">
           <label class="subscription-inp">
             <input type="text" placeholder="Enter your Email" @blur="handleCheckEmail" v-model="email">
-            <span v-show="!isEmail" class="warning-tip">邮箱格式好像不对呢 ~</span>
+            <span v-show="!isEmail" class="warning-tip">邮箱格式好像不太对呢 ~</span>
           </label>
           <button class="subscription-btn btn" @click="handleSubscribe">
             Subscribe
