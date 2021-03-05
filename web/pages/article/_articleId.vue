@@ -25,14 +25,14 @@
           <!--</span>-->
         </div>
 
-<!--        <div-->
-<!--          class="info"-->
-<!--          :class="{-->
-<!--            mood: articleInfo.tag === 'Mood',-->
-<!--            code: articleInfo.tag !== 'Mood'-->
-<!--          }"-->
-<!--          v-html="htmlContent"-->
-<!--        ></div>-->
+        <!--<div-->
+        <!--  class="info"-->
+        <!--  :class="{-->
+        <!--    mood: articleInfo.tag === 'Mood',-->
+        <!--    code: articleInfo.tag !== 'Mood'-->
+        <!--  }"-->
+        <!--  v-html="htmlContent"-->
+        <!--/>-->
       </div>
 
       <Comment />
@@ -73,14 +73,16 @@ export default defineComponent({
      */
     const { articleId } = params
     const articleItem = store.state.articleItem
+    console.log('articleItem: ====== ', articleItem)
     const paramsArr = articleId.split('_') // 路径参数由 uid_id 拼接而来
     const uid = paramsArr[0],
       id = paramsArr[1]
     try {
+      // get article content
       const res = await $axios.get('/records/detail', {
         params: { uid, id }
       })
-      // 请求文章 content 成功
+      // success to get article content
       if (res.success) {
         store.commit(M_SET_ARTICLE_DETAIL, { ...articleItem, ...res.data })
       } else {

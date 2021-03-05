@@ -55,3 +55,17 @@ export interface UpdateRecordOptions {
     is_delete?: number;
     views?: number;
 }
+
+
+export interface SubscribeInfo {
+    administrator: {
+        user: string;
+        pass: string;
+        name: string;
+        email: string;
+    },
+    base: {
+        emailType: string;
+        name: string;
+    }
+}

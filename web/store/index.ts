@@ -4,14 +4,14 @@ import { Store } from 'vuex'
 import Notification from '~/components/notification'
 
 interface State {
-  articleDetail: Object;
+  articleDetail: ArticleDetail;
   articleItem: ArticleItem;
 }
 
 /**
  * vuex state
  * */
-export const state = (): State => ({
+export const state = (): State => <State> ({
   articleDetail: {},
   articleItem: {
     id: -1,
