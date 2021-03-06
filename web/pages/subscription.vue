@@ -7,7 +7,7 @@
       <div class="subscription-form">
         <h3 class="subscription-title">浮生如梦，为欢几何？</h3>
         <p class="subscription-txt">
-          佛曰：前世五百次的回眸才换得今世的擦肩而过。
+          佛曰：前世的五百次回眸才换得今世的擦肩而过。
         </p>
         <p class="subscription-txt">
           茫茫人海中，人与人的相遇、相知皆是一件十分不易的事情，望你能够珍惜缘分！一个人的生命只有一次，不要等到失去之后才感到后悔不已！而那时，那个人或许已经不再满怀壮志了，也或许是看得通透了
