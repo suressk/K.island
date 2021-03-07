@@ -22,7 +22,7 @@
         border-radius: 5px;
         cursor: default;
         user-select: none;
-        filter: drop-shadow(5px 0px 5px var(--cyanogen)) invert(0%);
+        filter: drop-shadow(5px 0px 5px var(--primary-blue)) invert(0%);
         &.nav-show {
           color: var(--lightTxt);
         }
@@ -37,7 +37,7 @@
         height: 40px;
         cursor: pointer;
         //color: var(--cinnabar);
-        color: var(--cyanogen);
+        color: var(--primary-blue);
         background-color: var(--white);
         border-radius: 5px;
         .iconfont {

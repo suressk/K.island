@@ -6,7 +6,7 @@ function resolvePath (relativePath: string) {
     return path.join(__dirname, '../../', relativePath)
 }
 
-function fileExist (filePath: string) {
+function checkFileExist (filePath: string) {
     return new Promise((resolve, reject) => {
         fs.access(filePath, fs.constants.F_OK, (err: any) => {
             // 文件不存在
@@ -25,7 +25,7 @@ export function deleteImage (relativePath: string) {
     fullPath = fullPath.replace('//', '/')
     fullPath = fullPath.replace('\\\\', '\\')
     return new Promise((resolve, reject) => {
-        fileExist(fullPath).then(() => {
+        checkFileExist(fullPath).then(() => {
             fs.unlink(fullPath, (err: any) => {
                 if (!err) {
                     resolve('')

@@ -1,43 +1,65 @@
-import nodemailer from 'nodemailer'
-import { SubscribeInfo } from '../../common/types'
-import { createOption } from './subscribeOptions'
+import express from 'express'
+import { querySubscribeInfo, addSubscribeInfo } from '../../services/web/subscribeService'
+import { writeHead, writeResult } from '../../utils/writeResponse'
 
-/**
- * 订阅
- * @param {*} type 类型：1 => 订阅验证; 2 => 订阅通知; 3 => 评论通知
- * @param {*} data
- * @param {*} info
- * */
-async function subscribe(type: number, data: any, info: SubscribeInfo) {
-    const mode = {
-        'QQ': 'smtp.qq.com',
-        '163': 'smtp.163.com',
-        'GMAIL': 'smtp.gmail.com'
-    }
+const router = express.Router()
 
-    const transporter = nodemailer.createTransport({
-        // @ts-ignore
-        host: mode[info.base.emailType],
-        port: 465,
-        secure: true, // true for 465, false for other ports
-        auth: {
-            user: info.administrator.user, // generated ethereal user
-            pass: info.administrator.pass, // generated ethereal password
+// 查询订阅信息是否存在（即是否已订阅）
+router.get('/check', (req, res) => {
+
+})
+
+// 新增订阅
+router.post('/add', (req, res) => {
+    const pro = new Promise((resolve, reject) => {
+        // 查询此邮箱是否存在
+        querySubscribeInfo({
+            email: req.body.email,
+            name: req.body.name
         },
+        result => {
+            // 邮箱已存在
+            if (result.length > 0) {
+                reject({
+                    status: 416,
+                    success: false,
+                    msg: '此邮箱已经订阅了哦~ 是你忘记了，还是写错邮箱辣？^_^'
+                })
+            } else {
+                resolve({})
+            }
+        },
+        error => {
+            reject({
+                status: 500,
+                success: false,
+                msg: 'Something error in querying subscription information',
+                data: error
+            })
+        })
     })
 
-    await transporter.sendMail(
-        createOption(type, data, info),
-        (err, res) => {
-            if (err) {
-                console.log('send email error: ', err)
-            } else {
-                console.log('Message sent: ', res.response)
-            }
-        }
-    )
-    // 关闭连接池
-    transporter.close()
-}
+    pro.then(() => {
+        // 新增订阅
+        addSubscribeInfo({
+            email: req.body.email,
+            name: req.body.name
+        }, result => {
+            writeHead(res, 200)
+            writeResult(true, '小K. <K.island> 欢迎您', result)
+        }, err => {
+            writeHead(res, 500)
+            writeResult(err.success, '小K.很遗憾地告诉您：小栈订阅失败了！麻烦联系小K.说明一下哟~',err)
+        })
+    }).catch(err => {
+        writeHead(res, err.status)
+        writeResult(err.success, err.msg)
+    })
+})
 
-export default subscribe
+// 移除订阅
+router.delete('/delete', (req, res) => {
+
+})
+
+export default router

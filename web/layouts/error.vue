@@ -44,7 +44,7 @@ export default {
     top: 85%;
     user-select: none;
     .link {
-      color: var(--cyanogen);
+      color: var(--primary-blue);
     }
   }
 }

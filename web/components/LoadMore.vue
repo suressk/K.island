@@ -59,8 +59,8 @@ export default defineComponent({
     transition: background-color .3s, color .3s, border-color .3s;
     &:hover {
       color: var(--white);
-      background-color: var(--cyanogen)!important;
-      border-color: var(--cyanogen);
+      background-color: var(--primary-blue)!important;
+      border-color: var(--primary-blue);
     }
   }
   .dot {
@@ -99,7 +99,7 @@ export default defineComponent({
     }
     &:nth-child(5) {
       animation-delay: 0.4s;
-      background-color: var(--cyanogen);
+      background-color: var(--primary-blue);
     }
   }
 }

@@ -68,3 +68,8 @@ export interface SubscribeInfo {
         emailType: string;
     }
 }
+
+export interface SubscribeTipInfo {
+    subject: string;
+    html: string;
+}

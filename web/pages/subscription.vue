@@ -41,7 +41,7 @@ import KWave from '~/components/KWave/index.vue'
 export default defineComponent({
   name: 'subscription',
   components: { KHeader, KWave },
-  setup() {
+  setup(props, { root }) {
     const email = ref<string>('')
     const isEmail = ref<boolean>(true)
     const emptyEmail = ref<boolean>(false)
@@ -69,6 +69,13 @@ export default defineComponent({
       // email 格式正确
       if (isEmail.value && email.value !== '') {
         console.log('订阅')
+        root.$axios.post('/subscribe/add', {
+          email: email.value
+        }).then(res => {
+          console.log(res)
+        }).catch(err => {
+          console.log(err)
+        })
       }
     }
 

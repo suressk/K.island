@@ -33,7 +33,7 @@
   }
   h5 {
     font-size: 1.2rem;
-    border-left-color: var(--cyanogen);
+    border-left-color: var(--primary-blue);
   }
   h6 {
     font-size: 1rem;
@@ -43,7 +43,7 @@
     color: var(--lightCyan);
     transition: all 0.3s;
     &:hover {
-      color: var(--cyanogen);
+      color: var(--primary-blue);
     }
   }
 

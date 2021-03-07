@@ -19,7 +19,7 @@
       width: 50%;
       position: relative;
       .iconfont {
-        color: var(--cyanogen);
+        color: var(--primary-blue);
         font-size: 1.3rem;
         width: 20px;
         height: 20px;
@@ -36,7 +36,7 @@
         color: inherit;
         //border-bottom: 1px dashed var(--border);
         //&:focus {
-        //  border-bottom-color: var(--cyanogen);
+        //  border-bottom-color: var(--primary-blue);
         //}
       }
     }

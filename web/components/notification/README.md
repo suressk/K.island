@@ -203,7 +203,7 @@ export default Notification
       color: var(--darkGreen);
     }
     &.notification-info {
-      color: var(--cyanogen);
+      color: var(--primary-blue);
     }
     &.notification-warning {
       color: var(--warning);
@@ -220,7 +220,7 @@ export default Notification
     color: var(--darkGreen);
   }
   &.notify-info .notify-header {
-    color: var(--cyanogen);
+    color: var(--primary-blue);
   }
   &.notify-error .notify-header {
     color: var(--cinnabar);

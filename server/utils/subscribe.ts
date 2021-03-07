@@ -1,10 +1,48 @@
-import { SubscribeInfo } from '../../common/types'
+import nodemailer from 'nodemailer'
+import { SubscribeInfo, SubscribeTipInfo } from '../common/types'
+
+/**
+ * 订阅
+ * @param {*} type 类型：1 => 订阅验证; 2 => 订阅通知; 3 => 评论通知
+ * @param {*} data
+ * @param {*} info
+ * */
+async function subscribe(type: number, data: any, info: SubscribeInfo) {
+    const mode = {
+        'QQ': 'smtp.qq.com',
+        '163': 'smtp.163.com',
+        'GMAIL': 'smtp.gmail.com'
+    }
+
+    const transporter = nodemailer.createTransport({
+        // @ts-ignore
+        host: mode[info.base.emailType],
+        port: 465,
+        secure: true, // true for 465, false for other ports
+        auth: {
+            user: info.administrator.user, // generated ethereal user
+            pass: info.administrator.pass, // generated ethereal password
+        },
+    })
+
+    await transporter.sendMail(
+        createOption(type, data, info),
+        (err, res) => {
+            if (err) {
+                console.log('send email error: ', err)
+            } else {
+                console.log('Message sent: ', res.response)
+            }
+        }
+    )
+    // 关闭连接池
+    transporter.close()
+}
 
 /**
  * 创建 option
- * type: 1: 订阅验证; 2: 订阅通知; 3: 评论通知;
  * */
-export function createOption(type: number, data: any, info: SubscribeInfo) {
+function createOption(type: number, data: any, info: SubscribeInfo) {
     const { subject, html } = createTipInfo(type, data, info)
 
     return {
@@ -15,16 +53,10 @@ export function createOption(type: number, data: any, info: SubscribeInfo) {
     }
 }
 
-interface TipInfo {
-    subject: string;
-    html: string;
-}
-
 /**
- * 创建邮箱的 options
- * type: 1: 订阅验证; 2: 订阅通知; 3: 评论通知;
+ * 创建邮件信息内容
  * */
-function createTipInfo(type: number, data: any, info: SubscribeInfo): TipInfo {
+function createTipInfo(type: number, data: any, info: SubscribeInfo): SubscribeTipInfo {
     switch (type) {
         case 1:
             return {
@@ -71,7 +103,7 @@ function createTipInfo(type: number, data: any, info: SubscribeInfo): TipInfo {
                     <div style="padding: 30px;color: #303030;border-radius: 8px;box-shadow: 0 0 10px #eee;">
                         <h2 style="font-weight: 400;font-size: 1rem;">hi，${data.name}，有一条最新岛"语"哦</h2>
                         <p style="text-indent: 2em;color:#303030;font-size: 0.8rem;line-height: 24px;">
-                            小 K. 的小驿站提醒您，您在《<a href="${data.url}">${data.title}</a>》小文中有了一条新的回复哦，回来看看TA是不是对你说了什么悄悄话吖~
+                            小 K. 的小驿站提醒您，您在《<a href="${data.url}">${data.title}</a>》小文中的评论有了一条新的回复哦，回来看看TA是不是对你说了什么悄悄话吖~
                         </p>
                         <p style="text-align: right;margin-top: 40px;font-size:0.8rem">—— ${info.administrator.name}</p>
                         <div style="background: #eff5fb;border-left: 4px solid #c2e1ff;padding: 20px;margin-top: 30px;border-radius: 10px;font-size: 0.8rem;color: #7d7f7f;line-height: 24px;">
@@ -89,3 +121,5 @@ function createTipInfo(type: number, data: any, info: SubscribeInfo): TipInfo {
             }
     }
 }
+
+export default subscribe

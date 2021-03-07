@@ -37,6 +37,7 @@
         color: var(--tipColor);
         margin-right: 10px;
         transition: color .3s;
+        position: relative;
         &:first-child:hover {
           color: var(--darkGreen);
         }
@@ -44,7 +45,16 @@
           color: var(--warning);
         }
         &:nth-child(3):hover {
-          color: var(--cyanogen);
+          color: var(--primary-blue);
+        }
+        .k-popover {
+          position: absolute;
+          width: 200px;
+          bottom: 30px;
+          left: 0;
+          img {
+            width: 100%;
+          }
         }
       }
       .iconfont {

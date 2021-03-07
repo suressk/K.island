@@ -23,9 +23,16 @@
       <div class="link-area">
         <span class="link-item">
           <i class="iconfont icon-wechat" />
+          <span class="k-popover">
+            <img src="~@/static/images/wechat.webp" alt="K's wechat">
+          </span>
         </span>
         <span class="link-item">
           <i class="iconfont icon-email" />
+          <span class="k-popover">
+            🍻sure_k@qq.com<br>
+            🥂songkun.1008@gmail.com
+          </span>
         </span>
         <a class="link-item" href="https://github.com/suerssk/K.island" target="_blank">
           <i class="iconfont icon-github" />

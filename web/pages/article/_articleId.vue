@@ -1,6 +1,6 @@
 <template>
   <section class="k-article-info">
-    <KHeader :custom-title="articleInfo.title" />
+    <KHeader :custom-title="articleDetail.title" />
 
     <div class="content">
       <div class="article-content" :class="articleClass">
@@ -46,10 +46,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, SetupContext } from '@nuxtjs/composition-api'
-import { useState } from '~/utils/useStore'
-import { parseMarkdownFile } from '~/utils/marked'
+// import { parseMarkdownFile } from '~/utils/marked'
 import { failLoadNotify } from '~/utils/util'
-import { M_SET_ARTICLE_DETAIL } from '~/store/mutation-types'
+// import { useState } from '~/utils/useStore'
+// import { M_SET_ARTICLE_DETAIL } from '~/store/mutation-types'
 import { Context } from '@nuxt/types'
 import Comment from '~/components/Comment/index.vue'
 import KFooter from '~/components/KFooter.vue'
@@ -64,16 +64,20 @@ export default defineComponent({
   //   console.log('validate: ==== ', ctx)
   //   return true
   // },
-  // @ts-ignore
-  async fetch({ params, $axios, store }: Context): Promise<void> | void {
-    /**
-     *  $axios, $config, app, base, env, error(),
-     *  from, isDev, isHMR, isStatic, next, nuxtState,
-     *  params, payload, query, redirect, route, store
-     */
+  // // @ts-ignore
+  // async fetch({ params, $axios, store }: Context): Promise<void> | void {
+  //   /**
+  //    *  $axios, $config, app, base, env, error(),
+  //    *  from, isDev, isHMR, isStatic, next, nuxtState,
+  //    *  params, payload, query, redirect, route, store
+  //    */
+  //   const articleItem = store.state.articleItem
+  //   console.log('articleItem: ====== ', articleItem)
+  // },
+  // // @ts-ignore
+  async asyncData({ params, $axios }: Context): Promise<object | void> | object | void {
+    // console.log('asyncData: ==== ')
     const { articleId } = params
-    const articleItem = store.state.articleItem
-    console.log('articleItem: ====== ', articleItem)
     const paramsArr = articleId.split('_') // 路径参数由 uid_id 拼接而来
     const uid = paramsArr[0],
       id = paramsArr[1]
@@ -84,36 +88,43 @@ export default defineComponent({
       })
       // success to get article content
       if (res.success) {
-        store.commit(M_SET_ARTICLE_DETAIL, { ...articleItem, ...res.data })
+        // store.commit(M_SET_ARTICLE_DETAIL, { ...articleItem, ...res.data })
+        return {
+          articleDetail: res.data
+        }
       } else {
-        store.commit(M_SET_ARTICLE_DETAIL, { ...articleItem, content: '' })
+        failLoadNotify('article content')
+        // store.commit(M_SET_ARTICLE_DETAIL, { ...articleItem, content: '' })
+        return {
+          articleDetail: {}
+        }
       }
     } catch (e) {
       failLoadNotify('article content')
-      store.commit(M_SET_ARTICLE_DETAIL, { ...articleItem, content: '' })
+      // store.commit(M_SET_ARTICLE_DETAIL, { ...articleItem, content: '' })
+      return {
+        articleDetail: {}
+      }
     }
   },
-  // // @ts-ignore
-  // async asyncData({ params, $axios }: Context): Promise<object | void> | object | void {
-  //   console.log('asyncData: ==== ')
-  // },
   setup(props, { root }: SetupContext) {
     console.log('setup: ===', root)
-    const articleDetail = useState(root.$store.state, 'articleDetail')
-    const htmlContent = ref<string>('')
+    debugger
+    // const articleDetail = useState(root.$store.state, 'articleDetail')
+    // const htmlContent = ref<string>('')
 
     const articleClass = computed(() => {
-      if (articleDetail.value.tag.toLowerCase() === 'mood') {
+      if (articleDetail.tag.toLowerCase() === 'mood') {
         return 'mood'
       }
       return 'code'
     })
 
-    htmlContent.value = parseMarkdownFile(articleDetail.value.content)
+    // htmlContent.value = parseMarkdownFile(articleDetail.value.content)
 
     return {
       articleDetail,
-      htmlContent,
+      // htmlContent,
       articleClass
     }
   }

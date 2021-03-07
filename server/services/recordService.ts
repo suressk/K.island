@@ -63,7 +63,7 @@ export function queryRecordList (options: QueryListOptions, success: (result: an
  * */
 export function queryRecordDetail(options: RecordIdOptions, success: (result: any) => void, error: (err: Query.QueryError) => void) {
     const { id, uid } = options
-    const sqlStr = 'SELECT content FROM `records` WHERE id = ? and uid = ?'
+    const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, cover, ctime, utime FROM `records` WHERE id = ? and uid = ?'
     const params = [id, uid]
     connectQuery(sqlStr, params, success, error)
 }

@@ -33,6 +33,7 @@
       </ul>
     </div>
     <audio ref="kMusic" preload="auto" loop="loop">
+      <!--<source type="audio/mpeg" src="~@/static/music/lightMusic.mp3">-->
       <source type="audio/mpeg" :src="musicSrc">
     </audio>
     <div class="music-progress" :style="{ width: proWidth }"></div>

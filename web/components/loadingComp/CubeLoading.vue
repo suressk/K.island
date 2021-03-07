@@ -29,7 +29,7 @@ export default {
     width: 10px;
     height: 10px;
     border-radius: 2px;
-    background-color: var(--cyanogen);
+    background-color: var(--primary-blue);
     animation: cubeScale 1.3s infinite ease-in-out;
     &:first-child {
       animation-delay: 0.2s;

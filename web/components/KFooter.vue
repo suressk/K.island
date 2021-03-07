@@ -31,7 +31,7 @@ export default {
     transition: color .3s;
     border-right: 1px solid var(--tipColor);
     &:hover {
-      color: var(--cyanogen);
+      color: var(--primary-blue);
     }
   }
 }
