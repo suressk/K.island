@@ -1,0 +1,300 @@
+@import "./components/notify.scss";
+/**
+  colors variable
+*/
+:root {
+  /**
+    color start
+  */
+  --color1: rgba(85, 239, 196,1.0);
+  --color2: rgba(129, 236, 236,1.0);
+  --color3: rgba(116, 185, 255,1.0);
+  --color4: rgba(162, 155, 254,1.0);
+  --color5: rgba(223, 230, 233,1.0);
+  --color6: rgba(0, 184, 148,1.0);
+  --color7: rgba(0, 206, 201,1.0);
+  --color8: rgba(9, 132, 227,1.0);
+  --color9: rgba(108, 92, 231,1.0);
+  --color10: rgba(178, 190, 195,1.0);
+  --color11: rgba(255, 234, 167,1.0);
+  --color12: rgba(250, 177, 160,1.0);
+  --color13: rgba(255, 118, 117,1.0);
+  --color14: rgba(253, 121, 168,1.0);
+  --color15: rgba(99, 110, 114,1.0);
+  --color16: rgba(253, 203, 110,1.0);
+  --color17: rgba(225, 112, 85,1.0);
+  --color18: rgba(214, 48, 49,1.0);
+  --color19: rgba(232, 67, 147,1.0);
+  --color20: rgba(45, 52, 54,1.0);
+  /**
+    color stop
+  */
+  --white: #fff;
+  --snowWhite: #f0fcff; // 雪白
+  --silver: #e9e7ef; // 银白
+  --lightBg: #f2f2f2; // 浅色背景
+  --opacityBg: rgba(240, 240, 240, 0.3);
+  --border: #d9d9d9;
+  --tipColor: #999;
+  --lightTxt: #656565;
+  --lightInk: rgba(22, 24, 35, 0.3); // 淡墨色
+  --ink: #161823; // 墨色
+  --cinnabar: #ff461f; // 朱砂
+  --warning: #ffa631; // 橘色
+  --lightBlue: #d2f6ff;
+  --blue-border: #afcfff;
+  --azure: #70f3ff; // 蔚蓝
+  --darkGreen: #2add9c; // 碧绿
+  --oilGreen: #00bc12; // 油绿
+  --lightCyan: #14ffec; // 淡青
+  --primary-blue: #0095d9;
+}
+
+/* flex 布局 */
+.d-flex,
+.flex-between,
+.flex-around,
+.flex-center,
+.flex-end,
+.flex-col,
+.flex-col-center,
+.flex-col-around,
+.flex-col-between {
+  display: flex;
+  align-items: center;
+}
+
+.flex-between,
+.flex-col-between {
+  justify-content: space-between;
+}
+.flex-around,
+.flex-col-around {
+  justify-content: space-around;
+}
+.flex-center,
+.flex-col-center {
+  justify-content: center;
+}
+.flex-end {
+  justify-content: flex-end;
+}
+
+.flex-col,
+.flex-col-start,
+.flex-col-around,
+.flex-col-between,
+.flex-col-center {
+  flex-direction: column;
+}
+
+.flex-col-start {
+  display: flex;
+  align-items: flex-start;
+}
+
+/**
+ 垂直 水平居中定位
+*/
+.fixed-center {
+  position: fixed;
+}
+.absolute-center {
+  position: absolute;
+}
+.fixed-center,
+.absolute-center {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+// position
+.relative {
+  position: relative;
+  left: 0;
+  top: 0;
+}
+.absolute {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.fixed {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+/**
+  提示信息
+*/
+.error-tip,
+.warning-tip,
+.success-tip {
+  font-size: 12px;
+  margin: 0 10px;
+}
+
+.error-tip {
+  color: var(--cinnabar);
+}
+.warning-tip {
+  color: var(--warning);
+}
+.success-tip {
+  color: var(--darkGreen);
+}
+
+.tip {
+  color: var(--tipColor);
+  font-size: 14px;
+  text-align: center;
+}
+
+/**
+ 文字溢出隐藏
+ */
+// 单行
+.txt-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+// 多行
+.two-line-txt,
+.three-line-txt {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+.two-line-txt {
+  -webkit-line-clamp: 2;
+}
+.three-line-txt {
+  -webkit-line-clamp: 3;
+}
+
+.trans-all-05 {
+  transition: all 0.5s;
+}
+.trans-all-03 {
+  transition: all 0.3s;
+}
+
+/**
+  scroll
+*/
+.scroller-light::-webkit-scrollbar,
+.scroller::-webkit-scrollbar,
+.scroller-light::-webkit-scrollbar-corner,
+.scroller::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+.scroller-light::-webkit-scrollbar:vertical,
+.scroller::-webkit-scrollbar:vertical {
+  cursor: default;
+  width: 6px;
+}
+.scroller-light::-webkit-scrollbar:horizontal,
+.scroller::-webkit-scrollbar:horizontal {
+  cursor: default;
+  height: 6px;
+}
+.scroller-light::-webkit-scrollbar-button,
+.scroller-light::-webkit-scrollbar-corner,
+.scroller::-webkit-scrollbar-button,
+.scroller::-webkit-scrollbar-corner {
+  display: none;
+}
+
+.scroller-light::-webkit-scrollbar-thumb,
+.scroller::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  cursor: pointer;
+}
+.scroller-light::-webkit-scrollbar-thumb {
+  background-color: var(--lightBg);
+}
+.scroller::-webkit-scrollbar-thumb {
+  background-color: var(--tipColor);
+}
+
+/**
+  Button 通用样式
+*/
+.btn {
+  background-color: var(--primary-blue);
+  border-radius: 5px;
+  color: var(--white);
+  border: none;
+  outline: none;
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  &.disabled {
+    background-color: var(--lightBg);
+    color: var(--tipColor);
+    cursor: not-allowed;
+  }
+}
+
+// btn-border
+.r-hover,
+.g-hover {
+  cursor: pointer;
+  padding: 3px 5px;
+  margin: 0 10px;
+  position: relative;
+  transition: all .3s;
+}
+.r-hover:hover {
+  color: var(--cinnabar);
+}
+.g-hover:hover {
+  color: var(--darkGreen);
+}
+
+/**
+  偏移淡入
+*/
+.page-enter,
+.page-leave-active {
+  opacity: 0;
+  transform: translateX(200px);
+}
+
+.wh-100 {
+  width: 100%;
+  height: 100%;
+}
+
+// 自定义偏移淡入 - 留在最终位置
+.translate-fade-in {
+  animation: translateFadeIn 0.5s ease forwards;
+}
+
+@keyframes translateFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/**
+  content 内容区
+*/
+.content {
+  width: 800px;
+  border: 1px solid var(--border);
+  border-left: none;
+  border-right: none;
+  margin: 0 auto;
+  padding: 50px 0;
+  position: relative;
+  // .info {}
+}

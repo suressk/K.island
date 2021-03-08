@@ -1,0 +1,147 @@
+@import "./colors.scss";
+.markdown {
+  line-height: 1.5;
+  color: $baseColor;
+  // 标题
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 700;
+    margin: 1rem 0;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 1rem;
+    color: #f2f2f2;
+    border-left: 5px solid transparent;
+  }
+  h1 {
+    font-size: 2rem;
+    padding-left: 0;
+  }
+  h2 {
+    font-size: 1.8rem;
+    border-left-color: $cinnabar;
+  }
+  h3 {
+    font-size: 1.6rem;
+    border-left-color: $orange;
+  }
+  h4 {
+    font-size: 1.4rem;
+    border-left-color: $oilGreen;
+  }
+  h5 {
+    font-size: 1.2rem;
+    border-left-color: $cyanogen;
+  }
+  h6 {
+    font-size: 1rem;
+    border-left-color: $ivory;
+  }
+  a {
+    color: $bColor;
+    transition: all 0.3s;
+    &:hover {
+      color: $cyanogen;
+    }
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    padding: 15px;
+  }
+
+  ol, ul {
+    padding-left: 2rem;
+  }
+  ol {
+    list-style-type: decimal;
+  }
+  ul {
+    list-style: unset;
+  }
+
+  blockquote {
+    padding: 1rem 1rem 0.5rem;
+    border-left: 5px solid $baseColor;
+    background-color: $inkLight;
+    border-radius: 0 10px 10px 0;
+  }
+
+  // 代码片段
+  pre {
+    font-family: Consolas, Arial, Helvetica, sans-serif;
+    background-color: $codeBgLight;
+    margin: 1rem 0;
+    //padding: 2.5rem 2rem 2rem 0.5rem;
+    padding: 1rem;
+    border-radius: 5px;
+    position: relative;
+    overflow: auto;
+    transition: all 0.5s;
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar:horizontal {
+      cursor: default;
+      height: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background-color: #686979;
+    }
+
+    &:hover {
+      background-color: $codeBg;
+    }
+
+    //&::before {
+    //  content: "";
+    //  position: absolute;
+    //  left: 0;
+    //  top: 0;
+    //  width: 120px;
+    //  height: 40px;
+    //  background-image: url("~@/assets/svg/code_top_bg.svg");
+    //  background-size: 70px 30px;
+    //  background-repeat: no-repeat;
+    //  background-position: 3px 4px;
+    //}
+
+    &::after {
+      background-color: $yColor;
+      left: 28px;
+    }
+
+    code {
+      color: $baseColor;
+      &::before {
+        background-color: $bColor;
+        left: 47px;
+      }
+    }
+  }
+
+  p {
+    margin-bottom: 0.5rem;
+    code {
+      line-height: 1;
+      color: $rColor;
+      background-color: $tipBg;
+      font-size: 0.8rem;
+      padding: 2px 10px;
+      border-radius: 3px;
+    }
+
+    strong {
+      font-weight: 700;
+    }
+    em {
+      font-style: italic;
+    }
+  }
+}

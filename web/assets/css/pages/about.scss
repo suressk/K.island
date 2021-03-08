@@ -1,0 +1,77 @@
+
+.k-about {
+  .content {
+    width: 800px;
+    min-height: calc(100vh - 40px);
+    border: none;
+    .title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin: 30px 0;
+    }
+    .part {
+      line-height: 2;
+      margin-bottom: 10px;
+    }
+    .introduce-list {
+      padding-left: 20px;
+      margin-bottom: 20px;
+      .item {
+        font-size: 16px;
+        line-height: 2;
+        position: relative;
+        &::before {
+          content: "☼";
+          position: absolute;
+          top: -5px;
+          left: -16px;
+          color: var(--tipColor);
+          font-size: 20px;
+        }
+      }
+    }
+
+    .link-area {
+      margin: 20px 0;
+      .link-item {
+        color: var(--tipColor);
+        margin-right: 10px;
+        transition: color .3s;
+        position: relative;
+        &:first-child:hover {
+          color: var(--darkGreen);
+        }
+        &:nth-child(2):hover {
+          color: var(--warning);
+        }
+        &:nth-child(3):hover {
+          color: var(--primary-blue);
+        }
+        &:hover .k-popover {
+          opacity: 1;
+          visibility: visible;
+        }
+        .k-popover {
+          position: absolute;
+          min-width: 200px;
+          bottom: 30px;
+          left: 0;
+          opacity: 0;
+          visibility: hidden;
+          padding: 10px;
+          border-radius: 5px;
+          overflow: hidden;
+          transition: all .5s;
+          background-color: var(--dark-theme-border);
+          img {
+            width: 100%;
+          }
+        }
+      }
+      .iconfont {
+        font-size: 1.6rem;
+        cursor: pointer;
+      }
+    }
+  }
+}

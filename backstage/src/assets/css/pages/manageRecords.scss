@@ -1,0 +1,44 @@
+@import "../colors.scss";
+.management-records {
+  width: 100%;
+  height: 100%;
+  .filter-conditions {
+    padding: 10px;
+    background-color: $borderColor;
+    border-radius: 10px;
+    margin-bottom: 30px;
+  }
+  .record-list {
+    .cover-preview {
+      max-height: 50px;
+    }
+    .records-pagination {
+      margin: 20px 0;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .records-table {
+      thead tr,
+      thead th {
+        background-color: $borderColor;
+      }
+    }
+  }
+  .el-drawer:focus {
+    outline: none;
+  }
+  .el-drawer__body {
+    overflow: auto;
+  }
+  .el-dialog__body {
+    height: 70vh;
+  }
+}
+.el-popconfirm {
+  .el-popconfirm__main {
+    padding: 10px 0;
+  }
+  .el-popconfirm__action button {
+    padding: 5px 10px;
+  }
+}

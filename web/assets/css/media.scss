@@ -1,0 +1,147 @@
+// 媒体查询 - 响应式样式
+@media screen and (max-width: 1200px) {
+  .k-page {
+    div.content {
+      width: 100%;
+    }
+  }
+}
+
+// < 800px
+@media screen and (max-width: 800px) {
+  .k-page {
+    .k-header {
+      .header-content {
+        padding: 0;
+        .header-l-nav,
+        .header-r-nav {
+          transform: scale(0.8);
+        }
+      }
+    }
+    // 首页雨幕上的文字内容
+    .cover-introduce {
+      .time,
+      .introduce {
+        color: var(--ink);
+      }
+    }
+    // 首页导航菜单
+    div.nav {
+      flex-direction: column;
+      font-size: 20px;
+    }
+    .head-bar {
+      .logo {
+        transform-origin: left center;
+        transform: scale(0.8);
+      }
+    }
+    // 关于我
+    &.k-about {
+      .content {
+        margin: 0;
+        padding: 50px 10px 0;
+        min-height: calc(100vh - 40px);
+        .title {
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin: 20px 0;
+        }
+        .introduce-list {
+          padding-left: 20px;
+          margin-bottom: 10px;
+          .item {
+            font-size: 0.8rem;
+          }
+        }
+        .part {
+          font-size: 0.8rem;
+        }
+      }
+    }
+    &.k-article-page {
+      width: 100%;
+      padding: 0 10px;
+      .month-item {
+        padding-left: 10px !important;
+        .article-item {
+          margin: 0 !important;
+          padding: 10px 0 !important;
+        }
+        .title {
+          font-size: 1rem!important;
+        }
+        .day-marker {
+          font-size: 12px;
+        }
+      }
+    }
+    // 文章详情
+    &.k-article-info{
+      .content {
+        padding: 50px 10px 0;
+        width: 100%;
+      }
+    }
+    // 订阅页面
+    &.subscription {
+      .main-content {
+        .subscription-form {
+          padding: 50px 30px;
+        }
+        .tip-title {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .k-page {
+    &.subscription {
+      .main-content {
+        .subscription-form {
+          width: calc(100% - 10px);
+          margin: 0 auto;
+        }
+      }
+    }
+    .comment-form {
+      .chat-container {
+        flex-direction: column;
+        .name-txt,
+        .email-txt {
+          width: 100%;
+        }
+      }
+    }
+
+    &.main-page .content {
+      padding: 0 10px 50px;
+      .content-item {
+        .cover,
+        .info {
+          width: 100%;
+          height: unset;
+          position: static;
+        }
+        .cover {
+          border-radius: 5px 5px 0 0;
+        }
+        .info {
+          background-color: var(--white);
+          border-top: none;
+          border-radius: 0 0 5px 5px;
+          padding: 10px;
+          .suffix {
+            position: relative;
+            left: 0;
+            bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,113 @@
+/**
+  暗色系颜色值
+*/
+:root {
+  --dark-theme-body: #0d1117;
+  --dark-theme-header: #161b22;
+  --dark-txt: rgb(150, 156, 169);
+  --dark-hover-txt: rgb(201, 209, 217);
+  --dark-theme-tip: rgb(139, 148, 158);
+  --dark-theme-border: #30363d;
+  --dark-half-black: rgba(0, 0, 0, 0.5);
+}
+
+body.k-dark {
+  color: var(--dark-txt);
+  input,
+  textarea {
+    background-color: transparent;
+  }
+  .k-page {
+    background-color: var(--dark-theme-body);
+    .k-header {
+      .header-content {
+        background-color: var(--dark-theme-header);
+      }
+    }
+    .page-cover .head-bar .logo.nav-show {
+      color: var(--white);
+    }
+    .content {
+      border-color: var(--dark-theme-border);
+    }
+    .cover-introduce,
+    .nav {
+      background-color: var(--dark-half-black);
+      .time,
+      .introduce {
+        color: inherit;
+      }
+    }
+    .nav {
+      .nav-item {
+        color: var(--dark-theme-txt);
+        &:hover {
+          color: var(--dark-hover-txt);
+        }
+      }
+    }
+    &.main-page .content {
+      border-color: var(--dark-theme-border);
+      padding: 50px 10px;
+      &::after {
+        background-color: var(--dark-theme-border);
+      }
+      .content-item {
+        .cover,
+        .info {
+          border-color: var(--dark-theme-border);
+          background-color: var(--dark-theme-border);
+        }
+        .info {
+          background-color: var(--dark-theme-body);
+        }
+      }
+    }
+    .k-footer,
+    .load-more {
+      background-color: var(--dark-theme-body);
+      .load-more-btn {
+        border-color: var(--dark-theme-border);
+      }
+    }
+  }
+
+  // 文章列表页
+  .k-article-page {
+    .content {
+      .month {
+        &::before {
+          background-color: var(--lightBlue);
+          border: 3px solid var(--blue-border);
+        }
+      }
+      .month-item {
+        border-left-color: var(--dark-theme-border);
+        .article-item {
+          border-bottom-color: var(--dark-theme-border);
+          .img-box {
+            border-color: var(--dark-theme-border);
+          }
+        }
+      }
+    }
+  }
+
+  .comment-form {
+    border-color: var(--dark-theme-border) !important;
+  }
+
+  // 文章详情
+  .k-article-info {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+      color: var(--dark-txt);
+    }
+  }
+
+}

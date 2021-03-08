@@ -1,0 +1,39 @@
+$borderColor: #d9d9d9;
+$titleColor: #78797a;
+$tipBg: #ecf5ff;
+$tipColor: #409EFF;
+
+.detail-content {
+  padding: 20px 10px 0;
+  border-top: 1px solid $borderColor;
+  .info-title {
+    font-weight: 500;
+    font-size: 14px;
+    color: $titleColor;
+    font-style: italic;
+    width: 50px;
+    flex-shrink: 0;
+  }
+  > div {
+    margin-bottom: 20px;
+    .article-introduce {
+      color: $tipColor;
+      line-height: 1.5;
+      border: 1px solid $borderColor;
+      border-radius: 5px;
+      background-color: $tipBg;
+      padding: 10px;
+      width: 100%;
+    }
+    .article-cover {
+      max-height: 100px;
+    }
+  }
+  .preview-content {
+    padding: 5px 15px;
+    border: 1px solid #d9d9d9;
+    background-color: rgba(3, 46, 61, 0.9);
+    margin-top: 10px;
+    border-radius: 5px;
+  }
+}
