@@ -5,34 +5,34 @@
     <div class="content">
       <div class="article-content" :class="articleClass">
         <h1 class="title">
-          {{ articleInfo.title }}
+          {{ articleDetail.title }}
         </h1>
         <div class="stuffix d-flex">
           <span class="time tip">
-            {{ articleInfo.time.day }} {{articleInfo.time.month }} {{ articleInfo.time.year }}
+            {{ articleDetail.time.day }} {{articleDetail.time.month }} {{ articleDetail.time.year }}
           </span>
           <span class="r-hover tip views d-flex">
             <i class="iconfont icon-view" />
-            {{ articleInfo.views }}
+            {{ articleDetail.views }}
           </span>
           <span class="g-hover tip tag d-flex">
             <i class="iconfont icon-tag" />
-            {{ articleInfo.tag }}
+            {{ articleDetail.tag }}
           </span>
           <!--<span class="comments tip d-flex">-->
           <!--  <i class="iconfont icon-comment" />-->
-          <!--  {{ articleInfo.time.day }}-->
+          <!--  {{ articleDetail.time.day }}-->
           <!--</span>-->
         </div>
 
-        <!--<div-->
-        <!--  class="info"-->
-        <!--  :class="{-->
-        <!--    mood: articleInfo.tag === 'Mood',-->
-        <!--    code: articleInfo.tag !== 'Mood'-->
-        <!--  }"-->
-        <!--  v-html="htmlContent"-->
-        <!--/>-->
+        <div
+          class="info"
+          :class="{
+            mood: articleDetail.tag === 'Mood',
+            code: articleDetail.tag !== 'Mood'
+          }"
+          v-html="htmlContent"
+        />
       </div>
 
       <Comment />
@@ -45,17 +45,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, SetupContext } from '@nuxtjs/composition-api'
-// import { parseMarkdownFile } from '~/utils/marked'
+import { defineComponent } from '@nuxtjs/composition-api'
+import { parseMarkdownFile } from '~/utils/marked'
 import { failLoadNotify } from '~/utils/util'
-// import { useState } from '~/utils/useStore'
-// import { M_SET_ARTICLE_DETAIL } from '~/store/mutation-types'
 import { Context } from '@nuxt/types'
 import Comment from '~/components/Comment/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import BackTop from '~/components/BackTop/index.vue'
+import 'highlight.js/styles/atom-one-dark-reasonable.css'
+// import { useState } from '~/utils/useStore'
+// import { M_SET_ARTICLE_DETAIL } from '~/store/mutation-types'
 
 export default defineComponent({
   name: 'ArticleId',
@@ -74,58 +75,38 @@ export default defineComponent({
   //   const articleItem = store.state.articleItem
   //   console.log('articleItem: ====== ', articleItem)
   // },
-  // // @ts-ignore
+  // @ts-ignore
   async asyncData({ params, $axios }: Context): Promise<object | void> | object | void {
-    // console.log('asyncData: ==== ')
     const { articleId } = params
     const paramsArr = articleId.split('_') // 路径参数由 uid_id 拼接而来
     const uid = paramsArr[0],
       id = paramsArr[1]
     try {
-      // get article content
-      const res = await $axios.get('/records/detail', {
+      const { success, data } = await $axios.get('/records/detail', {
         params: { uid, id }
       })
       // success to get article content
-      if (res.success) {
-        // store.commit(M_SET_ARTICLE_DETAIL, { ...articleItem, ...res.data })
+      if (success) {
         return {
-          articleDetail: res.data
+          articleDetail: data,
+          htmlContent: parseMarkdownFile(data.content),
+          articleClass: data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
         }
       } else {
         failLoadNotify('article content')
-        // store.commit(M_SET_ARTICLE_DETAIL, { ...articleItem, content: '' })
         return {
-          articleDetail: {}
+          articleDetail: {},
+          htmlContent: '',
+          articleClass: 'mood'
         }
       }
     } catch (e) {
       failLoadNotify('article content')
-      // store.commit(M_SET_ARTICLE_DETAIL, { ...articleItem, content: '' })
       return {
-        articleDetail: {}
+        articleDetail: {},
+        htmlContent: '',
+        articleClass: 'mood'
       }
-    }
-  },
-  setup(props, { root }: SetupContext) {
-    console.log('setup: ===', root)
-    debugger
-    // const articleDetail = useState(root.$store.state, 'articleDetail')
-    // const htmlContent = ref<string>('')
-
-    const articleClass = computed(() => {
-      if (articleDetail.tag.toLowerCase() === 'mood') {
-        return 'mood'
-      }
-      return 'code'
-    })
-
-    // htmlContent.value = parseMarkdownFile(articleDetail.value.content)
-
-    return {
-      articleDetail,
-      // htmlContent,
-      articleClass
     }
   }
 })
