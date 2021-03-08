@@ -81,10 +81,16 @@
 }
 
 .flex-col,
+.flex-col-start,
 .flex-col-around,
 .flex-col-between,
 .flex-col-center {
   flex-direction: column;
+}
+
+.flex-col-start {
+  display: flex;
+  align-items: flex-start;
 }
 
 /**

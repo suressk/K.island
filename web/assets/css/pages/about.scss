@@ -47,11 +47,22 @@
         &:nth-child(3):hover {
           color: var(--primary-blue);
         }
+        &:hover .k-popover {
+          opacity: 1;
+          visibility: visible;
+        }
         .k-popover {
           position: absolute;
-          width: 200px;
+          min-width: 200px;
           bottom: 30px;
           left: 0;
+          opacity: 0;
+          visibility: hidden;
+          padding: 10px;
+          border-radius: 5px;
+          overflow: hidden;
+          transition: all .5s;
+          background-color: var(--dark-theme-border);
           img {
             width: 100%;
           }
