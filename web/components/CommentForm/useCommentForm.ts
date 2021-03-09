@@ -22,12 +22,12 @@ export default function (props: CommentProps, ctx: SetupContext) {
   const tipTxt = reactive([
     '您的名字是不是输入全空格啦？',
     '邮箱格式貌似不太对呢~',
-    '胆敢冒充站长，来人，拉出去枪毙五分钟！！!',
+    '胆敢冒充站长，来人，拉出去枪毙五分钟！！！',
     '多说一点儿吧，至少能成一句诗~',
     '偷偷告诉我，你作文是不是 0 分~',
     '完成验证才可以提交哦~',
     'Submitting...',
-    '哇哦！遇到错误，要不再试试？',
+    '哇哦！遇到错误辣，要不再试试？',
     'Successfully completed, Nice!'
   ])
 

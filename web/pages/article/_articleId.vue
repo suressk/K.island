@@ -9,7 +9,7 @@
         </h1>
         <div class="stuffix d-flex">
           <span class="time tip">
-            {{ articleDetail.time.day }} {{articleDetail.time.month }} {{ articleDetail.time.year }}
+            {{ articleDetail.time.day }} {{articleDetail.time.month }}, {{ articleDetail.time.year }}
           </span>
           <span class="r-hover tip views d-flex">
             <i class="iconfont icon-view" />
@@ -27,15 +27,12 @@
 
         <div
           class="info"
-          :class="{
-            mood: articleDetail.tag === 'Mood',
-            code: articleDetail.tag !== 'Mood'
-          }"
+          :class="articleClass"
           v-html="htmlContent"
         />
       </div>
 
-      <Comment />
+      <CommentForm @submit-comment="handleGetComment" />
 
       <ThemeSwitch />
     </div>
@@ -49,7 +46,8 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import { parseMarkdownFile } from '~/utils/marked'
 import { failLoadNotify } from '~/utils/util'
 import { Context } from '@nuxt/types'
-import Comment from '~/components/Comment/index.vue'
+import { CommentInfo } from '~/@types'
+import CommentForm from '~/components/CommentForm/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
@@ -60,7 +58,7 @@ import 'highlight.js/styles/atom-one-dark-reasonable.css'
 
 export default defineComponent({
   name: 'ArticleId',
-  components: { KHeader, Comment, KFooter, ThemeSwitch, BackTop },
+  components: { KHeader, CommentForm, KFooter, ThemeSwitch, BackTop },
   // validate(ctx: Context) {
   //   console.log('validate: ==== ', ctx)
   //   return true
@@ -107,6 +105,14 @@ export default defineComponent({
         htmlContent: '',
         articleClass: 'mood'
       }
+    }
+  },
+  setup() {
+    function handleGetComment(info: CommentInfo) {
+      console.log(info)
+    }
+    return {
+      handleGetComment
     }
   }
 })

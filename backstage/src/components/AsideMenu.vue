@@ -1,5 +1,5 @@
 <template>
-  <aside class="aside-menu scroller" :class="{ shrink: shrinkMenu }">
+  <aside class="aside-menu scroller" :class="{ shrink: !extendMenu }">
     <router-link
       v-for="menuItem in menuList"
       :key="menuItem.label"
@@ -7,18 +7,20 @@
       class="menu-item flex-center txt-overflow trans-all-05"
     >
       <i class="iconfont" :class="menuItem.icon" />
-      <span v-show="!shrinkMenu">{{ menuItem.label }}</span>
+      <span v-show="extendMenu">{{ menuItem.label }}</span>
     </router-link>
-    <i
-      class="iconfont shrink-switch flex-center trans-all-05"
-      :class="iconClass"
-      @click="handleShrinkMenu"
+    <ElSwitch
+      class="extend-switch"
+      v-model="extendMenu"
+      active-color="#14ffec"
+      inactive-color="#212121"
     />
   </aside>
 </template>
 
 <script lang="ts">
-import { ref, computed, ComputedRef } from 'vue'
+import { ref } from 'vue'
+import { ElSwitch } from 'element-plus'
 
 const menuList = [
   { label: '统计 / 概览', path: '/overview', icon: 'icon-overview' },
@@ -29,21 +31,14 @@ const menuList = [
 
 export default {
   name: 'AsideMenu',
+  components: { ElSwitch },
   setup () {
     // 收缩菜单项
-    const shrinkMenu = ref<boolean>(false)
-    const iconClass: ComputedRef<'icon-stretch' | 'icon-shrink'> = computed(() => {
-      return shrinkMenu.value ? 'icon-stretch' : 'icon-shrink'
-    })
+    const extendMenu = ref<boolean>(false)
 
-    function handleShrinkMenu () {
-      shrinkMenu.value = !shrinkMenu.value
-    }
     return {
       menuList,
-      shrinkMenu,
-      iconClass,
-      handleShrinkMenu
+      extendMenu
     }
   }
 }
@@ -82,19 +77,14 @@ export default {
       padding: 20px 5px;
     }
   }
-  &:hover .shrink-switch {
-    opacity: 1;
-  }
-  .shrink-switch {
+  .extend-switch {
     position: absolute;
-    z-index: 99;
+    //z-index: 99;
     width: 20px;
-    height: 30px;
-    top: 0;
-    right: -20px;
-    background-color: #323232;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     cursor: pointer;
-    opacity: 0;
   }
 }
 </style>

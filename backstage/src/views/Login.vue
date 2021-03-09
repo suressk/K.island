@@ -22,7 +22,7 @@
         </label>
       </div>
       <div class="form-item">
-        <button class="btn-login" @click="handleLogin" type="button">LOGIN</button>
+        <button class="btn-login" @click="handleLogin" type="button">SIGN IN</button>
       </div>
     </form>
     <div class="hint">愿所有美好都能如约而至...</div>
@@ -47,6 +47,10 @@ export default {
       password: ''
     })
     function handleLogin () {
+      if (!loginInfo.username || !loginInfo.password) {
+        Notify('warning', 'WARNING', 'username or password is empty')
+        return
+      }
       login({
         username: loginInfo.username,
         password: md5(loginInfo.password)
@@ -57,9 +61,11 @@ export default {
         if (res.success) {
           // @ts-ignore
           Notify('success', 'SUCCESS', res.message)
+          // @ts-ignore
           setStorageToken(res.data)
+          // @ts-ignore
           setCookie(ACCESS_TOKEN, res.data.token, res.data.expireTime)
-          // 1s 后跳转至后台管理首页
+          // 0.5s 后跳转至后台管理首页
           setTimeout(() => {
             useRouterInstance.push('/')
           }, 500)
@@ -68,6 +74,7 @@ export default {
           Notify('warning', 'WARNING', res.message)
         }
       }).catch(err => {
+        // @ts-ignore
         Notify('warning', 'WARNING', err.message)
       })
     }
