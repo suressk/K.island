@@ -34,9 +34,27 @@ export default function useIndex() {
   const today = ref<string>('')
   const curPage = ref<number>(1)
 
+  let loadingTimer: number = 0
+
   function init() {
     sceneHeight.value = document.documentElement.clientHeight + 'px'
     sceneWidth.value = document.documentElement.clientWidth + 'px'
+  }
+
+  function nextChangeLoadStatus(data: any) {
+    // @ts-ignore
+    vm.articleList = [...vm.articleList, ...plainArticleList(data.list)]
+    // @ts-ignore 总条数
+    if (vm.articleList.length === data.total) {
+      nextTick(() => {
+        loadStatus.value = -1
+      })
+    } else {
+      curPage.value += 1
+      nextTick(() => {
+        loadStatus.value = 0
+      })
+    }
   }
 
   function handleToggleNav() {
@@ -52,35 +70,39 @@ export default function useIndex() {
     document.body.style.overflowY = showNav.value ? 'hidden' : ''
   }
 
+  // TODO =========================================================================== 加载更多 待处理
   async function handleLoadMore() {
-    curPage.value += 1
+    console.log('vm ==== ', vm)
+    const start = Date.now()
     try {
+      // loading
       loadStatus.value = 1
-      const res = await axios('/records/list', {
+      const { success, data } = await axios('/records/list', {
         params: {
-          pageNo: curPage.value,
+          pageNo: curPage.value + 1,
           pageSize: 10
         }
       })
-      if (res.succss) {
-        // @ts-ignore
-        vm.articleList = [...vm.articleList, ...plainArticleList(res.data)]
+      if (success) {
+        const end = Date.now()
+        // 500ms 加载状态
+        if (end - start >= 500) {
+          nextChangeLoadStatus(data)
+        } else {
+          if (loadingTimer) clearTimeout(loadingTimer)
+          loadingTimer = window.setTimeout(() => {
+            nextChangeLoadStatus(data)
+          }, 500)
+        }
       }
-      // @ts-ignore
-      if (vm.articleList.length === res.total) {
-        nextTick(() => {
-          loadStatus.value = -1
-        })
-      } else {
+    } catch (e) {
+      if (loadingTimer) clearTimeout(loadingTimer)
+      loadingTimer = window.setTimeout(() => {
+        failLoadNotify('more article')
         nextTick(() => {
           loadStatus.value = 0
         })
-      }
-    } catch (e) {
-      failLoadNotify('more article')
-      nextTick(() => {
-        loadStatus.value = 0
-      })
+      }, 500)
     }
   }
 

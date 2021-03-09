@@ -61,6 +61,7 @@ import KHeader from '~/components/KHeader/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import KWave from '~/components/KWave/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
+import { M_SET_TOTAL_ITEM } from '~/store/mutation-types'
 
 export default defineComponent({
   name: 'Article',
@@ -70,12 +71,14 @@ export default defineComponent({
   //   store.dispatch(A_QUERY_ARTICLE_DETAIL)
   // },
   // @ts-ignore => merge to data
-  async asyncData(ctx: Context): Promise<object | void> | object | void {
+  async asyncData({ $axios, store }: Context): Promise<object | void> | object | void {
     try {
       // @ts-ignore
-      const res = await ctx.$axios.get('/records/list', { params: { pageNo: 1, pageSize: 10 } })
-      if (res.success) {
-        const result = createArticleListData(res.data)
+      const { success, data, message } = await $axios.get('/records/list', { params: { pageNo: 1, pageSize: 10 } })
+      if (success) {
+        const result = createArticleListData(data.list)
+        debugger
+        store.commit(M_SET_TOTAL_ITEM, data.total)
         return {
           listData: result
         }
@@ -83,7 +86,7 @@ export default defineComponent({
       Notification({
         title: 'WARNING',
         type: 'warning',
-        message: res.message
+        message: message
       })
       return {
         listData: {}

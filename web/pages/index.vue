@@ -75,7 +75,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, SetupContext} from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
+import { Context } from '@nuxt/types'
 import useIndex from './useIndex'
 import LoadMore from '~/components/LoadMore.vue'
 import BackTop from '~/components/BackTop/index.vue'
@@ -99,10 +100,9 @@ export default defineComponent({
   // },
   // // merge to data: () => ({})
   // @ts-ignore
-  async asyncData ({ $axios }) {
+  async asyncData ({ $axios }: Context) {
     try {
       const { success, data, message } = await $axios.get('/records/list', {
-        // const res = await $axios.get('/records/list', {
         params: {
           pageNo: 1,
           pageSize: 10
@@ -110,7 +110,8 @@ export default defineComponent({
       })
       if (success) {
         return {
-          articleList: plainArticleList(data)
+          articleList: plainArticleList(data.list),
+          total: data.total
         }
       } else {
         Notification({
@@ -119,7 +120,8 @@ export default defineComponent({
           message
         })
         return {
-          articleList: []
+          articleList: [],
+          total: 0
         }
       }
     } catch (e) {
@@ -129,7 +131,8 @@ export default defineComponent({
         message: 'Fail to get article list, please contact the website owner. Thanks ~'
       })
       return {
-        articleList: []
+        articleList: [],
+        total: 0
       }
     }
   },

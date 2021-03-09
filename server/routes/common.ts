@@ -15,7 +15,10 @@ export function recordListResponse (req: Request, res: Response, range: string |
     }, result => {
         // success
         writeHead(res, 200)
-        res.write(writeResult(true, '查询成功！', mapYearGroup(result.list)))
+        res.write(writeResult(true, '查询成功！', {
+            list: mapYearGroup(result.list),
+            total: result.total
+        }))
         res.end()
     }, err => {
         // fail
