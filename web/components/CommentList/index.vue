@@ -24,5 +24,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "assets/css/components/comment.scss";
+@import "../../assets/css/components/commentList";
 </style>

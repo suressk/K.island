@@ -1,4 +1,9 @@
-import {M_SET_ARTICLE_DETAIL, A_QUERY_ARTICLE_DETAIL, M_SET_ARTICLE_ITEM} from './mutation-types'
+import {
+  M_SET_ARTICLE_DETAIL,
+  M_SET_ARTICLE_ITEM,
+  M_SET_TOTAL_ITEM,
+  A_QUERY_ARTICLE_DETAIL
+} from './mutation-types'
 import { QueryArticleParams, ArticleDetail, ArticleItem } from '~/@types'
 import { Store } from 'vuex'
 import Notification from '~/components/notification'
@@ -6,6 +11,7 @@ import Notification from '~/components/notification'
 interface State {
   articleDetail: ArticleDetail;
   articleItem: ArticleItem;
+  totalItem: number;
 }
 
 /**
@@ -31,7 +37,8 @@ export const state = (): State => <State> ({
     cover: '',
     ctime: 0,
     utime: 0,
-  }
+  },
+  totalItem: 0
 })
 
 /**
@@ -43,6 +50,9 @@ export const mutations = {
   },
   [M_SET_ARTICLE_ITEM] (state: State, payload: ArticleItem) {
     state.articleItem = payload
+  },
+  [M_SET_TOTAL_ITEM] (state: State, itemsNum: number) {
+    state.totalItem = itemsNum
   }
 }
 

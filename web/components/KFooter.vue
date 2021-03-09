@@ -20,6 +20,7 @@ export default {
   background-color: var(--white);
   padding: 10px 0;
   height: 40px;
+  user-select: none;
   .tip {
     padding: 0 10px;
     font-size: 12px;

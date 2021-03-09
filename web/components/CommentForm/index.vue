@@ -54,3 +54,7 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss">
+@import "assets/css/components/commentForm.scss";
+</style>
