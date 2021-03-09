@@ -21,10 +21,11 @@ export interface ResponseData {
 }
 
 // res.data
-export interface LoginResponse extends Promise<ResponseData> {
-  // success: boolean;
-  // message: string;
-  data: TokenInfo;
+export interface LoginResponse extends ResponseData {
+  data: {
+    token: string;
+    expireTime: number;
+  };
 }
 
 export interface RecordInfo {

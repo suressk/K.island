@@ -63,6 +63,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  // next()
   const token = getStorageToken() // null | token
   // 去往非登录页且无 token
   if (!to.path.includes('login') && !token) {

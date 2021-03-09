@@ -36,7 +36,9 @@
               class="link"
               href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42282302422860"
               target="_blank"
-            >鄂公安备 42282302422860</a>
+            >
+              鄂公安备 42282302422860
+            </a>
           </span>
         </footer>
       </div>
