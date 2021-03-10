@@ -69,11 +69,12 @@ export default defineComponent({
       // email 格式正确
       if (isEmail.value && email.value !== '') {
         console.log('订阅')
+        // @ts-ignore
         root.$axios.post('/subscribe/add', {
           email: email.value
-        }).then(res => {
+        }).then((res: any) => {
           console.log(res)
-        }).catch(err => {
+        }).catch((err: any) => {
           console.log(err)
         })
       }

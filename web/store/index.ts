@@ -11,7 +11,7 @@ import Notification from '~/components/notification'
 interface State {
   articleDetail: ArticleDetail;
   articleItem: ArticleItem;
-  totalItem: number;
+  totalArticle: number;
 }
 
 /**
@@ -38,7 +38,7 @@ export const state = (): State => <State> ({
     ctime: 0,
     utime: 0,
   },
-  totalItem: 0
+  totalArticle: 0
 })
 
 /**
@@ -52,7 +52,7 @@ export const mutations = {
     state.articleItem = payload
   },
   [M_SET_TOTAL_ITEM] (state: State, itemsNum: number) {
-    state.totalItem = itemsNum
+    state.totalArticle = itemsNum
   }
 }
 
