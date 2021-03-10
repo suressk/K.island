@@ -13,7 +13,7 @@ import {
   plainArticleList,
   failLoadNotify
 } from '~/utils/util'
-import RainInit from '~/components/rainEffect'
+import RainInit from '~/components/rainEffect/index'
 
 /**
  * 首页 composition-api 代码风格 写法抽离
