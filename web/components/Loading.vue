@@ -1,5 +1,5 @@
 <template>
-  <div class="loader flex-center fixed-center">
+  <div v-show="loading" class="loader flex-center fixed-center">
     <span />
     <span />
     <span />
@@ -28,12 +28,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.k-dark {
+  .loader {
+    background-color: var(--dark-theme-body);
+  }
+}
 .loader {
   z-index: 100;
   background-color: var(--white);
   width: 100vw;
   height: 100vh;
-  display: none;
   span {
     display: inline-block;
     width: 20px;

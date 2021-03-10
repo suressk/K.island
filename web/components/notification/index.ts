@@ -1,25 +1,31 @@
 import Vue from 'vue'
 
-import Main from './main.vue'
+import Component from './notify.vue'
 import { NotificationOptions, AnyInstance } from '~/@types'
 
-const NotificationConstructor = Vue.extend(Main)
+const NotificationConstructor = Vue.extend(Component)
 
 let key = 1
 let instance: AnyInstance
 let notifications: AnyInstance[] = []
 
+/**
+ * Because get the article info is happening in the server environment,
+ * there donen't exist 'window' object, but this notification is called
+ * in the server environment, so something wrong will be happened
+ * */
+
 const Notification = (options: NotificationOptions): AnyInstance | undefined => {
   if (typeof window === 'undefined') return
   const id = 'notification_' + key++
 
-  let offset = 0
-  // instance.$el.style.zIndex = PopupManager.nextZIndex();
-  notifications.forEach(item => {
-    // console.log('offsetHeight ==============', item.$el.offsetHeight);
-    offset += item.$el.offsetHeight + 16
+  // let offset = 0
+  let zIndex = 99
+  notifications.forEach(() => {
+    // offset += item.$el.offsetHeight + 16
+    zIndex += 1
   })
-  offset += 16
+  // offset += 16
   instance = new NotificationConstructor({
     data: options
   })
@@ -27,7 +33,8 @@ const Notification = (options: NotificationOptions): AnyInstance | undefined => 
   instance.onClose = () => {
     close(id)
   }
-  instance.offset = offset
+  // instance.offset = offset
+  instance.zIndex = zIndex
   instance.id = id
   instance.$mount()
   document.body.appendChild(instance.$el)

@@ -13,13 +13,16 @@
 //}
 .notify-enter,
 .notify-leave-to {
-  transform: scale(0);
+  transform: translate(-50%, -50%) scale(0);
   opacity: 0;
 }
 
 /** notification style */
 .notification {
   position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1);
   right: 10px;
   z-index: 99;
   margin: 10px 0;
@@ -30,10 +33,11 @@
   background-color: var(--white);
   border-radius: 10px;
   padding: 20px;
-  //&.notify-enter {
-  //  transform: translateX(300px);
-  //  opacity: 0;
-  //}
+  &.notify-enter,
+  .notify-leave-to {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
   .notify-header {
     margin-bottom: 10px;
     font-weight: 400;

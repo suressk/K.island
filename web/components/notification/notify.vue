@@ -30,12 +30,14 @@ export default {
       duration: 4000,
       // onClose: null,
       offset: 0,
+      zIndex: 99,
       closed: false
     }
   },
   computed: {
     verticalOffset () {
-      return `top: ${this.offset}px;`
+      // return `top: ${this.offset}px;`
+      return `z-index: ${this.zIndex};`
     }
   },
   methods: {

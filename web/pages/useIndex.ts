@@ -72,7 +72,6 @@ export default function useIndex() {
 
   // TODO =========================================================================== 加载更多 待处理
   async function handleLoadMore() {
-    console.log('vm ==== ', vm)
     const start = Date.now()
     try {
       // loading
@@ -83,8 +82,8 @@ export default function useIndex() {
           pageSize: 10
         }
       })
+      const end = Date.now()
       if (success) {
-        const end = Date.now()
         // 500ms 加载状态
         if (end - start >= 500) {
           nextChangeLoadStatus(data)

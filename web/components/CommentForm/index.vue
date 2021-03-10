@@ -42,7 +42,7 @@
 import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
 import useCommentForm from './useCommentForm'
 import { CommentProps } from '~/@types'
-import CubeLoading from '../loadingComp/CubeLoading.vue'
+import CubeLoading from '../loadingComponent/CubeLoading.vue'
 
 export default defineComponent({
   name: 'CommentForm',

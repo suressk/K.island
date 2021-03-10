@@ -1,6 +1,5 @@
 import Vue from 'vue'
-import { ILoadImageItem, NotificationOptions } from '~/@types'
-import Notification from '~/components/notification'
+import { ILoadImageItem } from '~/@types'
 import { throttle, debounce, singleScroll, addListener, removeListener } from '~/utils/util'
 // import { ComponentInstance } from '@nuxtjs/composition-api'
 
@@ -12,11 +11,6 @@ const common = {
 
     // 防抖
     Vue.prototype.$debounce = debounce
-
-    // Message Notification Vue.extend() API achieve
-    Vue.prototype.$notification = (options: NotificationOptions) => {
-      Notification(options)
-    }
 
     // 设置滚动条位置
     Vue.prototype.$singleScroll = singleScroll
