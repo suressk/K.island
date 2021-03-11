@@ -1,11 +1,12 @@
 <template>
-  <section class="k-about">
+  <section class="k-contact">
     <KHeader custom-title="(≖ᴗ≖)✧" />
     <div class="content">
       <h3 class="title">你好！我是 K.</h3>
       <p class="part">PART 1</p>
       <ul class="introduce-list">
-        <li class="item">生于一九九五年 母亲河（长江）边</li>
+        <li class="item">脚踩 95 后边缘的小 K.</li>
+        <li class="item">家居巴蜀之旁，毗邻三峡之坝</li>
         <li class="item">屋后尚有群山环绕，门前也有小河潺潺</li>
         <li class="item">常年佛系人生，却也偶叹人生几何</li>
         <li class="item">偶有重温经典，但无热血追捧</li>
@@ -67,5 +68,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "assets/css/pages/about.scss";
+@import "assets/css/pages/contact.scss";
 </style>

@@ -49,7 +49,7 @@ export default {
   height: 50px;
   border-radius: 5px;
   position: fixed;
-  bottom: 20px;
+  bottom: 25px;
   right: 10px;
   cursor: pointer;
   z-index: 12;

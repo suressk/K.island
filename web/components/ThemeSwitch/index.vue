@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from '@nuxtjs/composition-api'
-import { debounce, getLocalStorage, setLocalStorage } from '~/utils/util'
+import { debounce, getStorageValue, setStorageValue } from '~/utils/util'
 
 export default defineComponent({
   name: 'ThemeSwitch',
@@ -20,12 +20,12 @@ export default defineComponent({
 
     const handleChangeTheme = debounce(() => {
       dark.value = !dark.value
-      setLocalStorage('theme', dark.value ? 'night' : 'light')
+      setStorageValue('theme', dark.value ? 'night' : 'light')
       document.body.className = dark.value ? 'k-dark' : ''
     }, 100)
 
     onMounted(() => {
-      const theme = getLocalStorage('theme') || 'light'
+      const theme = getStorageValue('theme') || 'light'
       dark.value = theme === 'night'
       document.body.className = dark.value ? 'k-dark' : ''
     })
@@ -45,7 +45,7 @@ export default defineComponent({
   cursor: pointer;
   position: fixed;
   left: 10px;
-  bottom: 20px;
+  bottom: 25px;
   z-index: 15;
   border-radius: 0 5px 5px 0;
   .iconfont {

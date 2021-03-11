@@ -54,14 +54,14 @@
 <script lang="ts">
 import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
 import { Context } from '@nuxt/types'
-import { createArticleListData, failLoadNotify } from '~/utils/util'
+import { createArticleListData } from '~/utils/util'
 import Notification from '~/components/notification'
 import useArticle from './useArticle'
 import KHeader from '~/components/KHeader/index.vue'
 import KFooter from '~/components/KFooter.vue'
-import KWave from '~/components/KWave/index.vue'
+import KWave from '~/components/KWave.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
-import { M_SET_TOTAL_ITEM } from '~/store/mutation-types'
+import { M_SET_TOTAL_ARTICLE_ITEM } from '~/store/mutation-types'
 
 export default defineComponent({
   name: 'Article',
@@ -78,7 +78,7 @@ export default defineComponent({
       if (success) {
         const result = createArticleListData(data.list)
         debugger
-        store.commit(M_SET_TOTAL_ITEM, data.total)
+        store.commit(M_SET_TOTAL_ARTICLE_ITEM, data.total)
         return {
           listData: result
         }
@@ -92,7 +92,7 @@ export default defineComponent({
         listData: {}
       }
     } catch (e) {
-      failLoadNotify('the article list')
+      // failLoadNotify('the article list')
       return {
         listData: {
           2021: {

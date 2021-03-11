@@ -36,7 +36,7 @@
 import { defineComponent, ref } from '@nuxtjs/composition-api'
 import { checkEmail } from '~/utils/util'
 import KHeader from '~/components/KHeader/index.vue'
-import KWave from '~/components/KWave/index.vue'
+import KWave from '~/components/KWave.vue'
 
 export default defineComponent({
   name: 'subscription',

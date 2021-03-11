@@ -1,12 +1,9 @@
 <template>
   <div class="main-page">
-    <!-- <CircleLoading />
-    <ColorfulLoading />
-    <Loading /> -->
     <!--  封面雨幕  -->
     <div class="page-cover">
-      <div class="cover-container" :width="sceneWidth" :height="sceneHeight">
-        <canvas id="coverContainer" class="rain-effect" />
+      <div class="cover-container" :width="sceneWidth + 'px'" :height="sceneHeight + 'px'">
+        <canvas id="coverContainer" :width="sceneWidth" :height="sceneHeight" class="rain-effect" />
 
         <div class="cover-introduce flex-col-center" :style="{ opacity: showNav ? '0' : '1' }">
           <span class="time">{{ today }}</span>
@@ -82,13 +79,13 @@ import LoadMore from '~/components/LoadMore.vue'
 import BackTop from '~/components/BackTop/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
-import Notification from '~/components/notification'
-import { plainArticleList } from '~/utils/util'
+import { plainArticleList, commitMutations } from '~/utils/util'
+import { M_SET_TOTAL_ARTICLE_ITEM } from '~/store/mutation-types'
 // import html2canvas from 'html2canvas'
 
 const navList = [
   { title: 'Article', path: '/article' },
-  { title: 'About Me', path: '/about' },
+  { title: 'Contact', path: '/contact' },
   { title: 'Subscription', path: '/subscription' }
 ]
 
@@ -100,36 +97,28 @@ export default defineComponent({
   // },
   // // merge to data: () => ({})
   // @ts-ignore
-  async asyncData ({ $axios }: Context) {
+  async asyncData ({ $axios, store }: Context) {
     try {
-      const { success, data, message } = await $axios.get('/records/list', {
+      const { success, data } = await $axios.get('/records/list', {
         params: {
           pageNo: 1,
           pageSize: 10
         }
       })
       if (success) {
+        const { total } = data
+        commitMutations(store, M_SET_TOTAL_ARTICLE_ITEM, total)
         return {
           articleList: plainArticleList(data.list),
-          total: data.total
+          total
         }
       } else {
-        Notification({
-          type: 'warning',
-          title: 'WARNING',
-          message
-        })
         return {
           articleList: [],
           total: 0
         }
       }
     } catch (e) {
-      Notification({
-        type: 'error',
-        title: 'ERROR',
-        message: 'Fail to get article list, please contact the website owner. Thanks ~'
-      })
       return {
         articleList: [],
         total: 0

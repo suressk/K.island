@@ -1,9 +1,9 @@
 import {
   ref,
+  getCurrentInstance,
   onMounted,
   onBeforeUnmount,
-  nextTick,
-  getCurrentInstance
+  nextTick
 } from '@nuxtjs/composition-api'
 import {
   preventDefault,
@@ -11,9 +11,11 @@ import {
   getCurrentTime,
   removeListener,
   plainArticleList,
-  failLoadNotify
+  commitMutations
 } from '~/utils/util'
 import RainInit from '~/components/rainEffect/index'
+import { useState } from '~/utils/useStore'
+import { M_SET_LOAD_STATUS, LOADING, LOAD_MORE, NO_MORE } from '~/store/mutation-types'
 
 /**
  * 首页 composition-api 代码风格 写法抽离
@@ -22,23 +24,19 @@ export default function useIndex() {
   const vm = getCurrentInstance()!.proxy
   // @ts-ignore
   const axios = vm.$axios
-  const sceneHeight = ref<string>('100%')
-  const sceneWidth = ref<string>('100%')
+  const sceneHeight = ref<number>(0)
+  const sceneWidth = ref<number>(0)
   const showNav = ref<boolean>(false)
-  /**
-   * -1 无可加载更多内容
-   *  0 可加载更多内容
-   *  1 正在加载...
-   * */
-  const loadStatus = ref<number>(0)
+
+  const loadStatus = useState(vm.$store, 'loadStatus')
+  const curPage = useState(vm.$store, 'curPage')
   const today = ref<string>('')
-  const curPage = ref<number>(1)
 
   let loadingTimer: number = 0
 
   function init() {
-    sceneHeight.value = document.documentElement.clientHeight + 'px'
-    sceneWidth.value = document.documentElement.clientWidth + 'px'
+    sceneHeight.value = window.innerHeight
+    sceneWidth.value = window.innerWidth
   }
 
   function nextChangeLoadStatus(data: any) {
@@ -47,12 +45,12 @@ export default function useIndex() {
     // @ts-ignore 总条数
     if (vm.articleList.length === data.total) {
       nextTick(() => {
-        loadStatus.value = -1
+        commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOADING)
       })
     } else {
-      curPage.value += 1
+      commitMutations<number>(vm.$store, 'curPage', curPage.value + 1)
       nextTick(() => {
-        loadStatus.value = 0
+        commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOAD_MORE)
       })
     }
   }
@@ -75,7 +73,8 @@ export default function useIndex() {
     const start = Date.now()
     try {
       // loading
-      loadStatus.value = 1
+      commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOADING)
+
       const { success, data } = await axios('/records/list', {
         params: {
           pageNo: curPage.value + 1,
@@ -97,15 +96,16 @@ export default function useIndex() {
     } catch (e) {
       if (loadingTimer) clearTimeout(loadingTimer)
       loadingTimer = window.setTimeout(() => {
-        failLoadNotify('more article')
+        // failLoadNotify('more article')
         nextTick(() => {
-          loadStatus.value = 0
+          commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, NO_MORE)
         })
       }, 500)
     }
   }
 
   onMounted(() => {
+    init()
     today.value = getCurrentTime()
     RainInit()
     const windowResize = throttle(init, 100)

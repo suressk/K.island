@@ -9,13 +9,10 @@ import 'nprogress/nprogress.css'
 NProgress.inc(0.2)
 NProgress.configure({ easing:'ease', speed:500, showSpinner: false })
 
-// @ts-ignore
-export default ({ app: { router }, store }) => {
-  // console.log('store: ============', store)
+// @ts-ignore , store
+export default ({ app: { router } }) => {
   // 前置守卫 => loader 显示加载状态
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   router.beforeEach((to: any, from: any, next: () => void) => {
-    // document.querySelector('.loader').style.display = 'flex'
     NProgress.start()
     next()
   })
@@ -26,8 +23,5 @@ export default ({ app: { router }, store }) => {
     // console.log('afterEach from: ', from)
     // console.log('afterEach to: ', to)
     NProgress.done()
-    // setTimeout(() => {
-    //   // document.querySelector('.loader').style.display = 'none'
-    // }, 1000)
   })
 }

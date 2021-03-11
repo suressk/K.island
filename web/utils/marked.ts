@@ -1,4 +1,3 @@
-// @ts-ignore
 import marked from 'marked'
 import highlightJs from 'highlight.js'
 

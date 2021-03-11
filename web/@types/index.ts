@@ -30,6 +30,7 @@ export interface ArticleItem {
   introduce: string;
   tag: string;
   views: number;
+  liked: number;
   cover: string;
   ctime: number;
   utime: number;
@@ -37,6 +38,8 @@ export interface ArticleItem {
 
 export interface ArticleDetail extends ArticleItem {
   content: string;
+  music: string;
+  musicName: string;
 }
 
 export interface NotificationOptions {

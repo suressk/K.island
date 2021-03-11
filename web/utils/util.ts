@@ -1,7 +1,19 @@
 import { zhMonths } from './variable'
 import { ArticleItem } from '~/@types'
 import Notification from '~/components/notification'
+import { Store } from 'vuex'
 // import dayjs from 'dayjs'
+
+/**
+ * commit mutations
+ * */
+export function commitMutations<Payload> (store: Store<any>, type: string, payload?: Payload) {
+  if (payload) {
+    store.commit(type, payload)
+  } else {
+    store.commit(type)
+  }
+}
 
 /**
  * 添加事件监听
@@ -12,9 +24,9 @@ export function addListener (
   handler: EventListener,
   useCapture: boolean = false
 ): void {
-  if (element && event && handler) {
-    element.addEventListener(event, handler, useCapture)
-  }
+  // if (element && event && handler) {
+  // }
+  element.addEventListener(event, handler, useCapture)
 }
 
 /**
@@ -25,9 +37,9 @@ export function removeListener (
   event: string,
   handler: EventListener
 ): void {
-  if (element && event && handler) {
-    element.removeEventListener(event, handler)
-  }
+  // if (element && event && handler) {
+  // }
+  element.removeEventListener(event, handler)
 }
 
 /**
@@ -37,7 +49,7 @@ export function removeListener (
  * @param immediate
  */
 export function debounce (fn: Function, delay: number, immediate: boolean = false) {
-  let timer: null | number = null
+  let timer: any = null
   return function (...args: any[]) {
     // @ts-ignore
     let ctx = this
@@ -48,11 +60,11 @@ export function debounce (fn: Function, delay: number, immediate: boolean = fals
       if (callNow) {
         fn.apply(ctx, args)
       }
-      timer = window.setTimeout(() => {
+      timer = setTimeout(() => {
         timer = null
       }, delay)
     } else {
-      timer = window.setTimeout(() => {
+      timer = setTimeout(() => {
         fn.apply(ctx, args)
       }, delay)
     }
@@ -123,15 +135,15 @@ export function singleScroll (domSelector: string, type: string, speed = 10) {
  * @param delay
  */
 export function throttle (fn: Function, delay: number = 3000) {
-  let timer: null | number = null
+  let timer: any = null
   let startTime: number
   return function (...args: any[]) {
     // @ts-ignore
     const ctx = this
-    const now = new Date().getTime()
+    const now = Date.now()
     if (startTime && now < startTime + delay) {
       if (timer) clearTimeout(timer)
-      timer = window.setTimeout(() => {
+      timer = setTimeout(() => {
         startTime = now
         fn.apply(ctx, args)
       }, delay)
@@ -167,33 +179,33 @@ export function getCurrentTime () {
   const year: number = date.getFullYear()
   const month: number = date.getMonth()
   const day: number = date.getDate()
-  return `${zhMonths[month]} ${day} ${year}`
+  return `${zhMonths[month]} ${day}, ${year}`
 }
 
 /**
  * 获取 localstorage 存储的数据
  * */
-export function getLocalStorage (key: string): null | string {
+export function getStorageValue (key: string): null | string {
   return localStorage.getItem(key)
 }
 
 /**
  * 将数据存储到 localstorage
  * */
-export function setLocalStorage (key: string, value: string): void {
+export function setStorageValue (key: string, value: string): void {
   localStorage.setItem(key, value)
 }
 
 /**
  * 数据加载失败提示框
  * */
-export function failLoadNotify (dataSource: string) {
-  Notification({
-    title: 'ERROR',
-    type: 'error',
-    message: `Fail to get ${dataSource}, please contact the website owner, thanks ~`
-  })
-}
+// export function failLoadNotify (dataSource: string) {
+//   Notification({
+//     title: 'ERROR',
+//     type: 'error',
+//     message: `Fail to get ${dataSource}, please contact the website owner, thanks ~`
+//   })
+// }
 
 interface YearData<T> {
   [prop: string]: T[];

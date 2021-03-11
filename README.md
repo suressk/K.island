@@ -22,8 +22,36 @@
 
 ## 🎃 欢迎来到 "对抗路"
 
-1. vue 3.0 (全家桶) + Element-plus (按需引入) + 自定义组件
+1. vue 3.0 (全家桶) +  + 自定义组件
 2. typescript 类型检查系统初试
+
+### backstage
+
+1. 技术栈：
+
+    - vue3.0 + vue-router 4.0 + vuex
+    - Element-plus (按需引入)
+
+### web
+
+1. 技术栈：
+
+    - Nuxt.js：基于 vue2 的 ssr 框架
+    - @nuxtjs/axios：服务端数据请求
+    - @nuxtjs/composition-api：composition-api 代码风格插件
+    - glslify：用于 GLSL 的 node.js 样式的模块系统
+    - gsap：专业级动画库
+    - marked + highlight.js：markdown 文档解析及代码语法高亮
+    - nprogress：加载进度条
+    - qrcode：二维码生成器（写出来后没几天 Chrome 也推出了这个功能...）
+
+### server
+
+1. 技术栈：
+
+    - NodeJs + express 框架构建基础服务
+    - nodemailer 邮件发送
+    - mysql2 用于数据库操作
 
 ## ☠ 好戏开场了
 

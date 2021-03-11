@@ -1,17 +1,16 @@
 import {
   M_SET_ARTICLE_DETAIL,
-  M_SET_ARTICLE_ITEM,
-  M_SET_TOTAL_ITEM,
-  A_QUERY_ARTICLE_DETAIL
+  M_SET_TOTAL_ARTICLE_ITEM,
+  M_RESET_LOAD_MORE,
+  M_SET_LOAD_STATUS
 } from './mutation-types'
-import { QueryArticleParams, ArticleDetail, ArticleItem } from '~/@types'
-import { Store } from 'vuex'
-import Notification from '~/components/notification'
+import { ArticleDetail } from '~/@types'
 
 interface State {
   articleDetail: ArticleDetail;
-  articleItem: ArticleItem;
   totalArticle: number;
+  curPage: number;
+  loadStatus: number;
 }
 
 /**
@@ -19,26 +18,9 @@ interface State {
  * */
 export const state = (): State => <State> ({
   articleDetail: {},
-  articleItem: {
-    id: -1,
-    uid: '',
-    time: {
-      year: '',
-      month: '',
-      monthNum: 0,
-      day: '',
-      hour: '',
-      minute: '',
-    },
-    title: '',
-    introduce: '',
-    tag: '',
-    views: 0,
-    cover: '',
-    ctime: 0,
-    utime: 0,
-  },
-  totalArticle: 0
+  totalArticle: 0,
+  curPage: 1,
+  loadStatus: -1
 })
 
 /**
@@ -48,33 +30,19 @@ export const mutations = {
   [M_SET_ARTICLE_DETAIL] (state: State, payload: ArticleDetail) {
     state.articleDetail = payload
   },
-  [M_SET_ARTICLE_ITEM] (state: State, payload: ArticleItem) {
-    state.articleItem = payload
-  },
-  [M_SET_TOTAL_ITEM] (state: State, itemsNum: number) {
+  [M_SET_TOTAL_ARTICLE_ITEM] (state: State, itemsNum: number) {
     state.totalArticle = itemsNum
+  },
+  [M_RESET_LOAD_MORE] (state: State) {
+    state.totalArticle = 0
+    state.curPage = 1
+  },
+  [M_SET_LOAD_STATUS] (state: State, status: number) {
+    state.loadStatus = status
   }
 }
 
 /**
  * actions
  * */
-export const actions = {
-  async [A_QUERY_ARTICLE_DETAIL] (store: Store<State>, payload: QueryArticleParams) {
-    const { uid, id } = payload
-    // @ts-ignore
-    const res = await this.$axios.get('/records/detail', {
-      params: { uid, id }
-    })
-    if (res.success) {
-      store.commit(M_SET_ARTICLE_DETAIL, { ...payload, ...res.data }) // 存储当前文章详情
-      return
-    }
-    Notification({
-      title: 'ERROR',
-      type: 'error',
-      message: res.message
-    })
-    store.commit(M_SET_ARTICLE_DETAIL, {}) // 查询失败，置空
-  }
-}
+export const actions = {}

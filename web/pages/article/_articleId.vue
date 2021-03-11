@@ -44,7 +44,7 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import { parseMarkdownFile } from '~/utils/marked'
-import { failLoadNotify } from '~/utils/util'
+// import { failLoadNotify } from '~/utils/util'
 import { Context } from '@nuxt/types'
 import { CommentInfo } from '~/@types'
 import CommentForm from '~/components/CommentForm/index.vue'
@@ -91,7 +91,7 @@ export default defineComponent({
           articleClass: data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
         }
       } else {
-        failLoadNotify('article content')
+        // failLoadNotify('article content')
         return {
           articleDetail: {},
           htmlContent: '',
@@ -99,7 +99,7 @@ export default defineComponent({
         }
       }
     } catch (e) {
-      failLoadNotify('article content')
+      // failLoadNotify('article content')
       return {
         articleDetail: {},
         htmlContent: '',

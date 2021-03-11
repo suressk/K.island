@@ -6,11 +6,8 @@
         <span class="k-play flex-center">
           <i
             class="iconfont"
-            :class="{
-              'icon-play': !playing,
-              'icon-paused': playing
-            }"
-            @click="handlePlayMusic"
+            :class="playIcon"
+            @click="handleTogglePlayMusic"
           />
         </span>
       </h1>
@@ -26,31 +23,24 @@
           </div>
         </li>
         <li class="r-nav-item">
-          <nuxt-link class="link flex-center" to="/about">
-            <img class="avatar" src="~@/static/images/avatar.png" alt="K.">
+          <nuxt-link class="link flex-center" to="/contact">
+            <img class="avatar" src="~~/static/images/avatar.png" alt="K.">
           </nuxt-link>
         </li>
       </ul>
     </div>
-    <audio ref="kMusic" preload="auto" loop="loop">
-      <!--<source type="audio/mpeg" src="~@/static/music/lightMusic.mp3">-->
-      <source type="audio/mpeg" :src="musicSrc">
+    <audio ref="musicRef" preload="auto" loop="loop">
+      <source type="audio/mpeg" :src="music">
     </audio>
-    <div class="music-progress" :style="{ width: proWidth }"></div>
+    <div class="view-progress" :style="{ width: viewProgress }" />
+
+    <div class="music-progress" :style="{ width: musicProgress }" />
   </header>
 </template>
 
 <script lang="ts">
-import QRCode from 'qrcode'
-// import Notification from '~/components/notification'
-import {
-  ref,
-  defineComponent,
-  onMounted,
-  onBeforeUnmount,
-  getCurrentInstance
-} from '@nuxtjs/composition-api'
-import { addListener, removeListener, throttle } from '~/utils/util'
+import useHeader from './useHeader'
+import { defineComponent } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   name: 'KHeader',
@@ -58,89 +48,20 @@ export default defineComponent({
     customTitle: {
       type: String,
       default: 'K. (≖ᴗ≖)✧'
+    },
+    music: {
+      type: String,
+      default: 'http://localhost:9527/music/lightMusic.mp3'
     }
   },
   setup () {
-    const vm = getCurrentInstance()!
-    let audio: HTMLAudioElement | null = null
-    const showTitle = ref<boolean>(false)
-    const playing = ref<boolean>(false)
-    const musicSrc = ref<string>('')
-    const proWidth = ref<string>('0')
-
-    let rafId: null | number = null
-
-    function handleScroll () {
-      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-      if (scrollTop >= 100) {
-        !showTitle.value && (showTitle.value = true)
-        return
-      }
-      showTitle.value && (showTitle.value = false)
-    }
-
-    function updateMusicProgress () {
-      const currentTime = audio!.currentTime
-      const totalTime = audio!.duration
-      proWidth.value = (currentTime / totalTime) * 100 + '%'
-      rafId = window.requestAnimationFrame(updateMusicProgress)
-    }
-
-    function handlePlayMusic () {
-      if (!audio) return
-      playing.value = !playing.value
-      // 正在播放
-      if (playing.value) {
-        audio.play()
-        rafId = window.requestAnimationFrame(updateMusicProgress)
-      } else {
-        audio.pause()
-        rafId && window.cancelAnimationFrame(rafId)
-      }
-    }
-
-    const fnScroll = throttle(handleScroll, 100)
-
-    onMounted(() => {
-      // @ts-ignore
-      audio = vm.refs.kMusic as HTMLAudioElement
-      musicSrc.value = 'http://localhost:9527/music/lightMusic.mp3'
-      const qrCodeContainer = document.getElementById('qrcode')
-      QRCode.toCanvas(qrCodeContainer, window.location.href)
-      addListener(document, 'scroll', fnScroll)
-    })
-    onBeforeUnmount(() => {
-      removeListener(document, 'scroll', fnScroll)
-    })
     return {
-      showTitle,
-      playing,
-      musicSrc,
-      proWidth,
-      handlePlayMusic
+      ...useHeader()
     }
   }
 })
-
-//  {
-//   name: 'Header',
-//   props: {
-//     title: {
-//       type: String,
-//       default: 'K'
-//     }
-//   },
-//   // data () {
-//   //   return {}
-//   // },
-//   mounted () {
-//     const qrCodeContainer = document.getElementById('qrcode')
-//     QRCode.toCanvas(qrCodeContainer, window.location.href)
-//   },
-//   methods: {}
-// }
 </script>
 
 <style lang="scss">
-@import "assets/css/components/header.scss";
+@import "assets/css/components/header";
 </style>
