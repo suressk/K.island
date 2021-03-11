@@ -1,26 +1,31 @@
 import {
   M_SET_ARTICLE_DETAIL,
-  M_SET_TOTAL_ARTICLE_ITEM,
+  M_SET_CURRENT_PAGE,
+  M_SET_TOTAL_ITEMS,
   M_RESET_LOAD_MORE,
-  M_SET_LOAD_STATUS
+  M_SET_LOAD_STATUS,
+  LOAD_STATUS,
+  TOTAL_ITEMS,
+  CURRENT_PAGE,
+  ARTICLE_DETAIL
 } from './mutation-types'
 import { ArticleDetail } from '~/@types'
 
 interface State {
-  articleDetail: ArticleDetail;
-  totalArticle: number;
-  curPage: number;
-  loadStatus: number;
+  [ARTICLE_DETAIL]: ArticleDetail;
+  [TOTAL_ITEMS]: number;
+  [CURRENT_PAGE]: number;
+  [LOAD_STATUS]: number;
 }
 
 /**
  * vuex state
  * */
 export const state = (): State => <State> ({
-  articleDetail: {},
-  totalArticle: 0,
-  curPage: 1,
-  loadStatus: -1
+  [ARTICLE_DETAIL]: {},
+  [TOTAL_ITEMS]: 0,
+  [CURRENT_PAGE]: 1,
+  [LOAD_STATUS]: 0
 })
 
 /**
@@ -28,17 +33,21 @@ export const state = (): State => <State> ({
  * */
 export const mutations = {
   [M_SET_ARTICLE_DETAIL] (state: State, payload: ArticleDetail) {
-    state.articleDetail = payload
+    state[ARTICLE_DETAIL] = payload
   },
-  [M_SET_TOTAL_ARTICLE_ITEM] (state: State, itemsNum: number) {
-    state.totalArticle = itemsNum
+  [M_SET_CURRENT_PAGE] (state: State, page: number) {
+    state[CURRENT_PAGE] = page
   },
+  [M_SET_TOTAL_ITEMS] (state: State, itemsNum: number) {
+    state[TOTAL_ITEMS] = itemsNum
+  },
+  // 重置加载更多状态值
   [M_RESET_LOAD_MORE] (state: State) {
-    state.totalArticle = 0
-    state.curPage = 1
+    state[TOTAL_ITEMS] = 0
+    state[CURRENT_PAGE] = 1
   },
   [M_SET_LOAD_STATUS] (state: State, status: number) {
-    state.loadStatus = status
+    state[LOAD_STATUS] = status
   }
 }
 

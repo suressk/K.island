@@ -1,7 +1,7 @@
 // 媒体查询 - 响应式样式
 @media screen and (max-width: 1200px) {
   .k-page {
-    div.content {
+    &.main-page .content {
       width: 100%;
     }
   }
@@ -10,6 +10,9 @@
 // < 800px
 @media screen and (max-width: 800px) {
   .k-page {
+    div.content {
+      width: 100%;
+    }
     .k-header {
       .header-content {
         padding: 0;

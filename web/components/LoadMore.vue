@@ -1,7 +1,7 @@
 <template>
   <div class="load-more flex-center">
     <template v-if="loadStatus === 0">
-      <div class="load-more-btn" @click="handleLoad">Load More</div>
+      <div class="load-more-btn" @click="emitLoadMore">Load More</div>
     </template>
     <template v-else-if="loadStatus === -1">
       <div class="tip trans-all-03">没有更多了 ~</div>
@@ -28,13 +28,11 @@ export default defineComponent({
     }
   },
   setup (props, { emit }) {
-
-    function handleLoad () {
+    function emitLoadMore () {
       emit('load-more')
     }
-
     return {
-      handleLoad
+      emitLoadMore
     }
   }
 })

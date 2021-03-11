@@ -61,15 +61,11 @@ import KHeader from '~/components/KHeader/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import KWave from '~/components/KWave.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
-import { M_SET_TOTAL_ARTICLE_ITEM } from '~/store/mutation-types'
+import { M_SET_TOTAL_ITEMS } from '~/store/mutation-types'
 
 export default defineComponent({
   name: 'Article',
   components: { KHeader, KWave, KFooter, ThemeSwitch },
-  // store => state
-  // fetch({ store }: Context): Promise<void> | void {
-  //   store.dispatch(A_QUERY_ARTICLE_DETAIL)
-  // },
   // @ts-ignore => merge to data
   async asyncData({ $axios, store }: Context): Promise<object | void> | object | void {
     try {
@@ -78,7 +74,7 @@ export default defineComponent({
       if (success) {
         const result = createArticleListData(data.list)
         debugger
-        store.commit(M_SET_TOTAL_ARTICLE_ITEM, data.total)
+        store.commit(M_SET_TOTAL_ITEMS, data.total)
         return {
           listData: result
         }

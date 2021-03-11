@@ -80,22 +80,24 @@ import BackTop from '~/components/BackTop/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import { plainArticleList, commitMutations } from '~/utils/util'
-import { M_SET_TOTAL_ARTICLE_ITEM } from '~/store/mutation-types'
+import {
+  CURRENT_PAGE,
+  M_RESET_LOAD_MORE,
+  M_SET_CURRENT_PAGE,
+  M_SET_TOTAL_ITEMS
+} from '~/store/mutation-types'
 // import html2canvas from 'html2canvas'
 
 const navList = [
   { title: 'Article', path: '/article' },
+  { title: 'Subscription', path: '/subscription' },
   { title: 'Contact', path: '/contact' },
-  { title: 'Subscription', path: '/subscription' }
+  { title: 'MessageBoard', path: '/messageBoard' },
 ]
 
 export default defineComponent({
   name: 'Index',
   components: { LoadMore, BackTop, KFooter, ThemeSwitch },
-  // // @ts-ignore
-  // fetch () {
-  // },
-  // // merge to data: () => ({})
   // @ts-ignore
   async asyncData ({ $axios, store }: Context) {
     try {
@@ -107,21 +109,23 @@ export default defineComponent({
       })
       if (success) {
         const { total } = data
-        commitMutations(store, M_SET_TOTAL_ARTICLE_ITEM, total)
+        const list = plainArticleList(data.list)
+        commitMutations(store, M_SET_TOTAL_ITEMS, total)
+        // 还有更多文章（不是最后一页）
+        if (list.length < total) {
+          commitMutations(store, M_SET_CURRENT_PAGE, store.state[CURRENT_PAGE] + 1)
+        }
         return {
-          articleList: plainArticleList(data.list),
-          total
+          articleList: list
         }
       } else {
         return {
-          articleList: [],
-          total: 0
+          articleList: []
         }
       }
     } catch (e) {
       return {
-        articleList: [],
-        total: 0
+        articleList: []
       }
     }
   },
@@ -131,26 +135,11 @@ export default defineComponent({
       ...useIndex()
     }
   },
-  // mounted() {
-  //   // setTimeout(() => {
-  //   //   html2canvas(document.body).then(canvas => {
-  //   //     document.body.appendChild(canvas)
-  //   //   })
-  //   // }, 5000)
-  // },
-  // // @ts-ignore
-  // beforeRouteEnter (to: any, from: any, next: any): void {
-  //   next((vm: { init: () => void }) => {
-  //     console.log('beforeRouteEnter', vm)
-
-  //     vm.init()
-  //     window.onresize = () => vm.init()
-  //   })
-  // },
-  // beforeRouteLeave (to, from, next) {
-  //   window.onresize = null
-  //   next()
-  // },
+  // @ts-ignore
+  beforeRouteLeave (to, from, next) {
+    commitMutations(this.$store, M_RESET_LOAD_MORE)
+    next()
+  },
   head () {
     return {
       title: 'K.island',
