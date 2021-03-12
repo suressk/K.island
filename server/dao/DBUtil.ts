@@ -1,5 +1,5 @@
 import mysql from 'mysql2'
-import Query from "mysql2/typings/mysql/lib/protocol/sequences/Query";
+import Query from 'mysql2/typings/mysql/lib/protocol/sequences/Query'
 
 export function createConnection () {
     return mysql.createConnection({

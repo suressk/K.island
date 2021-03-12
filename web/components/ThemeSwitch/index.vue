@@ -40,8 +40,8 @@ export default defineComponent({
 
 <style lang="scss">
 .theme-switch {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   cursor: pointer;
   position: fixed;
   left: 10px;

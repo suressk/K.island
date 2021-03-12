@@ -82,8 +82,10 @@ import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import { plainArticleList, commitMutations } from '~/utils/util'
 import {
   CURRENT_PAGE,
+  NO_MORE,
   M_RESET_LOAD_MORE,
   M_SET_CURRENT_PAGE,
+  M_SET_LOAD_STATUS,
   M_SET_TOTAL_ITEMS
 } from '~/store/mutation-types'
 // import html2canvas from 'html2canvas'
@@ -114,6 +116,8 @@ export default defineComponent({
         // 还有更多文章（不是最后一页）
         if (list.length < total) {
           commitMutations(store, M_SET_CURRENT_PAGE, store.state[CURRENT_PAGE] + 1)
+        } else {
+          commitMutations(store, M_SET_LOAD_STATUS, NO_MORE)
         }
         return {
           articleList: list

@@ -50,7 +50,7 @@ export default {
     }
   },
   mounted() {
-    this.init()
+    this.initCtx()
   }
 }
 </script>
