@@ -55,7 +55,7 @@ export default {
   z-index: 12;
   opacity: 0;
   visibility: hidden;
-  color: var(--darkGreen);
+  color: var(--success);
   .icon-toTop {
     font-size: 36px;
   }

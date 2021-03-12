@@ -9,7 +9,7 @@
       回到首页？
     </span>
   </section>
-  <section v-else-if="error.statusCode === 500" class="not-found">
+  <section v-else-if="error.statusCode === 500" class="error">
     <canvas ref="eCanvas" width="100%" height="100%"></canvas>
     <span class="tip absolute-center">
       哇哦，你好像迷路了呢？要不试试 {{ error.statusCode }}
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'NotFound',
   props: ['error'],
@@ -49,7 +50,7 @@ export default {
     }
   },
   mounted() {
-    this.initCtx()
+    this.init()
   }
 }
 </script>
@@ -77,7 +78,7 @@ export default {
     top: 85%;
     user-select: none;
     .link {
-      color: var(--primary-blue);
+      color: var(--primary);
     }
   }
 }

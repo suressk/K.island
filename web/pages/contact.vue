@@ -32,6 +32,7 @@
           <i class="iconfont icon-email" />
           <span class="k-popover flex-col-start">
             <span class="txt-overflow">🍻sure_k@qq.com</span>
+            <span class="txt-overflow">🍸stack_surek@outlook.com</span>
             <span class="txt-overflow">🥂songkun.1008@gmail.com</span>
           </span>
         </span>

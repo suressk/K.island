@@ -5,13 +5,12 @@
   "author": "K.",
   "description": "愿世间美好都能如约而至...",
   "scripts": {
-    "dev": "nuxt-ts",
-    "build": "nuxt-ts build",
-    "start": "nuxt-ts start",
-    "generate": "nuxt-ts generate"
+    "serve": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
   },
   "dependencies": {
-    "@nuxt/typescript-runtime": "^2.0.1",
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/composition-api": "^0.19.0",
     "core-js": "^3.8.2",
@@ -21,7 +20,8 @@
     "marked": "^2.0.1",
     "nprogress": "^0.2.0",
     "nuxt": "^2.14.12",
-    "qrcode": "^1.4.4"
+    "qrcode": "^1.4.4",
+    "three": "^0.126.1"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.12",

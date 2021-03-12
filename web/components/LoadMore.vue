@@ -57,8 +57,8 @@ export default defineComponent({
     transition: background-color .3s, color .3s, border-color .3s;
     &:hover {
       color: var(--white);
-      background-color: var(--primary-blue)!important;
-      border-color: var(--primary-blue);
+      background-color: var(--primary)!important;
+      border-color: var(--primary);
     }
   }
   .dot {
@@ -81,7 +81,7 @@ export default defineComponent({
     }
     &:first-child {
       animation-delay: -0.4s;
-      background-color: var(--cinnabar);
+      background-color: var(--error);
     }
     &:nth-child(2) {
       animation-delay: -0.2s;
@@ -97,7 +97,7 @@ export default defineComponent({
     }
     &:nth-child(5) {
       animation-delay: 0.4s;
-      background-color: var(--primary-blue);
+      background-color: var(--primary);
     }
   }
 }
@@ -105,12 +105,12 @@ export default defineComponent({
   0%, 100% {
     transform: scale(0.5);
     opacity: 0.8;
-    filter: drop-shadow(0 0 10px var(--cinnabar)) invert(0%);
+    filter: drop-shadow(0 0 10px var(--error)) invert(0%);
   }
   50% {
     transform: scale(2.5);
     opacity: 0.3;
-    filter: drop-shadow(0 0 10px var(--cinnabar)) invert(100%);
+    filter: drop-shadow(0 0 10px var(--error)) invert(100%);
   }
 }
 </style>

@@ -38,13 +38,13 @@
         transition: color .3s;
         position: relative;
         &:first-child:hover {
-          color: var(--darkGreen);
+          color: var(--success);
         }
         &:nth-child(2):hover {
           color: var(--warning);
         }
         &:nth-child(3):hover {
-          color: var(--primary-blue);
+          color: var(--primary);
         }
         &:hover .k-popover {
           opacity: 1;

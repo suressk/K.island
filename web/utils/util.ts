@@ -1,6 +1,5 @@
 import { zhMonths } from './variable'
 import { ArticleItem } from '~/@types'
-import Notification from '~/components/notification'
 import { Store } from 'vuex'
 // import dayjs from 'dayjs'
 
@@ -186,14 +185,14 @@ export function getCurrentTime () {
  * 获取 localstorage 存储的数据
  * */
 export function getStorageValue (key: string): null | string {
-  return localStorage.getItem(key)
+  return localStorage.getItem('K_' + key)
 }
 
 /**
  * 将数据存储到 localstorage
  * */
 export function setStorageValue (key: string, value: string): void {
-  localStorage.setItem(key, value)
+  localStorage.setItem('K_' + key, value)
 }
 
 /**

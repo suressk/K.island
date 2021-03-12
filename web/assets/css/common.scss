@@ -39,15 +39,15 @@
   --lightTxt: #656565;
   --lightInk: rgba(22, 24, 35, 0.3); // 淡墨色
   --ink: #161823; // 墨色
-  --cinnabar: #ff461f; // 朱砂
+  --error: #ff461f; // 朱砂
   --warning: #ffa631; // 橘色
   --lightBlue: #d2f6ff;
   --blue-border: #afcfff;
   --azure: #70f3ff; // 蔚蓝
-  --darkGreen: #2add9c; // 碧绿
+  --success: #2add9c; // 碧绿
   --oilGreen: #00bc12; // 油绿
   --lightCyan: #14ffec; // 淡青
-  --primary-blue: #0095d9;
+  --primary: #0095d9;
 }
 
 /* flex 布局 */
@@ -136,13 +136,13 @@
 }
 
 .error-tip {
-  color: var(--cinnabar);
+  color: var(--error);
 }
 .warning-tip {
   color: var(--warning);
 }
 .success-tip {
-  color: var(--darkGreen);
+  color: var(--success);
 }
 
 .tip {
@@ -223,7 +223,7 @@
   Button 通用样式
 */
 .btn {
-  background-color: var(--primary-blue);
+  background-color: var(--primary);
   border-radius: 5px;
   color: var(--white);
   border: none;
@@ -248,10 +248,10 @@
   transition: all .3s;
 }
 .r-hover:hover {
-  color: var(--cinnabar);
+  color: var(--error);
 }
 .g-hover:hover {
-  color: var(--darkGreen);
+  color: var(--success);
 }
 
 /**

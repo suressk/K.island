@@ -2,8 +2,8 @@
   <div class="main-page">
     <!--  封面雨幕  -->
     <div class="page-cover">
-      <div class="cover-container" :width="sceneWidth + 'px'" :height="sceneHeight + 'px'">
-        <canvas id="coverContainer" :width="sceneWidth" :height="sceneHeight" class="rain-effect" />
+      <div class="cover-container" :width="sceneWidth" :height="sceneHeight">
+        <canvas id="coverContainer" class="rain-effect" />
 
         <div class="cover-introduce flex-col-center" :style="{ opacity: showNav ? '0' : '1' }">
           <span class="time">{{ today }}</span>

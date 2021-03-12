@@ -22,7 +22,7 @@
         border-radius: 5px;
         cursor: default;
         user-select: none;
-        filter: drop-shadow(5px 0px 5px var(--primary-blue)) invert(0%);
+        filter: drop-shadow(5px 0px 5px var(--primary)) invert(0%);
         &.nav-show {
           color: var(--lightTxt);
         }
@@ -36,8 +36,8 @@
         width: 40px;
         height: 40px;
         cursor: pointer;
-        //color: var(--cinnabar);
-        color: var(--primary-blue);
+        //color: var(--error);
+        color: var(--primary);
         background-color: var(--white);
         border-radius: 5px;
         .iconfont {
@@ -168,10 +168,10 @@
             display: flex;
             margin-right: 10px;
             &:nth-child(1):hover {
-              color: var(--cinnabar);
+              color: var(--error);
             }
             &:nth-child(2):hover {
-              color: var(--darkGreen);
+              color: var(--success);
             }
           }
           .iconfont {

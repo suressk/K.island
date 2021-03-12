@@ -96,7 +96,7 @@ export default {
       width: 15px;
       height: 15px;
       border-radius: 50%;
-      background-color: var(--darkGreen);
+      background-color: var(--success);
       animation: bounceDelay 1.2s infinite ease-in-out both;
       &:first-child {
         top: 0; left: 0;

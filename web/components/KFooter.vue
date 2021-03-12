@@ -32,7 +32,7 @@ export default {
     transition: color .3s;
     border-right: 1px solid var(--tipColor);
     &:hover {
-      color: var(--primary-blue);
+      color: var(--primary);
     }
   }
 }

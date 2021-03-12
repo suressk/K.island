@@ -43,7 +43,7 @@
       border-top: 2px solid rgba(255, 255, 255, 0.6);
       border-left: 2px solid rgba(255, 255, 255, 0.6);
       .subscription-title {
-        color: var(--primary-blue);
+        color: var(--primary);
         font-weight: 600;
         font-size: 1.2rem;
         margin-bottom: 1rem;
@@ -77,7 +77,7 @@
         }
       }
       .subscription-btn {
-        //background-color: var(--primary-blue);
+        //background-color: var(--primary);
         //border-radius: 5px;
         //color: var(--white);
         //border: none;
@@ -93,7 +93,7 @@
           z-index: 10;
           width: 150px;
           height: 60px;
-          background-color: var(--primary-blue);
+          background-color: var(--primary);
           padding: 10px 15px;
           top: -75px;
           left: 50%;
@@ -111,7 +111,7 @@
             content: "";
             width: 0;
             height: 0;
-            border: 10px solid var(--primary-blue);
+            border: 10px solid var(--primary);
             border-bottom-color: transparent;
             border-left-color: transparent;
             border-right-color: transparent;

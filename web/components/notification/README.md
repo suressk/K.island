@@ -200,16 +200,16 @@ export default Notification
     display: flex;
     align-items: center;
     &.notification-success {
-      color: var(--darkGreen);
+      color: var(--success);
     }
     &.notification-info {
-      color: var(--primary-blue);
+      color: var(--primary);
     }
     &.notification-warning {
       color: var(--warning);
     }
     &.notification-error {
-      color: var(--cinnabar);
+      color: var(--error);
     }
     .iconfont {
       margin-right: 5px;
@@ -217,13 +217,13 @@ export default Notification
     }
   }
   &.notify-success .notify-header {
-    color: var(--darkGreen);
+    color: var(--success);
   }
   &.notify-info .notify-header {
-    color: var(--primary-blue);
+    color: var(--primary);
   }
   &.notify-error .notify-header {
-    color: var(--cinnabar);
+    color: var(--error);
   }
   &.notify-warning .notify-header {
     color: var(--warning);

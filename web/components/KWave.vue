@@ -34,7 +34,6 @@ export default {
       &:nth-child(1){
         animation-delay: -2s;
         animation-duration: 7s;
-        //fill: hsla(0,0%,100%,.7);
         fill: rgba(0, 222, 255, 0.4);
       }
       &:nth-child(2){

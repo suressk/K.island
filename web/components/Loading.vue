@@ -43,7 +43,7 @@ export default {
     width: 20px;
     height: 20px;
     margin-right: 10px;
-    background: var(--darkGreen);
+    background: var(--success);
     transform-origin: right bottom;
     animation: load 1s ease infinite;
     &:first-child {

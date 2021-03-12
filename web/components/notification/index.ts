@@ -1,5 +1,4 @@
 import Vue from 'vue'
-
 import Component from './notify.vue'
 import { NotificationOptions, AnyInstance } from '~/@types'
 
@@ -11,7 +10,7 @@ let notifications: AnyInstance[] = []
 
 /**
  * Because get the article info is happening in the server environment,
- * there donen't exist 'window' object, but this notification is called
+ * there doesn't exist 'window' object, but this notification is called
  * in the server environment, so something wrong will be happened
  * */
 
@@ -20,7 +19,7 @@ const Notification = (options: NotificationOptions): AnyInstance | undefined => 
   const id = 'notification_' + key++
 
   // let offset = 0
-  let zIndex = 99
+  let zIndex = 99 // 后一个提示框的层级始终比前一个高一层（虽然不处理的表现形式是一样的）
   notifications.forEach(() => {
     // offset += item.$el.offsetHeight + 16
     zIndex += 1
@@ -48,7 +47,7 @@ const Notification = (options: NotificationOptions): AnyInstance | undefined => 
  * 移除 notification 实例列表实例，并变动其后的 top 值
  * */
 function close (id: string) {
-  const len = notifications.length
+  // const len = notifications.length
   let index = -1
   const curInstance = notifications.filter((ins, i) => {
     if (ins.id === id) {
@@ -60,21 +59,15 @@ function close (id: string) {
   if (!curInstance) return
   // 若无当前实例，则移除数组中的最后一项
   notifications.splice(index, 1)
-  /**
-   * TODO ==========================================
-   * 此方法移除 element 将无过渡效果
-   * 不加则会遗留一个 notification 组件不会移除
-   * TODO ==========================================
-   * */
   // curInstance.$el.parentNode.removeChild(curInstance.$el)
-  // 移除实例前，实例列表只剩当前实例，就不存在需变动其他实例的 position 偏移量
-  if (len < 1) return
 
-  const removedHeight = instance.$el.offsetHeight
-  for (let i = 0; i < len - 1; i++) {
-    const verticalOffset = notifications[i].$el.style['top']
-    notifications[i].$el.style['top'] = parseInt(verticalOffset) - removedHeight - 16 + 'px'
-  }
+  // 移除实例前，实例列表只剩当前实例，就不存在需变动其他实例的 position 偏移量
+  // if (len < 1) return
+  // const removedHeight = instance.$el.offsetHeight
+  // for (let i = 0; i < len - 1; i++) {
+  //   const verticalOffset = notifications[i].$el.style['top']
+  //   notifications[i].$el.style['top'] = parseInt(verticalOffset) - removedHeight - 16 + 'px'
+  // }
 }
 
 export default Notification
