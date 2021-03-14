@@ -14,7 +14,9 @@
         <li class="message-item"></li>
       </ul>
 
-      <KModal :visible.sync="showModal" />
+      <Modal :visible.sync="showModal">
+        <CommentForm />
+      </Modal>
 
       <button class="btn" @click="showModalEvent">show</button>
 
@@ -32,11 +34,12 @@ import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import BackTop from '~/components/BackTop/index.vue'
 import KFooter from '~/components/KFooter.vue'
-import KModal from "~/components/KModal/index.vue";
+import Modal from '~/components/KModal/index.vue'
+import CommentForm from '~/components/CommentForm/index.vue'
 
 export default defineComponent({
   name: 'MessageBoard',
-  components: {KModal, KHeader, ThemeSwitch, BackTop, KFooter },
+  components: { Modal, KHeader, ThemeSwitch, BackTop, KFooter, CommentForm },
   setup() {
     const showTip = ref<boolean>(true)
     const showModal = ref<boolean>(true)

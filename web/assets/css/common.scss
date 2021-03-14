@@ -239,18 +239,16 @@
     color: var(--primary);
     border-color: var(--primary);
   }
-  &[disabled] {
-    border: none;
-    background-color: var(--lightBg);
-    color: var(--tipColor);
-    cursor: not-allowed;
-    pointer-events: none;
-  }
   &.btn-primary,
   &.btn-danger,
   &.btn-success {
     color: var(--white);
     border: none;
+    &[disabled] {
+      background-color: var(--lightBg);
+      color: var(--tipColor);
+      cursor: not-allowed;
+    }
   }
   &.btn-primary {
     background-color: var(--primary);

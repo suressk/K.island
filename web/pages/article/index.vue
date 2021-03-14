@@ -73,7 +73,6 @@ export default defineComponent({
       const { success, data, message } = await $axios.get('/records/list', { params: { pageNo: 1, pageSize: 10 } })
       if (success) {
         const result = createArticleListData(data.list)
-        debugger
         store.commit(M_SET_TOTAL_ITEMS, data.total)
         return {
           listData: result

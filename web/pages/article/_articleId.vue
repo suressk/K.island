@@ -32,7 +32,15 @@
         />
       </div>
 
-      <CommentForm @submit-comment="handleGetComment" />
+      <button class="btn-primary btn" @click="handleShowCommentForm">Add Comment</button>
+
+      <Modal
+        title="添加评论"
+        :visible.sync="addCommentVisible"
+        :show-footer="false"
+      >
+        <CommentForm @submit-comment="handleGetCommentInfo" />
+      </Modal>
 
       <ThemeSwitch />
     </div>
@@ -42,9 +50,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import {defineComponent, ref} from '@nuxtjs/composition-api'
 import { parseMarkdownFile } from '~/utils/marked'
-// import { failLoadNotify } from '~/utils/util'
+import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import { Context } from '@nuxt/types'
 import { CommentInfo } from '~/@types'
 import CommentForm from '~/components/CommentForm/index.vue'
@@ -52,27 +60,13 @@ import KFooter from '~/components/KFooter.vue'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import BackTop from '~/components/BackTop/index.vue'
-import 'highlight.js/styles/atom-one-dark-reasonable.css'
+import Modal from '~/components/KModal/index.vue'
 // import { useState } from '~/utils/useStore'
 // import { M_SET_ARTICLE_DETAIL } from '~/store/mutation-types'
 
 export default defineComponent({
   name: 'ArticleId',
-  components: { KHeader, CommentForm, KFooter, ThemeSwitch, BackTop },
-  // validate(ctx: Context) {
-  //   console.log('validate: ==== ', ctx)
-  //   return true
-  // },
-  // // @ts-ignore
-  // async fetch({ params, $axios, store }: Context): Promise<void> | void {
-  //   /**
-  //    *  $axios, $config, app, base, env, error(),
-  //    *  from, isDev, isHMR, isStatic, next, nuxtState,
-  //    *  params, payload, query, redirect, route, store
-  //    */
-  //   const articleItem = store.state.articleItem
-  //   console.log('articleItem: ====== ', articleItem)
-  // },
+  components: { KHeader, CommentForm, KFooter, ThemeSwitch, BackTop, Modal },
   // @ts-ignore
   async asyncData({ params, $axios }: Context): Promise<object | void> | object | void {
     const { articleId } = params
@@ -91,9 +85,10 @@ export default defineComponent({
           articleClass: data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
         }
       } else {
-        // failLoadNotify('article content')
         return {
-          articleDetail: {},
+          articleDetail: {
+            time: {}
+          },
           htmlContent: '',
           articleClass: 'mood'
         }
@@ -108,11 +103,23 @@ export default defineComponent({
     }
   },
   setup() {
-    function handleGetComment(info: CommentInfo) {
+    const addCommentVisible = ref<boolean>(false)
+    function handleGetCommentInfo(info: CommentInfo) {
       console.log(info)
     }
+    function handleShowCommentForm() {
+      addCommentVisible.value = true
+    }
     return {
-      handleGetComment
+      addCommentVisible,
+      handleGetCommentInfo,
+      handleShowCommentForm
+    }
+  },
+  head() {
+    return {
+      // @ts-ignore
+      title: `${this.articleDetail.title} | K.island`
     }
   }
 })

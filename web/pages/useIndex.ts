@@ -26,6 +26,7 @@ import {
 import RainInit from '~/components/rainEffect/index'
 import { useState } from '~/utils/useStore'
 import Notification from '~/components/notification'
+import {ArticleDetail} from "~/@types";
 
 /**
  * 首页 composition-api 代码风格 写法抽离
@@ -92,6 +93,13 @@ export default function useIndex() {
     })
   }
 
+  function handleToDetail(info: ArticleDetail) {
+    const { uid, id } = info
+    vm.$router.push({
+      path: `/article/${uid}_${id}`
+    })
+  }
+
   async function handleLoadMore() {
     const start = Date.now()
     try {
@@ -122,7 +130,7 @@ export default function useIndex() {
           Notification({
             title: 'o(╥﹏╥)o',
             type: 'error',
-            message: '嗐~ 更多文章加载失败，记得联系一下小 K. 哦'
+            message: '嗐~ 更多文章加载失败辣，记得联系一下小 K. 吼'
           })
           commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOAD_MORE)
         })
@@ -145,6 +153,7 @@ export default function useIndex() {
     sceneHeight,
     sceneWidth,
     handleToggleNav,
-    handleLoadMore
+    handleLoadMore,
+    handleToDetail
   }
 }

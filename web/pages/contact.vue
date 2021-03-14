@@ -12,7 +12,7 @@
         <li class="item">偶有重温经典，但无热血追捧</li>
         <li class="item">心有指点江山之意，却扰倦怠缠身之难</li>
       </ul>
-      <p class="part">PART 2</p>
+      <p class="part">PART 2 《酒与愁》</p>
       <ul class="introduce-list">
         <li class="item">人生不过二两酒，一两心酸一两愁</li>
         <li class="item">昨日心酸酿成酒，苦酒入喉今日愁</li>
@@ -38,6 +38,9 @@
         </span>
         <a class="link-item" href="https://github.com/suerssk/K.island" target="_blank">
           <i class="iconfont icon-github" />
+          <span class="k-popover flex-col-start">
+            <span class="txt-overflow">🤞 去点个 star 叭 ~</span>
+          </span>
         </a>
       </div>
     </div>

@@ -126,6 +126,10 @@
       position: relative;
       margin-top: 50px;
       z-index: 1;
+      cursor: pointer;
+      &:hover img {
+        opacity: 0.9;
+      }
       .cover {
         width: 680px;
         height: 440px;
@@ -137,13 +141,11 @@
         border-radius: 5px;
         border: 1px solid var(--border);
         background-color: var(--white);
-        //&:hover {
-        //  opacity: 0.8;
-        //}
         img {
           background-color: var(--lightBg);
           width: 100%;
           max-height: 100%;
+          transition: all .3s;
         }
       }
       // 文章信息

@@ -7,12 +7,18 @@ let timer: number
 function matchStationmasterEmail (email: string) {
   switch (email) {
     case 'sure_k@qq.com':
+    case '865801275@qq.com':
     case 'songkun.1008@gmail.com':
+    case 'stack_surek@outlook.com':
       return true
     default:
       return false
   }
 }
+
+/**
+ * TODO =====> add comment => validate myself
+ * */
 
 export default function (props: CommentProps, ctx: SetupContext) {
   const name = ref<string>('')
@@ -20,9 +26,9 @@ export default function (props: CommentProps, ctx: SetupContext) {
   const comment = ref<string>('')
   const tipIndex = ref<number>(-1)
   const tipTxt = reactive([
-    '您的名字是不是输入全空格啦？',
+    '您的美称不能是空白哦~',
     '邮箱格式貌似不太对呢~',
-    '胆敢冒充站长，来人，拉出去枪毙五分钟！！！',
+    '嗯？胆敢冒充站长？！来人！拉出去枪毙五分钟！！！',
     '多说一点儿吧，至少能成一句诗~',
     '偷偷告诉我，你作文是不是 0 分~',
     '完成验证才可以提交哦~',

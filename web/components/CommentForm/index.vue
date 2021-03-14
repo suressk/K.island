@@ -16,7 +16,7 @@
     </label>
     <div class="comment-submit d-flex">
       <button
-        class="btn trans-all-03"
+        class="btn btn-primary"
         :class="{ disabled: disabledSubmit }"
         :disabled="disabledSubmit"
         @click="handleSubmit"
@@ -34,6 +34,14 @@
         {{ tipIndex > -1 ? tipTxt[tipIndex] : "" }}
       </span>
     </div>
+
+    <!-- <Modal-->
+    <!--   title="validate author"-->
+    <!--   visible="validateVisible"-->
+    <!--   ok="handleConfirm"-->
+    <!-- >-->
+    <!--   -->
+    <!-- </Modal>-->
   </div>
 </template>
 
@@ -43,6 +51,7 @@ import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
 import useCommentForm from './useCommentForm'
 import { CommentProps } from '~/@types'
 import CubeLoading from '../loadingComponent/CubeLoading.vue'
+// import Modal from '../KModal/index.vue' => to improve
 
 export default defineComponent({
   name: 'CommentForm',

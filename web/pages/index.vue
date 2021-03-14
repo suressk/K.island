@@ -41,7 +41,12 @@
     <!--  文章列表 content  -->
     <div class="content">
       <ul class="content-list" v-if="articleList.length > 0">
-        <li v-for="item in articleList" :key="item.uid" class="content-item">
+        <li
+          v-for="item in articleList"
+          :key="item.uid"
+          class="content-item"
+          @click="handleToDetail(item)"
+        >
           <div class="cover flex-center trans-all-03">
             <img v-if="item.cover" :src="item.cover" :alt="item.title">
           </div>
