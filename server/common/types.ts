@@ -22,7 +22,7 @@ export interface RecordIdOptions {
     uid: string;
 }
 
-// export interface recordItem {
+// export interface RecordItem {
 //     id: number;
 //     uid: string;
 //     title: string;

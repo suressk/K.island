@@ -19,6 +19,14 @@ export function querySubscribeInfo (options: QuerySubscribeOptions, success: (re
  * */
 export function addSubscribeInfo (options: QuerySubscribeOptions, success: (res: any) => void, error: (err: any) => void) {
     const { email, name } = options
-    const sqlStr = 'INSERT INTO `subscribe` (email, name) values (?, ?)'
-    connectQuery(sqlStr, [email, name], success, error)
+    const date = Date.now()
+    const sqlStr = 'INSERT INTO `subscribe` (email, name, ctime) values (?, ?, ?)'
+    connectQuery(sqlStr, [email, name, date], success, error)
+}
+
+/**
+ * 删除订阅邮箱信息
+ * */
+export function deleteSubscribeInfo () {
+
 }

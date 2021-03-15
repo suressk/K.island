@@ -18,7 +18,7 @@
         <CommentForm />
       </Modal>
 
-      <button class="btn" @click="showModalEvent">show</button>
+      <button class="btn btn-primary" @click="showModalEvent">show</button>
 
     </div>
 
@@ -42,7 +42,7 @@ export default defineComponent({
   components: { Modal, KHeader, ThemeSwitch, BackTop, KFooter, CommentForm },
   setup() {
     const showTip = ref<boolean>(true)
-    const showModal = ref<boolean>(true)
+    const showModal = ref<boolean>(false)
 
     function handleCloseTipMessage() {
       showTip.value = false

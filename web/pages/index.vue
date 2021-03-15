@@ -67,6 +67,7 @@
           </div>
         </li>
       </ul>
+
       <LoadMore :load-status="loadStatus" @load-more="handleLoadMore" />
     </div>
 
@@ -156,7 +157,7 @@ export default defineComponent({
         {
           hid: 'keywords',
           name: 'keywords',
-          content: 'K.,K.island,blog,Mood,Mood island,web,前端,个人网站,心情记录小站,堃'
+          content: 'K.,K.island,Blog,Mood,Mood island,web,前端,个人网站,心情记录小站,堃'
         },
         {
           hid: 'description',

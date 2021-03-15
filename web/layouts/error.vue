@@ -1,16 +1,6 @@
 <template>
-  <section v-if="error.statusCode === 404" class="not-found">
-    <canvas ref="nCanvas" width="100%" height="100%"></canvas>
-    <span class="tip absolute-center">
-      哇哦，你好像迷路了呢？要不试试 {{ error.statusCode }}
-      <nuxt-link class="link" to="/">
-        点我
-      </nuxt-link>
-      回到首页？
-    </span>
-  </section>
-  <section v-else-if="error.statusCode === 500" class="error">
-    <canvas ref="eCanvas" width="100%" height="100%"></canvas>
+  <section v-if="error.statusCode === 404 || error.statusCode === 500" class="not-found">
+    <div id="container" class="planet-container"></div>
     <span class="tip absolute-center">
       哇哦，你好像迷路了呢？要不试试 {{ error.statusCode }}
       <nuxt-link class="link" to="/">
@@ -21,47 +11,30 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
 
-export default {
+export default defineComponent({
   name: 'NotFound',
   props: ['error'],
-  data() {
-    return {
-      ctx: null
-    }
+  setup() {
+
   },
   head () {
     return {
       title: '是不是迷路啦~ | K.island'
     }
-  },
-  methods: {
-    initCtx() {
-      if (this.error.statusCode === 500) {
-        this.$refs.eCanvas.width = window.innerWidth
-        this.$refs.eCanvas.height = window.innerHeight
-        this.ctx = this.$refs.eCanvas.getContext('2d')
-      } else if (this.error.statusCode === 404) {
-        this.$refs.nCanvas.width = window.innerWidth
-        this.$refs.nCanvas.height = window.innerHeight
-        this.ctx = this.$refs.nCanvas.getContext('2d')
-      }
-    }
-  },
-  mounted() {
-    this.initCtx()
   }
-}
+})
 </script>
 
 <style scoped lang="scss">
-.error,
+//.error,
 .not-found {
   width: 100vw;
   height: 100vh;
   position: relative;
-  canvas {
+  .planet-container {
     position: absolute;
     left: 0;
     top: 0;

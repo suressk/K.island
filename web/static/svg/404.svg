@@ -63,8 +63,8 @@
             <stop stop-color="#C0C4CC" offset="100%"></stop>
         </linearGradient>
     </defs>
-    <g id="5G合伙人1.0" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="课前准备-老师-没有学生备份" transform="translate(-686.000000, -459.000000)">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-686.000000, -459.000000)">
             <g id="404" transform="translate(686.000000, 459.000000)">
                 <g id="编组-5" transform="translate(0.000000, 30.000000)">
                     <ellipse id="椭圆形" fill="url(#linearGradient-1)" cx="135.5" cy="134.5" rx="132.5" ry="23.5"></ellipse>

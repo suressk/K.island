@@ -27,7 +27,7 @@ async function subscribe(type: number, data: any, info: SubscribeInfo) {
 
     await transporter.sendMail(
         createOption(type, data, info),
-        (err, res) => {
+        (err: any, res: any) => {
             if (err) {
                 console.log('send email error: ', err)
             } else {
