@@ -77,16 +77,9 @@
         }
       }
       .subscription-btn {
-        //background-color: var(--primary);
-        //border-radius: 5px;
-        //color: var(--white);
-        //border: none;
-        //outline: none;
-        //display: inline-block;
         flex: 1;
         height: 40px;
         margin-left: 10px;
-        cursor: pointer;
         position: relative;
         .empty-tip {
           position: absolute;
@@ -124,27 +117,19 @@
 @keyframes bounceOut {
   0% {
     visibility: hidden;
-    //opacity: 0;
     top: 25px;
   }
   40% {
-    //visibility: visible;
-    //opacity: 1;
     top: -90px;
   }
   60% {
-    //visibility: visible;
-    //opacity: 1;
     top: -80px;
   }
   80% {
-    //visibility: visible;
-    //opacity: 1;
     top: -85px;
   }
   100% {
     visibility: visible;
-    //opacity: 1;
     top: -75px;
   }
 }

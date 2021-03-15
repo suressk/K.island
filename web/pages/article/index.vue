@@ -54,14 +54,14 @@
 <script lang="ts">
 import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
 import { Context } from '@nuxt/types'
-import { createArticleListData } from '~/utils/util'
+import {commitMutations, createArticleListData} from '~/utils/util'
 import Notification from '~/components/notification'
 import useArticle from './useArticle'
 import KHeader from '~/components/KHeader/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import KWave from '~/components/KWave.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
-import { M_SET_TOTAL_ITEMS } from '~/store/mutation-types'
+import { M_RESET_LOAD_MORE, M_SET_TOTAL_ITEMS } from '~/store/mutation-types'
 
 export default defineComponent({
   name: 'Article',
@@ -70,48 +70,21 @@ export default defineComponent({
   async asyncData({ $axios, store }: Context): Promise<object | void> | object | void {
     try {
       // @ts-ignore
-      const { success, data, message } = await $axios.get('/records/list', { params: { pageNo: 1, pageSize: 10 } })
+      const { success, data } = await $axios.get('/records/list', { params: { pageNo: 1, pageSize: 10 } })
       if (success) {
-        const result = createArticleListData(data.list)
-        store.commit(M_SET_TOTAL_ITEMS, data.total)
+        // const result = createArticleListData(data.list)
+        // const { total } = data
+        commitMutations(store, M_SET_TOTAL_ITEMS, data.total)
         return {
-          listData: result
+          listData: createArticleListData(data.list)
         }
       }
-      Notification({
-        title: 'WARNING',
-        type: 'warning',
-        message: message
-      })
       return {
         listData: {}
       }
     } catch (e) {
-      // failLoadNotify('the article list')
       return {
-        listData: {
-          2021: {
-            Feb: [
-              {
-                id: 21,
-                uid: 'jVQFzALzn20IIK-0CKFa5vm-7niBxHv-Hgh9QEQ-fSSP8KWS',
-                title: 'Test title',
-                introduce: 'Introduce',
-                views: 90,
-                tag: 'JS',
-                time: {
-                  year: '2021',
-                  month: 'Feb',
-                  monthNum: 1,
-                  day: '21rd'
-                },
-                cover: '',
-                ctime: 123058589416,
-                utime: 123058589416
-              }
-            ]
-          }
-        }
+        listData: {}
       }
     }
   },
@@ -119,6 +92,11 @@ export default defineComponent({
     return {
       ...useArticle(ctx)
     }
+  },
+  // @ts-ignore
+  beforeRouteLeave(to, from, next) {
+    commitMutations(this.$store, M_RESET_LOAD_MORE)
+    next()
   },
   head () {
     return {

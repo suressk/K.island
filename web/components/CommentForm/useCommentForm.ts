@@ -19,19 +19,17 @@ function matchStationmasterEmail (email: string) {
 /**
  * TODO =====> add comment => validate myself
  * */
-
 export default function (props: CommentProps, ctx: SetupContext) {
   const name = ref<string>('')
   const email = ref<string>('')
   const comment = ref<string>('')
   const tipIndex = ref<number>(-1)
   const tipTxt = reactive([
-    '您的美称不能是空白哦~',
+    '您的昵称不能是空白哦~',
     '邮箱格式貌似不太对呢~',
     '嗯？胆敢冒充站长？！来人！拉出去枪毙五分钟！！！',
     '多说一点儿吧，至少能成一句诗~',
     '偷偷告诉我，你作文是不是 0 分~',
-    '完成验证才可以提交哦~',
     'Submitting...',
     '哇哦！遇到错误辣，要不再试试？',
     'Successfully completed, Nice!'
@@ -59,7 +57,7 @@ export default function (props: CommentProps, ctx: SetupContext) {
       tipIndex.value = 3
       return
     }
-    tipIndex.value = 8
+    tipIndex.value = 7
     ctx.emit('submit-comment', {
       name: name.value,
       email: email.value,

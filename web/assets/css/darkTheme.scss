@@ -56,7 +56,7 @@ body.k-dark {
         .cover,
         .info {
           border-color: var(--dark-theme-border);
-          background-color: var(--dark-theme-border);
+          background-color: var(--dark-theme-body);
         }
         .info {
           background-color: var(--dark-theme-body);
@@ -92,10 +92,6 @@ body.k-dark {
       }
     }
   }
-
-  //.comment-form {
-  //  border-color: var(--dark-theme-border) !important;
-  //}
 
   // 文章详情
   .k-article-info {
