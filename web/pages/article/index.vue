@@ -44,9 +44,9 @@
         </ul>
       </div>
 
-      <ThemeSwitch />
     </div>
 
+    <ThemeSwitch />
     <KFooter />
   </section>
 </template>
@@ -54,14 +54,14 @@
 <script lang="ts">
 import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
 import { Context } from '@nuxt/types'
+import { M_RESET_LOAD_MORE, M_SET_TOTAL_ITEMS } from '~/store/mutation-types'
 import {commitMutations, createArticleListData} from '~/utils/util'
-import Notification from '~/components/notification'
+// import Notification from '~/components/notification'
 import useArticle from './useArticle'
 import KHeader from '~/components/KHeader/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import KWave from '~/components/KWave.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
-import { M_RESET_LOAD_MORE, M_SET_TOTAL_ITEMS } from '~/store/mutation-types'
 
 export default defineComponent({
   name: 'Article',

@@ -33,18 +33,16 @@ export function recordListResponse (req: Request, res: Response, range: string |
  * */
 export function recordDetailResponse (req: Request, res: Response) {
     const { id, uid } = req.query
-    if (typeof uid === 'string') {
-        queryRecordDetail({
-            id: Number(id),
-            uid
-        }, result => {
-            writeHead(res, 200)
-            res.write(writeResult(true, '查询成功！',  mapCreateTime(result)[0]))
-            res.end()
-        }, err => {
-            writeHead(res, 500)
-            res.write(writeResult(false, '文章详情查询失败！', err))
-            res.end()
-        })
-    }
+    queryRecordDetail({
+        id: Number(id),
+        uid: uid as string
+    }, result => {
+        writeHead(res, 200)
+        res.write(writeResult(true, '查询成功！',  mapCreateTime(result)[0]))
+        res.end()
+    }, err => {
+        writeHead(res, 500)
+        res.write(writeResult(false, '文章详情查询失败！', err))
+        res.end()
+    })
 }

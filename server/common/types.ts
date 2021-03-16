@@ -9,18 +9,30 @@ export interface UserInfo {
     password: string;
 }
 
+interface PageQueryParams {
+    pageNo: number; // 当前页码
+    pageSize: number; // 每页数量
+}
+
 /**
  * 文章管理 相关请求参数类型定义
  * */
-export interface QueryListOptions {
-    pageNo: number; // 当前页码
-    pageSize: number; // 每页数量
+export interface QueryListOptions extends PageQueryParams {
     range?: string;
 }
 export interface RecordIdOptions {
     id: number;
     uid: string;
 }
+
+// 分页查询订阅列表
+export type QuerySubscribeListOptions = PageQueryParams
+
+export interface DeleteSubscribeOptions {
+    id: number;
+    email: string;
+}
+
 
 // export interface RecordItem {
 //     id: number;

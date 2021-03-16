@@ -8,7 +8,11 @@ interface QuerySubscribeOptions {
 /**
  * 查询订阅信息
  * */
-export function querySubscribeInfo (options: QuerySubscribeOptions, success: (res: any) => void, error: (err: any) => void) {
+export function querySubscribeInfo (
+    options: QuerySubscribeOptions,
+    success: (res: any) => void,
+    error: (err: any) => void
+) {
     const { email } = options
     const sqlStr = 'SELECT * FROM `subscribe` WHERE email = ?'
     connectQuery(sqlStr, [email], success, error)
@@ -17,16 +21,13 @@ export function querySubscribeInfo (options: QuerySubscribeOptions, success: (re
 /**
  * 新增订阅邮箱信息
  * */
-export function addSubscribeInfo (options: QuerySubscribeOptions, success: (res: any) => void, error: (err: any) => void) {
+export function addSubscribeInfo (
+    options: QuerySubscribeOptions,
+    success: (res: any) => void,
+    error: (err: any) => void
+) {
     const { email, name } = options
     const date = Date.now()
     const sqlStr = 'INSERT INTO `subscribe` (email, name, ctime) values (?, ?, ?)'
     connectQuery(sqlStr, [email, name, date], success, error)
-}
-
-/**
- * 删除订阅邮箱信息
- * */
-export function deleteSubscribeInfo () {
-
 }

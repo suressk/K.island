@@ -1,5 +1,5 @@
 import express from 'express'
-import {addRecord, deleteRecord, updateRecord} from '../../services/recordService'
+import { addRecord, deleteRecord, updateRecord } from '../../services/recordService'
 import { writeHead, writeResult } from '../../utils/writeResponse'
 import { verifyTokenResponse } from '../../utils/util'
 import { recordDetailResponse, recordListResponse } from '../common'
