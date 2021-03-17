@@ -3,9 +3,12 @@ import path from 'path'
 
 function resolvePath (relativePath: string) {
     // @ts-ignore
-    return path.join(__dirname, '../../', relativePath)
+    return path.join(__dirname, '../', relativePath)
 }
 
+/**
+ * 检查文件是否存在
+ * */
 function checkFileExist (filePath: string) {
     return new Promise((resolve, reject) => {
         fs.access(filePath, fs.constants.F_OK, (err: any) => {
@@ -19,6 +22,9 @@ function checkFileExist (filePath: string) {
     })
 }
 
+/**
+ * 删除图片
+ * */
 export function deleteImage (relativePath: string) {
     let fullPath = resolvePath(relativePath)
     // 替换可能存在的 "//" 或 "\\"
@@ -28,7 +34,7 @@ export function deleteImage (relativePath: string) {
         checkFileExist(fullPath).then(() => {
             fs.unlink(fullPath, (err: any) => {
                 if (!err) {
-                    resolve('')
+                    resolve('success')
                 } else {
                     reject(err)
                 }

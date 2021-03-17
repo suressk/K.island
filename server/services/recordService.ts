@@ -110,7 +110,7 @@ export function updateRecord (
 }
 
 /**
- * 删除文章
+ * 删除文章 (真删除)
  * */
 export function deleteRecord (
     options: RecordIdOptions,
@@ -118,7 +118,7 @@ export function deleteRecord (
     error: (err: Query.QueryError) => void
 ) {
     const { id, uid } = options
-    const sqlStr = 'UPDATE records SET is_delete = 1 WHERE id = ? and uid = ?'
+    const sqlStr = 'DELETE FROM records WHERE id = ? and uid = ?'
     const params = [id, uid]
     connectQuery(sqlStr, params, success, error)
 }

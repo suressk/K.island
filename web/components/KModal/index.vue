@@ -71,6 +71,7 @@ export default defineComponent({
   &.fade-enter,
   &.fade-leave-to {
     opacity: 0;
+    //transform: scale(0.5);
   }
   .mask {
     width: 100vw;

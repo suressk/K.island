@@ -1,5 +1,5 @@
 import express from 'express'
-import { login } from '../../services/back/permissionService'
+import { login } from '../../services/permissionService'
 import { writeHead, writeResult } from '../../utils/writeResponse'
 import { publishToken, verifyToken } from '../../utils/jwt'
 const cookieKey = 'token'

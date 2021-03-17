@@ -1,7 +1,7 @@
 import express from 'express'
 import multer from 'multer'
 import { writeHead, writeResult } from '../../utils/writeResponse'
-import { deleteImage } from '../../services/back/deleteImage'
+import { deleteImage } from '../../services/deleteImage'
 import { verifyToken } from '../../utils/jwt'
 import { createMulterStorage } from '../../utils/util'
 

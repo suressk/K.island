@@ -1,5 +1,5 @@
 import express from 'express'
-import { querySubscribeInfo, addSubscribeInfo } from '../../services/web/subscribeService'
+import { querySubscribeInfo, addSubscribeInfo } from '../../services/subscribeService'
 import { writeHead, writeResult } from '../../utils/writeResponse'
 
 const router = express.Router()

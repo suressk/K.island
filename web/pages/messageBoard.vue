@@ -14,11 +14,12 @@
         <li class="message-item"></li>
       </ul>
 
+      <!--   添加留言 modal   -->
       <Modal :visible.sync="showModal">
-        <CommentForm />
+
       </Modal>
 
-      <button class="btn btn-primary" @click="showModalEvent">show</button>
+      <button class="btn btn-primary" @click="showModalEvent">Add a Message</button>
 
     </div>
 
@@ -35,11 +36,10 @@ import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import BackTop from '~/components/BackTop/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import Modal from '~/components/KModal/index.vue'
-import CommentForm from '~/components/CommentForm/index.vue'
 
 export default defineComponent({
   name: 'MessageBoard',
-  components: { Modal, KHeader, ThemeSwitch, BackTop, KFooter, CommentForm },
+  components: { Modal, KHeader, ThemeSwitch, BackTop, KFooter },
   setup() {
     const showTip = ref<boolean>(true)
     const showModal = ref<boolean>(false)

@@ -127,16 +127,12 @@ interface ArticleListInfo {
  * 创建时间对象
  * */
 export function mapCreateTime (dataList: ArticleListInfo[]) {
-    return dataList.map(item => {
-        return {
-            ...item,
-            time: dateFormat(item.ctime)
-        }
-    })
+    return dataList.map(item => ({ ...item, time: dateFormat(item.ctime) }))
 }
 
 /**
  * 插入 time: dateFormat() => time
+ * 生成按年分组的数据
  * */
 export function mapYearGroup (dataList: ArticleListInfo[]) {
     const mapData = mapCreateTime(dataList)

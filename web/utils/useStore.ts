@@ -1,6 +1,6 @@
 import { computed } from '@nuxtjs/composition-api'
-// import * as store from '~/store'
 import { Store } from 'vuex'
+// import * as store from '~/store'
 
 export function useState (store: Store<any>, ...args: string[]) {
   const withNameSpace = args.length === 2

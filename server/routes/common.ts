@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 import { mapCreateTime, mapYearGroup } from '../utils/util'
 
 /**
- * res => article list
+ * 响应文章列表
  * */
 export function recordListResponse (req: Request, res: Response, range: string | undefined) {
     const { pageNo, pageSize } = req.query
@@ -29,7 +29,7 @@ export function recordListResponse (req: Request, res: Response, range: string |
 }
 
 /**
- * res => article content detail
+ * 响应文章详情
  * */
 export function recordDetailResponse (req: Request, res: Response) {
     const { id, uid } = req.query

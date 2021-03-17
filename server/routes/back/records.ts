@@ -1,5 +1,5 @@
 import express from 'express'
-import { addRecord, deleteRecord, updateRecord } from '../../services/recordService'
+import { addRecord, updateRecord, deleteRecord } from '../../services/recordService'
 import { writeHead, writeResult } from '../../utils/writeResponse'
 import { verifyTokenResponse } from '../../utils/util'
 import { recordDetailResponse, recordListResponse } from '../common'
@@ -44,7 +44,7 @@ router.put('/update', (req, res) => {
             res.end()
         }, err => {
             writeHead(res, 500)
-            res.write(writeResult(false, '哇哦~ 文章修改失败啦！', err))
+            res.write(writeResult(false, '文章修改失败啦！', err))
             res.end()
         })
     })
@@ -59,7 +59,7 @@ router.delete('/delete', (req, res) => {
             res.end()
         }, err => {
             writeHead(res, 500)
-            res.write(writeResult(false, '哇哦~ 文章删除失败！', err))
+            res.write(writeResult(false, '文章删除失败！', err))
             res.end()
         })
     })
