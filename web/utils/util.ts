@@ -23,8 +23,6 @@ export function addListener (
   handler: EventListener,
   useCapture: boolean = false
 ): void {
-  // if (element && event && handler) {
-  // }
   element.addEventListener(event, handler, useCapture)
 }
 
@@ -36,8 +34,6 @@ export function removeListener (
   event: string,
   handler: EventListener
 ): void {
-  // if (element && event && handler) {
-  // }
   element.removeEventListener(event, handler)
 }
 
@@ -51,7 +47,7 @@ export function debounce (fn: Function, delay: number, immediate: boolean = fals
   let timer: any = null
   return function (...args: any[]) {
     // @ts-ignore
-    let ctx = this
+    const ctx = this
     let callNow
     if (timer !== null) clearTimeout(timer)
     if (immediate) {
@@ -85,11 +81,11 @@ export function singleScroll (domSelector: string, type: string, speed = 10) {
   let target: number
   if (type === 'top') {
     target = 0
-  } else if (type === 'comment') {
-    // 评论
-    const commentDom = <HTMLElement>document.querySelector('.comment-form')
-    const commentHeight = commentDom.offsetHeight
-    target = top - getWindowProp('clientHeight') + commentHeight
+  // } else if (type === 'comment') {
+  //   // 评论
+  //   const commentDom = <HTMLElement>document.querySelector('.comment-form')
+  //   const commentHeight = commentDom.offsetHeight
+  //   target = top - getWindowProp('clientHeight') + commentHeight
   } else {
     const index = type === 'index' ? 280 : -700
     target = top + (getWindowProp('clientHeight') / 2) + index
@@ -110,16 +106,16 @@ export function singleScroll (domSelector: string, type: string, speed = 10) {
     len = len > 0 ? Math.ceil(len) : Math.floor(len)
     scrollTop = document.body.scrollTop = document.documentElement.scrollTop = scrollTop + len
 
-    let result
+    let canceled
     if (type === 'top') {
-      result = scrollTop === target || (lastScrollTop && scrollTop > lastScrollTop)
-    } else if (type === 'comment') {
-      result = (lastScrollTop && scrollTop > lastScrollTop) || scrollTop <= target || scrollTop === 0
+      canceled = scrollTop === target || (lastScrollTop && scrollTop > lastScrollTop)
+    // } else if (type === 'comment') {
+    //   canceled = (lastScrollTop && scrollTop > lastScrollTop) || scrollTop <= target || scrollTop === 0
     } else {
-      result = scrollTop <= lastScrollTop || (scrollTop + len) >= target
+      canceled = scrollTop <= lastScrollTop || (scrollTop + len) >= target
     }
     // 到达目标位置或滚动滚轮取消滚动
-    if (result) {
+    if (canceled) {
       window.cancelAnimationFrame(rafId)
       return
     }
@@ -194,17 +190,6 @@ export function getStorageValue (key: string): null | string {
 export function setStorageValue (key: string, value: string): void {
   localStorage.setItem('K_' + key, value)
 }
-
-/**
- * 数据加载失败提示框
- * */
-// export function failLoadNotify (dataSource: string) {
-//   Notification({
-//     title: 'ERROR',
-//     type: 'error',
-//     message: `Fail to get ${dataSource}, please contact the website owner, thanks ~`
-//   })
-// }
 
 interface YearData<T> {
   [prop: string]: T[];

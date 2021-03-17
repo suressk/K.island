@@ -23,7 +23,6 @@
   --color15: rgba(99, 110, 114,1.0);
   --color16: rgba(253, 203, 110,1.0);
   --color17: rgba(225, 112, 85,1.0);
-  --color18: rgba(214, 48, 49,1.0);
   --color19: rgba(232, 67, 147,1.0);
   --color20: rgba(45, 52, 54,1.0);
   /**
@@ -41,6 +40,7 @@
   --lightInk: rgba(22, 24, 35, 0.3); // 淡墨色
   --ink: #161823; // 墨色
   --error: #ff461f; // 朱砂
+  --dark-error: rgb(214, 48, 49);
   --warning: #ffa631; // 橘色
   --lightBlue: #d2f6ff;
   --blue-border: #afcfff;
@@ -49,6 +49,7 @@
   --oilGreen: #00bc12; // 油绿
   --lightCyan: #14ffec; // 淡青
   --primary: #0095d9;
+  --dark-primary: rgb(3, 110, 184);
 }
 
 /* flex 布局 */

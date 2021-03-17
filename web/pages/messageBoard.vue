@@ -3,7 +3,7 @@
     <KHeader />
     <div class="content">
       <div class="tip-message" v-show="showTip">
-        <i class="iconfont icon-close" @click="handleCloseTipMessage" />
+        <i class="iconfont icon-close" @click="handleCloseTipMsg" />
         <p>😍 你可以在这里写下你想对 Ta 说的话，然后悄悄地扔个网址给 Ta ~ <span class="tip">（你的内心OS：我直接给人家说不香吗？）</span></p>
         <p>❤️ 你也可以在这里写下你想说的励志鸡汤，伤感心情，牢骚小文，也或是当一回文人墨客<span class="tip">（小K.都是欢迎的）</span></p>
         <p>🤨 <span class="tip">如果你的有些言论太过敏感或是不太合适展示给大家看的内容，小 K. 看到后可能会删掉哦~ 还是记得多传播积极的东西哦</span></p>
@@ -44,7 +44,7 @@ export default defineComponent({
     const showTip = ref<boolean>(true)
     const showModal = ref<boolean>(false)
 
-    function handleCloseTipMessage() {
+    function handleCloseTipMsg() {
       showTip.value = false
     }
 
@@ -55,7 +55,7 @@ export default defineComponent({
     return {
       showTip,
       showModal,
-      handleCloseTipMessage,
+      handleCloseTipMsg,
       showModalEvent
     }
   }
