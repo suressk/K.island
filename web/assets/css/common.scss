@@ -1,4 +1,3 @@
-@import "./components/notify.scss";
 /**
   colors variable
 */
@@ -11,9 +10,7 @@
   --color3: rgba(116, 185, 255,1.0);
   --color4: rgba(162, 155, 254,1.0);
   --color5: rgba(223, 230, 233,1.0);
-  --color6: rgba(0, 184, 148,1.0);
   --color7: rgba(0, 206, 201,1.0);
-  --color8: rgba(9, 132, 227,1.0);
   --color9: rgba(108, 92, 231,1.0);
   --color10: rgba(178, 190, 195,1.0);
   --color11: rgba(255, 234, 167,1.0);
@@ -41,15 +38,29 @@
   --ink: #161823; // 墨色
   --error: #ff461f; // 朱砂
   --dark-error: rgb(214, 48, 49);
-  --warning: #ffa631; // 橘色
+  --warning: #ffb61e;
+  --dark-warning: #fa8c35; // 橘色
   --lightBlue: #d2f6ff;
   --blue-border: #afcfff;
   --azure: #70f3ff; // 蔚蓝
   --success: #2add9c; // 碧绿
-  --oilGreen: #00bc12; // 油绿
+  --color6: rgba(0, 184, 148,1.0);
+  --dark-success: #00bc12; // 油绿
   --lightCyan: #14ffec; // 淡青
+  --opacity-cyan-1: rgba(112, 243, 255, .1);
+  --opacity-cyan-3: rgba(112, 243, 255, .3);
+  //--dark-primary: rgb(3, 110, 184);
+  --dark-primary: rgb(9, 132, 227);
   --primary: #0095d9;
-  --dark-primary: rgb(3, 110, 184);
+
+  /** dark-theme colors */
+  --dark-theme-body: #0d1117;
+  --dark-theme-header: #161b22;
+  --dark-txt: rgb(150, 156, 169);
+  --dark-hover-txt: rgb(201, 209, 217);
+  --dark-theme-tip: rgb(139, 148, 158);
+  --dark-theme-border: #30363d;
+  --dark-half-black: rgba(0, 0, 0, 0.5);
 }
 
 /* flex 布局 */
@@ -126,13 +137,19 @@
   left: 0;
   top: 0;
 }
-
+// 蒙层
+.mask {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--mask);
+}
 /**
   提示信息
 */
 .error-tip,
 .warning-tip,
-.success-tip {
+.success-tip,
+.info-tip {
   font-size: 12px;
   margin: 0 10px;
 }
@@ -148,6 +165,10 @@
 .success-tip,
 .success {
   color: var(--success);
+}
+.info-tip,
+.info {
+  color: var(--primary);
 }
 
 .tip {
@@ -240,25 +261,34 @@
     color: var(--primary);
     border-color: var(--primary);
   }
+  &[disabled] {
+    background-color: var(--lightBg)!important;
+    color: var(--tipColor)!important;
+    cursor: not-allowed!important;
+  }
   &.btn-primary,
   &.btn-danger,
   &.btn-success {
     color: var(--white);
     border: none;
-    &[disabled] {
-      background-color: var(--lightBg);
-      color: var(--tipColor);
-      cursor: not-allowed;
-    }
   }
   &.btn-primary {
-    background-color: var(--primary);
+    background-color: var(--dark-primary);
+    &:hover {
+      background-color: var(--primary);
+    }
   }
   &.btn-danger {
-    background-color: var(--error);
+    background-color: var(--dark-error);
+    &:hover {
+      background-color: var(--error);
+    }
   }
   &.btn-success {
-    background-color: var(--success);
+    background-color: var(--dark-success);
+    &:hover {
+      background-color: var(--success);
+    }
   }
 }
 
@@ -286,10 +316,22 @@
   transform: translateX(200px);
 }
 
-// 淡入淡出
 .fade-enter-active,
-.fade-leave-active {
+.fade-leave-active,
+.fadeUp-enter-active,
+.fadeUp-leave-active {
+  transition: all .5s;
+}
+// 淡入淡出
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
+}
+// 上方淡入 / 淡出
+.fadeUp-enter,
+.fadeUp-leave-to {
+  opacity: 0;
+  transform: translateY(-100px);
 }
 
 .iconfont {
@@ -297,25 +339,21 @@
 }
 
 // 自定义偏移淡入 - 留在最终位置
-.translate-fade-in {
-  animation: translateFadeIn 0.5s ease forwards;
-}
+//.translate-fade-in {
+//  animation: translateFadeIn 0.5s ease forwards;
+//}
+//@keyframes translateFadeIn {
+//  0% {
+//    opacity: 0;
+//    transform: translateX(50px);
+//  }
+//  100% {
+//    opacity: 1;
+//    transform: translateX(0);
+//  }
+//}
 
-@keyframes translateFadeIn {
-  0% {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-
-/**
-  content 内容区
-*/
+/** content 内容区 */
 .content {
   width: 800px;
   border: 1px solid var(--border);
@@ -324,5 +362,4 @@
   margin: 0 auto;
   padding: 50px 0;
   position: relative;
-  // .info {}
 }

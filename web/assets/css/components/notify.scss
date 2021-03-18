@@ -1,18 +1,13 @@
 /**
   notify transition
 */
-.notify-enter-active,
-.notify-leave-active {
+.scale-enter-active,
+.scale-leave-active {
   transition: all .5s;
 }
 
-//.notify-enter,
-//.notify-leave-to {
-//  transform: translateX(300px);
-//  opacity: 0;
-//}
-.notify-enter,
-.notify-leave-to {
+.scale-enter,
+.scale-leave-to {
   transform: translate(-50%, -50%) scale(0);
 }
 
@@ -30,8 +25,8 @@
   background-color: var(--snowWhite);
   border-radius: 5px;
   padding: 20px;
-  &.notify-enter,
-  &.notify-leave-to {
+  &.scale-enter,
+  &.scale-leave-to {
     transform: translate(-50%, -50%) scale(0);
   }
   .notify-header,

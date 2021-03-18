@@ -10,10 +10,10 @@ export interface ResponseRes {
   message: string;
 }
 
-export interface QueryArticleParams {
-  uid: string;
-  id: number | string;
-}
+// export interface QueryArticleParams {
+//   uid: string;
+//   id: number | string;
+// }
 
 export interface ArticleItem {
   id: number;
@@ -42,10 +42,18 @@ export interface ArticleDetail extends ArticleItem {
   musicName: string;
 }
 
-export interface NotificationOptions {
+interface InfoOptions {
   type: 'success' | 'info' | 'warning' | 'error';
-  title: string;
   message: string;
+}
+
+export interface NotificationOptions extends InfoOptions {
+  title: string;
+}
+
+export interface ConfirmOptions extends InfoOptions {
+  okTxt?: string;
+  cancelTxt?: string;
 }
 
 export interface AnyInstance {

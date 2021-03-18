@@ -89,7 +89,7 @@ export default defineComponent({
     }
     &:nth-child(3) {
       //animation-delay: 0s;
-      background-color: var(--oilGreen);
+      background-color: var(--dark-success);
     }
     &:nth-child(4) {
       animation-delay: 0.2s;

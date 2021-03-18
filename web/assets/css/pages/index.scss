@@ -22,7 +22,7 @@
         border-radius: 5px;
         cursor: default;
         user-select: none;
-        filter: drop-shadow(5px 0px 5px var(--primary)) invert(0%);
+        filter: drop-shadow(5px 0px 5px var(--dark-primary)) invert(0%);
         &.nav-show {
           color: var(--lightTxt);
         }
@@ -37,7 +37,7 @@
         height: 40px;
         cursor: pointer;
         //color: var(--error);
-        color: var(--primary);
+        color: var(--dark-primary);
         background-color: var(--white);
         border-radius: 5px;
         .iconfont {

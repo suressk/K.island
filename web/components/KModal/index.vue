@@ -60,24 +60,14 @@ export default defineComponent({
 
 <style lang="scss">
 .k-modal {
-  opacity: 1;
-  transition: all .5s;
   position: fixed;
   z-index: 49;
   left: 0;
   top: 0;
   right: 0;
   bottom: 0;
-  &.fade-enter,
-  &.fade-leave-to {
-    opacity: 0;
-    //transform: scale(0.5);
-  }
   .mask {
-    width: 100vw;
-    height: 100vh;
     z-index: 50;
-    background-color: var(--mask);
   }
   .modal-content {
     min-width: 40vw;
