@@ -11,7 +11,12 @@ export function createConnection () {
     });
 }
 
-export function connectQuery (sqlStr: string, params: any[], success: (result: any) => void, error: (err: Query.QueryError) => void) {
+export function connectQuery (
+    sqlStr: string,
+    params: any[],
+    success: (result: any) => void,
+    error: (err: Query.QueryError) => void
+) {
     const connection = createConnection()
     connection.connect()
     connection.query(sqlStr, params, ((err: any, result: any) => {

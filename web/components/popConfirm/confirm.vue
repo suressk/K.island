@@ -12,8 +12,8 @@
           <p class="confirm-msg" v-text="message"></p>
         </div>
         <div class="confirm-footer">
-          <button class="btn" @click="handleCancel">{{ cancelTxt }}</button>
-          <button class="btn btn-primary" @click="handleConfirm">{{ okTxt }}</button>
+          <button class="btn" @click="cancel">{{ cancelTxt }}</button>
+          <button class="btn btn-primary" @click="confirm">{{ okTxt }}</button>
         </div>
       </div>
     </div>
@@ -42,7 +42,12 @@ export default {
   //   // }
   // },
   methods: {
-    handleCancel() {
+    cancel() {
+      this.onCancel && this.onCancel()
+      this.close()
+      // this.$emit('onCancel')
+    },
+    close() {
       this.closed = true
       this.onClose()
     },
@@ -51,8 +56,10 @@ export default {
       this.$destroy()
       this.$el.parentNode.removeChild(this.$el)
     },
-    handleConfirm() {
-      this.$emit('confirm')
+    confirm() {
+      this.onOk && this.onOk()
+      this.close()
+      // this.$emit('onOk')
     }
   },
   watch: {
