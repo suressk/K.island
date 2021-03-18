@@ -1,9 +1,9 @@
 <template>
-  <transition name="notify">
+  <transition name="scale">
     <div
       class="notification"
       v-show="visible"
-      :style="verticalOffset"
+      :style="customStyle"
       @mouseenter="stopDestroy"
       @mouseleave="startDestroy"
     >
@@ -18,6 +18,7 @@
 
 <script>
 import { addListener, removeListener } from '@/utils/util'
+
 export default {
   name: 'Notification',
   data () {
@@ -28,16 +29,15 @@ export default {
       message: '',
       timer: null,
       duration: 4000,
-      // onClose: null,
       offset: 0,
       zIndex: 99,
       closed: false
     }
   },
   computed: {
-    verticalOffset () {
+    customStyle ({ zIndex }) {
       // return `top: ${this.offset}px;`
-      return `z-index: ${this.zIndex};`
+      return `z-index: ${zIndex};`
     }
   },
   methods: {
@@ -77,3 +77,6 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+@import "assets/css/components/notify.scss";
+</style>

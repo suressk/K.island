@@ -71,8 +71,10 @@ function getWindowProp(type: string) {
   return document.documentElement[type] || document.body[type]
 }
 
-let rafId = -1
-
+/**
+ * 滚动条滚动事件处理
+ * */
+let rafId = -1 // 存储调用 requestAnimationFrame() 的返回值，用于取消动画
 export function singleScroll (domSelector: string, type: string, speed = 10) {
   // DOM元素 计算位置
   const dom = document.querySelector(domSelector) as HTMLElement
@@ -98,13 +100,13 @@ export function singleScroll (domSelector: string, type: string, speed = 10) {
 
   function handleScroll () {
     let scrollTop = getWindowProp('scrollTop')
-    let len = (target - scrollTop) / speed
+    let distance = (target - scrollTop) / speed
+    distance = distance > 0 ? Math.ceil(distance) : Math.floor(distance)
     // const distance = scrollTop / speed // 减速回滚 —— 每次滚动距离
     // const distance = (scrollTop / speed) | 0 // 取整
     // const distance = ~~(scrollTop / speed) // 取整
     // const distance = Math.floor(scrollTop / speed)
-    len = len > 0 ? Math.ceil(len) : Math.floor(len)
-    scrollTop = document.body.scrollTop = document.documentElement.scrollTop = scrollTop + len
+    scrollTop = document.body.scrollTop = document.documentElement.scrollTop = scrollTop + distance
 
     let canceled
     if (type === 'top') {
@@ -112,7 +114,7 @@ export function singleScroll (domSelector: string, type: string, speed = 10) {
     // } else if (type === 'comment') {
     //   canceled = (lastScrollTop && scrollTop > lastScrollTop) || scrollTop <= target || scrollTop === 0
     } else {
-      canceled = scrollTop <= lastScrollTop || (scrollTop + len) >= target
+      canceled = scrollTop <= lastScrollTop || (scrollTop + distance) >= target
     }
     // 到达目标位置或滚动滚轮取消滚动
     if (canceled) {
