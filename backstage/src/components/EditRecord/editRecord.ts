@@ -68,6 +68,8 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
   // 文章所有信息
   const recordInfo = reactive<RecordInfo>({
     title: '',
+    music: '',
+    musicName: '',
     tag: 'JS',
     introduce: '',
     cover: '',
@@ -112,6 +114,8 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
     recordInfo.introduce = articleInfo.introduce
     recordInfo.cover = articleInfo.cover
     recordInfo.content = articleInfo.content
+    recordInfo.music = articleInfo.music
+    recordInfo.musicName = articleInfo.musicName
     previewContent.value = parseMarkdownFile(recordInfo.content)
   }
 
@@ -124,6 +128,8 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
     recordInfo.introduce = ''
     recordInfo.cover = ''
     recordInfo.content = ''
+    recordInfo.music = ''
+    recordInfo.musicName = ''
     previewContent.value = parseMarkdownFile(recordInfo.content)
   }
 

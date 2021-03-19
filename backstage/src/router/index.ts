@@ -62,7 +62,7 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to: any, from: any, next: any) => {
   // next()
   const token = getStorageToken() // null | token
   // 去往非登录页且无 token
@@ -74,7 +74,7 @@ router.beforeEach((to, from, next) => {
 })
 
 // 路由后置守卫 由路由信息 设置标签页标题
-router.afterEach(to => {
+router.afterEach((to: any) => {
   let title: string
   if (to.meta && to.meta.title) {
     title = to.meta.title + ' - K.island'

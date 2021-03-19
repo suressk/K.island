@@ -17,6 +17,14 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="音乐:">
+        <el-input type="text" v-model="music" size="small" clearable />
+      </el-form-item>
+
+      <el-form-item label="音乐名:">
+        <el-input type="text" v-model="musicName" size="small" clearable />
+      </el-form-item>
+
       <el-form-item>
         <upload-file-button
           icon="el-icon-s-promotion"
@@ -94,9 +102,11 @@ import UploadFileButton from '@/components/custom/UploadFileButton.vue'
 import tabIndent from '@/directives/tabIndent'
 import { PropsType } from '@/@types'
 import { SetupContext } from '@vue/runtime-core'
-import { ElForm, ElFormItem, ElButton, ElInput, ElRow, ElCol, ElTag, ElSelect, ElOption } from 'element-plus'
-// eslint-disable-next-line import/no-named-default
-import { default as useEdit } from './editRecord'
+import {
+  ElForm, ElFormItem, ElButton, ElInput,
+  ElRow, ElCol, ElTag, ElSelect, ElOption
+} from 'element-plus'
+import useEdit from './editRecord'
 // import { deleteImage } from '@/api/api'
 // import { Notify } from '@/utils/util'
 

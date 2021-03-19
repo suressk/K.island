@@ -13,8 +13,7 @@ export default {
           const startPoint = el.selectionStart || 0
           const endPoint = el.selectionEnd || 0
 
-          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-          // @ts-ignore
+          /* @ts-ignore */
           let selected = window.getSelection() ? window.getSelection().toString() : ''
           selected = indent + selected.replace(/\n/g, '\n' + indent)
           el.value =

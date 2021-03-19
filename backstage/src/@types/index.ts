@@ -28,26 +28,28 @@ export interface LoginResponse extends ResponseData {
   };
 }
 
-export interface RecordInfo {
-  title: string;
-  tag: string;
-  introduce: string;
-  content: string;
-  cover: string;
-  ctime?: number;
+interface ArticleInfo {
   id?: number;
   uid?: string;
-}
-
-export interface RecordItemInfo {
   title: string;
   tag: string;
   introduce: string;
   cover: string;
-  ctime: number;
+  music?: string;
+  musicName?: string;
+  ctime?: number;
+  utime?: number;
+  content?: string;
+}
+
+export interface RecordInfo extends ArticleInfo {
+  content: string;
+}
+
+export interface RecordItemInfo extends ArticleInfo {
   id: number;
   uid: string;
-  content?: string;
+  ctime: number;
 }
 
 export interface LoginInfo {
