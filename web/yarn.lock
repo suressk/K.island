@@ -1516,6 +1516,11 @@
     "@types/webpack" "*"
     terser "^4.3.9"
 
+"@types/three@^0.126.1":
+  version "0.126.1"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.126.1.tgz#f53450d4218a7c8bfb17af062f9d8473c8e241e0"
+  integrity sha512-GR7e3d9CYYmwIR3HDiRZDFpoHIp2Vg5IbULcIjL296C8VbjruGwJ7Br1GTBkslEVfkezKrtJTf7KuqoIt3oYTg==
+
 "@types/uglify-js@*":
   version "3.11.1"
   resolved "https://registry.yarnpkg.com/@types/uglify-js/-/uglify-js-3.11.1.tgz#97ff30e61a0aa6876c270b5f538737e2d6ab8ceb"

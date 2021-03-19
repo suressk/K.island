@@ -12,8 +12,8 @@
           <p class="confirm-msg" v-text="message"></p>
         </div>
         <div class="confirm-footer">
-          <button class="btn" @click="handleCancel">{{ cancelTxt }}</button>
-          <button class="btn btn-primary" @click="handleConfirm">{{ okTxt }}</button>
+          <button class="btn" @click="cancel">{{ cancelTxt }}</button>
+          <button class="btn btn-primary" @click="confirm">{{ okTxt }}</button>
         </div>
       </div>
     </div>
@@ -42,17 +42,26 @@ export default {
   //   // }
   // },
   methods: {
-    handleCancel() {
+    cancel() {
+      this.onCancel && this.onCancel()
+      this.close()
+      // this.$emit('onCancel')
+    },
+    close() {
       this.closed = true
-      this.onClose()
+      this.$nextTick(() => {
+        this.onClose()
+      })
     },
     destroyElement() {
       removeListener(this.$el, 'transitionend', this.destroyElement)
       this.$destroy()
       this.$el.parentNode.removeChild(this.$el)
     },
-    handleConfirm() {
-      this.$emit('confirm')
+    confirm() {
+      this.close()
+      this.onOk && this.onOk()
+      // this.$emit('onOk')
     }
   },
   watch: {
@@ -60,6 +69,9 @@ export default {
       if (val) {
         this.visible = false
         addListener(this.$el, 'transitionend', this.destroyElement)
+        document && (document.body.style.overflowY = '')
+      } else {
+        document && (document.body.style.overflowY = 'hidden')
       }
     }
   }
@@ -71,9 +83,12 @@ export default {
   min-width: 300px;
   max-width: 90%;
   min-height: 100px;
+  max-height: 90%;
+  overflow: auto;
   border-radius: 5px;
   background-color: var(--white);
   padding: 20px;
+  animation: bounceIn .5s ease-in-out forwards;
   .confirm-content {
     .iconfont {
       font-size: 2rem;

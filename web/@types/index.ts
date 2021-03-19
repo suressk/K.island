@@ -54,6 +54,8 @@ export interface NotificationOptions extends InfoOptions {
 export interface ConfirmOptions extends InfoOptions {
   okTxt?: string;
   cancelTxt?: string;
+  onOk?: Function;
+  onCancel?: Function;
 }
 
 export interface AnyInstance {

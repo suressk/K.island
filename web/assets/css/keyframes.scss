@@ -1,0 +1,30 @@
+// 缩放弹入（居中定位元素可用）
+@keyframes bounceIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  80% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  90% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+// 右侧偏移淡入
+//@keyframes rightFadeIn {
+//  0% {
+//    opacity: 0;
+//    transform: translateX(50px);
+//  }
+//  100% {
+//    opacity: 1;
+//    transform: translateX(0);
+//  }
+//}

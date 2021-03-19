@@ -128,9 +128,9 @@ export default function useIndex() {
       loadingTimer = setTimeout(() => {
         nextTick(() => {
           Notification({
-            title: 'o(╥﹏╥)o',
+            title: '嗐~ o(╥﹏╥)o',
             type: 'error',
-            message: '嗐~ 更多文章加载失败辣，记得联系一下小 K. 吼'
+            message: '更多文章加载失败辣，麻烦联系小 K. 说明一下'
           })
           commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOAD_MORE)
         })

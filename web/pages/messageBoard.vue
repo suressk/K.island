@@ -61,7 +61,9 @@ export default defineComponent({
       Confirm({
         type: 'warning',
         message: '确认吗',
-        okTxt: '确认'
+        onOk: () => {
+          console.log('确认按钮点击')
+        }
       })
     }
 

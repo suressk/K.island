@@ -47,19 +47,24 @@
           class="content-item"
           @click="handleToDetail(item)"
         >
-          <div class="cover flex-center trans-all-03">
-            <img v-if="item.cover" :src="item.cover" :alt="item.title">
+          <div class="cover flex-center">
+            <img
+              v-if="item.cover"
+              v-lazy="item.cover"
+              src="~@/static/images/sunny.webp"
+              :alt="item.title"
+            >
           </div>
           <div class="info">
             <span class="time">{{ item.time.month }} {{ item.time.day }}, {{ item.time.year }}</span>
             <span class="title two-line-txt">{{ item.title }}</span>
             <span class="introduce three-line-txt">{{ item.introduce }}</span>
             <div class="suffix d-flex">
-              <span class="r-hover views d-flex">
+              <span class="views d-flex">
                 <i class="iconfont icon-view" />
                 {{ item.views }}
               </span>
-              <span class="g-hover tag d-flex">
+              <span class="tag d-flex">
                 <i class="iconfont icon-tag" />
                 {{ item.tag }}
               </span>
@@ -135,7 +140,28 @@ export default defineComponent({
       }
     } catch (e) {
       return {
-        articleList: []
+        articleList: [
+          {
+            id: 1,
+            uid: '12sd',
+            title: 'Test Title',
+            introduce: 'J i a n J i e',
+            time: {
+              year: '2021',
+              month: 'Feb',
+              monthNum: 1,
+              day: '21st',
+              hour: '13',
+              minute: '14',
+            },
+            tag: 'JS',
+            views: 250,
+            liked: 162,
+            cover: 'https://cdn.pixabay.com/photo/2020/12/27/12/07/sunrise-5863751_960_720.png',
+            ctime: 1616134131862,
+            utime: 1616134131862,
+          }
+        ]
       }
     }
   },

@@ -24,6 +24,8 @@ function ShaderPass ( shader, textureID ) {
   this.scene.add( this.quad );
 }
 
+ShaderPass.prototype = ShaderPass.__proto__
+
 ShaderPass.prototype = Object.assign( Object.create( Pass.prototype ), {
   constructor: ShaderPass,
   render: function( renderer, writeBuffer, readBuffer, delta, maskActive ) {

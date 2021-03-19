@@ -1,3 +1,4 @@
+@import "keyframes.scss";
 /**
   colors variable
 */
@@ -337,21 +338,6 @@
 .iconfont {
   cursor: pointer;
 }
-
-// 自定义偏移淡入 - 留在最终位置
-//.translate-fade-in {
-//  animation: translateFadeIn 0.5s ease forwards;
-//}
-//@keyframes translateFadeIn {
-//  0% {
-//    opacity: 0;
-//    transform: translateX(50px);
-//  }
-//  100% {
-//    opacity: 1;
-//    transform: translateX(0);
-//  }
-//}
 
 /** content 内容区 */
 .content {

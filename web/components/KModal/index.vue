@@ -9,7 +9,7 @@
           <i class="iconfont icon-close" @click="updateVisible" />
         </div>
 
-        <div class="modal-body">
+        <div class="modal-body scroller-light">
           <slot></slot>
         </div>
 
@@ -54,6 +54,15 @@ export default defineComponent({
     return {
       ...useModal()
     }
+  },
+  watch: {
+    visible(val) {
+      if (!val) {
+        document && (document.body.style.overflowY = '')
+      } else {
+        document && (document.body.style.overflowY = 'hidden')
+      }
+    }
   }
 })
 </script>
@@ -72,6 +81,8 @@ export default defineComponent({
   .modal-content {
     min-width: 40vw;
     min-height: 40vh;
+    max-width: 90vw;
+    max-height: 90vh;
     z-index: 51;
     background-color: var(--white);
     border-radius: 10px;
@@ -84,6 +95,8 @@ export default defineComponent({
     }
     .modal-body {
       flex: 1;
+      max-height: calc(100% - 90px);
+      overflow: auto;
     }
     .modal-footer {
       height: 40px;

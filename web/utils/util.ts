@@ -66,7 +66,7 @@ export function debounce (fn: Function, delay: number, immediate: boolean = fals
   }
 }
 
-function getWindowProp(type: string) {
+export function getWindowProp(type: string) {
   // @ts-ignore
   return document.documentElement[type] || document.body[type]
 }
