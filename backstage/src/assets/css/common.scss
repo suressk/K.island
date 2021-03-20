@@ -1,5 +1,13 @@
 @import "./colors.scss";
 
+:root {
+  font-family: Consolas, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --dark-primary: rgb(9, 132, 227);
+  --primary: #0095d9;
+  --success: #2add9c;
+  --opacity-cyan-1: rgba(112, 243, 255, .1);
+}
+
 /* flex 布局 */
 .d-flex,
 .flex-between,

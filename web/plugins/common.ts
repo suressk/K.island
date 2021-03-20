@@ -39,7 +39,6 @@ const common = {
 
     // 使用函数，切换路由，可清除监听事件
     const watch = () => {
-      // const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       throttle(() => listenList.map(img => lazyLoadImg(img)) , 100)()
     }
 

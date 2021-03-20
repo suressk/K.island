@@ -84,11 +84,11 @@ export function addRecord (
     success: (result: any) => void,
     error: (err: Query.QueryError) => void
 ) {
-    const { title, tag, introduce, content, cover } = options
-    const sqlStr = 'INSERT INTO records (`uid`, `title`, `content`, `introduce`, `views`, `tag`, `cover`, `ctime`, `utime`, `is_delete`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    const { title, tag, introduce, content, cover, music, musicName } = options
+    const sqlStr = 'INSERT INTO records (`uid`, `title`, `content`, `introduce`, `views`, `tag`, `cover`, `music`, `musicName`, `ctime`, `utime`, `is_delete`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     const ctime = new Date().getTime()
     const uid = uuid()
-    const params = [uid, title, content, introduce, 10, tag, cover, ctime, ctime, 0]
+    const params = [uid, title, content, introduce, 10, tag, cover, music, musicName, ctime, ctime, 0]
     connectQuery(sqlStr, params, success, error)
 }
 

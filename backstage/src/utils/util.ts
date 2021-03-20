@@ -1,6 +1,6 @@
-import { ElNotification } from 'element-plus'
+import { ElNotification, ElMessageBox } from 'element-plus'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-import { TokenInfo } from '@/@types'
+import { TokenInfo, ArticleInfo, MessageType } from '@/@types'
 
 /**
  * Notification 消息通知
@@ -9,10 +9,27 @@ import { TokenInfo } from '@/@types'
  * @param {*} message 提示信息内容
  * @param {*} duration 持续时长（s）
  * */
-export function Notify (type = 'success', title: string, message: string, duration = 3000) {
-  /* eslint-disable */
-  // @ts-ignore
+export function Notify (
+  type: MessageType = 'success',
+  title: string,
+  message: string,
+  duration = 3000
+) {
   ElNotification({ type, title, message, duration })
+}
+
+/**
+ * 确认
+ * */
+export function Confirm (
+  type: MessageType = 'warning',
+  title: string,
+  message: string
+) {
+  return ElMessageBox.confirm(message, 'Confirm', {
+    type,
+    title
+  })
 }
 
 /**
@@ -94,4 +111,27 @@ export function deleteCookie (name: string): void {
     expired.setTime(expired.getTime() - 1)
     document.cookie = name + '=' + cookieVal + ';expires=' + expired.toUTCString()
   }
+}
+
+interface YearData<T> {
+  [prop: string]: T[];
+}
+
+/**
+ * 平铺按年分组的文章列表
+ * */
+export function plainArticleList (records: YearData<ArticleInfo>) {
+  const years = Object.keys(records)
+  const len = years.length
+  const result: ArticleInfo[] = []
+  for (let i = 0; i < len; i++) {
+    const list = records[years[i]].map(item => {
+      return {
+        ...item,
+        show: item.is_delete === 0
+      }
+    })
+    result.push(...list)
+  }
+  return result
 }

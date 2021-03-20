@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { PropsType } from './echartsTypes'
-import useEcharts from './echarts'
+import useEcharts from './useEcharts'
 
 export default {
   name: 'VueEcharts',

@@ -74,6 +74,11 @@ export default defineComponent({
       showAddMsgModal,
       confirm
     }
+  },
+  head () {
+    return {
+      title: '留言板 — 留下你对世间生活的感悟吧 | K.island'
+    }
   }
 })
 </script>

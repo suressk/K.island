@@ -1,5 +1,8 @@
 <template>
-  <div class="edit-record">
+  <div class="edit-record scroller-light">
+    <h3 class="tip-title">
+      字里行间，或能感受些许岁月的沧桑
+    </h3>
     <!-- 头部控件 -->
     <el-form :inline="true" class="base-info d-flex">
       <el-form-item label="标题:">

@@ -49,7 +49,6 @@
         >
           <div class="cover flex-center">
             <img
-              v-if="item.cover"
               v-lazy="item.cover"
               src="~@/static/images/sunny.webp"
               :alt="item.title"

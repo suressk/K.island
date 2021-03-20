@@ -54,6 +54,8 @@ export interface AddRecordOptions {
     introduce: string;
     content: string;
     cover: string;
+    music: string;
+    musicName: string;
 }
 
 export interface UpdateRecordOptions {

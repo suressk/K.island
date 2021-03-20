@@ -38,6 +38,7 @@ import { Notify, setStorageToken, setCookie } from '@/utils/util'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { LoginInfo, LoginResponse } from '@/@types'
 
+/* eslint-disable */
 export default {
   name: 'Login',
   setup () {
@@ -54,7 +55,6 @@ export default {
       login({
         username: loginInfo.username,
         password: md5(loginInfo.password)
-        /* eslint-disable */
         // @ts-ignore
       }).then((res: LoginResponse) => {
         // @ts-ignore

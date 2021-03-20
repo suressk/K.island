@@ -2,7 +2,7 @@
   <section class="management-records">
     <!--  查询筛选条件  -->
     <div class="filter-conditions">
-      <el-input size="small" placeholder="按标题模糊查询" style="width: 250px; margin-right: 20px" />
+      <el-input size="small" v-model="searchTitle" placeholder="按标题模糊查询" style="width: 250px; margin-right: 20px" />
       <el-button type="primary" size="small">查询</el-button>
     </div>
     <!--  文章列表  -->
@@ -15,11 +15,10 @@
       >
         <!--<el-table-column type="selection" width="55" />-->
         <el-table-column
-          label="日期"
+          label="时间"
           align="center"
         >
           <template #default="scope">
-            <!--<i class="el-icon-time"></i>-->
             <span style="margin-left: 10px">{{ dayjs(scope.row.ctime).format(timeFormat) }}</span>
           </template>
         </el-table-column>
@@ -57,6 +56,21 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="显示"
+          align="center"
+        >
+          <template #default="scope">
+            <el-switch
+              v-model="scope.row.show"
+              inactive-color="#ff4949"
+              active-color="#13ce66"
+              active-text="显示"
+              inactive-text="隐藏"
+              @change="handleUpdateRecordShow"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column
           label="Manage"
           align="center"
         >
@@ -65,12 +79,16 @@
               type="success"
               size="mini"
               @click="handleShowDetail(scope.row)"
-            >详情</el-button>
+            >
+              详情
+            </el-button>
             <el-button
               type="primary"
               size="mini"
               @click="handleShowEdit(scope.row)"
-            >编辑</el-button>
+            >
+              编辑
+            </el-button>
             <el-popconfirm
               confirmButtonText='是的'
               cancelButtonText='点错啦'
@@ -120,11 +138,15 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable */
 import ArticleDetailDrawer from '@/components/custom/ArticleDetailDrawer.vue'
 import EditArticle from '@/components/EditRecord/index.vue'
-// eslint-disable-next-line import/no-named-default
 import { default as useManage } from './manageRecords'
-import { ElInput, ElButton, ElTable, ElTableColumn, ElTag, ElPagination, ElPopconfirm, ElDrawer, ElDialog } from 'element-plus'
+import {
+  ElInput, ElButton, ElTable, ElTableColumn,
+  ElTag, ElPagination, ElPopconfirm,
+  ElDrawer, ElSwitch, ElDialog
+} from 'element-plus'
 
 export default {
   name: 'ManagementRecords',
@@ -138,6 +160,7 @@ export default {
     ElPopconfirm,
     ElDrawer,
     ElDialog,
+    ElSwitch,
     ArticleDetailDrawer,
     EditArticle
   },

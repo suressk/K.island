@@ -1,7 +1,17 @@
-import { postAction, postUploadImage, deleteAction, getAction } from '@/api/manage'
-
-// @types
-import { DeleteImageParams, LoginInfo, RecordInfo, GetListParams, RecordIds } from '@/@types'
+import {
+  getAction,
+  postAction,
+  putAction,
+  postUploadImage,
+  deleteAction
+} from '@/api/manage'
+import {
+  DeleteImageParams,
+  LoginInfo,
+  RecordInfo,
+  GetListParams,
+  RecordIds
+} from '@/@types'
 
 // const postCompressImage = (params: FormData) => axios('https://zhitu.isux.us/index.php/preview/imgcompress', {
 //   data: params,
@@ -20,6 +30,7 @@ export const addRecord = (params: RecordInfo) => postAction('/back/record/add', 
 export const getRecordList = (params: GetListParams) => getAction('/back/record/list', params)
 export const getRecordDetail = (params: RecordIds) => getAction('/back/record/detail', params)
 export const deleteRecord = (params: RecordIds) => postAction('/back/record/update', params)
+export const updateRecord = (params: RecordIds) => putAction('/back/record/update', params)
 
 // 上传封面图
 export const uploadCover = (fileData: FormData) => postUploadImage('/image/upload/cover', fileData)
@@ -27,13 +38,4 @@ export const uploadCover = (fileData: FormData) => postUploadImage('/image/uploa
 export const uploadIllustration = (fileData: FormData) => postUploadImage('/image/upload/illustration', fileData)
 
 // 删除图片
-export const deleteImage = (data: DeleteImageParams | undefined) => deleteAction('/image', data)
-
-// export {
-//   login,
-//   logout,
-//   addRecord,
-//   uploadCover,
-//   uploadIllustration,
-//   deleteImage
-// }
+export const deleteImage = (data: DeleteImageParams | undefined) => deleteAction('/image/delete', data)

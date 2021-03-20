@@ -1,14 +1,21 @@
 <template>
   <aside class="aside-menu scroller" :class="{ shrink: !extendMenu }">
+    <div class="avatar flex-center">
+      <img src="../assets/images/avatar.png" alt="avatar">
+    </div>
     <router-link
       v-for="menuItem in menuList"
       :key="menuItem.label"
       :to="menuItem.path"
-      class="menu-item flex-center txt-overflow trans-all-05"
+      class="menu-item flex-center txt-overflow"
     >
       <i class="iconfont" :class="menuItem.icon" />
       <span v-show="extendMenu">{{ menuItem.label }}</span>
     </router-link>
+    <span class="menu-item flex-center txt-overflow" @click="handleLogout">
+      <i class="iconfont icon-logout" />
+      <span v-show="extendMenu">退出登录</span>
+    </span>
     <ElSwitch
       class="extend-switch"
       v-model="extendMenu"
@@ -20,25 +27,42 @@
 
 <script lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElSwitch } from 'element-plus'
+import { Notify, Confirm, deleteCookie, removeStorageItem } from '@/utils/util'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 const menuList = [
-  { label: '统计 / 概览', path: '/overview', icon: 'icon-overview' },
-  { label: '心情 / 杂记', path: '/add', icon: 'icon-add' },
-  { label: '杂货 - 整理', path: '/management', icon: 'icon-management' },
-  { label: '吐槽 / 赞赏', path: '/reply', icon: 'icon-reply' }
+  { label: '统计概览', path: '/overview', icon: 'icon-overview' },
+  { label: '新增文章', path: '/add', icon: 'icon-add' },
+  { label: '文章管理', path: '/management', icon: 'icon-management' },
+  { label: '评论回复', path: '/reply', icon: 'icon-reply' }
 ]
 
 export default {
   name: 'AsideMenu',
   components: { ElSwitch },
   setup () {
+    const router = useRouter()
     // 收缩菜单项
     const extendMenu = ref<boolean>(false)
 
+    function handleLogout () {
+      Confirm('warning', '', '确定退出?').then(() => {
+        removeStorageItem(ACCESS_TOKEN)
+        deleteCookie(ACCESS_TOKEN)
+        Notify('success', 'SUCCESS', '退出登录')
+        // 1s 后跳转到登录页
+        setTimeout(() => {
+          router.push('/login')
+        }, 1000)
+      }).catch(() => undefined)
+    }
+
     return {
       menuList,
-      extendMenu
+      extendMenu,
+      handleLogout
     }
   }
 }
@@ -47,13 +71,23 @@ export default {
 <style lang="scss">
 .aside-menu {
   width: 180px;
-  height: calc(100vh - 60px);
-  background-color: #323232;
+  height: 100vh;
+  background-color: var(--primary);
   padding: 20px 0;
   color: #fff;
   position: relative;
   flex-shrink: 0;
   transition: width .5s;
+  overflow: hidden;
+  .avatar {
+    width: 60%;
+    border-radius: 50%;
+    margin: 20px auto;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
   .menu-item {
     padding: 20px 0 20px 20px;
     display: block;
@@ -61,10 +95,13 @@ export default {
     color: inherit;
     border-right: 5px solid transparent;
     font-size: 14px;
-    &.router-link-exact-active {
-      background-color: #212121;
-      color: #14ffec;
-      border-right-color: #0d7377;
+    transition: all .5s;
+    cursor: pointer;
+    &.router-link-exact-active,
+    &:hover {
+      background-color: #fff;
+      color: var(--dark-primary);
+      border-right-color: var(--success);
     }
     .iconfont {
       padding: 5px;

@@ -14,5 +14,5 @@ export default {
 @import "assets/css/marked.scss";
 @import "assets/css/common.scss";
 @import "assets/css/media.scss";
-@import "https://at.alicdn.com/t/font_2285304_874xpll9ndh.css";
+@import "https://at.alicdn.com/t/font_2285304_c6mcr3ld3yf.css";
 </style>

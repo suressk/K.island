@@ -1,5 +1,5 @@
 import { reactive, ref, nextTick, onMounted } from 'vue'
-import { Notify } from '@/utils/util'
+import { Notify, plainArticleList } from '@/utils/util'
 import { RecordIds, GetListParams, PropsType, RecordInfo, RecordItemInfo } from '@/@types'
 import { getRecordList, getRecordDetail, deleteRecord } from '@/api/api'
 import dayjs from 'dayjs'
@@ -9,6 +9,7 @@ const timeFormat = 'YYYY-MM-DD HH:mm:ss'
 export default function useManage () {
   const records = ref<RecordInfo[]>([])
   const total = ref<number>(0)
+  const searchTitle = ref<string>('')
   const articleDetail: RecordItemInfo = reactive({
     id: -1,
     uid: '',
@@ -43,7 +44,8 @@ export default function useManage () {
       /* eslint-disable */
       // @ts-ignore
       if (res.success) {
-        records.value = res.data.list
+        // @ts-ignore
+        records.value = plainArticleList(res.data.list)
         total.value = res.data.total
       } else {
         // @ts-ignore
@@ -135,7 +137,17 @@ export default function useManage () {
     Notify('success', 'SUCCESS', '保存文章')
     console.log(info)
   }
+
+  /**
+   * true  => show
+   * false => hide
+   * */
+  function handleUpdateRecordShow (showValue: boolean) {
+    console.log(showValue)
+  }
+
   return {
+    searchTitle,
     records,
     total,
     articleDetail,
@@ -148,6 +160,7 @@ export default function useManage () {
     handleShowEdit,
     handleDeleteRecord,
     handleSaveRecord,
-    dayjs
+    dayjs,
+    handleUpdateRecordShow
   }
 }

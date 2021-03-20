@@ -28,18 +28,21 @@ export interface LoginResponse extends ResponseData {
   };
 }
 
-interface ArticleInfo {
-  id?: number;
-  uid?: string;
+export type MessageType = 'success' | 'warning' | 'info' | 'error'
+
+export interface ArticleInfo {
   title: string;
   tag: string;
   introduce: string;
   cover: string;
+  id?: number;
+  uid?: string;
   music?: string;
   musicName?: string;
   ctime?: number;
   utime?: number;
   content?: string;
+  is_delete?: number;
 }
 
 export interface RecordInfo extends ArticleInfo {
