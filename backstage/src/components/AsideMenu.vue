@@ -7,14 +7,14 @@
       v-for="menuItem in menuList"
       :key="menuItem.label"
       :to="menuItem.path"
-      class="menu-item flex-center txt-overflow"
+      class="menu-item d-flex txt-overflow"
     >
       <i class="iconfont" :class="menuItem.icon" />
       <span v-show="extendMenu">{{ menuItem.label }}</span>
     </router-link>
-    <span class="menu-item flex-center txt-overflow" @click="handleLogout">
+    <span class="menu-item d-flex txt-overflow" @click="handleLogout">
       <i class="iconfont icon-logout" />
-      <span v-show="extendMenu">退出登录</span>
+      <span v-show="extendMenu">Exit</span>
     </span>
     <ElSwitch
       class="extend-switch"
@@ -33,10 +33,10 @@ import { Notify, Confirm, deleteCookie, removeStorageItem } from '@/utils/util'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 const menuList = [
-  { label: '统计概览', path: '/overview', icon: 'icon-overview' },
-  { label: '新增文章', path: '/add', icon: 'icon-add' },
-  { label: '文章管理', path: '/management', icon: 'icon-management' },
-  { label: '评论回复', path: '/reply', icon: 'icon-reply' }
+  { label: 'Overview', path: '/overview', icon: 'icon-overview' },
+  { label: 'New Record', path: '/add', icon: 'icon-add' },
+  { label: 'Manage Records', path: '/management', icon: 'icon-management' },
+  { label: 'Reply', path: '/reply', icon: 'icon-reply' }
 ]
 
 export default {
@@ -89,9 +89,8 @@ export default {
     }
   }
   .menu-item {
-    padding: 20px 0 20px 20px;
+    padding: 20px 0 20px 30px;
     display: block;
-    text-align: center;
     color: inherit;
     border-right: 5px solid transparent;
     font-size: 14px;

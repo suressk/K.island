@@ -19,6 +19,27 @@ function createFileReader (): FileReader {
   return new FileReader()
 }
 
+const rules = {
+  title: [
+    { required: true, message: '输入文章标题', trigger: 'blur' }
+  ],
+  music: [
+    { required: true, message: '输入音乐链接', trigger: 'blur' }
+  ],
+  musicName: [
+    { required: true, message: '输入音乐名称', trigger: 'blur' }
+  ],
+  tag: [
+    { required: true, message: '选择文章分类', trigger: 'blur' }
+  ],
+  introduce: [
+    { required: true, message: '输入文章摘要', trigger: 'blur' }
+  ],
+  content: [
+    { required: true, message: '输入文章内容', trigger: 'blur' }
+  ]
+}
+
 /**
  * 读取文件为文本信息
  * */
@@ -68,8 +89,8 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
   // 文章所有信息
   const recordInfo = reactive<RecordInfo>({
     title: '',
-    music: '',
-    musicName: '',
+    music: 'http://localhost:9527/music/lightMusic.mp3',
+    musicName: '轻音乐',
     tag: 'JS',
     introduce: '',
     cover: '',
@@ -289,6 +310,7 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
     previewContent,
     ready,
     tagOptions,
+    rules,
     clearRecord,
     handleInsertContent,
     handleUploadCover,

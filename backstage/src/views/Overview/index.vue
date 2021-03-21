@@ -1,8 +1,14 @@
 <template>
-  <section class="overview flex-around">
-    <v-echarts class="echarts-item" :options="barOption" />
-    <v-echarts class="echarts-item" :options="lineOption" />
-    <v-echarts class="echarts-item" :options="pieOption" />
+  <section class="overview flex-between">
+    <div class="overview-card">
+      <v-echarts class="echarts-item" :options="barOption" />
+    </div>
+    <div class="overview-card">
+      <v-echarts class="echarts-item" :options="lineOption" />
+    </div>
+    <div class="overview-card">
+      <v-echarts class="echarts-item" :options="pieOption" />
+    </div>
   </section>
 </template>
 
@@ -32,10 +38,16 @@ export default {
   width: 100%;
   flex-wrap: wrap;
   align-items: flex-start;
-  .echarts-item {
-    margin: 10px 20px;
+  .overview-card {
     width: 30%;
     height: 30%;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,.2);
+    border-radius: 10px;
+    margin: 1%;
+    .echarts-item {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>

@@ -54,14 +54,13 @@ export default {
   height: 100vh;
   overflow: hidden;
   position: relative;
-  background-color: #e2e2e2;
   .main-container {
     height: 100%;
     flex: 1;
     .main-content {
       height: calc(100% - 40px);
       padding: 10px;
-      background-color: #fff;
+      box-shadow: 0 0 10px 3px rgba(0,0,0,.3);
       margin: 10px 10px 0;
       border-radius: 5px;
       overflow: auto;
@@ -70,7 +69,6 @@ export default {
       user-select: none;
       height: 40px;
       line-height: 40px;
-      background-color: #e2e2e2;
       overflow: hidden;
       color: #808080;
       font-size: 12px;
