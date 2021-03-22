@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/index.vue'
-import { getStorageToken } from '@/utils/util'
+// import { getStorageToken } from '@/utils/util'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -14,28 +14,28 @@ const routes: Array<RouteRecordRaw> = [
       meta: {
         title: '嗐！瞧瞧这人气'
       },
-      component: () => import('../views/Overview/index.vue')
+      component: () => import(/* webpackChunkName: "overview" */ '../views/Overview/index.vue')
     }, {
       path: 'add',
       name: 'Add',
       meta: {
         title: '叮！新品上架哦'
       },
-      component: () => import('../views/AddRecord/index.vue')
+      component: () => import(/* webpackChunkName: "addRecord" */ '../views/AddRecord/index.vue')
     }, {
       path: 'management',
       name: 'Management',
       meta: {
         title: '哗！杂货翻新啦'
       },
-      component: () => import('../views/ManageRecords/index.vue')
+      component: () => import(/* webpackChunkName: "manageRecords" */ '../views/ManageRecords/index.vue')
     }, {
       path: 'reply',
       name: 'Reply',
       meta: {
         title: '噔噔噔！聊个五毛钱的天？'
       },
-      component: () => import('../views/ConcatReply/index.vue')
+      component: () => import(/* webpackChunkName: "reply" */ '../views/ConcatReply/index.vue')
     }]
   },
   {
@@ -45,7 +45,7 @@ const routes: Array<RouteRecordRaw> = [
       requireAuth: true,
       title: '嘀！加油站'
     },
-    component: () => import('../views/Login.vue')
+    component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
   },
   {
     path: '/:catchAll(.*)',
@@ -53,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: '诶？！你迷路了吗'
     },
-    component: () => import('../views/NotFound.vue')
+    component: () => import(/* webpackChunkName: "notFound" */ '../views/NotFound.vue')
   }
 ]
 
@@ -63,21 +63,21 @@ const router = createRouter({
 })
 
 router.beforeEach((to: any, from: any, next: any) => {
-  // next()
-  const token = getStorageToken() // null | token
-  // 去往非登录页且无 token
-  if (!to.path.includes('login') && !token) {
-    next('/login')
-  } else {
-    next()
-  }
+  next()
+  // const token = getStorageToken() // null | token
+  // // 去往非登录页且无 token
+  // if (!to.path.includes('login') && !token) {
+  //   next('/login')
+  // } else {
+  //   next()
+  // }
 })
 
 // 路由后置守卫 由路由信息 设置标签页标题
 router.afterEach((to: any) => {
   let title: string
   if (to.meta && to.meta.title) {
-    title = to.meta.title + ' - K.island'
+    title = to.meta.title + ' | K.island'
   } else {
     title = 'K.island'
   }

@@ -1,0 +1,299 @@
+/**
+  colors variable
+*/
+:root {
+  /**
+    color start
+  */
+  --color1: rgba(85, 239, 196,1.0);
+  --color2: rgba(129, 236, 236,1.0);
+  --color3: rgba(116, 185, 255,1.0);
+  --color4: rgba(162, 155, 254,1.0);
+  --color5: rgba(223, 230, 233,1.0);
+  --color7: rgba(0, 206, 201,1.0);
+  --color9: rgba(108, 92, 231,1.0);
+  --color10: rgba(178, 190, 195,1.0);
+  --color11: rgba(255, 234, 167,1.0);
+  --color12: rgba(250, 177, 160,1.0);
+  --color13: rgba(255, 118, 117,1.0);
+  --color14: rgba(253, 121, 168,1.0);
+  --color15: rgba(99, 110, 114,1.0);
+  --color16: rgba(253, 203, 110,1.0);
+  --color17: rgba(225, 112, 85,1.0);
+  --color19: rgba(232, 67, 147,1.0);
+  --color20: rgba(45, 52, 54,1.0);
+  /**
+    color stop
+  */
+  --white: #fff;
+  --mask: rgba(0, 0, 0, .5);
+  --snowWhite: #f0fcff; // 雪白
+  --silver: #e9e7ef; // 银白
+  --lightBg: #f2f2f2; // 浅色背景
+  --opacityBg: rgba(240, 240, 240, 0.3);
+  --border: #d9d9d9;
+  --tipColor: #999;
+  --lightTxt: #656565;
+  --lightInk: rgba(22, 24, 35, 0.3); // 淡墨色
+  --ink: #161823; // 墨色
+  --error: #ff461f; // 朱砂
+  --dark-error: rgb(214, 48, 49);
+  --warning: #ffb61e;
+  --dark-warning: #fa8c35; // 橘色
+  --lightBlue: #d2f6ff;
+  --blue-border: #afcfff;
+  --azure: #70f3ff; // 蔚蓝
+  --success: #2add9c; // 碧绿
+  --color6: rgba(0, 184, 148,1.0);
+  --dark-success: #00bc12; // 油绿
+  --lightCyan: #14ffec; // 淡青
+  --opacity-cyan-1: rgba(112, 243, 255, .1);
+  --opacity-cyan-3: rgba(112, 243, 255, .3);
+  --dark-primary: rgb(9, 132, 227);
+  --primary: #0095d9;
+
+  /** dark-theme colors */
+  --dark-theme-body: #0d1117;
+  --dark-theme-header: #161b22;
+  --dark-txt: rgb(150, 156, 169);
+  --dark-hover-txt: rgb(201, 209, 217);
+  --dark-theme-tip: rgb(139, 148, 158);
+  --dark-theme-border: #30363d;
+  --dark-half-black: rgba(0, 0, 0, 0.5);
+}
+
+/* flex 布局 */
+.d-flex,
+.flex-between,
+.flex-around,
+.flex-center,
+.flex-end,
+.flex-col,
+.flex-col-center,
+.flex-col-around,
+.flex-col-between {
+  display: flex;
+  align-items: center;
+}
+
+.flex-between,
+.flex-col-between {
+  justify-content: space-between;
+}
+.flex-around,
+.flex-col-around {
+  justify-content: space-around;
+}
+.flex-center,
+.flex-col-center {
+  justify-content: center;
+}
+.flex-end {
+  justify-content: flex-end;
+}
+
+.flex-col,
+.flex-col-start,
+.flex-col-around,
+.flex-col-between,
+.flex-col-center {
+  flex-direction: column;
+}
+
+.flex-col-start {
+  display: flex;
+  align-items: flex-start;
+}
+
+/**
+ 垂直 水平居中定位
+*/
+.fixed-center {
+  position: fixed;
+}
+.absolute-center {
+  position: absolute;
+}
+.fixed-center,
+.absolute-center {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+// position
+.relative {
+  position: relative;
+  left: 0;
+  top: 0;
+}
+.absolute {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.fixed {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+// 蒙层
+.mask {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--mask);
+}
+/**
+  提示信息
+*/
+.error-tip,
+.warning-tip,
+.success-tip,
+.info-tip {
+  font-size: 12px;
+  margin: 0 10px;
+}
+
+.error-tip,
+.error {
+  color: var(--error);
+}
+.warning-tip,
+.warning {
+  color: var(--warning);
+}
+.success-tip,
+.success {
+  color: var(--success);
+}
+.info-tip,
+.info {
+  color: var(--primary);
+}
+
+.tip {
+  color: var(--tipColor);
+  font-size: 12px;
+}
+
+/**
+ 文字溢出隐藏
+ */
+// 单行
+.txt-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+// 多行
+.two-line-txt,
+.three-line-txt {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+.two-line-txt {
+  -webkit-line-clamp: 2;
+}
+.three-line-txt {
+  -webkit-line-clamp: 3;
+}
+
+/**
+  scroll
+*/
+.scroller-light::-webkit-scrollbar,
+.scroller::-webkit-scrollbar,
+.scroller-light::-webkit-scrollbar-corner,
+.scroller::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+.scroller-light::-webkit-scrollbar:vertical,
+.scroller::-webkit-scrollbar:vertical {
+  cursor: default;
+  width: 6px;
+}
+.scroller-light::-webkit-scrollbar:horizontal,
+.scroller::-webkit-scrollbar:horizontal {
+  cursor: default;
+  height: 6px;
+}
+.scroller-light::-webkit-scrollbar-button,
+.scroller-light::-webkit-scrollbar-corner,
+.scroller::-webkit-scrollbar-button,
+.scroller::-webkit-scrollbar-corner {
+  display: none;
+}
+
+.scroller-light::-webkit-scrollbar-thumb,
+.scroller::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  cursor: pointer;
+}
+.scroller-light::-webkit-scrollbar-thumb {
+  background-color: var(--lightBg);
+}
+.scroller::-webkit-scrollbar-thumb {
+  background-color: var(--tipColor);
+}
+
+.fadeRightIn-enter-active {
+  transition: all 0.5s ease;
+}
+.fadeRightIn-enter-from {
+  opacity: 0;
+  transform: translateX(200px);
+}
+
+// 自定义偏移淡入 - 留在最终位置
+.right-in {
+  animation: translateFadeIn 0.5s ease forwards;
+}
+
+@keyframes translateFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+/**
+  偏移淡入
+*/
+//.page-enter,
+//.page-leave-active {
+//  opacity: 0;
+//  transform: translateX(200px);
+//}
+
+.fade-enter-active,
+.fade-leave-active,
+.fadeUp-enter-active,
+.fadeUp-leave-active {
+  transition: all .5s;
+}
+// 淡入淡出
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+// 上方淡入 / 淡出
+.fadeUp-enter,
+.fadeUp-leave-to {
+  opacity: 0;
+  transform: translateY(-100px);
+}
+
+.iconfont {
+  cursor: pointer;
+}
+
+a, .link {
+  transition: color .3s;
+  cursor: pointer;
+  &:hover {
+    color: var(--primary) !important;
+  }
+}
