@@ -19,23 +19,23 @@ const routes: Array<RouteRecordRaw> = [
             path: 'new',
             name: 'new',
             meta: {
-                title: '叮！新品上架'
+                title: '文章编辑'
             },
-            component: () => import(/* webpackChunkName: "NewRecord" */ '../views/NewRecord/index.vue')
+            component: () => import(/* webpackChunkName: "record" */ '../views/record/Edit.vue')
         // }, {
         //     path: 'management',
         //     name: 'Management',
         //     meta: {
         //         title: '哗！杂货翻新啦'
         //     },
-        //     component: () => import(/* webpackChunkName: "ManageRecords" */ '../views/ManageRecords/index.vue')
+        //     component: () => import(/* webpackChunkName: "ManageRecords" */ '../views/ManageRecords/Edit.vue')
         // }, {
         //     path: 'reply',
         //     name: 'Reply',
         //     meta: {
         //         title: '噔噔噔！聊个五毛钱的天？'
         //     },
-        //     component: () => import(/* webpackChunkName: "ConcatReply" */ '../views/ConcatReply/index.vue')
+        //     component: () => import(/* webpackChunkName: "ConcatReply" */ '../views/ConcatReply/Edit.vue')
         }]
     },
     {

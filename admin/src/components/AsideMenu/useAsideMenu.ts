@@ -6,7 +6,7 @@ import { ACCESS_TOKEN } from '../../store/mutation-types'
 
 const menuList = [
     { label: 'Overview', path: '/overview', icon: 'icon-overview' },
-    { label: 'New Record', path: '/new', icon: 'icon-add' },
+    { label: 'Edit Record', path: '/new', icon: 'icon-add' },
     { label: 'Manage Records', path: '/management', icon: 'icon-management' },
     { label: 'Reply', path: '/reply', icon: 'icon-reply' }
 ]

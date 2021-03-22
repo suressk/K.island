@@ -2,12 +2,12 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import useElementPlus from './plugins/useElementPlus'
+// import useAntd from './plugins/useAntd'
 
 const app = createApp(App)
 app.use(router)
 app.use(store)
 
-useElementPlus(app)
+// useAntd(app)
 
 app.mount('#app')

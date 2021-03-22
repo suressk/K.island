@@ -9,10 +9,10 @@ const tagOptions = [
     { label: 'Js', value: 'JS' },
 ]
 
-export default function useNewRecord () {
+export default function useEditRecord () {
     const recordInfo = reactive<RecordInfo>({
         title: '',
-        tag: '',
+        tag: 'Mood',
         introduce: '',
         cover: '',
         music: '',

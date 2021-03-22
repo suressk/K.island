@@ -1,4 +1,4 @@
-import { ElNotification, ElMessageBox } from 'element-plus'
+import { notification, Popconfirm } from 'ant-design-vue'
 import { ACCESS_TOKEN } from '../store/mutation-types'
 import { TokenInfo, ArticleInfo, MessageType } from '../@types'
 
@@ -15,7 +15,7 @@ export function Notify (
     message: string,
     duration = 3000
 ) {
-    ElNotification({ type, title, message, duration })
+    notification({ type, title, message, duration })
 }
 
 /**
@@ -26,7 +26,7 @@ export function Confirm (
     title: string,
     message: string
 ) {
-    return ElMessageBox.confirm(message, 'Confirm', {
+    return new Popconfirm(message, 'Confirm', {
         type,
         title
     })

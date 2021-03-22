@@ -16,21 +16,21 @@
       <i class="iconfont icon-logout"/>
       <span v-show="extendMenu">Exit</span>
     </span>
-    <el-switch
-        class="extend-switch"
-        v-model="extendMenu"
-        active-color="#14ffec"
-        inactive-color="#d9d9d9"
-    />
+
+    <a-switch class="switch" v-model:checked="extendMenu" />
   </aside>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
 import useAsideMenu from './useAsideMenu'
+import { Switch } from 'ant-design-vue'
 
 export default defineComponent({
   name: "AsideMenu",
+  components: {
+    'a-switch': Switch
+  },
   props: {
     commentNum: {
       type: [Number, String],
@@ -45,7 +45,7 @@ export default defineComponent({
 
 <style lang="scss">
 .aside-menu {
-  width: 180px;
+  width: 200px;
   height: 100vh;
   background-color: var(--primary);
   padding: 20px 0;
@@ -59,6 +59,7 @@ export default defineComponent({
     border-radius: 50%;
     margin: 20px auto;
     overflow: hidden;
+    border: 5px solid var(--blue-border);
     img {
       width: 100%;
     }
@@ -70,11 +71,12 @@ export default defineComponent({
     font-size: 14px;
     transition: all .5s;
     cursor: pointer;
+    margin-bottom: 3px;
     &.router-link-exact-active,
     &:hover {
       background-color: #fff;
-      color: var(--dark-primary);
-      border-right-color: var(--success);
+      color: var(--primary);
+      border-right-color: var(--primary);
     }
     .iconfont {
       padding: 5px;
@@ -87,13 +89,19 @@ export default defineComponent({
       padding: 20px 5px;
     }
   }
-  .extend-switch {
+  .switch {
     position: absolute;
-    width: 20px;
+    width: 22px;
+    min-width: unset;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    cursor: pointer;
+    &.ant-switch-checked {
+      background-color: var(--blue-border);
+    }
+    &::after {
+      background-color: transparent;
+    }
   }
 }
 </style>
