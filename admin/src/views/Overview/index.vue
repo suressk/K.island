@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import VueEcharts from '../../components/VueEcharts/index.vue'
+import VueEcharts from '/@comp/VueEcharts/index.vue'
 import { barOption, lineOption, pieOption } from './useOverview'
 
 

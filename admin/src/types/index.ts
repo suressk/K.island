@@ -1,3 +1,5 @@
+import { TableState } from 'ant-design-vue/es/table/interface'
+
 export interface TokenInfo {
     token: string
     expireTime: number
@@ -9,7 +11,7 @@ export interface ErrorResponse {
     response: Response
 }
 
-export interface ResponseData<D> {
+export interface ResponseData<D> extends PromiseLike<any>{
     success: boolean
     message: string
     data: D
@@ -40,6 +42,10 @@ export interface ArticleInfo {
     }
 }
 
+export interface YearDataList<T> {
+    [prop: string]: T[];
+}
+
 export interface RecordInfo extends ArticleInfo {
     title: string
     tag: string
@@ -51,6 +57,10 @@ export interface RecordInfo extends ArticleInfo {
 }
 
 export type MessageType = 'success' | 'warning' | 'info' | 'error'
+
+export type IconType = MessageType
+
+export type Pagination = TableState['pagination']
 
 /**
  * request params type

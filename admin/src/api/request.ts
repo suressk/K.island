@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { ElNotification } from 'element-plus'
+import { notification } from 'ant-design-vue'
 import { getStorageToken } from '../utils/util'
-import { ResponseData, ErrorResponse } from '../@types'
+import { ResponseData, ErrorResponse } from '../types'
 
 const service: AxiosInstance = axios.create({
   baseURL: 'http://localhost:9527' || '/',
@@ -10,7 +10,7 @@ const service: AxiosInstance = axios.create({
 
 const handleError = (err: ErrorResponse) => {
   if (err.code === 'ECONNABORTED' && err.message.includes('timeout')) {
-    ElNotification({
+    notification({
       type: 'error',
       title: 'Timeout',
       message: 'Request Timeout, Please Wait For Trying Again Later...'
@@ -22,28 +22,28 @@ const handleError = (err: ErrorResponse) => {
     const status = err.response.status
     switch (status) {
       case 403:
-        ElNotification({
+        notification({
           type: 'error',
           title: status + '',
           message: 'Token Expired...'
         })
         break
       case 404:
-        ElNotification({
+        notification({
           type: 'error',
           title: status + '',
           message: 'Resource Not Found...'
         })
         break
       case 500:
-        ElNotification({
+        notification({
           type: 'error',
           title: status + '',
           message: 'Server Internal Error...'
         })
         break
       default:
-        ElNotification({
+        notification({
           type: 'error',
           title: status + '',
           message: data.message,

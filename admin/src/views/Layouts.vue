@@ -21,8 +21,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AsideMenu from '../components/AsideMenu/index.vue'
-import KFooter from '../components/KFooter.vue'
+import AsideMenu from '/@comp/AsideMenu/index.vue'
+import KFooter from '/@comp/KFooter.vue'
 
 export default defineComponent({
   name: "Layouts",

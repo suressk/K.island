@@ -218,7 +218,7 @@ export default function useEdit (props: PropsType, ctx: SetupContext) {
         const formData = new FormData()
         formData.append('cover', file)
         formData.append('filename', file.name)
-        uploadCover(formData).then((res :AxiosResponse<ResponseInfo>) => {
+        uploadCover(formData).then((res: AxiosResponse<ResponseInfo>) => {
           // @ts-ignore
           if (res.success) {
             // @ts-ignore

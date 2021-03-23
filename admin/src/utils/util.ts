@@ -1,6 +1,11 @@
 import { notification, Popconfirm } from 'ant-design-vue'
 import { ACCESS_TOKEN } from '../store/mutation-types'
-import { TokenInfo, ArticleInfo, MessageType } from '../@types'
+import {
+    TokenInfo,
+    ArticleInfo,
+    MessageType,
+    YearDataList
+} from '../types'
 
 /**
  * Notification 消息通知
@@ -113,14 +118,10 @@ export function deleteCookie (name: string): void {
     }
 }
 
-interface YearData<T> {
-    [prop: string]: T[];
-}
-
 /**
  * 平铺按年分组的文章列表
  * */
-export function plainArticleList (records: YearData<ArticleInfo>) {
+export function plainArticleList (records: YearDataList<ArticleInfo>) {
     const years = Object.keys(records)
     const len = years.length
     const result: ArticleInfo[] = []
@@ -134,4 +135,16 @@ export function plainArticleList (records: YearData<ArticleInfo>) {
         result.push(...list)
     }
     return result
+}
+
+/**
+ * file 转换为 Base64 编码
+ * */
+function transferBase64Code (file: File) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = () => resolve(reader.result)
+        reader.onerror = error => reject(error)
+    })
 }

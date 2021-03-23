@@ -19,16 +19,16 @@ const routes: Array<RouteRecordRaw> = [
             path: 'new',
             name: 'new',
             meta: {
-                title: '文章编辑'
+                title: '嗯！文章编辑'
             },
             component: () => import(/* webpackChunkName: "record" */ '../views/record/Edit.vue')
-        // }, {
-        //     path: 'management',
-        //     name: 'Management',
-        //     meta: {
-        //         title: '哗！杂货翻新啦'
-        //     },
-        //     component: () => import(/* webpackChunkName: "ManageRecords" */ '../views/ManageRecords/Edit.vue')
+        }, {
+            path: 'list',
+            name: 'list',
+            meta: {
+                title: '文章列表'
+            },
+            component: () => import(/* webpackChunkName: "ManageRecords" */ '../views/record/List.vue')
         // }, {
         //     path: 'reply',
         //     name: 'Reply',

@@ -297,3 +297,11 @@ a, .link {
     color: var(--primary) !important;
   }
 }
+
+h3.primary-title {
+  color: var(--primary);
+  border-left: 3px solid var(--primary);
+  font-size: 18px;
+  font-weight: 700;
+  padding: 5px 20px;
+}
