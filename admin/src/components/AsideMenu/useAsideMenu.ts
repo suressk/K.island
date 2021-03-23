@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 
 const menuList = [
     { label: 'Overview', path: '/overview', icon: 'icon-overview' },
-    { label: 'Edit Record', path: '/new', icon: 'icon-add' },
+    { label: 'Edit Record', path: '/edit', icon: 'icon-edit' },
     { label: 'Record List', path: '/list', icon: 'icon-management' },
     { label: 'Reply', path: '/reply', icon: 'icon-reply' }
 ]

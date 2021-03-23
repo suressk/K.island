@@ -56,6 +56,23 @@ export interface RecordInfo extends ArticleInfo {
     cover: string
 }
 
+/**
+ * 文章列表 item
+ * */
+export interface RecordItem extends ArticleInfo {
+    id: number
+    uid: string
+    title: string
+    introduce: string
+    tag: string
+    views: number
+    cover: string
+    ctime: number
+    utime: number
+    is_delete: number
+    show?: boolean
+}
+
 export type MessageType = 'success' | 'warning' | 'info' | 'error'
 
 export type IconType = MessageType

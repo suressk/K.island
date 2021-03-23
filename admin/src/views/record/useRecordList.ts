@@ -1,11 +1,12 @@
-import { ref, reactive } from 'vue'
-import { Pagination } from '../../types'
+import { ref, reactive, Ref, UnwrapRef } from 'vue'
+import { Pagination, RecordItem } from '../../types'
+import { useRouter } from 'vue-router'
 
 const columns = [
     {
         title: 'No.',
         dataIndex: 'id',
-        scopedSlots: { customRender: 'id' }
+        slots: { customRender: 'id' }
     },
     {
         title: 'Create Time',
@@ -26,28 +27,17 @@ const columns = [
     {
         title: 'Cover',
         dataIndex: 'cover',
-        scopedSlots: { customRender: 'cover' }
+        slots: { customRender: 'cover' }
     },
     {
         title: 'Show',
         dataIndex: 'show',
-        scopedSlots: { customRender: 'show' }
+        slots: { customRender: 'show' }
     },
     {
         title: 'Action',
         dataIndex: 'action',
-        scopedSlots: { customRender: 'action' }
-    }
-]
-const articleList: any[] = [
-    {
-        id: 1001,
-        title: 'title',
-        ctime: 10,
-        introduce: 'introduce',
-        tag: 'JS',
-        cover: 'http://localhost:9527/images/cover/941c6c10-9538-44ed-9b56-3bc487529d7e.jpg',
-        show: true
+        slots: { customRender: 'action' }
     }
 ]
 
@@ -55,6 +45,7 @@ const articleList: any[] = [
  * 文章列表
  * */
 export default function useRecordList() {
+    const router = useRouter()
     const loading = ref<boolean>(false)
 
     const pagination = reactive({
@@ -66,6 +57,24 @@ export default function useRecordList() {
         showSizeChanger: true
     })
 
+    const articleList: Ref<RecordItem[]> = ref([
+        {
+            id: 1001,
+            uid: 'asdasd',
+            title: 'title',
+            ctime: 10,
+            utime: 1,
+            introduce: 'introduce',
+            tag: 'JS',
+            cover: 'http://localhost:9527/images/cover/941c6c10-9538-44ed-9b56-3bc487529d7e.jpg',
+            show: false,
+            views: 1,
+            is_delete: 1
+        }
+    ])
+
+    const switchShow: UnwrapRef<Record<string, RecordItem>> = reactive({})
+
     function handlePageChange (curPagination: Pagination) {
         // const { current, pageSize } = curPagination
         const current = curPagination!.current!,
@@ -74,11 +83,28 @@ export default function useRecordList() {
         console.log(current, pageSize)
     }
 
+    // 编辑（更新）文章
+    function toEditRecord (item: RecordItem) {
+        const { id, uid } = item
+        router.push({
+            path: '/edit',
+            query: { id, uid }
+        })
+    }
+
+    function handleDeleteRecord (item: RecordItem) {
+        const { id, uid } = item
+        console.log(id, uid)
+    }
+
     return {
         loading,
         columns,
+        articleList,
         pagination,
         handlePageChange,
-        articleList
+        switchShow,
+        toEditRecord,
+        handleDeleteRecord
     }
 }

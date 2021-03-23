@@ -1,4 +1,11 @@
-import { onMounted, onBeforeUnmount, getCurrentInstance, watch } from 'vue'
+import {
+    watch,
+    nextTick,
+    onMounted,
+    onBeforeUnmount,
+    getCurrentInstance,
+    ComponentInternalInstance
+} from 'vue'
 import * as echarts from 'echarts'
 
 interface EchartsProps {
@@ -7,7 +14,7 @@ interface EchartsProps {
 }
 
 export default function useEcharts(props: EchartsProps) {
-    let vm
+    let vm: ComponentInternalInstance
 
     let echartsInstance: echarts.EChartsType
     let chartEl: HTMLElement
@@ -20,18 +27,24 @@ export default function useEcharts(props: EchartsProps) {
         echartsInstance.setOption(options || {}, true)
     }
 
+    // 开启深度监听，如变更 options.title 等的值也能重绘...
     const stopWatch = watch(() => props.options, (newOpt, oldOpt) => {
         if (!echartsInstance && newOpt) {
             initEChart(newOpt)
         } else {
             echartsInstance.setOption(newOpt, newOpt !== oldOpt)
         }
+    }, {
+        deep: true
     })
     onMounted(() => {
-        vm = getCurrentInstance()!
-        // @ts-ignore
-        chartEl = vm.proxy.$refs.echartsRef as HTMLElement
-        initEChart(props.options)
+        nextTick(() => {
+            vm = getCurrentInstance()!
+        }).then(() => {
+            // @ts-ignore
+            chartEl = vm.proxy.$refs.echartsRef as HTMLElement
+            initEChart(props.options)
+        })
     })
     onBeforeUnmount(() => {
         stopWatch()

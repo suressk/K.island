@@ -14,28 +14,28 @@ const routes: Array<RouteRecordRaw> = [
             meta: {
                 title: '嗐！瞧瞧这人气'
             },
-            component: () => import(/* webpackChunkName: "overview" */ '../views/Overview/index.vue')
+            component: () => import('../views/Overview/index.vue')
         }, {
-            path: 'new',
-            name: 'new',
+            path: 'edit',
+            name: 'edit',
             meta: {
                 title: '嗯！文章编辑'
             },
-            component: () => import(/* webpackChunkName: "record" */ '../views/record/Edit.vue')
+            component: () => import('../views/record/Edit.vue')
         }, {
             path: 'list',
             name: 'list',
             meta: {
                 title: '文章列表'
             },
-            component: () => import(/* webpackChunkName: "ManageRecords" */ '../views/record/List.vue')
+            component: () => import('../views/record/List.vue')
         // }, {
         //     path: 'reply',
         //     name: 'Reply',
         //     meta: {
         //         title: '噔噔噔！聊个五毛钱的天？'
         //     },
-        //     component: () => import(/* webpackChunkName: "ConcatReply" */ '../views/ConcatReply/Edit.vue')
+        //     component: () => import('../views/ConcatReply/Edit.vue')
         }]
     },
     {

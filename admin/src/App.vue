@@ -13,5 +13,5 @@ export default defineComponent({
 <style lang="scss">
 @import "assets/css/initail.scss";
 @import "assets/css/common.scss";
-@import "https://at.alicdn.com/t/font_2285304_c6mcr3ld3yf.css";
+@import "https://at.alicdn.com/t/font_2285304_kxrjn7ca9js.css";
 </style>
