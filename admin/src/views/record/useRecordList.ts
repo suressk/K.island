@@ -1,16 +1,21 @@
-import { ref, reactive, Ref, UnwrapRef } from 'vue'
-import { Pagination, RecordItem } from '../../types'
-import { useRouter } from 'vue-router'
+import {ref, reactive, Ref, UnwrapRef, onMounted} from 'vue'
+import {
+    Pagination,
+    QueryArticleListParams,
+    RecordItem,
+    ResponseData,
+    RecordListResponseData,
+    YearDataList
+} from '../../types'
+import {useRouter} from 'vue-router'
+import {deleteRecord, getRecordList, updateRecord} from '../../api/api'
+import {Notify, plainArticleList} from '../../utils/util' // 按年分组平铺
 
 const columns = [
     {
         title: 'No.',
         dataIndex: 'id',
-        slots: { customRender: 'id' }
-    },
-    {
-        title: 'Create Time',
-        dataIndex: 'ctime'
+        slots: {customRender: 'id'}
     },
     {
         title: 'Article Title',
@@ -27,17 +32,56 @@ const columns = [
     {
         title: 'Cover',
         dataIndex: 'cover',
-        slots: { customRender: 'cover' }
+        slots: {customRender: 'cover'}
     },
     {
         title: 'Show',
-        dataIndex: 'show',
-        slots: { customRender: 'show' }
+        dataIndex: 'is_delete',
+        slots: {customRender: 'is_delete'},
+        width: 150
+    },
+    {
+        title: 'Create Time',
+        dataIndex: 'ctime',
+        slots: {customRender: 'ctime'}
+    },
+    {
+        title: 'Update Time',
+        dataIndex: 'utime',
+        slots: {customRender: 'utime'}
     },
     {
         title: 'Action',
         dataIndex: 'action',
-        slots: { customRender: 'action' }
+        slots: {customRender: 'action'}
+    }
+]
+
+// 测试数据
+const data = [
+    {
+        id: 1001,
+        uid: 'asdasd',
+        title: 'title',
+        ctime: 1602156934000,
+        utime: 1602263614000,
+        introduce: 'introduce',
+        tag: 'JS',
+        cover: 'http://localhost:9527/images/cover/941c6c10-9538-44ed-9b56-3bc487529d7e.jpg',
+        views: 1,
+        is_delete: 1
+    },
+    {
+        id: 1002,
+        uid: 'as12d',
+        title: 'tiasf_asdale',
+        ctime: 1602156964000,
+        utime: 1602263514000,
+        introduce: 'introduce asfdasf',
+        tag: 'JSasfsa ',
+        cover: 'http://localhost:9527/images/cover/941c6c10-9538-44ed-9b56-3bc487529d7e.jpg',
+        views: 1,
+        is_delete: 0
     }
 ]
 
@@ -47,7 +91,7 @@ const columns = [
 export default function useRecordList() {
     const router = useRouter()
     const loading = ref<boolean>(false)
-
+    const articleTitle = ref<string>('')
     const pagination = reactive({
         current: 1,
         total: 0,
@@ -56,55 +100,152 @@ export default function useRecordList() {
         pageSizeOptions: ["10", "20", "30", "50"],
         showSizeChanger: true
     })
+    const articleList: Ref<RecordItem[]> = ref([])
+    const editableData: UnwrapRef<Record<string, RecordItem>> = reactive({})
 
-    const articleList: Ref<RecordItem[]> = ref([
-        {
-            id: 1001,
-            uid: 'asdasd',
-            title: 'title',
-            ctime: 10,
-            utime: 1,
-            introduce: 'introduce',
-            tag: 'JS',
-            cover: 'http://localhost:9527/images/cover/941c6c10-9538-44ed-9b56-3bc487529d7e.jpg',
-            show: false,
-            views: 1,
-            is_delete: 1
-        }
-    ])
-
-    const switchShow: UnwrapRef<Record<string, RecordItem>> = reactive({})
-
-    function handlePageChange (curPagination: Pagination) {
-        // const { current, pageSize } = curPagination
-        const current = curPagination!.current!,
-            pageSize = curPagination!.pageSize!
-        // pagination.current = current
-        console.log(current, pageSize)
-    }
-
-    // 编辑（更新）文章
-    function toEditRecord (item: RecordItem) {
-        const { id, uid } = item
-        router.push({
-            path: '/edit',
-            query: { id, uid }
+    /**
+     * 表格文章显隐 switch 可编辑
+     * */
+    function mapEditable(list: RecordItem[]) {
+        list.forEach(item => {
+            editableData[item.id] = {
+                ...item,
+                show: item.is_delete === 0
+            }
         })
     }
 
-    function handleDeleteRecord (item: RecordItem) {
-        const { id, uid } = item
-        console.log(id, uid)
+    onMounted(() => {
+        getRecords({
+            pageNo: pagination.current,
+            pageSize: pagination.pageSize
+        })
+    })
+
+    /**
+     * 切换文章显隐
+     * */
+    function switchChange(record: RecordItem, show: boolean) {
+        const {id, uid} = record
+        const matchItem = articleList.value.filter(item => id === item.id)[0]
+        updateRecord({
+            id,
+            uid,
+            is_delete: show ? 1 : 0
+            // @ts-ignore
+        }).then((res: ResponseData<object>) => {
+            if (res.success) {
+                Notify('success', 'SUCCESS', res.message)
+                Object.assign(matchItem, editableData[id]);
+                editableData[id].show = show
+            } else {
+                Notify('warning', '终究是错付了~', res.message)
+                editableData[id].show = !show
+            }
+        }).catch(err => {
+            Notify('error', '失败辣~', err.message)
+            editableData[id].show = !show
+        })
+        // const isDelete = show ? 1 : 0
+        // delete editableData[key];
+    }
+
+    /**
+     * 页码切换
+     * */
+    function handlePageChange(curPagination: Pagination) {
+        const current = curPagination!.current!,
+            pageSize = curPagination!.pageSize!
+        pagination.current = current
+        pagination.pageSize = pageSize
+
+        getRecords({
+            pageNo: current,
+            pageSize
+        })
+    }
+
+    /**
+     * 查询按钮点击查询（title 模糊查询）
+     * */
+    function handleQueryRecords() {
+        getRecords({
+            pageNo: pagination.current,
+            pageSize: pagination.pageSize,
+            title: articleTitle.value
+        })
+    }
+
+    /**
+     * 查询文章列表
+     * */
+    function getRecords(params: QueryArticleListParams) {
+        loading.value = true
+        getRecordList(params)
+            // @ts-ignore
+            .then((res: RecordListResponseData<YearDataList<RecordItem>>) => {
+                if (res.success) {
+                    articleList.value = plainArticleList(res.data)
+                    mapEditable(articleList.value)
+                    pagination.total = res.data.total
+                } else {
+                    articleList.value.length > 0 && (articleList.value = [])
+                    Notify('warning', 'TIP', res.message)
+                }
+                loading.value = false
+            })
+            .catch(err => {
+                Notify('error', 'ERROR', err.message)
+                articleList.value.length > 0 && (articleList.value = [])
+                articleList.value = data
+                mapEditable(data)
+                loading.value = false
+            })
+    }
+
+    /**
+     * 前往文章编辑页面（更新文章） icon-edit
+     * */
+    function toEditRecord(item: RecordItem) {
+        const {id, uid} = item
+        router.push({
+            path: '/edit',
+            query: {id, uid}
+        })
+    }
+
+    /**
+     * 删除文章 icon-delete
+     * */
+    function handleDeleteRecord(item: RecordItem) {
+        const {id, uid} = item
+        // @ts-ignore
+        deleteRecord({ id, uid }).then((res: ResponseData<object>) => {
+            if (res.success) {
+                Notify('success', '成功辣~', res.message)
+                getRecords({
+                    pageNo: pagination.current,
+                    pageSize: pagination.pageSize
+                })
+            } else {
+                Notify('warning', '终究是错付了 ~', res.message)
+            }
+        }).catch(err => {
+            Notify('error', '失败辣~', err.message)
+        })
     }
 
     return {
+        articleTitle,
         loading,
         columns,
         articleList,
         pagination,
+        editableData,
         handlePageChange,
-        switchShow,
         toEditRecord,
-        handleDeleteRecord
+        handleDeleteRecord,
+        switchChange,
+        handleQueryRecords
     }
 }

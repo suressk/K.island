@@ -9,6 +9,15 @@ import {
 } from '../common/types'
 import { getUpdateRecordParams } from '../utils/util'
 
+const sqlStrObj = {
+    allRecords: 'SELECT id, uid, title, introduce, tag, views, cover, ctime, utime, is_delete FROM `records` ORDER BY ctime DESC LIMIT ?, ?',
+    filterTitle: 'SELECT id, uid, title, introduce, tag, views, cover, ctime, utime, is_delete FROM `records` WHERE title LIKE %?% ORDER BY ctime DESC LIMIT ?, ?',
+    filterShow: 'SELECT id, uid, title, introduce, tag, views, cover, ctime, utime FROM `records` WHERE is_delete = 0 ORDER BY ctime DESC LIMIT ?, ?',
+    filterTotal: 'SELECT COUNT(uid) as total from `records` WHERE is_delete = 0'
+}
+
+type ListParams = [number, number] | [string, number, number]
+
 /**
  * 分页查询文章列表
  * */
@@ -18,20 +27,24 @@ export function queryRecordList (
     error: (err: Query.QueryError) => void
 ) {
     const { pageNo, pageSize } = options
-    const params = [(pageNo - 1) * pageSize, pageSize]
+    let params: ListParams = [(pageNo - 1) * pageSize, pageSize]
     let sqlStr: string
-    const sqlTotalStr: string = 'SELECT COUNT(uid) as total from `records`'
+    let sqlTotalStr: string = 'SELECT COUNT(uid) as total from `records`'
     // 后台管理查询所有文章列表
     if (options.range && options.range === 'all') {
-        sqlStr = 'SELECT id, uid, title, introduce, tag, views, cover, ctime, utime, is_delete FROM `records` ORDER BY ctime DESC LIMIT ?, ?'
+        sqlStr = sqlStrObj.allRecords
+    } else if (options.title) {
+        sqlStr = sqlStrObj.filterTitle
+        params = [options.title, ...params]
     } else {
         // 前端展示未删除文章
-        sqlStr = 'SELECT id, uid, title, introduce, tag, views, cover, ctime, utime FROM `records` WHERE is_delete = 0 ORDER BY ctime DESC LIMIT ?, ?'
+        sqlStr = sqlStrObj.filterShow
+        sqlTotalStr = sqlStrObj.filterTotal
     }
     const connection = createConnection()
     connection.connect()
     // 查列表数据
-    const listPro = new Promise((resolve, reject) => {
+    const getListPro = new Promise((resolve, reject) => {
         connection.query(sqlStr, params, ((err, result) => {
             if (!err) {
                 resolve(result)
@@ -40,7 +53,7 @@ export function queryRecordList (
             }
         }))
     })
-    const totalPro = new Promise((resolve, reject) => {
+    const getTotalPro = new Promise((resolve, reject) => {
         connection.query(sqlTotalStr, [], ((err, result) => {
             if (!err) {
                 resolve(result)
@@ -49,7 +62,7 @@ export function queryRecordList (
             }
         }))
     })
-    Promise.all([listPro, totalPro]).then(([list, totalRes]) => {
+    Promise.all([getListPro, getTotalPro]).then(([list, totalRes]) => {
         success({
             list,
             // @ts-ignore
@@ -71,7 +84,7 @@ export function queryRecordDetail (
     error: (err: Query.QueryError) => void
 ) {
     const { id, uid } = options
-    const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, cover, ctime, utime FROM `records` WHERE id = ? AND uid = ?'
+    const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, liked, cover, music, musicName, ctime, utime FROM `records` WHERE id = ? AND uid = ?'
     const params = [id, uid]
     connectQuery(sqlStr, params, success, error)
 }

@@ -17,6 +17,13 @@ export interface ResponseData<D> extends PromiseLike<any>{
     data: D
 }
 
+interface ListRes {
+    list: YearDataList<RecordItem>
+    total: number
+}
+
+export type RecordListResponseData = ResponseData<ListRes>
+
 export type LoginResponse = ResponseData<TokenInfo>
 
 export interface ArticleInfo {
@@ -72,10 +79,6 @@ export interface RecordItem extends ArticleInfo {
     is_delete: number
     show?: boolean
 }
-
-export type MessageType = 'success' | 'warning' | 'info' | 'error'
-
-export type IconType = MessageType
 
 export type Pagination = TableState['pagination']
 

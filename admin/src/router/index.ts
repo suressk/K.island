@@ -26,7 +26,7 @@ const routes: Array<RouteRecordRaw> = [
             path: 'list',
             name: 'list',
             meta: {
-                title: '文章列表'
+                title: '哗！文章列表'
             },
             component: () => import('../views/record/List.vue')
         // }, {

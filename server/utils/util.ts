@@ -1,7 +1,7 @@
 import multer from 'multer'
 import { v4 as uuid } from 'uuid'
 import { Request, Response } from 'express'
-import { CallBack, UpdateRecordOptions } from '../common/types'
+import { CallBack, UpdateRecordOptions, ArticleListItem } from '../common/types'
 import { verifyToken } from './jwt'
 import { writeHead, writeResult } from './writeResponse'
 import dayjs from 'dayjs'
@@ -29,7 +29,7 @@ export function createMulterStorage (dir: string) {
 /**
  * 跨域配置
  * */
-const WHITE_LIST = ['http://localhost:8080', 'http://localhost:8888', 'http://10.0.0.110:3000', '*']
+const WHITE_LIST = ['http://localhost:8080', 'http://localhost:8888', 'http://localhost:3000', '*']
 
 /**
  * 创建跨域处理函数
@@ -48,30 +48,49 @@ export function createCorsOptionsDelegate (req: Request, callback: CallBack) {
 export function verifyTokenResponse (req: Request, res: Response, callback: () => void) {
     const verified = verifyToken(req)
     if (verified === null) {
-        writeHead(res, 200)
-        res.write(writeResult(false, '看看是不是 Token 失效啦？'))
+        writeHead(res, 403)
+        res.write(writeResult(false, 'Token has expired...'))
         res.end()
     } else {
         callback()
     }
 }
 
+/**
+ * 更新文章参数
+ * 1. 显隐 => is_delete: 0 / 1
+ * 2. 浏览量 => views: number
+ * 3. 点赞 => liked: number
+ * 4. 文章内容更新 => title, tag, introduce, cover, music, musicName
+ * */
 export function getUpdateRecordParams (options: UpdateRecordOptions) {
     const { id, uid } = options
-    let sqlStr!: string
+    let sqlStr: string = ''
     const params: any[] = []
     const utime = new Date().getTime()
     if (options.is_delete) {
-        sqlStr = 'UPDATE records SET is_delete = ?, utime = ? WHERE id = ? and uid = ?'
-        params.push(options.is_delete)
+        sqlStr = 'UPDATE records SET is_delete = ?, utime = ? WHERE id = ? AND uid = ?'
+        params.push(utime, options.is_delete)
     } else if (options.views) {
-        sqlStr = 'UPDATE records SET views = ?, utime = ? WHERE id = ? and uid = ?'
+        sqlStr = 'UPDATE records SET views = ? WHERE id = ? AND uid = ?'
         params.push(options.views)
+    } else if (options.liked) {
+        sqlStr = 'UPDATE records SET liked = ? WHERE id = ? AND uid = ?'
+        params.push(options.liked)
     } else {
-        sqlStr = 'UPDATE records SET title = ?, tag = ?, introduce = ?, content = ?, cover = ?, utime = ? WHERE id = ? and uid = ?'
-        params.push(options.title, options.tag, options.introduce, options.content, options.cover)
+        sqlStr = 'UPDATE records SET title = ?, tag = ?, introduce = ?, content = ?, music = ?, musicName = ?, cover = ?, utime = ? WHERE id = ? AND uid = ?'
+        params.push(
+            options.title,
+            options.tag,
+            options.introduce,
+            options.content,
+            options.music,
+            options.musicName,
+            options.cover,
+            utime
+        )
     }
-    params.push(utime, id, uid)
+    params.push(id, uid)
     return {
         sqlStr,
         params
@@ -111,22 +130,10 @@ export function dateFormat (timeTemp: number) {
     }
 }
 
-interface ArticleListInfo {
-    id: number;
-    uid: string;
-    title: string;
-    introduce: string;
-    tag: string;
-    views: number;
-    cover: string;
-    ctime: number;
-    utime: number;
-}
-
 /**
  * 创建时间对象
  * */
-export function mapCreateTime (dataList: ArticleListInfo[]) {
+export function mapCreateTime (dataList: ArticleListItem[]) {
     return dataList.map(item => ({ ...item, time: dateFormat(item.ctime) }))
 }
 
@@ -134,7 +141,7 @@ export function mapCreateTime (dataList: ArticleListInfo[]) {
  * 插入 time: dateFormat() => time
  * 生成按年分组的数据
  * */
-export function mapYearGroup (dataList: ArticleListInfo[]) {
+export function mapYearGroup (dataList: ArticleListItem[]) {
     const mapData = mapCreateTime(dataList)
     const data: any = {}
     const years: string[] = [] // 所有年份

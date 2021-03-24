@@ -1,6 +1,26 @@
 <template>
-  <div class="record-list">
+  <div class="record-list scroller">
     <h3 class="primary-title">文章列表</h3>
+
+    <div class="filter-wrapper d-flex">
+      <div class="filter-item d-flex">
+        <a-input
+          placeholder="Article title"
+          v-model:value="articleTitle"
+          style="width: 250px;"
+          allowClear
+          @pressEnter="handleQueryRecords"
+        />
+      </div>
+      <div class="filter-item d-flex">
+        <a-button type="primary" :loading="loading" @click="handleQueryRecords">
+          <template #icon>
+            <SearchOutlined />
+          </template>
+          Query
+        </a-button>
+      </div>
+    </div>
 
     <a-table
       class="record-table"
@@ -17,13 +37,22 @@
       <template #cover="{ text }">
         <img :src="text" alt="cover-image">
       </template>
-      <template #show="{ text, record }">
+      <template #ctime="{ text }">
+        <a-tag color="cyan">{{ dayjs(text).format(timeFormat) }}</a-tag>
+      </template>
+      <template #utime="{ text }">
+        <a-tag color="green">{{ dayjs(text).format(timeFormat) }}</a-tag>
+      </template>
+
+      <template #is_delete="{ text, record }">
         <a-switch
           checked-children="show"
           un-checked-children="hide"
-          v-model:checked="switchShow[record.show]"
+          v-model:checked="editableData[record.id].show"
+          @change="switchChange(record, $event)"
         />
       </template>
+
       <template #action="{ record }">
         <span class="action">
           <i class="iconfont icon-edit" @click="toEditRecord(record)" />
@@ -41,18 +70,28 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Table, Switch, Popconfirm } from 'ant-design-vue'
+import { Input, Button ,Table, Switch, Popconfirm, Tag } from 'ant-design-vue'
+import { SearchOutlined } from '@ant-design/icons-vue'
 import useRecordList from './useRecordList'
+import dayjs from 'dayjs'
+
+const timeFormat = 'YYYY-MM-DD HH:mm'
 
 export default defineComponent({
   name: "RecordList",
   components: {
+    'a-input': Input,
+    'a-button': Button,
     'a-table': Table,
     'a-switch': Switch,
-    'pop-confirm': Popconfirm
+    'a-tag': Tag,
+    'pop-confirm': Popconfirm,
+    SearchOutlined
   },
   setup() {
     return {
+      dayjs,
+      timeFormat,
       ...useRecordList()
     }
   }
@@ -61,12 +100,20 @@ export default defineComponent({
 
 <style lang="scss">
 .record-list {
+  overflow: auto;
+  .filter-wrapper {
+    margin: 20px 0;
+    .filter-item:not(:last-child) {
+      margin-right: 30px;
+    }
+  }
   .record-table {
     img {
       max-height: 50px;
     }
   }
   .ant-table {
+    min-height: 80vh;
     tr {
       text-align: center;
     }

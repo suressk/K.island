@@ -1,39 +1,40 @@
-import { notification, Popconfirm } from 'ant-design-vue'
+import { notification, Modal } from 'ant-design-vue'
 import { ACCESS_TOKEN } from '../store/mutation-types'
 import {
     TokenInfo,
-    ArticleInfo,
-    MessageType,
-    YearDataList
+    YearDataList,
+    RecordItem
 } from '../types'
+import { ConfirmOptions, MessageType } from '../types/tip'
 
 /**
  * Notification 消息通知
  * @param {*} type 提示类型
- * @param {*} title 提示标题
- * @param {*} message 提示信息内容
+ * @param {*} message 提示标题
+ * @param {*} description 提示信息内容
  * @param {*} duration 持续时长（s）
  * */
 export function Notify (
     type: MessageType = 'success',
-    title: string,
     message: string,
-    duration = 3000
+    description: string,
+    duration = 4.5
 ) {
-    notification({ type, title, message, duration })
+    notification[type]({ message, description, duration })
 }
 
 /**
  * 确认
  * */
-export function Confirm (
-    type: MessageType = 'warning',
-    title: string,
-    message: string
-) {
-    return new Popconfirm(message, 'Confirm', {
-        type,
-        title
+export function Confirm (options: ConfirmOptions) {
+    Modal.confirm({
+        centered: true,
+        content: options.content,
+        onOk: options.onOk,
+        onCancel: options.onCancel,
+        title: options.title,
+        okText: options.okText,
+        cancelText: options.cancelText
     })
 }
 
@@ -121,10 +122,10 @@ export function deleteCookie (name: string): void {
 /**
  * 平铺按年分组的文章列表
  * */
-export function plainArticleList (records: YearDataList<ArticleInfo>) {
+export function plainArticleList (records: YearDataList<RecordItem>): RecordItem[] {
     const years = Object.keys(records)
     const len = years.length
-    const result: ArticleInfo[] = []
+    const result: RecordItem[] = []
     for (let i = 0; i < len; i++) {
         const list = records[years[i]].map(item => {
             return {

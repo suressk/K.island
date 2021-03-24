@@ -22,7 +22,7 @@ export const login = (params: LoginParams) => postAction('/sys/login', params)
 export const addRecord = (params: NewArticleParams) => postAction('/back/record/add', params)
 export const getRecordList = (params: QueryArticleListParams) => getAction('/back/record/list', params)
 export const getRecordDetail = (params: ArticleIds) => getAction('/back/record/detail', params)
-export const deleteRecord = (params: ArticleIds) => postAction('/back/record/update', params)
+export const deleteRecord = (params: ArticleIds) => deleteAction('/back/record/delete', params)
 export const updateRecord = (params: UpdateArticleParams) => putAction('/back/record/update', params)
 
 // 上传封面图

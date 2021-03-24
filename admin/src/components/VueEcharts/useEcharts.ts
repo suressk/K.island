@@ -1,6 +1,5 @@
 import {
     watch,
-    nextTick,
     onMounted,
     onBeforeUnmount,
     getCurrentInstance,
@@ -34,17 +33,15 @@ export default function useEcharts(props: EchartsProps) {
         } else {
             echartsInstance.setOption(newOpt, newOpt !== oldOpt)
         }
-    }, {
-        deep: true
     })
+    // , {
+    //     deep: true
+    // }
     onMounted(() => {
-        nextTick(() => {
-            vm = getCurrentInstance()!
-        }).then(() => {
-            // @ts-ignore
-            chartEl = vm.proxy.$refs.echartsRef as HTMLElement
-            initEChart(props.options)
-        })
+        vm = getCurrentInstance()!
+        // @ts-ignore
+        chartEl = vm.proxy.$refs.echartsRef as HTMLElement
+        initEChart(props.options)
     })
     onBeforeUnmount(() => {
         stopWatch()

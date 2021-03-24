@@ -8,10 +8,12 @@ import { mapCreateTime, mapYearGroup } from '../utils/util'
  * */
 export function recordListResponse (req: Request, res: Response, range: string | undefined) {
     const { pageNo, pageSize } = req.query
+    const title: string | undefined | any = req.query.title
     queryRecordList({
         pageNo: Number(pageNo),
         pageSize: Number(pageSize),
-        range
+        range,
+        title
     }, result => {
         // success
         writeHead(res, 200)

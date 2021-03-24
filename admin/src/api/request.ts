@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { notification } from 'ant-design-vue'
-import { getStorageToken } from '../utils/util'
+import { getStorageToken, Notify } from '../utils/util'
 import { ResponseData, ErrorResponse } from '../types'
 
 const service: AxiosInstance = axios.create({
@@ -10,11 +9,11 @@ const service: AxiosInstance = axios.create({
 
 const handleError = (err: ErrorResponse) => {
   if (err.code === 'ECONNABORTED' && err.message.includes('timeout')) {
-    notification({
-      type: 'error',
-      title: 'Timeout',
-      message: 'Request Timeout, Please Wait For Trying Again Later...'
-    })
+    Notify(
+      'error',
+      'Timeout',
+      'Request Timeout, Please Wait For Trying Again Later...'
+    )
   }
   if (err.response) {
     // @ts-ignore
@@ -22,33 +21,32 @@ const handleError = (err: ErrorResponse) => {
     const status = err.response.status
     switch (status) {
       case 403:
-        notification({
-          type: 'error',
-          title: status + '',
-          message: 'Token Expired...'
-        })
+        Notify(
+          'error',
+          `${status}`,
+          'Token has expired...'
+        )
         break
       case 404:
-        notification({
-          type: 'error',
-          title: status + '',
-          message: 'Resource Not Found...'
-        })
+        Notify(
+          'error',
+          `${status}`,
+          'Resource Not Found...'
+        )
         break
       case 500:
-        notification({
-          type: 'error',
-          title: status + '',
-          message: 'Server Internal Error...'
-        })
+        Notify(
+          'error',
+          `${status}`,
+          'Server Internal Error...'
+        )
         break
       default:
-        notification({
-          type: 'error',
-          title: status + '',
-          message: data.message,
-          duration: 4
-        })
+        Notify(
+        'error',
+        `${status}`,
+          data.message
+        )
         break
     }
   }
@@ -78,7 +76,7 @@ service.interceptors.request.use(
 /**
  * response interceptor
  */
-service.interceptors.response.use((resp: AxiosResponse): AxiosResponse<ResponseData<object>> => {
+service.interceptors.response.use((resp: AxiosResponse): AxiosResponse<ResponseData<any>> => {
   // const data = resp.data.data;
   // if (data.token) {
   //   // LocalStorage 存储 token

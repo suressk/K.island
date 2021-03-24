@@ -89,9 +89,6 @@ export default function useEditRecord () {
             uploadCover(formData).then((res: PromiseLike<ResponseData<any>>) => {
                 // @ts-ignore
                 if (res.success) {
-                    // notification({
-                    //
-                    // })
                     // @ts-ignore
                     resolve(res.data.cover)
                 } else {
