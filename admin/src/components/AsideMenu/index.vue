@@ -12,8 +12,8 @@
       <i class="iconfont" :class="menuItem.icon"/>
       <span v-show="extendMenu">{{ menuItem.label }}</span>
     </router-link>
-    <span class="menu-item d-flex txt-overflow" @click="handleLogout">
-      <i class="iconfont icon-logout"/>
+    <span class="menu-item d-flex txt-overflow" @click="handleExit">
+      <i class="iconfont icon-exit"/>
       <span v-show="extendMenu">Exit</span>
     </span>
 
@@ -65,7 +65,7 @@ export default defineComponent({
     }
   }
   .menu-item {
-    padding: 20px 0 20px 30px;
+    padding: 10px 0 10px 30px;
     color: inherit;
     border-right: 5px solid transparent;
     font-size: 14px;
@@ -79,8 +79,9 @@ export default defineComponent({
       border-right-color: var(--primary);
     }
     .iconfont {
-      padding: 5px;
+      padding: 5px 10px 5px 5px;
       font-size: 13px;
+      transition: unset;
     }
   }
   &.shrink {

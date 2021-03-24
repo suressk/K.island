@@ -34,8 +34,12 @@
       <template #id="{ index }">
         {{ index + 1 }}
       </template>
+      <template #tag="{ text }">
+        <a-tag color="blue">{{ text }}</a-tag>
+      </template>
       <template #cover="{ text }">
-        <img :src="text" alt="cover-image">
+        <img v-if="text" :src="text" alt="cover-image">
+        <a-tag v-else color="red">Empty</a-tag>
       </template>
       <template #ctime="{ text }">
         <a-tag color="cyan">{{ dayjs(text).format(timeFormat) }}</a-tag>
@@ -101,6 +105,7 @@ export default defineComponent({
 <style lang="scss">
 .record-list {
   overflow: auto;
+  height: 100%;
   .filter-wrapper {
     margin: 20px 0;
     .filter-item:not(:last-child) {
@@ -113,7 +118,7 @@ export default defineComponent({
     }
   }
   .ant-table {
-    min-height: 80vh;
+    min-height: 70vh;
     tr {
       text-align: center;
     }

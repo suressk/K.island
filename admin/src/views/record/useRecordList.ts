@@ -27,7 +27,8 @@ const columns = [
     },
     {
         title: 'Tag',
-        dataIndex: 'tag'
+        dataIndex: 'tag',
+        slots: {customRender: 'tag'}
     },
     {
         title: 'Cover',
@@ -58,32 +59,32 @@ const columns = [
 ]
 
 // 测试数据
-const data = [
-    {
-        id: 1001,
-        uid: 'asdasd',
-        title: 'title',
-        ctime: 1602156934000,
-        utime: 1602263614000,
-        introduce: 'introduce',
-        tag: 'JS',
-        cover: 'http://localhost:9527/images/cover/941c6c10-9538-44ed-9b56-3bc487529d7e.jpg',
-        views: 1,
-        is_delete: 1
-    },
-    {
-        id: 1002,
-        uid: 'as12d',
-        title: 'tiasf_asdale',
-        ctime: 1602156964000,
-        utime: 1602263514000,
-        introduce: 'introduce asfdasf',
-        tag: 'JSasfsa ',
-        cover: 'http://localhost:9527/images/cover/941c6c10-9538-44ed-9b56-3bc487529d7e.jpg',
-        views: 1,
-        is_delete: 0
-    }
-]
+// const data = [
+//     {
+//         id: 1001,
+//         uid: 'asdasd',
+//         title: 'title',
+//         ctime: 1602156934000,
+//         utime: 1602263614000,
+//         introduce: 'introduce',
+//         tag: 'JS',
+//         cover: 'http://localhost:9527/images/cover/941c6c10-9538-44ed-9b56-3bc487529d7e.jpg',
+//         views: 1,
+//         is_delete: 1
+//     },
+//     {
+//         id: 1002,
+//         uid: 'as12d',
+//         title: 'tiasf_asdale',
+//         ctime: 1602156964000,
+//         utime: 1602263514000,
+//         introduce: 'introduce asfdasf',
+//         tag: 'JSasfsa ',
+//         cover: 'http://localhost:9527/images/cover/941c6c10-9538-44ed-9b56-3bc487529d7e.jpg',
+//         views: 1,
+//         is_delete: 0
+//     }
+// ]
 
 /**
  * 文章列表
@@ -126,28 +127,27 @@ export default function useRecordList() {
      * 切换文章显隐
      * */
     function switchChange(record: RecordItem, show: boolean) {
+        console.log(show) // true => 显示； false => 隐藏
         const {id, uid} = record
         const matchItem = articleList.value.filter(item => id === item.id)[0]
         updateRecord({
             id,
             uid,
-            is_delete: show ? 1 : 0
+            is_delete: show ? 0 : 1
             // @ts-ignore
         }).then((res: ResponseData<object>) => {
             if (res.success) {
-                Notify('success', 'SUCCESS', res.message)
-                Object.assign(matchItem, editableData[id]);
+                Notify('success', 'Congratulations~', res.message)
                 editableData[id].show = show
+                Object.assign(matchItem, editableData[id]);
             } else {
-                Notify('warning', '终究是错付了~', res.message)
+                Notify('warning', 'Sorry~', res.message)
                 editableData[id].show = !show
             }
         }).catch(err => {
-            Notify('error', '失败辣~', err.message)
+            Notify('error', 'Something wrong~', err.message)
             editableData[id].show = !show
         })
-        // const isDelete = show ? 1 : 0
-        // delete editableData[key];
     }
 
     /**
@@ -185,20 +185,20 @@ export default function useRecordList() {
             // @ts-ignore
             .then((res: RecordListResponseData<YearDataList<RecordItem>>) => {
                 if (res.success) {
-                    articleList.value = plainArticleList(res.data)
+                    articleList.value = plainArticleList(res.data.list)
                     mapEditable(articleList.value)
                     pagination.total = res.data.total
                 } else {
                     articleList.value.length > 0 && (articleList.value = [])
-                    Notify('warning', 'TIP', res.message)
+                    Notify('warning', 'Sorry~', res.message)
                 }
                 loading.value = false
             })
             .catch(err => {
-                Notify('error', 'ERROR', err.message)
+                Notify('error', 'Something wrong~', err.message)
                 articleList.value.length > 0 && (articleList.value = [])
-                articleList.value = data
-                mapEditable(data)
+                // articleList.value = data
+                // mapEditable(data)
                 loading.value = false
             })
     }
@@ -222,16 +222,16 @@ export default function useRecordList() {
         // @ts-ignore
         deleteRecord({ id, uid }).then((res: ResponseData<object>) => {
             if (res.success) {
-                Notify('success', '成功辣~', res.message)
+                Notify('success', 'Congratulations~', res.message)
                 getRecords({
                     pageNo: pagination.current,
                     pageSize: pagination.pageSize
                 })
             } else {
-                Notify('warning', '终究是错付了 ~', res.message)
+                Notify('warning', 'Sorry~', res.message)
             }
         }).catch(err => {
-            Notify('error', '失败辣~', err.message)
+            Notify('error', 'Something wrong~', err.message)
         })
     }
 

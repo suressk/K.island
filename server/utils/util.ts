@@ -68,9 +68,9 @@ export function getUpdateRecordParams (options: UpdateRecordOptions) {
     let sqlStr: string = ''
     const params: any[] = []
     const utime = new Date().getTime()
-    if (options.is_delete) {
+    if (options.is_delete === 0 || options.is_delete === 1) {
         sqlStr = 'UPDATE records SET is_delete = ?, utime = ? WHERE id = ? AND uid = ?'
-        params.push(utime, options.is_delete)
+        params.push(options.is_delete, utime)
     } else if (options.views) {
         sqlStr = 'UPDATE records SET views = ? WHERE id = ? AND uid = ?'
         params.push(options.views)

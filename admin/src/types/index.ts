@@ -1,5 +1,10 @@
 import { TableState } from 'ant-design-vue/es/table/interface'
 
+export interface LoginInfo {
+    username: string
+    password: string
+}
+
 export interface TokenInfo {
     token: string
     expireTime: number

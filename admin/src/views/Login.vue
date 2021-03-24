@@ -1,15 +1,84 @@
 <template>
-  <div class="login">
-    Login
+  <div class="login-container">
+    <form class="login-form flex-col fixed-center">
+      <div class="avatar flex-center">
+        <img src="../assets/images/avatar.png" alt="author">
+      </div>
+      <div class="form-item">
+        <label class="ipt-item">
+          <input type="text" required v-model="username"/>
+          <span class="tip-label">Username</span>
+          <span class="border-line"/>
+        </label>
+      </div>
+      <div class="form-item">
+        <label class="ipt-item">
+          <input
+              type="password"
+              :autocomplete="false"
+              required
+              v-model="password"
+              @keyup.enter="handleLogin"
+          />
+          <span class="tip-label">Password</span>
+          <span class="border-line"/>
+        </label>
+      </div>
+      <div class="form-item">
+        <button class="btn-login" @click="handleLogin" type="button">SIGN IN</button>
+      </div>
+    </form>
+    <div class="hint">愿所有美好都能如约而至...</div>
   </div>
 </template>
 
-<script>
-export default {
-    name: "Login"
-}
+<script lang="ts">
+import {defineComponent, reactive, toRefs} from 'vue'
+import {useRouter} from 'vue-router'
+import {LoginInfo, LoginResponse} from '../types'
+import {login} from '../api/api'
+import md5 from 'md5'
+import {Notify, setCookie, setStorageToken} from '../utils/util'
+import {ACCESS_TOKEN} from '../store/mutation-types'
+
+export default defineComponent({
+  name: "Login",
+  setup() {
+    const loginInfo = reactive<LoginInfo>({
+      username: '',
+      password: '',
+    })
+    const router = useRouter()
+
+    function handleLogin() {
+      login({
+        username: loginInfo.username,
+        password: md5(loginInfo.password)
+        // @ts-ignore
+      }).then((res: LoginResponse) => {
+        if (res.success) {
+          Notify('success', 'Congratulations', res.message)
+          setStorageToken(res.data)
+          setCookie(ACCESS_TOKEN, res.data.token, res.data.expireTime)
+          setTimeout(() => {
+            router.push('/')
+          }, 500)
+        } else {
+          Notify('warning', 'Sorry', res.message)
+        }
+      }).catch(err => {
+        Notify('error', 'Something wrong', err.message)
+      })
+    }
+
+    return {
+      ...toRefs(loginInfo),
+      handleLogin
+    }
+  }
+})
 </script>
 
 <style lang="scss">
-
+@import "../assets/css/login.scss";
 </style>

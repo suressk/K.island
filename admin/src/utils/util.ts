@@ -29,6 +29,8 @@ export function Notify (
 export function Confirm (options: ConfirmOptions) {
     Modal.confirm({
         centered: true,
+        type: options.type,
+        icon: options.icon,
         content: options.content,
         onOk: options.onOk,
         onCancel: options.onCancel,
