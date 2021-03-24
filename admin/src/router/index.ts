@@ -12,30 +12,37 @@ const routes: Array<RouteRecordRaw> = [
             path: 'overview',
             name: 'overview',
             meta: {
-                title: '嗐！瞧瞧这人气'
+                title: '统计概览'
             },
             component: () => import('../views/Overview/index.vue')
         }, {
             path: 'edit',
             name: 'edit',
             meta: {
-                title: '嗯！文章编辑'
+                title: '文章编辑'
             },
             component: () => import('../views/record/Edit.vue')
         }, {
             path: 'list',
             name: 'list',
             meta: {
-                title: '哗！文章列表'
+                title: '文章列表'
             },
             component: () => import('../views/record/List.vue')
-        // }, {
-        //     path: 'reply',
-        //     name: 'Reply',
-        //     meta: {
-        //         title: '噔噔噔！聊个五毛钱的天？'
-        //     },
-        //     component: () => import('../views/ConcatReply/Edit.vue')
+        }, {
+            path: 'message',
+            name: 'message',
+            meta: {
+                title: '留言管理'
+            },
+            component: () => import('../views/Message/index.vue')
+        }, {
+            path: 'comment',
+            name: 'comment',
+            meta: {
+                title: '评论管理'
+            },
+            component: () => import('../views/Comment/index.vue')
         }]
     },
     {

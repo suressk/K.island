@@ -8,7 +8,8 @@ const menuList = [
     { label: 'Overview', path: '/overview', icon: 'icon-overview' },
     { label: 'Edit Record', path: '/edit', icon: 'icon-edit' },
     { label: 'Record List', path: '/list', icon: 'icon-management' },
-    { label: 'Reply', path: '/reply', icon: 'icon-reply' }
+    { label: 'Comment', path: '/comment', icon: 'icon-reply' },
+    { label: 'Message', path: '/message', icon: 'icon-reply' }
 ]
 
 export default function useAsideMenu() {
@@ -17,7 +18,9 @@ export default function useAsideMenu() {
     const extendMenu = ref<boolean>(true)
 
     function handleLogout() {
-        // Confirm('warning', '', 'Sure to logout ?').then(() => {
+        // Confirm({
+        //
+        // }).then(() => {
         //     removeStorageItem(ACCESS_TOKEN)
         //     deleteCookie(ACCESS_TOKEN)
         //     // 1s 后跳转到登录页
