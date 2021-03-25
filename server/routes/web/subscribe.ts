@@ -1,21 +1,19 @@
 import express from 'express'
-import { querySubscribeInfo, addSubscribeInfo } from '../../services/subscribeService'
+import {querySubscribeInfo, addSubscribeInfo, verifyEmailCode} from '../../services/subscribeService'
 import { writeHead, writeResult } from '../../utils/writeResponse'
+import sendMail from '../../utils/subscribe'
 
 const router = express.Router()
 
-// 查询订阅信息是否存在（即是否已订阅）
-router.get('/check', (req, res) => {
-
-})
-
 // 新增订阅
 router.post('/add', (req, res) => {
+    const email = req.body.email
+    const name = req.body.name
+    // 1. 查询此邮箱是否存在
     const pro = new Promise((resolve, reject) => {
-        // 查询此邮箱是否存在
         querySubscribeInfo({
-            email: req.body.email,
-            name: req.body.name
+            email,
+            name
         },
         result => {
             // 邮箱已存在
@@ -39,22 +37,53 @@ router.post('/add', (req, res) => {
         })
     })
 
+    // 2. 发送邮箱验证
     pro.then(() => {
-        // 新增订阅
-        addSubscribeInfo({
-            email: req.body.email,
-            name: req.body.name
-        }, result => {
-            writeHead(res, 200)
-            writeResult(true, '小K. <<K.island>> 欢迎您', result)
-        }, err => {
-            writeHead(res, 500)
-            writeResult(err.success, '小K.很遗憾地告诉您：小栈订阅失败了！麻烦联系一下小K.哟~', err)
-        })
+        sendMail(
+            1,
+            {
+                email,
+                name
+            },
+            {
+                email: 'sure_k@qq.com',
+                user: '',
+                pass: '',
+                emailType: 'QQ',
+                name: '小 K.'
+            }
+        )
     }).catch(err => {
         writeHead(res, err.status)
         writeResult(err.success, err.msg)
     })
+})
+
+/**
+ * 邮箱验证
+ * */
+router.post('/verify', (req, res) => {
+    verifyEmailCode(
+        req.body,
+        () => {
+            // success 验证邮箱成功
+            // 新增订阅
+            addSubscribeInfo({
+                email: req.body.email,
+                name: req.body.name
+            }, result => {
+                writeHead(res, 200)
+                writeResult(true, '小K. <<K.island>> 欢迎您', result)
+            }, err => {
+                writeHead(res, 500)
+                writeResult(err.success, '小K.很遗憾地告诉您：小栈订阅失败了！麻烦联系一下小K.哟~', err)
+            })
+        },
+        err => {
+            writeHead(res, 500)
+            writeResult(true, err.message, err)
+        }
+    )
 })
 
 // 移除订阅

@@ -1,5 +1,9 @@
-import { connectQuery } from '../dao/DBUtil'
-import { DeleteSubscribeOptions, QuerySubscribeListOptions } from '../common/types'
+import {connectQuery, createConnection} from '../dao/DBUtil'
+import {
+    DeleteSubscribeOptions,
+    QuerySubscribeListOptions,
+    VerifySubscribeOptions
+} from '../common/types'
 import Query from 'mysql2/typings/mysql/lib/protocol/sequences/Query'
 
 interface QuerySubscribeOptions {
@@ -15,9 +19,49 @@ export function querySubscribeList (
     success: (result: any) => void,
     error: (err: Query.QueryError) => void
 ) {
-    const sqlStr = 'SELECT * from `subscribe` ORDER BY ctime DESC LIMIT ?, ?'
+    const queryListStr = 'SELECT * from `subscribe` ORDER BY ctime DESC LIMIT ?, ?'
+    const queryTotalStr = 'SELECT COUNT(id) as total from `subscribe`'
     const { pageNo, pageSize } = options
-    connectQuery(sqlStr, [pageNo, pageSize], success, error)
+    const connection = createConnection()
+    connection.connect()
+    const listPro = new Promise((resolve, reject) => {
+        connection.query(
+            queryListStr,
+            [pageNo, pageSize],
+            (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(err)
+                }
+            }
+        )
+    })
+    const totalPro = new Promise((resolve, reject) => {
+        connection.query(
+            queryTotalStr,
+            [],
+            (err, result) => {
+                if (!err) {
+                    resolve(result)
+                } else {
+                    reject(err)
+                }
+            }
+        )
+    })
+
+    Promise.all([listPro, totalPro]).then(([list, totalRes]) => {
+        success({
+            list,
+            // @ts-ignore
+            total: totalRes[0].total
+        })
+        connection.end()
+    }).catch(err => {
+        error(err)
+        connection.end()
+    })
 }
 
 /**
@@ -29,8 +73,46 @@ export function querySubscribeInfo (
     error: (err: any) => void
 ) {
     const { email } = options
-    const sqlStr = 'SELECT * FROM `subscribe` WHERE email = ?'
+    const sqlStr = 'SELECT id, email, name, ctime FROM `subscribe` WHERE email = ?'
     connectQuery(sqlStr, [email], success, error)
+}
+
+/**
+ * 查询邮箱验证信息
+ * [{ id: '', ... }]
+ * */
+export function verifyEmailCode (
+    options: VerifySubscribeOptions,
+    success: (res: any) => void,
+    error: (err: any) => void
+) {
+    const { id, email, code } = options
+    const sqlStr = 'SELECT `id`, `email`, `code` FROM `verify_subscribe_info` WHERE `id` = ? AND `email` = ?'
+    const connection = createConnection()
+    connection.connect()
+    connection.query(sqlStr, [id, email], (err, result) => {
+        // 成功查询到验证信息
+        if (!err) {
+            // @ts-ignore
+            const item = result[0]
+            if (item) {
+                if (item.code === code) {
+                    success('success')
+                } else {
+                    error({
+                        message: 'Verification code error'
+                    })
+                }
+            } else {
+                error({
+                    message: `No match to the email: ${email}`
+                })
+            }
+        } else {
+            error(err)
+        }
+    })
+    connection.end()
 }
 
 /**

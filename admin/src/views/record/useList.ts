@@ -36,6 +36,10 @@ const columns = [
         slots: {customRender: 'cover'}
     },
     {
+        title: 'Views',
+        dataIndex: 'views'
+    },
+    {
         title: 'Show',
         dataIndex: 'is_delete',
         slots: {customRender: 'is_delete'},

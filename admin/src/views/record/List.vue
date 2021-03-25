@@ -39,7 +39,7 @@
       </template>
       <template #cover="{ text }">
         <img v-if="text" :src="text" alt="cover-image">
-        <a-tag v-else color="red">Empty</a-tag>
+        <a-tag v-else color="red">No Cover</a-tag>
       </template>
       <template #ctime="{ text }">
         <a-tag color="cyan">{{ dayjs(text).format(timeFormat) }}</a-tag>

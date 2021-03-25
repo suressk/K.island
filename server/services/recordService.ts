@@ -9,11 +9,16 @@ import {
 } from '../common/types'
 import { getUpdateRecordParams } from '../utils/util'
 
+/**
+ * TODO ============ 模糊查询
+ * */
 const sqlStrObj = {
-    allRecords: 'SELECT id, uid, title, introduce, tag, views, cover, ctime, utime, is_delete FROM `records` ORDER BY ctime DESC LIMIT ?, ?',
-    filterTitle: 'SELECT id, uid, title, introduce, tag, views, cover, ctime, utime, is_delete FROM `records` WHERE title LIKE %?% ORDER BY ctime DESC LIMIT ?, ?',
-    filterShow: 'SELECT id, uid, title, introduce, tag, views, cover, ctime, utime FROM `records` WHERE is_delete = 0 ORDER BY ctime DESC LIMIT ?, ?',
-    filterTotal: 'SELECT COUNT(uid) as total from `records` WHERE is_delete = 0'
+    allRecords: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `records` ORDER BY ctime DESC LIMIT ?, ?',
+    filterTitle: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `records` WHERE `title` LIKE %?% ORDER BY ctime DESC LIMIT ?, ?',
+    filterTitleTotal: 'SELECT COUNT(uid) as total from `records` WHERE is_delete = 0 AND `title` LIKE ?',
+    filterShow: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime FROM `records` WHERE is_delete = 0 ORDER BY ctime DESC LIMIT ?, ?',
+    filterTotal: 'SELECT COUNT(uid) as total from `records` WHERE is_delete = 0',
+    allTotal: 'SELECT COUNT(uid) as total from `records`'
 }
 
 type ListParams = [number, number] | [string, number, number]
@@ -29,13 +34,19 @@ export function queryRecordList (
     const { pageNo, pageSize } = options
     let params: ListParams = [(pageNo - 1) * pageSize, pageSize]
     let sqlStr: string
-    let sqlTotalStr: string = 'SELECT COUNT(uid) as total from `records`'
+    let sqlTotalStr: string
+    let totalParams: string[] = []
     // 后台管理查询所有文章列表
     if (options.range && options.range === 'all') {
         sqlStr = sqlStrObj.allRecords
-    } else if (options.title) {
-        sqlStr = sqlStrObj.filterTitle
-        params = [options.title, ...params]
+        sqlTotalStr = sqlStrObj.allTotal
+        // 按 title 模糊查询
+        if (options.title) {
+            sqlStr = sqlStrObj.filterTitle
+            params = [options.title, ...params]
+            sqlTotalStr = sqlStrObj.filterTitleTotal
+            totalParams = [options.title]
+        }
     } else {
         // 前端展示未删除文章
         sqlStr = sqlStrObj.filterShow
@@ -54,7 +65,7 @@ export function queryRecordList (
         }))
     })
     const getTotalPro = new Promise((resolve, reject) => {
-        connection.query(sqlTotalStr, [], ((err, result) => {
+        connection.query(sqlTotalStr, totalParams, ((err, result) => {
             if (!err) {
                 resolve(result)
             } else {

@@ -53,7 +53,6 @@ interface RecordInfo {
     is_delete?: number
     content?: string
     music?: string
-    musicName?: string
 }
 
 export interface ArticleListItem extends RecordInfo {
@@ -88,18 +87,20 @@ export interface UpdateRecordOptions extends RecordInfo {
  * 订阅信息
  * */
 export interface SubscribeInfo {
-    administrator: {
-        user: string
-        pass: string
-        name: string
-        email: string
-    },
-    base: {
-        emailType: string
-    }
+    user: string
+    pass: string
+    name: string
+    email: string
+    emailType: 'QQ' | '163' | 'GMAIL' | 'OUTLOOK'
 }
 
 export interface SubscribeTipInfo {
     subject: string
     html: string
+}
+
+export interface VerifySubscribeOptions {
+    email: string
+    id: number
+    code: string
 }

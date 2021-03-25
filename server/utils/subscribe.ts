@@ -3,26 +3,26 @@ import { SubscribeInfo, SubscribeTipInfo } from '../common/types'
 
 /**
  * 订阅
- * @param {*} type 类型：1 => 订阅验证; 2 => 订阅通知; 3 => 评论通知
+ * @param {*} type 类型：1 => 订阅验证; 2 => 发布新文章通知; 3 => 评论通知
  * @param {*} data
  * @param {*} info
  * */
-async function subscribe(type: number, data: any, info: SubscribeInfo) {
+async function sendMail(type: number, data: any, info: SubscribeInfo) {
     const mode = {
         'QQ': 'smtp.qq.com',
         '163': 'smtp.163.com',
-        'GMAIL': 'smtp.gmail.com'
+        'GMAIL': 'smtp.gmail.com',
+        'OUTLOOK': 'smtp.outlook.com'
     }
 
     const transporter = nodemailer.createTransport({
-        // @ts-ignore
-        host: mode[info.base.emailType],
+        host: mode[info.emailType],
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: info.administrator.user, // generated ethereal user
-            pass: info.administrator.pass, // generated ethereal password
-        },
+            user: info.user, // generated ethereal user
+            pass: info.pass, // generated ethereal password
+        }
     })
 
     await transporter.sendMail(
@@ -46,7 +46,7 @@ function createOption(type: number, data: any, info: SubscribeInfo) {
     const { subject, html } = createTipInfo(type, data, info)
 
     return {
-        from: `${info.administrator.name} <${info.administrator.email}>`,
+        from: `${info.name} <${info.email}>`,
         to: data.email,
         subject,
         html
@@ -69,7 +69,7 @@ function createTipInfo(type: number, data: any, info: SubscribeInfo): SubscribeT
                             <a href="${data.url}">点我进行验证（1小时内有效）~</a>
                             Fighting~
                         </p>
-                        <p style="text-align: right;margin-top: 40px;font-size:0.8rem">—— ${info.administrator.name}</p>
+                        <p style="text-align: right;margin-top: 40px;font-size:0.8rem">—— ${info.name}</p>
                         <div style="background: #eff5fb;border-left: 4px solid #c2e1ff;padding: 20px;margin-top: 30px;border-radius: 10px;font-size: 0.8rem;color: #7d7f7f;line-height: 1.5;">
                             If we don’t have a chance to meet, then I’m here to wish you good morning, good afternoon and good night~<br>
                             May the beauty of the world arrive as expected~<br>
@@ -87,7 +87,7 @@ function createTipInfo(type: number, data: any, info: SubscribeInfo): SubscribeT
                         <p style="text-indent: 2em;color:#303030;font-size: 0.8rem;line-height: 24px;">
                             小 K. 的小驿站，给你带来一刻美好的消息，新的小文已发布，要不要来看一看辣？！《<a href="${data.url}">${data.title}</a>》，希望你喜欢，期待你的评论哦~
                         </p>
-                        <p style="text-align: right;margin-top: 40px;font-size:0.8rem">—— ${info.administrator.name}</p>
+                        <p style="text-align: right;margin-top: 40px;font-size:0.8rem">—— ${info.name}</p>
                         <div style="background: #eff5fb;border-left: 4px solid #c2e1ff;padding: 20px;margin-top: 30px;border-radius: 10px;font-size: 0.8rem;color: #7d7f7f;line-height: 24px;">
                             If we don’t have a chance to meet, then I’m here to wish you good morning, good afternoon and good night~<br>
                             May the beauty of the world arrive as expected~<br>
@@ -98,14 +98,14 @@ function createTipInfo(type: number, data: any, info: SubscribeInfo): SubscribeT
             }
         case 3:
             return {
-                subject: data.title + ' | ' + info.administrator.name,
+                subject: data.title + ' | ' + info.name,
                 html: `
                     <div style="padding: 30px;color: #303030;border-radius: 8px;box-shadow: 0 0 10px #eee;">
                         <h2 style="font-weight: 400;font-size: 1rem;">hi，${data.name}，有一条最新岛"语"哦</h2>
                         <p style="text-indent: 2em;color:#303030;font-size: 0.8rem;line-height: 24px;">
-                            小 K. 的小驿站提醒您，您在《<a href="${data.url}">${data.title}</a>》小文中的评论有了一条新的回复哦，回来看看TA是不是对你说了什么悄悄话吖~
+                            小 K. 的小栈提醒您，您在《<a href="${data.url}">${data.title}</a>》小文中的评论有了一条新的回复哦，回来看看TA是不是对你说了什么悄悄话吖~
                         </p>
-                        <p style="text-align: right;margin-top: 40px;font-size:0.8rem">—— ${info.administrator.name}</p>
+                        <p style="text-align: right;margin-top: 40px;font-size:0.8rem">—— ${info.name}</p>
                         <div style="background: #eff5fb;border-left: 4px solid #c2e1ff;padding: 20px;margin-top: 30px;border-radius: 10px;font-size: 0.8rem;color: #7d7f7f;line-height: 24px;">
                             If we don’t have a chance to meet, then I’m here to wish you good morning, good afternoon and good night~<br>
                             May the beauty of the world arrive as expected~<br>
@@ -122,4 +122,4 @@ function createTipInfo(type: number, data: any, info: SubscribeInfo): SubscribeT
     }
 }
 
-export default subscribe
+export default sendMail
