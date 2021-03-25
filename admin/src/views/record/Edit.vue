@@ -54,14 +54,14 @@
           />
         </a-form-item>
 
-        <a-form-item name="musicName" label="音乐名称">
-          <a-input
-            type="text"
-            placeholder="MusicName"
-            v-model:value="recordInfo.musicName"
-            allowClear
-          />
-        </a-form-item>
+        <!--<a-form-item name="musicName" label="音乐名称">-->
+        <!--  <a-input-->
+        <!--    type="text"-->
+        <!--    placeholder="MusicName"-->
+        <!--    v-model:value="recordInfo.musicName"-->
+        <!--    allowClear-->
+        <!--  />-->
+        <!--</a-form-item>-->
 
         <a-form-item name="cover" label="文章封面">
           <a-input
@@ -88,11 +88,11 @@
           />
         </a-form-item>
 
-
       </a-form>
 
       <div v-if="recordInfo.cover" class="preview-cover right-in flex-center">
         <img :src="recordInfo.cover" alt="Preview image">
+        <i class="iconfont icon-delete absolute-center" />
       </div>
     </div>
   </div>
@@ -149,8 +149,34 @@ export default defineComponent({
       width: 340px;
       height: 220px;
       overflow: hidden;
+      &::after {
+        content: "";
+        position: absolute;
+        transition: .3s;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+      }
+      &:hover {
+        &::after {
+          background-color: var(--opacity-cyan-3);
+        }
+        .icon-delete {
+          opacity: 1;
+        }
+      }
       img {
         width: 100%;
+      }
+      .icon-delete {
+        font-size: 1.5rem;
+        color: var(--tipColor);
+        z-index: 10;
+        opacity: 0;
+        &:hover {
+          color: var(--error);
+        }
       }
     }
   }

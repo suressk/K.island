@@ -7,9 +7,9 @@ import {QuestionCircleOutlined} from '@ant-design/icons-vue'
 
 const menuList = [
     { label: 'Overview', path: '/overview', icon: 'icon-overview' },
-    { label: 'Edit Record', path: '/edit', icon: 'icon-send' },
-    { label: 'Record List', path: '/list', icon: 'icon-management' },
-    { label: 'Comment', path: '/comment', icon: 'icon-reply' },
+    { label: 'Edit Record', path: '/edit', icon: 'icon-edit' },
+    { label: 'Record List', path: '/list', icon: 'icon-send' },
+    { label: 'Comment', path: '/comment', icon: 'icon-management' },
     { label: 'Message', path: '/message', icon: 'icon-twitter' },
     { label: 'Setting', path: '/setting', icon: 'icon-setting' }
 ]

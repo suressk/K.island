@@ -64,7 +64,6 @@ export interface RecordInfo extends ArticleInfo {
     introduce: string
     content: string
     music: string
-    musicName: string
     cover: string
 }
 

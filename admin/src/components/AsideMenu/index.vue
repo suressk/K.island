@@ -26,6 +26,10 @@ import { defineComponent } from 'vue'
 import useAsideMenu from './useAsideMenu'
 import { Switch } from 'ant-design-vue'
 
+// import SvgIcons from '../SvgIcons.vue'
+// <SvgIcons :name="menuItem.icon" />
+// SvgIcons
+
 export default defineComponent({
   name: "AsideMenu",
   components: {
@@ -88,6 +92,9 @@ export default defineComponent({
     width: 40px;
     .menu-item {
       padding: 10px 5px;
+      //.svg-icon {
+      //  margin-right: 0;
+      //}
     }
   }
   .switch {

@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import styleImport from 'vite-plugin-style-import'
 import {resolve} from 'path'
 import type {Alias} from 'vite'
+import viteSvgIcons from 'vite-plugin-svg-icons'
 // import type { UserConfig, ConfigEnv } from 'vite'
 
 function pathResolve(dir: string) {
@@ -33,6 +34,10 @@ export default defineConfig({
                     }
                 }
             ]
+        }),
+        viteSvgIcons({
+            iconDirs: [pathResolve('src/assets/svg')],
+            symbolId: 'icon-[dir]-[name]'
         })
     ],
     resolve: {

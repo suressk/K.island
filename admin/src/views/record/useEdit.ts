@@ -22,17 +22,6 @@ const rules = {
     ]
 }
 
-interface FileItem {
-    uid: string;
-    name?: string;
-    status?: string;
-    response?: string;
-    percent?: number;
-    url?: string;
-    preview?: string;
-    originFileObj?: any;
-}
-
 function isImage(file: File) {
     return file.type.match(/image/g)
 }
@@ -45,7 +34,6 @@ export default function useEdit () {
         introduce: '',
         cover: '',
         music: '',
-        musicName: '',
         content: ''
     })
     const tagOptions = ref<String[]>(['JS', 'Mood', 'Study Note', 'FrontEnd', 'BackEnd'])
@@ -53,7 +41,6 @@ export default function useEdit () {
     const uploadCoverSwitch = ref<boolean>(false)
     const previewVisible = ref<boolean>(false)
     const previewImage = ref<string | undefined>('')
-    const fileList = ref<FileItem[]>([])
     const submit = () => {
         formRef.value
             .validate()
@@ -106,7 +93,6 @@ export default function useEdit () {
         handleUploadCover,
         previewVisible,
         previewImage,
-        fileList,
         uploadCoverSwitch
     }
 }

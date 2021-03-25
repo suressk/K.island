@@ -46,10 +46,10 @@ router.post('/add', (req, res) => {
             name: req.body.name
         }, result => {
             writeHead(res, 200)
-            writeResult(true, '小K. <K.island> 欢迎您', result)
+            writeResult(true, '小K. <<K.island>> 欢迎您', result)
         }, err => {
             writeHead(res, 500)
-            writeResult(err.success, '小K.很遗憾地告诉您：小栈订阅失败了！麻烦联系小K.说明一下哟~',err)
+            writeResult(err.success, '小K.很遗憾地告诉您：小栈订阅失败了！麻烦联系一下小K.哟~', err)
         })
     }).catch(err => {
         writeHead(res, err.status)
