@@ -29,7 +29,7 @@ export function createMulterStorage (dir: string) {
 /**
  * 跨域配置
  * */
-const WHITE_LIST = ['http://localhost:8080', 'http://localhost:8888', 'http://localhost:3000', '*']
+const WHITE_LIST = ['http://localhost:8108', 'http://localhost:8888', '*']
 
 /**
  * 创建跨域处理函数

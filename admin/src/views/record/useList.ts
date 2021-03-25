@@ -9,7 +9,7 @@ import {
 } from '../../types'
 import {useRouter} from 'vue-router'
 import {deleteRecord, getRecordList, updateRecord} from '../../api/api'
-import {Notify, plainArticleList} from '../../utils/util' // 按年分组平铺
+import {errorNotify, plainArticleList, successNotify, warningNotify} from '../../utils/util' // 按年分组平铺
 
 const columns = [
     {
@@ -89,7 +89,7 @@ const columns = [
 /**
  * 文章列表
  * */
-export default function useRecordList() {
+export default function useList() {
     const router = useRouter()
     const loading = ref<boolean>(false)
     const articleTitle = ref<string>('')
@@ -137,15 +137,15 @@ export default function useRecordList() {
             // @ts-ignore
         }).then((res: ResponseData<object>) => {
             if (res.success) {
-                Notify('success', 'Congratulations~', res.message)
+                successNotify(res.message)
                 editableData[id].show = show
                 Object.assign(matchItem, editableData[id]);
             } else {
-                Notify('warning', 'Sorry~', res.message)
+                warningNotify(res.message)
                 editableData[id].show = !show
             }
         }).catch(err => {
-            Notify('error', 'Something wrong~', err.message)
+            errorNotify(err.message)
             editableData[id].show = !show
         })
     }
@@ -190,12 +190,12 @@ export default function useRecordList() {
                     pagination.total = res.data.total
                 } else {
                     articleList.value.length > 0 && (articleList.value = [])
-                    Notify('warning', 'Sorry~', res.message)
+                    warningNotify(res.message)
                 }
                 loading.value = false
             })
             .catch(err => {
-                Notify('error', 'Something wrong~', err.message)
+                errorNotify(err.message)
                 articleList.value.length > 0 && (articleList.value = [])
                 // articleList.value = data
                 // mapEditable(data)
@@ -222,16 +222,16 @@ export default function useRecordList() {
         // @ts-ignore
         deleteRecord({ id, uid }).then((res: ResponseData<object>) => {
             if (res.success) {
-                Notify('success', 'Congratulations~', res.message)
+                successNotify(res.message)
                 getRecords({
                     pageNo: pagination.current,
                     pageSize: pagination.pageSize
                 })
             } else {
-                Notify('warning', 'Sorry~', res.message)
+                warningNotify(res.message)
             }
         }).catch(err => {
-            Notify('error', 'Something wrong~', err.message)
+            errorNotify(err.message)
         })
     }
 

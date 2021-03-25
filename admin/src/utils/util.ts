@@ -1,5 +1,5 @@
 import { notification, Modal } from 'ant-design-vue'
-import { ACCESS_TOKEN } from '../store/mutation-types'
+import { ACCESS_TOKEN, STORAGE_PREFIX } from '../store/mutation-types'
 import {
     TokenInfo,
     YearDataList,
@@ -9,18 +9,43 @@ import { ConfirmOptions, MessageType } from '../types/tip'
 
 /**
  * Notification 消息通知
- * @param {*} type 提示类型
  * @param {*} message 提示标题
  * @param {*} description 提示信息内容
+ * @param {*} type 提示类型
  * @param {*} duration 持续时长（s）
  * */
-export function Notify (
-    type: MessageType = 'success',
+export function notify (
     message: string,
     description: string,
+    type: MessageType = 'info',
     duration = 4.5
 ) {
     notification[type]({ message, description, duration })
+}
+
+export function infoNotify(description: string) {
+    notification.info({
+        message: 'Something wrong~',
+        description
+    })
+}
+export function successNotify(description: string) {
+    notification.success({
+        message: 'Congratulations~',
+        description
+    })
+}
+export function warningNotify(description: string) {
+    notification.warning({
+        message: 'Sorry~',
+        description
+    })
+}
+export function errorNotify(description: string, message: string = 'Something wrong~') {
+    notification.error({
+        message,
+        description
+    })
 }
 
 /**
@@ -50,7 +75,8 @@ export function setStorageToken (info: TokenInfo): void {
         token: info.token,
         expireTime: now + info.expireTime * 1000
     })
-    localStorage.setItem(ACCESS_TOKEN, tokenInfo)
+    const KEY = STORAGE_PREFIX + ACCESS_TOKEN
+    localStorage.setItem(KEY, tokenInfo)
 }
 
 /**
@@ -58,7 +84,8 @@ export function setStorageToken (info: TokenInfo): void {
  * 过期则从 LocalStorage 中移除 token
  * */
 export function getStorageToken (): null | string {
-    const tokenInfoStr: null | string = localStorage.getItem(ACCESS_TOKEN)
+    const KEY = STORAGE_PREFIX + ACCESS_TOKEN
+    const tokenInfoStr: null | string = localStorage.getItem(KEY)
     // token 存在
     if (tokenInfoStr !== null) {
         const { token, expireTime }: TokenInfo = JSON.parse(tokenInfoStr)
@@ -68,26 +95,29 @@ export function getStorageToken (): null | string {
             return token
         }
         // token 过期 => 移除 token
-        localStorage.removeItem(ACCESS_TOKEN)
+        localStorage.removeItem(KEY)
     }
     return null
 }
 
 export function setStorageItem (name: string, value: string): void {
-    localStorage.setItem(name, value)
+    const KEY = STORAGE_PREFIX + name
+    localStorage.setItem(KEY, value)
 }
 
 export function getStorageItem (name: string): null | string {
-    return localStorage.getItem(name)
+    const KEY = STORAGE_PREFIX + name
+    return localStorage.getItem(KEY)
 }
 
 /**
  * 移除 LocalStorage 中的相关项
  * */
 export function removeStorageItem (name: string): void {
-    const infoStr: null | string = localStorage.getItem(name)
-    if (infoStr) {
-        localStorage.removeItem(name)
+    const KEY = STORAGE_PREFIX + name
+    const infoStr: null | string = localStorage.getItem(KEY)
+    if (infoStr !== null) {
+        localStorage.removeItem(KEY)
     }
 }
 
@@ -143,7 +173,7 @@ export function plainArticleList (records: YearDataList<RecordItem>): RecordItem
 /**
  * file 转换为 Base64 编码
  * */
-function transferBase64Code (file: File) {
+function convertAsBase64Code (file: File) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader()
         reader.readAsDataURL(file)

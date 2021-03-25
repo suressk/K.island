@@ -87,7 +87,7 @@ export default defineComponent({
   &.shrink {
     width: 40px;
     .menu-item {
-      padding: 20px 5px;
+      padding: 10px 5px;
     }
   }
   .switch {

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { getStorageToken, Notify } from '../utils/util'
+import { getStorageToken, errorNotify } from '../utils/util'
 import { ResponseData, ErrorResponse } from '../types'
 
 const service: AxiosInstance = axios.create({
@@ -9,11 +9,7 @@ const service: AxiosInstance = axios.create({
 
 const handleError = (err: ErrorResponse) => {
   if (err.code === 'ECONNABORTED' && err.message.includes('timeout')) {
-    Notify(
-      'error',
-      'Timeout',
-      'Request Timeout, Please Wait For Trying Again Later...'
-    )
+    errorNotify('Request Timeout, Please Wait For Trying Again Later...', 'Timeout')
   }
   if (err.response) {
     // @ts-ignore
@@ -21,32 +17,16 @@ const handleError = (err: ErrorResponse) => {
     const status = err.response.status
     switch (status) {
       case 403:
-        Notify(
-          'error',
-          `${status}`,
-          'Token has expired...'
-        )
+        errorNotify('Token has expired...', `${status}`)
         break
       case 404:
-        Notify(
-          'error',
-          `${status}`,
-          'Resource Not Found...'
-        )
+        errorNotify('Resource Not Found...', `${status}`)
         break
       case 500:
-        Notify(
-          'error',
-          `${status}`,
-          'Server Internal Error...'
-        )
+        errorNotify('Server Internal Error...', `${status}`)
         break
       default:
-        Notify(
-        'error',
-        `${status}`,
-          data.message
-        )
+        errorNotify(data.message, `${status}`)
         break
     }
   }

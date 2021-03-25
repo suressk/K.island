@@ -2,7 +2,7 @@ import { ref, reactive, UnwrapRef, toRaw } from 'vue'
 import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
 import { RecordInfo, ResponseData } from '../../types'
 import {uploadCover} from '../../api/api'
-// import { notification } from 'ant-design-vue'
+import {warningNotify, errorNotify} from '../../utils/util'
 
 const rules = {
     title: [
@@ -33,12 +33,11 @@ interface FileItem {
     originFileObj?: any;
 }
 
-interface FileInfo {
-    file: File
-    fileList: FileItem[]
+function isImage(file: File) {
+    return file.type.match(/image/g)
 }
 
-export default function useEditRecord () {
+export default function useEdit () {
     const formRef = ref();
     const recordInfo: UnwrapRef<RecordInfo> = reactive({
         title: '',
@@ -66,18 +65,11 @@ export default function useEditRecord () {
             })
     }
 
-    const handlePreview = () => {
-
-    }
-
-    function cancelPreview () {
-        previewVisible.value = false
-    }
-
-    function handleUploadCover (info: FileInfo) {
-        const { file } = info
-        if (!file.type.match(/image/g)) {
-
+    function handleUploadCover (files: FileList) {
+        if (files.length < 1) return
+        const file = files[0]
+        if (!isImage(file)) {
+            warningNotify('You should choose an image file')
             return
         }
         new Promise(resolve => {
@@ -86,24 +78,24 @@ export default function useEditRecord () {
             formData.append('cover', file)
             formData.append('filename', file.name)
             // @ts-ignore
-            uploadCover(formData).then((res: PromiseLike<ResponseData<any>>) => {
-                // @ts-ignore
+            uploadCover(formData).then((res: ResponseData<any>) => {
                 if (res.success) {
-                    // @ts-ignore
                     resolve(res.data.cover)
                 } else {
-                    console.log(res)
+                    warningNotify(res.message)
                 }
             }).catch(err => {
-                console.log(err)
+                errorNotify(err.message)
             })
         }).then(cover => {
             if (typeof cover === 'string') {
-                // previewCoverUrl.value = urlStr
                 recordInfo.cover = cover
             }
         })
     }
+
+    // 测试图片
+    // 'https://th.bing.com/th/id/R65398d6ad86129f9628c0ad80da4040c?rik=C3qNS9mZOQk%2b5A&riu=http%3a%2f%2fwww.shijuepi.com%2fuploads%2fallimg%2f200918%2f1-20091Q10420.jpg&ehk=QBNuJIbVP1qo%2bwUD3YzXcvL4H5iHivOHXUnzzRw%2bWfU%3d&risl=&pid=ImgRaw'
 
     return {
         formRef,
@@ -115,8 +107,6 @@ export default function useEditRecord () {
         previewVisible,
         previewImage,
         fileList,
-        handlePreview,
-        cancelPreview,
         uploadCoverSwitch
     }
 }

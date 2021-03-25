@@ -76,7 +76,7 @@
 import { defineComponent } from 'vue'
 import { Input, Button ,Table, Switch, Popconfirm, Tag } from 'ant-design-vue'
 import { SearchOutlined } from '@ant-design/icons-vue'
-import useRecordList from './useRecordList'
+import useList from './useList'
 import dayjs from 'dayjs'
 
 const timeFormat = 'YYYY-MM-DD HH:mm'
@@ -96,7 +96,7 @@ export default defineComponent({
     return {
       dayjs,
       timeFormat,
-      ...useRecordList()
+      ...useList()
     }
   }
 })

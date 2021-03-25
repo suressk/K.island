@@ -48,7 +48,7 @@
         <a-form-item name="music" label="背景音乐">
           <a-input
             type="text"
-            placeholder="Music"
+            placeholder="Background Music"
             v-model:value="recordInfo.music"
             allowClear
           />
@@ -63,54 +63,51 @@
           />
         </a-form-item>
 
-        <a-form-item name="cover" label="文章配图">
+        <a-form-item name="cover" label="文章封面">
           <a-input
             type="text"
-            placeholder="cover"
+            placeholder="Cover"
             v-model:value="recordInfo.cover"
             allowClear
             :disabled="uploadCoverSwitch"
           />
-          <a-switch
-            checked-children="上传"
-            un-checked-children="链接"
-            v-model:checked="uploadCoverSwitch"
-          />
-
-          <a-upload
-            v-if="uploadCoverSwitch"
-            :customRequest="handleUploadCover"
-            list-type="picture-card"
-            v-model:file-list="fileList"
-            @preview="handlePreview"
-          >
-            <div v-if="fileList.length < 1">
-              <picture-outlined />
-              <div class="ant-upload-text">Upload</div>
-            </div>
-          </a-upload>
-          <a-modal :visible="previewVisible" :footer="null" @cancel="cancelPreview">
-            <img alt="preview" style="width: 100%" :src="previewImage" />
-          </a-modal>
         </a-form-item>
 
+        <a-form-item label="SWITCHING">
+          <a-switch
+            checked-children="UPLOAD"
+            un-checked-children="LINK"
+            v-model:checked="uploadCoverSwitch"
+          />
+          <upload-button
+            v-if="uploadCoverSwitch"
+            custom-type="primary"
+            class="upload-cover-btn"
+            accept="image/*"
+            @change="handleUploadCover"
+          />
+        </a-form-item>
 
 
       </a-form>
 
+      <div v-if="recordInfo.cover" class="preview-cover right-in flex-center">
+        <img :src="recordInfo.cover" alt="Preview image">
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import useEditRecord from './useEditRecord'
+import useEdit from './useEdit'
+import UploadButton from '../../components/UploadButton.vue'
 import { Input, Select, Form, Upload, Modal, Switch } from 'ant-design-vue'
-import { PictureOutlined } from '@ant-design/icons-vue'
 
 export default defineComponent({
   name: "EditRecord",
   components: {
+    UploadButton,
     'a-input' :Input,
     'a-textarea': Input.TextArea,
     'a-select': Select,
@@ -119,12 +116,11 @@ export default defineComponent({
     'a-form-item': Form.Item,
     'a-upload': Upload,
     'a-modal': Modal,
-    'a-switch': Switch,
-    PictureOutlined
+    'a-switch': Switch
   },
   setup() {
     return {
-      ...useEditRecord()
+      ...useEdit()
     }
   }
 })
@@ -136,8 +132,26 @@ export default defineComponent({
   height: 100%;
   .form-container {
     margin: 30px auto 10px;
-    .anticon-picture {
-      font-size: 2rem;
+    position: relative;
+    .upload-cover-btn {
+      position: absolute;
+      left: 100px;
+      top: -6px;
+      height: 35px;
+      line-height: 25px;
+    }
+    .preview-cover {
+      position: absolute;
+      left: 45%;
+      top: 53%;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      width: 340px;
+      height: 220px;
+      overflow: hidden;
+      img {
+        width: 100%;
+      }
     }
   }
 }

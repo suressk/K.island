@@ -33,13 +33,19 @@
 </template>
 
 <script lang="ts">
+import {LoginInfo, LoginResponse} from '../types'
+import {ACCESS_TOKEN} from '../store/mutation-types'
 import {defineComponent, reactive, toRefs} from 'vue'
 import {useRouter} from 'vue-router'
-import {LoginInfo, LoginResponse} from '../types'
 import {login} from '../api/api'
 import md5 from 'md5'
-import {Notify, setCookie, setStorageToken} from '../utils/util'
-import {ACCESS_TOKEN} from '../store/mutation-types'
+import {
+  successNotify,
+  warningNotify,
+  errorNotify,
+  setCookie,
+  setStorageToken
+} from '../utils/util'
 
 export default defineComponent({
   name: "Login",
@@ -57,17 +63,17 @@ export default defineComponent({
         // @ts-ignore
       }).then((res: LoginResponse) => {
         if (res.success) {
-          Notify('success', 'Congratulations', res.message)
+          successNotify(res.message)
           setStorageToken(res.data)
           setCookie(ACCESS_TOKEN, res.data.token, res.data.expireTime)
           setTimeout(() => {
             router.push('/')
           }, 500)
         } else {
-          Notify('warning', 'Sorry', res.message)
+          warningNotify(res.message)
         }
       }).catch(err => {
-        Notify('error', 'Something wrong', err.message)
+        errorNotify(err.message)
       })
     }
 

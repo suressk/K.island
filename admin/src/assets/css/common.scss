@@ -51,6 +51,8 @@
   --opacity-cyan-3: rgba(112, 243, 255, .3);
   --dark-primary: rgb(9, 132, 227);
   --primary: #0095d9;
+  --opacity-primary-5: rgba(9, 132, 227, .5);
+  --opacity-primary-2: rgba(9, 132, 227, .2);
 
   /** dark-theme colors */
   --dark-theme-body: #0d1117;
@@ -314,4 +316,51 @@ h3.primary-title {
 
 div.ant-notification-notice {
   border-radius: 10px;
+}
+
+/**
+ 自定义 button 按钮样式
+*/
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all .3s;
+  color: var(--tipColor);
+  border: 1px solid var(--border);
+  outline: none;
+  &:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+  &[disabled] {
+    background-color: var(--lightBg)!important;
+    color: var(--tipColor)!important;
+    cursor: not-allowed!important;
+  }
+  &.btn-primary,
+  &.btn-danger,
+  &.btn-success {
+    color: var(--white);
+    border: none;
+  }
+  &.btn-primary {
+    background-color: var(--dark-primary);
+    &:hover {
+      background-color: var(--primary);
+    }
+  }
+  &.btn-danger {
+    background-color: var(--dark-error);
+    &:hover {
+      background-color: var(--error);
+    }
+  }
+  &.btn-success {
+    background-color: var(--dark-success);
+    &:hover {
+      background-color: var(--success);
+    }
+  }
 }
