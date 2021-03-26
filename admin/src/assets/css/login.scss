@@ -69,7 +69,7 @@
           left: 0;
           width: 0;
           height: 3px;
-          background-color: var(--primary);
+          background-color: var(--warning);
           transition: .3s;
         }
         input:focus,
@@ -78,7 +78,7 @@
           &  + .tip-label {
             top: -20px;
             font-size: 12px;
-            color: var(--primary);
+            color: var(--warning);
           }
           & ~ .border-line {
             width: 100%;
@@ -98,10 +98,10 @@
         font-size: 18px;
         font-weight: 400;
         position: relative;
-        background-color: var(--dark-primary);
+        background-color: var(--primary);
         transition: .3s;
         &:hover {
-          background-color: var(--primary);
+          background-color: var(--dark-warning);
         }
       }
     }
@@ -110,7 +110,7 @@
   .hint {
     user-select: none;
     color: #fff;
-    font-size: 14px;
+    font-size: 12px;
     position: absolute;
     left: 50%;
     bottom: 10px;

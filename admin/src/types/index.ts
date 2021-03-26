@@ -31,6 +31,9 @@ export type RecordListResponseData = ResponseData<ListRes>
 
 export type LoginResponse = ResponseData<TokenInfo>
 
+/**
+ * 文章相关
+ * */
 export interface ArticleInfo {
     id?: number
     uid?: string
@@ -87,8 +90,24 @@ export interface RecordItem extends ArticleInfo {
 export type Pagination = TableState['pagination']
 
 /**
+ * message board type
+ * */
+export interface MsgListItem {
+    id: number
+    name: string
+    message: string
+    ctime: number
+}
+
+
+/**
  * request params type
  * */
+export interface PageQueryParams {
+    pageNo: number
+    pageSize: number
+}
+
 export interface DeleteImageParams {
     relativePath: string
 }
@@ -102,9 +121,7 @@ export interface NewArticleParams extends ArticleInfo {
     content: string
 }
 
-export interface QueryArticleListParams {
-    pageNo: number
-    pageSize: number
+export interface QueryArticleListParams extends PageQueryParams {
     title?: string
 }
 

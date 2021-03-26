@@ -310,7 +310,7 @@ h3.primary-title {
   font-size: 18px;
   font-weight: 700;
   padding: 5px 20px;
-  background-color: var(--lightBlue);
+  background-color: var(--opacity-cyan-3);
   border-radius: 0 5px 5px 0;
 }
 
@@ -330,6 +330,7 @@ div.ant-notification-notice {
   color: var(--tipColor);
   border: 1px solid var(--border);
   outline: none;
+  white-space: nowrap;
   &:hover {
     color: var(--primary);
     border-color: var(--primary);
@@ -364,3 +365,35 @@ div.ant-notification-notice {
     }
   }
 }
+
+
+.mt-1 {
+  margin-top: 1rem;
+}
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.icon-delete:hover {
+  color: var(--error);
+}
+.icon-edit:hover {
+  color: var(--primary);
+}
+
+.ant-table {
+  min-height: 70vh;
+  tr {
+    text-align: center;
+  }
+  .ant-table-thead th {
+    text-align: center;
+    border-bottom: 2px solid var(--primary);
+  }
+  .action .iconfont {
+    margin: 0 5px;
+    padding: 5px;
+    color: var(--tipColor);
+  }
+}
+

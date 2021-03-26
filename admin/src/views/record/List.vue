@@ -1,6 +1,6 @@
 <template>
-  <div class="record-list scroller">
-    <h3 class="primary-title">文章列表</h3>
+  <section class="record-list scroller">
+    <h3 class="primary-title">Record List</h3>
 
     <div class="filter-wrapper d-flex">
       <div class="filter-item d-flex">
@@ -69,7 +69,7 @@
         </span>
       </template>
     </a-table>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -115,29 +115,6 @@ export default defineComponent({
   .record-table {
     img {
       max-height: 50px;
-    }
-  }
-  .ant-table {
-    min-height: 70vh;
-    tr {
-      text-align: center;
-    }
-    .ant-table-thead th {
-      text-align: center;
-      border-bottom: 2px solid var(--primary);
-    }
-    .action .iconfont {
-      margin: 0 5px;
-      padding: 5px;
-      color: var(--tipColor);
-      &:hover {
-        &:first-child {
-          color: var(--primary);
-        }
-        &:last-child {
-          color: var(--error);
-        }
-      }
     }
   }
 }

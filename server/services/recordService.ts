@@ -1,4 +1,4 @@
-import { connectQuery, createConnection } from '../dao/DBUtil'
+import { connectQuery, createConnection, connectQueryPro } from '../dao/DBUtil'
 import { v4 as uuid } from 'uuid'
 import Query from 'mysql2/typings/mysql/lib/protocol/sequences/Query'
 import {
@@ -97,7 +97,10 @@ export function queryRecordDetail (
     const { id, uid } = options
     const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, liked, cover, music, musicName, ctime, utime FROM `records` WHERE id = ? AND uid = ?'
     const params = [id, uid]
-    connectQuery(sqlStr, params, success, error)
+    // connectQuery(sqlStr, params, success, error)
+    connectQueryPro(sqlStr, params)
+        .then(result => success(result))
+        .catch(err => error(err))
 }
 
 /**

@@ -54,15 +54,6 @@
           />
         </a-form-item>
 
-        <!--<a-form-item name="musicName" label="音乐名称">-->
-        <!--  <a-input-->
-        <!--    type="text"-->
-        <!--    placeholder="MusicName"-->
-        <!--    v-model:value="recordInfo.musicName"-->
-        <!--    allowClear-->
-        <!--  />-->
-        <!--</a-form-item>-->
-
         <a-form-item name="cover" label="文章封面">
           <a-input
             type="text"
@@ -73,7 +64,7 @@
           />
         </a-form-item>
 
-        <a-form-item label="SWITCHING">
+        <a-form-item label="切换图源">
           <a-switch
             checked-children="UPLOAD"
             un-checked-children="LINK"
@@ -85,7 +76,9 @@
             class="upload-cover-btn"
             accept="image/*"
             @change="handleUploadCover"
-          />
+          >
+            Upload cover
+          </upload-button>
         </a-form-item>
 
       </a-form>

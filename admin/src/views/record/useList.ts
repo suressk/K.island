@@ -158,8 +158,8 @@ export default function useList() {
      * 页码切换
      * */
     function handlePageChange(curPagination: Pagination) {
-        const current = curPagination!.current!,
-            pageSize = curPagination!.pageSize!
+        const current = curPagination!.current!
+        const pageSize = curPagination!.pageSize!
         pagination.current = current
         pagination.pageSize = pageSize
 

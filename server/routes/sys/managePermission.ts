@@ -1,4 +1,4 @@
-import express from 'express'
+import express, {Request, Response} from 'express'
 import { login } from '../../services/permissionService'
 import { writeHead, writeResult } from '../../utils/writeResponse'
 import { publishToken, verifyToken } from '../../utils/jwt'
@@ -6,8 +6,10 @@ const cookieKey = 'token'
 const expireTime = 3600 // 过期时间(s) - 1h
 const router = express.Router()
 
-// 后台管理系统登录
-router.post('/login', (req, res) => {
+export function Login (
+    req: Request,
+    res: Response
+) {
     login(req.body, result => {
         const { username, password } = req.body
         // 未查询到 username 的用户
@@ -38,9 +40,14 @@ router.post('/login', (req, res) => {
         }
     }, err => {
         writeHead(res, 500)
-        res.write(writeResult(false, "呀！出错啦！去看看响应体的错误信息吧", err))
+        res.write(writeResult(false, "Sorry! Fail to login", err))
         res.end()
     })
+}
+
+// 后台管理系统登录
+router.post('/', (req, res) => {
+
 })
 
 // 后台管理退出登录

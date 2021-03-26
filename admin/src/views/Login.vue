@@ -28,7 +28,7 @@
         <button class="btn-login" @click="handleLogin" type="button">SIGN IN</button>
       </div>
     </form>
-    <div class="hint">愿所有美好都能如约而至...</div>
+    <div class="hint">Hope that all the good things will come on schedule...</div>
   </div>
 </template>
 
@@ -57,6 +57,10 @@ export default defineComponent({
     const router = useRouter()
 
     function handleLogin() {
+      if (!loginInfo.username || !loginInfo.password) {
+        warningNotify('username or password is empty!')
+        return
+      }
       login({
         username: loginInfo.username,
         password: md5(loginInfo.password)

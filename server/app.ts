@@ -1,9 +1,10 @@
 import express, { NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 import { createCorsOptionsDelegate } from './utils/util'
-import permission from './routes/back/permission'
-import manageRecord from './routes/back/records'
-import manageImage from './routes/back/manageImage'
+import verifyPermission from './middleware/permission'
+import { Login } from './routes/sys/managePermission'
+import manageRecord from './routes/sys/manageRecords'
+import manageImage from './routes/sys/manageImage'
 import viewRecords from './routes/web/records'
 import addComments from './routes/web/comments'
 import subscribe from './routes/web/subscribe'
@@ -40,25 +41,50 @@ app.use(express.urlencoded({
 app.use(express.json());
 
 /**
- * 后台管理
+ * 后台系统
  * */
-// 系统登录 / 退出登录
-app.use('/sys', permission)
+// 系统登录
+app.post('/login', Login)
+// 后台管理 token 验证 中间件
+app.use('/sys/*', verifyPermission)
+//      ||
+//     \||/
+//      \/
 // 文章管理 —— 增删改查 文章信息
-app.use('/back/record', manageRecord)
-// 上传 / 删除 图片
-app.use('/image', manageImage)
+app.use('/sys/record', manageRecord)
+// 上传 / 删除 图片管理
+app.use('/sys/image', manageImage)
+// 留言信息 管理
+app.use('/sys/message', (req, res, next) => {
+    res.send({
+        success: true,
+        data: {},
+        message: 'get message list'
+    })
+})
 
-// 订阅
-app.use('/subscribe', subscribe)
+// 订阅信息 管理
+app.use('/sys/subscribe', subscribe)
+
+
+
+
 
 /**
- * 前端展示
+ * 前端系统
  * */
 // 文章信息
 app.use('/records', viewRecords)
 // 用户评论
 app.use('/comments', addComments)
+// 用户评论
+app.use('/messages', (req, res, next) => {
+    res.send({
+        success: true,
+        data: {},
+        message: 'add message list'
+    })
+})
 
 app.listen(port, () => {
     console.log(`server is listening at ${host}:${port}...`)

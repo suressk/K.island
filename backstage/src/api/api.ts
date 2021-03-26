@@ -26,11 +26,11 @@ export const login = (params: LoginInfo) => postAction('/sys/login', params)
 // const logout = (params: LoginInfo) => postAction('/sys/logout', params)
 
 // 文章管理
-export const addRecord = (params: RecordInfo) => postAction('/back/record/add', params)
-export const getRecordList = (params: GetListParams) => getAction('/back/record/list', params)
-export const getRecordDetail = (params: RecordIds) => getAction('/back/record/detail', params)
-export const deleteRecord = (params: RecordIds) => postAction('/back/record/update', params)
-export const updateRecord = (params: RecordIds) => putAction('/back/record/update', params)
+export const addRecord = (params: RecordInfo) => postAction('/sys/record/add', params)
+export const getRecordList = (params: GetListParams) => getAction('/sys/record/list', params)
+export const getRecordDetail = (params: RecordIds) => getAction('/sys/record/detail', params)
+export const deleteRecord = (params: RecordIds) => postAction('/sys/record/update', params)
+export const updateRecord = (params: RecordIds) => putAction('/sys/record/update', params)
 
 // 上传封面图
 export const uploadCover = (fileData: FormData) => postUploadImage('/image/upload/cover', fileData)

@@ -78,14 +78,13 @@ export function getUpdateRecordParams (options: UpdateRecordOptions) {
         sqlStr = 'UPDATE records SET liked = ? WHERE id = ? AND uid = ?'
         params.push(options.liked)
     } else {
-        sqlStr = 'UPDATE records SET title = ?, tag = ?, introduce = ?, content = ?, music = ?, musicName = ?, cover = ?, utime = ? WHERE id = ? AND uid = ?'
+        sqlStr = 'UPDATE records SET title = ?, tag = ?, introduce = ?, content = ?, music = ?, cover = ?, utime = ? WHERE id = ? AND uid = ?'
         params.push(
             options.title,
             options.tag,
             options.introduce,
             options.content,
             options.music,
-            options.musicName,
             options.cover,
             utime
         )
