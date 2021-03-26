@@ -41,11 +41,11 @@
         <img v-if="text" :src="text" alt="cover-image">
         <a-tag v-else color="red">No Cover</a-tag>
       </template>
-      <template #ctime="{ text }">
-        <a-tag color="cyan">{{ dayjs(text).format(timeFormat) }}</a-tag>
+      <template #createTime="{ text }">
+        <a-tag color="cyan">{{ text }}</a-tag>
       </template>
-      <template #utime="{ text }">
-        <a-tag color="green">{{ dayjs(text).format(timeFormat) }}</a-tag>
+      <template #updateTime="{ text }">
+        <a-tag color="green">{{ text }}</a-tag>
       </template>
 
       <template #is_delete="{ text, record }">
@@ -77,9 +77,6 @@ import { defineComponent } from 'vue'
 import { Input, Button ,Table, Switch, Popconfirm, Tag } from 'ant-design-vue'
 import { SearchOutlined } from '@ant-design/icons-vue'
 import useList from './useList'
-import dayjs from 'dayjs'
-
-const timeFormat = 'YYYY-MM-DD HH:mm'
 
 export default defineComponent({
   name: "RecordList",
@@ -94,8 +91,6 @@ export default defineComponent({
   },
   setup() {
     return {
-      dayjs,
-      timeFormat,
       ...useList()
     }
   }

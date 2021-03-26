@@ -3,9 +3,10 @@ import { ACCESS_TOKEN, STORAGE_PREFIX } from '../store/mutation-types'
 import {
     TokenInfo,
     YearDataList,
-    RecordItem
+    RecordItem, Pagination
 } from '../types'
 import { ConfirmOptions, MessageType } from '../types/tip'
+import DAYJS from 'dayjs'
 
 /**
  * Notification 消息通知
@@ -162,7 +163,9 @@ export function plainArticleList (records: YearDataList<RecordItem>): RecordItem
         const list = records[years[i]].map(item => {
             return {
                 ...item,
-                show: item.is_delete === 0
+                show: item.is_delete === 0,
+                createTime: formatTime(item.ctime),
+                updateTime: formatTime(item.utime)
             }
         })
         result.push(...list)
@@ -173,11 +176,33 @@ export function plainArticleList (records: YearDataList<RecordItem>): RecordItem
 /**
  * file 转换为 Base64 编码
  * */
-function convertAsBase64Code (file: File) {
+export function convertAsBase64Code (file: File) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader()
         reader.readAsDataURL(file)
         reader.onload = () => resolve(reader.result)
         reader.onerror = error => reject(error)
     })
+}
+
+function formatTime (
+    time: number,
+    timeFormat: string = 'YYYY-MM-DD HH:mm'
+) {
+    return DAYJS(time).format(timeFormat)
+}
+
+interface CtimeItem {
+    ctime: number
+}
+/**
+ * format time
+ * */
+export function mapFormatCtimeList<T extends CtimeItem>(list: T[]) {
+    return list.map(
+        item => ({
+            ...item,
+            createTime: formatTime(item.ctime)
+        })
+    )
 }

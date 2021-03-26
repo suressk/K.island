@@ -1,7 +1,7 @@
 import {reactive, ref, Ref, onMounted} from 'vue'
 import {MsgListItem, Pagination, PageQueryParams, ResponseData} from '../../types'
 import {getMessageList} from '../../api/api'
-import {errorNotify, warningNotify} from "../../utils/util";
+import {errorNotify, warningNotify, mapFormatCtimeList} from "../../utils/util";
 
 const columns = [
     {
@@ -20,8 +20,8 @@ const columns = [
     },
     {
         title: 'Create Time',
-        dataIndex: 'ctime',
-        slots: {customRender: 'ctime'}
+        dataIndex: 'createTime',
+        slots: {customRender: 'createTime'}
     },
     {
         title: 'Action',
@@ -66,7 +66,7 @@ export default function useMessage() {
         //     pageNo: 1,
         //     pageSize: 10
         // })
-        msgList.value = list
+        msgList.value = mapFormatCtimeList(list)
     })
 
     function handlePageChange(curPagination: Pagination) {

@@ -47,15 +47,25 @@ app.use(express.json());
 app.post('/login', Login)
 // 后台管理 token 验证 中间件
 app.use('/sys/*', verifyPermission)
+
 //      ||
 //     \||/
 //      \/
+
 // 文章管理 —— 增删改查 文章信息
 app.use('/sys/record', manageRecord)
 // 上传 / 删除 图片管理
 app.use('/sys/image', manageImage)
 // 留言信息 管理
-app.use('/sys/message', (req, res, next) => {
+app.use('/sys/messages', (req, res, next) => {
+    res.send({
+        success: true,
+        data: {},
+        message: 'get message list'
+    })
+})
+// 留言信息 管理
+app.use('/sys/comments', (req, res, next) => {
     res.send({
         success: true,
         data: {},
@@ -74,17 +84,18 @@ app.use('/sys/subscribe', subscribe)
  * 前端系统
  * */
 // 文章信息
-app.use('/records', viewRecords)
+app.use('/record', viewRecords)
 // 用户评论
-app.use('/comments', addComments)
+app.use('/comment', addComments)
 // 用户评论
-app.use('/messages', (req, res, next) => {
+app.use('/message', (req, res, next) => {
     res.send({
         success: true,
         data: {},
         message: 'add message list'
     })
 })
+app.use('/subscribe', subscribe)
 
 app.listen(port, () => {
     console.log(`server is listening at ${host}:${port}...`)

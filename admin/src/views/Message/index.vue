@@ -13,9 +13,6 @@
       <template #id="{ index }">
         {{ index + 1 }}
       </template>
-      <template #ctime="{ text }">
-        <a-tag color="cyan">{{ dayjs(text).format(timeFormat) }}</a-tag>
-      </template>
 
       <template #action="{ record }">
         <pop-confirm
@@ -33,9 +30,6 @@
 import { defineComponent } from 'vue'
 import { Table, Popconfirm, Tag } from 'ant-design-vue'
 import useMessage from './useMessage'
-import dayjs from 'dayjs'
-
-const timeFormat = 'YYYY-MM-DD HH:mm'
 
 export default defineComponent({
   name: "Message",
@@ -46,8 +40,6 @@ export default defineComponent({
   },
   setup() {
     return {
-      dayjs,
-      timeFormat,
       ...useMessage()
     }
   }

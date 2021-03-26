@@ -113,7 +113,7 @@ export default defineComponent({
   // @ts-ignore
   async asyncData ({ $axios, store }: Context) {
     try {
-      const { success, data } = await $axios.get('/records/list', {
+      const { success, data } = await $axios.get('/record/list', {
         params: {
           pageNo: 1,
           pageSize: 10

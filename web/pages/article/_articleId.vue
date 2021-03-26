@@ -74,7 +74,7 @@ export default defineComponent({
     const uid = paramsArr[0],
       id = paramsArr[1]
     try {
-      const { success, data } = await $axios.get('/records/detail', {
+      const { success, data } = await $axios.get('/record/detail', {
         params: { uid, id }
       })
       // success to get article content

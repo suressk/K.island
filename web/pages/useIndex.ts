@@ -105,7 +105,7 @@ export default function useIndex() {
     try {
       // loading status
       commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOADING)
-      const { success, data } = await axios('/records/list', {
+      const { success, data } = await axios('/record/list', {
         params: {
           pageNo: curPage.value,
           pageSize: 10

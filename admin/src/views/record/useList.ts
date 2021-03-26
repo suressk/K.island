@@ -40,6 +40,10 @@ const columns = [
         dataIndex: 'views'
     },
     {
+        title: 'Liked',
+        dataIndex: 'liked'
+    },
+    {
         title: 'Show',
         dataIndex: 'is_delete',
         slots: {customRender: 'is_delete'},
@@ -47,13 +51,13 @@ const columns = [
     },
     {
         title: 'Create Time',
-        dataIndex: 'ctime',
-        slots: {customRender: 'ctime'}
+        dataIndex: 'createTime',
+        slots: {customRender: 'createTime'}
     },
     {
         title: 'Update Time',
-        dataIndex: 'utime',
-        slots: {customRender: 'utime'}
+        dataIndex: 'updateTime',
+        slots: {customRender: 'updateTime'}
     },
     {
         title: 'Action',

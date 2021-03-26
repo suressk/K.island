@@ -375,14 +375,16 @@ div.ant-notification-notice {
 }
 
 .icon-delete:hover {
-  color: var(--error);
+  color: var(--error) !important;
 }
 .icon-edit:hover {
-  color: var(--primary);
+  color: var(--primary) !important;
+}
+.icon-reply:hover {
+  color: var(--success) !important;
 }
 
 .ant-table {
-  min-height: 70vh;
   tr {
     text-align: center;
   }

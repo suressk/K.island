@@ -12,7 +12,8 @@ import {
   QueryArticleListParams,
   ArticleIds,
   UpdateArticleParams,
-  PageQueryParams
+  PageQueryParams,
+  DeleteCommentsParams
 } from '../types'
 
 // 登录
@@ -35,4 +36,9 @@ export const uploadIllustration = (fileData: FormData) => postUploadImage('/sys/
 export const deleteImage = (data: DeleteImageParams | undefined) => deleteAction('/sys/image/delete', data)
 
 // 查询留言信息
-export const getMessageList = (params: PageQueryParams) => getAction('/sys/message', params)
+export const getMessageList = (params: PageQueryParams) => getAction('/sys/messages', params)
+export const deleteMessages = (data: PageQueryParams) => deleteAction('/sys/messages', data)
+
+// 查询评论信息
+export const getCommentList = (params: PageQueryParams) => getAction('/sys/comments', params)
+export const deleteComments = (data: DeleteCommentsParams) => deleteAction('/sys/comments', data)

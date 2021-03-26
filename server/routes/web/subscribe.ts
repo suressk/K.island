@@ -86,9 +86,4 @@ router.post('/verify', (req, res) => {
     )
 })
 
-// 移除订阅
-router.delete('/delete', (req, res) => {
-
-})
-
 export default router

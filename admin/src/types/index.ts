@@ -22,12 +22,12 @@ export interface ResponseData<D> extends PromiseLike<any>{
     data: D
 }
 
-interface ListRes {
-    list: YearDataList<RecordItem>
+export interface ListRes<T> {
+    list: T
     total: number
 }
 
-export type RecordListResponseData = ResponseData<ListRes>
+export type RecordListResponseData = ResponseData<ListRes<YearDataList<RecordItem>>>
 
 export type LoginResponse = ResponseData<TokenInfo>
 
@@ -85,6 +85,8 @@ export interface RecordItem extends ArticleInfo {
     utime: number
     is_delete: number
     show?: boolean
+    createTime?: string
+    updateTime?: string
 }
 
 export type Pagination = TableState['pagination']
@@ -99,6 +101,22 @@ export interface MsgListItem {
     ctime: number
 }
 
+/**
+ * comment board type
+ * */
+export interface CommentItem {
+    id: number
+    name: string
+    email: string
+    comment: string
+    ctime: number
+    parentId?: number
+    to?: string
+}
+
+export interface DeleteCommentsParams {
+    ids: number[]
+}
 
 /**
  * request params type
