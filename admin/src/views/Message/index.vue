@@ -8,6 +8,7 @@
       :row-key="item => item.id"
       :pagination="pagination"
       :data-source="msgList"
+      :row-selection="rowSelection"
       @change="handlePageChange"
     >
       <template #id="{ index }">

@@ -1,7 +1,9 @@
-import {reactive, ref, Ref, onMounted} from 'vue'
+import {reactive, ref, Ref, onMounted, unref, computed} from 'vue'
 import {MsgListItem, Pagination, PageQueryParams, ResponseData} from '../../types'
 import {getMessageList} from '../../api/api'
-import {errorNotify, warningNotify, mapFormatCtimeList} from "../../utils/util";
+import {errorNotify, warningNotify, mapFormatCtimeList} from '../../utils/util'
+import { ColumnProps } from 'ant-design-vue/es/table/interface'
+type Key = ColumnProps['key']
 
 const columns = [
     {
@@ -61,6 +63,20 @@ export default function useMessage() {
     })
     const msgList: Ref<MsgListItem[]> = ref([])
 
+    const checkedKeys = ref<Key[]>([])
+
+    const rowSelection = {
+        onChange: (selectedRowKeys: Key[], selectedRows: MsgListItem[]) => {
+            checkedKeys.value = selectedRowKeys
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        },
+        // 判定不可选中的项
+        getCheckboxProps: (record: MsgListItem) => ({
+            disabled: record.name === 'ssk',
+            name: record.name,
+        })
+    }
+
     onMounted(() => {
         // getMsgList({
         //     pageNo: 1,
@@ -110,6 +126,7 @@ export default function useMessage() {
         columns,
         pagination,
         msgList,
+        rowSelection,
         handlePageChange,
         handleDeleteMsg
     }

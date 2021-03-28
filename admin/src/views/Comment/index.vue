@@ -2,14 +2,13 @@
   <section class="comment-board">
     <h3 class="primary-title mb-1">Comment Management</h3>
 
-
-
     <a-table
       :loading="loading"
       :columns="columns"
       :row-key="item => item.id"
       :pagination="pagination"
       :data-source="commentList"
+      :row-selection="rowSelection"
       @change="handlePageChange"
     >
 
@@ -49,6 +48,6 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style lang="scss">
 
 </style>

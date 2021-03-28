@@ -1,15 +1,20 @@
 <template>
-  <div class="overview flex-around">
-    <div class="chart-item">
-      <v-chart :options="barOption" />
+  <div class="overview flex-col-start">
+    <h3 class="primary-title">Overview</h3>
+
+    <div class="chart-container flex-around">
+      <div class="chart-item">
+        <v-chart :options="barOption" />
+      </div>
+      <div class="chart-item">
+        <v-chart :options="lineOption" />
+      </div>
+      <div class="chart-item">
+        <v-chart :options="pieOption" />
+      </div>
     </div>
-    <div class="chart-item">
-      <v-chart :options="lineOption" />
+
     </div>
-    <div class="chart-item">
-      <v-chart :options="pieOption" />
-    </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -37,6 +42,10 @@ export default defineComponent({
 .overview {
   height: 100%;
   width: 100%;
+  .chart-container {
+    flex: 1;
+    width: 100%;
+  }
   .chart-item {
     width: 30%;
     height: 50%;

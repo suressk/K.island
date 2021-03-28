@@ -9,6 +9,8 @@ import {
 } from '../../types'
 import {getCommentList, deleteComments} from '../../api/api'
 import {errorNotify, warningNotify, mapFormatCtimeList, successNotify} from '../../utils/util'
+import { ColumnProps } from 'ant-design-vue/es/table/interface'
+type Key = ColumnProps['key']
 
 const columns = [
     {
@@ -80,6 +82,19 @@ export default function useComment() {
     })
     const commentList: Ref<CommentItem[]> = ref([])
 
+    const checkedKeys = ref<Key[]>([])
+
+    const rowSelection = {
+        onChange: (selectedRowKeys: Key[], selectedRows: CommentItem[]) => {
+            checkedKeys.value = selectedRowKeys
+            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        },
+        // 判定不可选中的项
+        getCheckboxProps: (record: CommentItem) => ({
+            disabled: record.name === 'ssk',
+            name: record.name,
+        })
+    }
     onMounted(() => {
         commentList.value = mapFormatCtimeList(list)
     })
@@ -133,7 +148,7 @@ export default function useComment() {
         })
     }
 
-    // 删除单条
+    // 删除单条评论
     function handleDeleteOneComment (info: CommentItem) {
         delMultipleComments({ ids: [info.id] })
     }
@@ -148,6 +163,7 @@ export default function useComment() {
         columns,
         pagination,
         commentList,
+        rowSelection,
         handlePageChange,
         handleDeleteOneComment
     }

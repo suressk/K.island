@@ -4,12 +4,13 @@
     <span class="tip txt-overflow">K.island</span>
     <span class="tip txt-overflow">嗐 | 好久不见</span>
     <span class="tip txt-overflow">
-        <a
-            href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42282302422860"
-            target="_blank"
-        >
-          鄂公安备 42282302422860
-        </a>
+      <a
+        class="link"
+        href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42282302422860"
+        target="_blank"
+      >
+        鄂公安备 42282302422860
+      </a>
     </span>
   </footer>
 </template>
@@ -30,8 +31,7 @@ export default defineComponent({
   overflow: hidden;
   color: #808080;
   font-size: 12px;
-  margin: 0 10px;
-  a {
+  .link {
     color: inherit;
   }
 }
