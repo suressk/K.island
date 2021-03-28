@@ -1,4 +1,4 @@
-import * as WebGL from "./webgl";
+import * as WebGL from './webgl'
 
 class GL {
   constructor(canvas, options, vert, frag) {

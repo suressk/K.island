@@ -123,6 +123,60 @@ export function removeStorageItem (name: string): void {
 }
 
 /**
+ * 防抖
+ * @param fn
+ * @param delay
+ * @param immediate
+ */
+export function debounce (fn: Function, delay: number, immediate: boolean = false) {
+    let timer: any = null
+    return function (...args: any[]) {
+        // @ts-ignore
+        const ctx = this
+        let callNow
+        if (timer !== null) clearTimeout(timer)
+        if (immediate) {
+            callNow = !timer
+            if (callNow) {
+                fn.apply(ctx, args)
+            }
+            timer = setTimeout(() => {
+                timer = null
+            }, delay)
+        } else {
+            timer = setTimeout(() => {
+                fn.apply(ctx, args)
+            }, delay)
+        }
+    }
+}
+
+/**
+ * 节流
+ * @param fn
+ * @param delay
+ */
+export function throttle (fn: Function, delay: number = 3000) {
+    let timer: any = null
+    let startTime: number
+    return function (...args: any[]) {
+        // @ts-ignore
+        const ctx = this
+        const now = Date.now()
+        if (startTime && now < startTime + delay) {
+            if (timer) clearTimeout(timer)
+            timer = setTimeout(() => {
+                startTime = now
+                fn.apply(ctx, args)
+            }, delay)
+        } else {
+            startTime = now
+            fn.apply(ctx, args)
+        }
+    }
+}
+
+/**
  * 设置 cookie
  * @param {*} name cookie 名
  * @param {*} value cookie 值

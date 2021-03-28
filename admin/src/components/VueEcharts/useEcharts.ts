@@ -6,6 +6,7 @@ import {
     ComponentInternalInstance
 } from 'vue'
 import * as echarts from 'echarts'
+import { throttle } from '../../utils/util'
 
 interface EchartsProps {
     options: echarts.EChartsOption
@@ -34,17 +35,22 @@ export default function useEcharts(props: EchartsProps) {
             echartsInstance.setOption(newOpt, newOpt !== oldOpt)
         }
     })
-    // , {
-    //     deep: true
-    // }
+
+    // 防抖监听 window resize
+    const listenResize = throttle(() => {
+        echartsInstance.setOption(props.options, false)
+    }, 200)
+
     onMounted(() => {
         vm = getCurrentInstance()!
         // @ts-ignore
         chartEl = vm.proxy.$refs.echartsRef as HTMLElement
         initEChart(props.options)
+        window.addEventListener('resize', listenResize)
     })
     onBeforeUnmount(() => {
         stopWatch()
+        window.removeEventListener('resize', listenResize)
     })
     return {}
 }

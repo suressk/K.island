@@ -61,8 +61,6 @@ import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import BackTop from '~/components/BackTop/index.vue'
 import Modal from '~/components/KModal/index.vue'
-// import { useState } from '~/utils/useStore'
-// import { M_SET_ARTICLE_DETAIL } from '~/store/mutation-types'
 
 export default defineComponent({
   name: 'ArticleId',
@@ -96,7 +94,9 @@ export default defineComponent({
     } catch (e) {
       // failLoadNotify('article content')
       return {
-        articleDetail: {},
+        articleDetail: {
+          time: {}
+        },
         htmlContent: '',
         articleClass: 'mood'
       }

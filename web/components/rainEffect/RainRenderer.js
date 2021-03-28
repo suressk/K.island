@@ -1,5 +1,5 @@
-import GL from "./GL";
-import createCanvas from "./createCanvas";
+import GL from './GL'
+import createCanvas from './createCanvas'
 import requireShaderScript from 'glslify'
 import simpleVert from './shaders/simple'
 import waterFrag from './shaders/water'

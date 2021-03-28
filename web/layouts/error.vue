@@ -1,94 +1,105 @@
 <template>
   <section v-if="error.statusCode === 404 || error.statusCode === 500" class="not-found">
-    <div id="container" class="planet-container"></div>
-    <span class="tip absolute-center">
-      哇哦，你好像迷路了呢？要不试试 {{ error.statusCode }}
-      <nuxt-link class="link" to="/">
-        点我
-      </nuxt-link>
-      回到首页？
-    </span>
+    <div class="perspective-container fixed-center">
+      <span class="card" />
+      <span class="card" />
+      <span class="card" />
+      <p class="tip txt-overflow">
+        好像出错了呀！
+        <nuxt-link class="link" to="/">点我</nuxt-link>
+        回到首页 （麻烦跟小K.说一声哦~）
+      </p>
+    </div>
   </section>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@nuxtjs/composition-api'
-import * as THREE from 'three'
-// import render, { initPlanet } from '~/components/planet'
-// @ts-ignore
-let camera, scene, renderer, geometry, material, mesh
-
-function init() {
-  camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
-  camera.position.z = 1;
-  scene = new THREE.Scene();
-  geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-  material = new THREE.MeshNormalMaterial();
-  mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
-  renderer = new THREE.WebGLRenderer({antialias: true});
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animation);
-  document.body.appendChild(renderer.domElement);
-}
-
-function animation(time: number) {
-  // @ts-ignore
-  mesh.rotation.x = time / 2000;
-  // @ts-ignore
-  mesh.rotation.y = time / 1000;
-  // @ts-ignore
-  renderer.render(scene, camera);
-}
 
 export default defineComponent({
   name: 'NotFound',
   props: ['error'],
   setup() {
-    onMounted(() => {
-      // init()
-
-      // initPlanet()
-      // render()
-    })
+    onMounted(() => {})
   },
   head() {
     return {
-      title: '是不是迷路啦~ | K.island'
+      title: '嗯？！好像出错辣~ | K.island'
     }
   }
 })
 </script>
 
 <style scoped lang="scss">
-//.error,
 .not-found {
   width: 100vw;
   height: 100vh;
-  position: relative;
+  overflow: hidden;
+  background-color: var(--ink);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  .perspective-container {
+    perspective: 500px;
+    width: 100px;
+    height: 100px;
+    transform-origin: bottom center;
+    .card {
+      transform-style: preserve-3d;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--primary);
+      border-radius: 20px;
+      transform: rotateX(60deg) rotateZ(45deg);
+      animation: cardRotate 2s ease-in-out infinite;
+      &:nth-child(2) {
+        background-color: rgba(255, 255, 255, .6);
+        transform: rotateX(60deg) rotateZ(45deg) scale(0.8) translateZ(20px);
+        animation: card2Bounce 2s ease infinite;
+      }
+      &:nth-child(3) {
+        background-color: rgba(255, 255, 255, .3);
+        transform: rotateX(60deg) rotateZ(45deg) scale(0.5) translateZ(50px);
+        animation: card3Bounce 2s ease-in-out infinite;
+      }
+    }
 
-  .planet-container {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    .tip {
+      position: absolute;
+      left: 50%;
+      bottom: -50px;
+      font-size: 14px;
+      transform: translateX(-50%);
+    }
   }
 }
 
-.not-found {
-  background-image: url("~@/static/svg/404.svg");
-  background-size: 50% 50%;
-  background-repeat: no-repeat;
-  background-position: center;
+@keyframes cardRotate {
+  0% {
+    transform: rotateX(60deg) rotateZ(45deg);
+  }
+  100% {
+    transform: rotateX(60deg) rotateZ(405deg);
+  }
+}
 
-  span {
-    top: 85%;
-    user-select: none;
-
-    .link {
-      color: var(--primary);
-    }
+@keyframes card2Bounce {
+  0%, 100% {
+    transform: rotateX(60deg) rotateZ(45deg) scale(0.8) translateZ(20px);
+  }
+  50% {
+    transform: rotateX(60deg) rotateZ(45deg) scale(0.8) translateZ(50px);
+  }
+}
+@keyframes card3Bounce {
+  0%, 100% {
+    transform: rotateX(60deg) rotateZ(45deg) scale(0.5) translateZ(50px);
+  }
+  50% {
+    transform: rotateX(60deg) rotateZ(45deg) scale(0.5) translateZ(100px);
   }
 }
 </style>
