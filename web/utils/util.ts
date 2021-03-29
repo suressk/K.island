@@ -1,12 +1,16 @@
 import { zhMonths } from './variable'
 import { ArticleItem } from '~/@types'
 import { Store } from 'vuex'
-// import dayjs from 'dayjs'
+import DAYJS from 'dayjs'
 
 /**
  * commit mutations
  * */
-export function commitMutations<Payload> (store: Store<any>, type: string, payload?: Payload) {
+export function commitMutations<Payload> (
+  store: Store<any>,
+  type: string,
+  payload?: Payload
+) {
   if (payload) {
     store.commit(type, payload)
   } else {
@@ -182,15 +186,16 @@ export function getCurrentTime () {
 /**
  * 获取 localstorage 存储的数据
  * */
-export function getStorageValue (key: string): null | string {
-  return localStorage.getItem('K_' + key)
+export function getStorageValue<V> (key: string): null | V {
+  const value = localStorage.getItem('K_' + key)
+  return (value ? JSON.parse(value) : null)
 }
 
 /**
  * 将数据存储到 localstorage
  * */
-export function setStorageValue (key: string, value: string): void {
-  localStorage.setItem('K_' + key, value)
+export function setStorageValue<V> (key: string, value: V): void {
+  localStorage.setItem('K_' + key, JSON.stringify(value))
 }
 
 interface YearData<T> {
@@ -245,4 +250,26 @@ export function plainArticleList (records: YearData<ArticleItem>) {
     result.push(...records[years[i]])
   }
   return result
+}
+
+const dayFormat = 'YYYY-MM-DD'
+/**
+ * 判断是否是今天（年月日）
+ * */
+export function isToday(time: number): boolean {
+  const now = DAYJS(Date.now()).format(dayFormat).split('-') // today
+  const other = DAYJS(new Date(time)).format(dayFormat).split('-') // anotherDay
+  const today = {
+    year: now[0],
+    month: now[1],
+    day: now[2]
+  }
+  const otherDay = {
+    year: other[0],
+    month: other[1],
+    day: other[2]
+  }
+  return (today.year === otherDay.year &&
+    today.month === otherDay.month &&
+    today.day === otherDay.day);
 }

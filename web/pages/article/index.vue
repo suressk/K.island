@@ -3,12 +3,14 @@
     <KHeader custom-title="(≖ᴗ≖)✧" />
     <!--  文章列表页  -->
     <div v-if="Object.keys(listData).length === 0" class="nothing-content flex-center">
-      <span class="tip">空无一物 (≖ᴗ≖)✧</span>
-      <!--<canvas ref="waveCanvas" width="100%" height="100%" class="animation-canvas" />-->
-      <KWave />
+      <Empty>
+        <span class="tip txt-overflow">空无一物 (≖ᴗ≖)✧</span>
+      </Empty>
+      <!--<KWave />-->
     </div>
     <!--  有内容  -->
     <div v-else class="content">
+
       <!--   月份分组   -->
       <div
         class="year-list"
@@ -47,7 +49,6 @@
     </div>
 
     <ThemeSwitch />
-    <KFooter />
   </section>
 </template>
 
@@ -58,14 +59,15 @@ import { M_RESET_LOAD_MORE, M_SET_TOTAL_ITEMS } from '~/store/mutation-types'
 import {commitMutations, createArticleListData} from '~/utils/util'
 import useArticle from './useArticle'
 import KHeader from '~/components/KHeader/index.vue'
-import KFooter from '~/components/KFooter.vue'
-import KWave from '~/components/KWave.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
+import Empty from '~/components/Empty.vue'
+// import KFooter from '~/components/KFooter.vue'
+// import KWave from '~/components/KWave.vue'
 // import Notification from '~/components/notification'
 
 export default defineComponent({
   name: 'Article',
-  components: { KHeader, KWave, KFooter, ThemeSwitch },
+  components: { KHeader, ThemeSwitch, Empty },
   // @ts-ignore => merge to data
   async asyncData({ $axios, store }: Context): Promise<object | void> | object | void {
     try {

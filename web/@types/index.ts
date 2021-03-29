@@ -87,3 +87,10 @@ export interface CommentInfo {
   email: string;
   comment: string;
 }
+export interface ModalProps {
+  visible?: boolean
+  title?: string
+  okText?: string
+  cancelText?: string
+  showFooter?: boolean
+}

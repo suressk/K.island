@@ -104,7 +104,7 @@ const navList = [
   { title: 'Article', path: '/article' },
   { title: 'Subscription', path: '/subscription' },
   { title: 'Contact', path: '/contact' },
-  { title: 'MessageBoard', path: '/messageBoard' },
+  { title: 'Messages', path: '/messages' },
 ]
 
 export default defineComponent({

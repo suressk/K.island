@@ -25,3 +25,9 @@ export const LOAD_STATUS = 'loadStatus'
 export const TOTAL_ITEMS = 'totalItems'
 export const CURRENT_PAGE = 'curPage'
 export const ARTICLE_DETAIL = 'articleDetail'
+
+/**
+ * localStorage values
+ * */
+export const MSG_LIMIT_NUM = 'msgLimitNumPerDay' // 每日新增 msg 限制数
+

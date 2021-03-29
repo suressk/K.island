@@ -95,6 +95,7 @@ app.use('/message', (req, res, next) => {
         message: 'add message list'
     })
 })
+// 用户新增订阅、订阅验证
 app.use('/subscribe', subscribe)
 
 app.listen(port, () => {

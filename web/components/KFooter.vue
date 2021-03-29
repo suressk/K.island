@@ -1,6 +1,10 @@
 <template>
   <footer class="k-footer flex-center">
-    <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42282302422860" target="_blank" class="link tip">
+    <a
+      href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42282302422860"
+      target="_blank"
+      class="tip"
+    >
       鄂公安备 42282302422860
     </a>
     <span class="tip">鄂 ICP 备 20006909 号</span>

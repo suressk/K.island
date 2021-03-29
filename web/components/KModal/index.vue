@@ -50,18 +50,9 @@ export default defineComponent({
       default: true
     }
   },
-  setup() {
+  setup(props) {
     return {
-      ...useModal()
-    }
-  },
-  watch: {
-    visible(val) {
-      if (!val) {
-        document && (document.body.style.overflowY = '')
-      } else {
-        document && (document.body.style.overflowY = 'hidden')
-      }
+      ...useModal(props)
     }
   }
 })
