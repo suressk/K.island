@@ -1,11 +1,8 @@
 /*
   留言板页面
 */
-.k-message-board {
+.k-message {
   min-height: 100vh;
-  .content {
-    min-height: calc(100vh - 40px);
-  }
   .tip-message {
     padding: 30px 10px 10px;
     border-radius: 5px;

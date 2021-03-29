@@ -1,5 +1,5 @@
 <template>
-  <section class="k-message-board">
+  <section class="k-message">
     <KHeader />
     <div class="content">
       <!--    v-show="showTip"    -->
@@ -13,13 +13,15 @@
       </transition>
 
       <div class="add-message">
-        <button class="btn btn-primary" @click="showAddMsgModal">Add a Message</button>
+        <button class="btn btn-primary" @click="showAddMsgModal">Leave a Message</button>
         <!--   添加留言 modal   -->
         <Modal
           :visible.sync="showModal"
           @ok="handleAddMessage"
         >
-
+          <template v-slot:avatar>
+            <img src="~~/static/images/avatar.png" alt="K. avatar">
+          </template>
         </Modal>
       </div>
 
@@ -33,7 +35,6 @@
 
     <ThemeSwitch />
     <BackTop />
-    <KFooter />
   </section>
 </template>
 
@@ -46,7 +47,6 @@ import Notify from '~/components/notification'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import BackTop from '~/components/BackTop/index.vue'
-import KFooter from '~/components/KFooter.vue'
 import Modal from '~/components/KModal/index.vue'
 
 interface MsgLimitValue {
@@ -56,7 +56,7 @@ interface MsgLimitValue {
 
 export default defineComponent({
   name: 'MessageBoard',
-  components: { Modal, KHeader, ThemeSwitch, BackTop, KFooter },
+  components: { Modal, KHeader, ThemeSwitch, BackTop },
   setup() {
     const { proxy } = getCurrentInstance()!
     const showTip = ref<boolean>(true)
@@ -106,13 +106,17 @@ export default defineComponent({
      * */
     function initMsgLimit() {
       const localLimit = getStorageValue<MsgLimitValue>(MSG_LIMIT_NUM)
-      msgLimit = localLimit || {
+
+      msgLimit = {
         time: Date.now(),
         added: 0
       }
-      if (localLimit === null) {
+      // 初次加载 / 非今日 => 已留言数置为 0
+      if (localLimit === null || !isToday(localLimit.time)) {
         setStorageValue<MsgLimitValue>(MSG_LIMIT_NUM, msgLimit)
+        return
       }
+      msgLimit = { ...localLimit }
     }
 
     onMounted(() => {

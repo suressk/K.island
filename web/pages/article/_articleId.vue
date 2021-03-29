@@ -45,7 +45,6 @@
       <ThemeSwitch />
     </div>
     <BackTop />
-    <KFooter />
   </section>
 </template>
 
@@ -56,7 +55,6 @@ import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import { Context } from '@nuxt/types'
 import { CommentInfo } from '~/@types'
 import CommentForm from '~/components/CommentForm/index.vue'
-import KFooter from '~/components/KFooter.vue'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import BackTop from '~/components/BackTop/index.vue'
@@ -64,7 +62,7 @@ import Modal from '~/components/KModal/index.vue'
 
 export default defineComponent({
   name: 'ArticleId',
-  components: { KHeader, CommentForm, KFooter, ThemeSwitch, BackTop, Modal },
+  components: { KHeader, CommentForm, ThemeSwitch, BackTop, Modal },
   // @ts-ignore
   async asyncData({ params, $axios }: Context): Promise<object | void> | object | void {
     const { articleId } = params
@@ -92,7 +90,6 @@ export default defineComponent({
         }
       }
     } catch (e) {
-      // failLoadNotify('article content')
       return {
         articleDetail: {
           time: {}
@@ -132,7 +129,6 @@ export default defineComponent({
   .content {
     width: 800px;
     margin: 0 auto;
-    min-height: calc(100vh - 40px);
   }
   .stuffix {
     padding: 10px 0;

@@ -46,7 +46,6 @@
     </div>
 
     <ThemeSwitch />
-    <KFooter />
   </section>
 </template>
 
@@ -54,15 +53,10 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
-import KFooter from '~/components/KFooter.vue'
 
 export default defineComponent({
   name: 'About',
-  components: {
-    KHeader,
-    ThemeSwitch,
-    KFooter
-  },
+  components: { KHeader, ThemeSwitch },
   head () {
     return {
       title: "Hi!I'm K. | K.island"

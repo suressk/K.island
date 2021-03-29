@@ -111,6 +111,9 @@
   .content {
     margin: 20px auto;
     width: 1200px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    min-height: unset;
     &::after {
       content: "";
       position: absolute;
@@ -118,7 +121,6 @@
       top: 0;
       z-index: 0;
       width: 1px;
-      // height: calc(100% + 100px);
       height: 100%;
       background-color: var(--border);
     }

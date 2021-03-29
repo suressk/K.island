@@ -350,10 +350,11 @@ a:hover,
 /** content 内容区 */
 .content {
   width: 800px;
-  border: 1px solid var(--border);
+  //border: 1px solid var(--border);
   border-left: none;
   border-right: none;
   margin: 0 auto;
   padding: 50px 0;
   position: relative;
+  min-height: 100vh;
 }

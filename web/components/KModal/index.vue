@@ -4,6 +4,9 @@
       <div class="mask fixed" @click="updateVisible"></div>
 
       <div class="modal-content fixed-center">
+        <div class="modal-avatar flex-center">
+          <slot name="avatar"></slot>
+        </div>
         <div class="modal-header flex-between">
           <span class="modal-title">{{ title }}</span>
           <i class="iconfont icon-close" @click="updateVisible" />
@@ -77,9 +80,21 @@ export default defineComponent({
     z-index: 51;
     background-color: var(--white);
     border-radius: 10px;
-    padding: 20px;
+    padding: 20px 20px 20px 5vw;
     display: flex;
     flex-direction: column;
+    .modal-avatar {
+      position: absolute;
+      width: 5vw;
+      height: 5vw;
+      overflow: hidden;
+      border-radius: 50%;
+      left: 0;
+      top: -2vw;
+      img {
+        width: 100%;
+      }
+    }
     .modal-header {
       margin-bottom: 20px;
       height: 30px;

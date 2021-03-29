@@ -100,7 +100,6 @@
       .content {
         margin: 0;
         padding: 50px 10px 0;
-        min-height: calc(100vh - 40px);
         .title {
           font-size: 1.5rem;
           font-weight: 600;
@@ -182,7 +181,6 @@
 
     &.main-page .content {
       padding: 0 10px 50px;
-
     }
   }
 }
