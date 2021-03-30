@@ -35,7 +35,7 @@
                 <span class="title txt-overflow">{{ articleItem.title }}</span>
                 <span class="tip-txt txt-overflow">
                   {{ articleItem.views + ' READED' }}
-                  {{ articleItem.likes ? (' / ' + articleItem.likes + ' LIKED') : '' }}
+                  {{ articleItem.liked ? (' / ' + articleItem.liked + ' LIKED') : '' }}
                 </span>
               </div>
               <div class="day-marker">
@@ -61,8 +61,6 @@ import useArticle from './useArticle'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import Empty from '~/components/Empty.vue'
-// import KFooter from '~/components/KFooter.vue'
-// import KWave from '~/components/KWave.vue'
 // import Notification from '~/components/notification'
 
 export default defineComponent({

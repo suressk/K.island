@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { CommentInfo } from '~/@types'
+import { CommentInfo } from '~/types'
 
 export default defineComponent({
   name: 'Comment',

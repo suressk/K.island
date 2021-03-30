@@ -116,7 +116,8 @@ export default defineComponent({
       const { success, data } = await $axios.get('/record/list', {
         params: {
           pageNo: 1,
-          pageSize: 10
+          pageSize: 10,
+          index: 1
         }
       })
       if (success) {

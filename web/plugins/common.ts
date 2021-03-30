@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { ILoadImageItem } from '~/@types'
+import { ILoadImageItem } from '~/types'
 import Confirm from "~/components/popConfirm";
 import {
   throttle,

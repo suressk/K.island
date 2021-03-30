@@ -1,5 +1,5 @@
 import { zhMonths } from './variable'
-import { ArticleItem } from '~/@types'
+import { ArticleItem } from '~/types'
 import { Store } from 'vuex'
 import DAYJS from 'dayjs'
 

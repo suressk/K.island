@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from './notify.vue'
-import { NotificationOptions, AnyInstance } from '~/@types'
+import { NotificationOptions, AnyInstance } from '~/types'
 
 const NotificationConstructor = Vue.extend(Component)
 

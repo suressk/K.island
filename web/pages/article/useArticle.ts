@@ -1,6 +1,6 @@
 import { SetupContext } from '@nuxtjs/composition-api'
 // A_QUERY_ARTICLE_DETAIL
-import { ArticleItem } from '~/@types'
+import { ArticleItem } from '~/types'
 
 // const colors = ['rgba(0, 222, 255, 0.2)', 'rgba(157, 192, 249, 0.2)', 'rgba(0, 168, 255, 0.2)']
 

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Component from './confirm.vue'
-import { AnyInstance, ConfirmOptions } from '~/@types'
+import { AnyInstance, ConfirmOptions } from '~/types'
 
 const PopConfirmConstructor = Vue.extend(Component)
 

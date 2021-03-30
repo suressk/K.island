@@ -9,7 +9,7 @@ import {ArticleListItem} from '../common/types'
  * */
 export function recordListResponse (req: Request, res: Response, range: string | undefined) {
     const { pageNo, pageSize } = req.query
-    const title: string | undefined | any = req.query.title
+    const title: any = req.query.title
     queryRecordList({
         pageNo: Number(pageNo),
         pageSize: Number(pageSize),

@@ -1,6 +1,6 @@
 import { ref, reactive, computed, SetupContext, nextTick } from '@nuxtjs/composition-api'
 import { checkEmail } from '~/utils/util'
-import { CommentProps } from '~/@types'
+import { CommentProps } from '~/types'
 
 let timer: number
 

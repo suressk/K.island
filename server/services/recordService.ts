@@ -14,7 +14,8 @@ import { getUpdateRecordParams } from '../utils/util'
  * */
 const sqlStrObj = {
     allRecords: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `records` ORDER BY ctime DESC LIMIT ?, ?',
-    filterTitle: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `records` WHERE `title` LIKE %?% ORDER BY ctime DESC LIMIT ?, ?',
+    filterListByViews: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `records` ORDER BY views DESC LIMIT ?, ?',
+    filterTitle: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `records` WHERE `title` LIKE ? ORDER BY ctime DESC LIMIT ?, ?',
     filterTitleTotal: 'SELECT COUNT(uid) as total from `records` WHERE is_delete = 0 AND `title` LIKE ?',
     filterShow: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime FROM `records` WHERE is_delete = 0 ORDER BY ctime DESC LIMIT ?, ?',
     filterTotal: 'SELECT COUNT(uid) as total from `records` WHERE is_delete = 0',

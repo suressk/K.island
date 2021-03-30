@@ -26,7 +26,7 @@ import {
 import RainInit from '~/components/rainEffect/index'
 import { useState } from '~/utils/useStore'
 import Notification from '~/components/notification'
-import {ArticleDetail} from "~/@types";
+import {ArticleDetail} from "~/types";
 
 /**
  * 首页 composition-api 代码风格 写法抽离
@@ -108,7 +108,8 @@ export default function useIndex() {
       const { success, data } = await axios('/record/list', {
         params: {
           pageNo: curPage.value,
-          pageSize: 10
+          pageSize: 10,
+          index: 1
         }
       })
       const end = Date.now()
@@ -128,9 +129,9 @@ export default function useIndex() {
       loadingTimer = setTimeout(() => {
         nextTick(() => {
           Notification({
-            title: '嗐~ o(╥﹏╥)o',
+            title: 'Something wrong~',
             type: 'error',
-            message: '更多文章加载失败辣，麻烦联系小 K. 说明一下'
+            message: '更多文章加载失败辣，麻烦联系一下小 K. 哦~'
           })
           commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOAD_MORE)
         })

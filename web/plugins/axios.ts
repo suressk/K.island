@@ -3,7 +3,7 @@
  * store, router,
  * */
 import { AxiosResponse } from 'axios'
-import { ErrorResponse, ResponseRes } from '~/@types'
+import { ErrorResponse, ResponseRes } from '~/types'
 // import Vue from 'vue'
 
 // @ts-ignore

@@ -1,5 +1,5 @@
 import { getCurrentInstance, watch, onUnmounted } from '@nuxtjs/composition-api'
-import { ModalProps } from '~/@types'
+import { ModalProps } from '~/types'
 /**
  * modal 弹出层
  * */

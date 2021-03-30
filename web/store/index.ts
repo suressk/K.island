@@ -9,7 +9,7 @@ import {
   CURRENT_PAGE,
   ARTICLE_DETAIL
 } from './mutation-types'
-import { ArticleDetail } from '~/@types'
+import { ArticleDetail } from '~/types'
 
 interface State {
   [ARTICLE_DETAIL]: ArticleDetail;
