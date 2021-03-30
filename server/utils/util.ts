@@ -61,7 +61,7 @@ export function verifyTokenResponse (req: Request, res: Response, callback: () =
  * 1. 显隐 => is_delete: 0 / 1
  * 2. 浏览量 => views: number
  * 3. 点赞 => liked: number
- * 4. 文章内容更新 => title, tag, introduce, cover, music, musicName
+ * 4. 文章内容更新 => title, tag, introduce, cover, music
  * */
 export function getUpdateRecordParams (options: UpdateRecordOptions) {
     const { id, uid } = options

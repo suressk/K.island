@@ -10,7 +10,7 @@ import {
 import { getUpdateRecordParams } from '../utils/util'
 
 /**
- * TODO ============ 模糊查询
+ * sql 语句
  * */
 const sqlStrObj = {
     allRecords: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `records` ORDER BY ctime DESC LIMIT ?, ?',
@@ -43,9 +43,9 @@ export function queryRecordList (
         // 按 title 模糊查询
         if (options.title) {
             sqlStr = sqlStrObj.filterTitle
-            params = [options.title, ...params]
+            params = [`%${options.title}%`, ...params]
             sqlTotalStr = sqlStrObj.filterTitleTotal
-            totalParams = [options.title]
+            totalParams = [`%${options.title}%`]
         }
     } else {
         // 前端展示未删除文章
@@ -95,7 +95,7 @@ export function queryRecordDetail (
     error: (err: Query.QueryError) => void
 ) {
     const { id, uid } = options
-    const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, liked, cover, music, musicName, ctime, utime FROM `records` WHERE id = ? AND uid = ?'
+    const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, liked, cover, music, ctime, utime FROM `records` WHERE id = ? AND uid = ?'
     const params = [id, uid]
     // connectQuery(sqlStr, params, success, error)
     connectQueryPro(sqlStr, params)
@@ -111,11 +111,11 @@ export function addRecord (
     success: (result: any) => void,
     error: (err: Query.QueryError) => void
 ) {
-    const { title, tag, introduce, content, cover, music, musicName } = options
-    const sqlStr = 'INSERT INTO records (`uid`, `title`, `content`, `introduce`, `views`, `tag`, `cover`, `music`, `musicName`, `ctime`, `utime`, `is_delete`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    const { title, tag, introduce, content, cover, music } = options
+    const sqlStr = 'INSERT INTO records (`uid`, `title`, `content`, `introduce`, `views`, `tag`, `cover`, `music`, `ctime`, `utime`, `is_delete`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     const ctime = new Date().getTime()
     const uid = uuid()
-    const params = [uid, title, content, introduce, 10, tag, cover, music, musicName, ctime, ctime, 0]
+    const params = [uid, title, content, introduce, 10, tag, cover, music, ctime, ctime, 0]
     connectQuery(sqlStr, params, success, error)
 }
 

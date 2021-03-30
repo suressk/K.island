@@ -75,7 +75,6 @@ export interface AddRecordOptions {
     content: string
     cover: string
     music: string
-    musicName: string
 }
 
 export interface UpdateRecordOptions extends RecordInfo {
