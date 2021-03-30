@@ -27,7 +27,7 @@ export default function useEcharts(props: EchartsProps) {
         echartsInstance.setOption(options || {}, true)
     }
 
-    // 开启深度监听，如变更 options.title 等的值也能重绘...
+    // watch the options' changes to call the callback
     const stopWatch = watch(() => props.options, (newOpt, oldOpt) => {
         if (!echartsInstance && newOpt) {
             initEChart(newOpt)
@@ -36,7 +36,7 @@ export default function useEcharts(props: EchartsProps) {
         }
     })
 
-    // 防抖监听 window resize
+    // 监听 window resize
     const listenResize = throttle(() => {
         echartsInstance.setOption(props.options, false)
     }, 200)

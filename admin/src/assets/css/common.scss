@@ -50,7 +50,8 @@
   --opacity-cyan-1: rgba(112, 243, 255, .1);
   --opacity-cyan-3: rgba(112, 243, 255, .3);
   --dark-primary: rgb(9, 132, 227);
-  --primary: #0095d9;
+  //--primary: #0095d9;
+  --primary: #0d9cec;
   --opacity-primary-5: rgba(9, 132, 227, .5);
   --opacity-primary-2: rgba(9, 132, 227, .2);
 
@@ -310,6 +311,7 @@ h3.primary-title {
   font-size: 18px;
   font-weight: 700;
   padding: 5px 20px;
+  height: 40px;
   background-color: var(--opacity-cyan-3);
   border-radius: 0 5px 5px 0;
   width: 100%;
@@ -324,7 +326,7 @@ div.ant-notification-notice {
 */
 .btn {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
   transition: all .3s;
@@ -369,10 +371,10 @@ div.ant-notification-notice {
 
 
 .mt-1 {
-  margin-top: 1rem;
+  margin-top: 10px;
 }
 .mb-1 {
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
 }
 
 .icon-delete:hover {

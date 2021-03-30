@@ -1,4 +1,4 @@
-import {reactive, ref, Ref, onMounted} from 'vue'
+import {reactive, ref, Ref, onMounted, computed} from 'vue'
 import {
     CommentItem,
     PageQueryParams,
@@ -32,7 +32,7 @@ const columns = [
     },
     {
         title: 'Comment',
-        dataIndex: 'comment',
+        dataIndex: 'content',
         width: '30%'
     },
     {
@@ -53,7 +53,7 @@ const list = [
         name: 'ssk',
         email: 'sure_k@qq.com',
         title: '要么孤独，要么平庸',
-        comment: '希望世界美好如初',
+        content: '希望世界美好如初',
         ctime: Date.now()
     },
     {
@@ -61,7 +61,7 @@ const list = [
         name: 'sure',
         email: 'sure_k@qq.com',
         title: '致橡树',
-        comment: `Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! `,
+        content: `Hope that all the good things will come soon!`,
         ctime: Date.now()
     }
 ]
@@ -81,8 +81,9 @@ export default function useComment() {
         showSizeChanger: true
     })
     const commentList: Ref<CommentItem[]> = ref([])
-
     const checkedKeys = ref<Key[]>([])
+    const canDelete = computed(() => (checkedKeys.value.length > 0))
+    const replyVisible = ref<boolean>(false)
 
     const rowSelection = {
         onChange: (selectedRowKeys: Key[], selectedRows: CommentItem[]) => {
@@ -155,7 +156,13 @@ export default function useComment() {
 
     // 删除多条
     function handleDeleteMultipleComments () {
-        deleteComments({ ids: [] })
+        // @ts-ignore
+        delMultipleComments({ ids: checkedKeys.value })
+    }
+
+    function handleOpenReply(info: CommentItem) {
+        console.log(info)
+        replyVisible.value = true
     }
 
     return {
@@ -164,7 +171,11 @@ export default function useComment() {
         pagination,
         commentList,
         rowSelection,
+        canDelete,
+        replyVisible,
         handlePageChange,
-        handleDeleteOneComment
+        handleDeleteOneComment,
+        handleDeleteMultipleComments,
+        handleOpenReply
     }
 }

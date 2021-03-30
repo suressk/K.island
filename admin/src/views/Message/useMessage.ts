@@ -17,7 +17,7 @@ const columns = [
     },
     {
         title: 'Message',
-        dataIndex: 'message',
+        dataIndex: 'content',
         width: '45%'
     },
     {
@@ -36,13 +36,13 @@ const list = [
     {
         id: 1001,
         name: 'ssk',
-        message: '希望世界美好如初',
+        content: '希望世界美好如初',
         ctime: Date.now()
     },
     {
         id: 1002,
         name: 'sure',
-        message: `Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! `,
+        content: `Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! `,
         ctime: Date.now()
     }
 ]

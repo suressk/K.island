@@ -97,7 +97,7 @@ export type Pagination = TableState['pagination']
 export interface MsgListItem {
     id: number
     name: string
-    message: string
+    content: string
     ctime: number
 }
 
@@ -108,7 +108,7 @@ export interface CommentItem {
     id: number
     name: string
     email: string
-    comment: string
+    content: string
     ctime: number
     parentId?: number
     to?: string

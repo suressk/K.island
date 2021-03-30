@@ -14,14 +14,13 @@
       </div>
     </div>
 
-    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import VueEcharts from '/@comp/VueEcharts/index.vue'
 import { barOption, lineOption, pieOption } from './useOverview'
-
 
 export default defineComponent({
   name: "Overview",
@@ -43,7 +42,7 @@ export default defineComponent({
   height: 100%;
   width: 100%;
   .chart-container {
-    flex: 1;
+    height: calc(100% - 50px);
     width: 100%;
   }
   .chart-item {

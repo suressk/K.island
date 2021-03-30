@@ -1,9 +1,21 @@
 import {connectQueryPro} from '../dao/DBUtil'
 
+interface QueryCommentsParams {
+    articleId: number
+
+}
+
+interface DeleteCommentsParams {
+    ids: number[]
+}
 /**
  * 分页查询评论信息
  * */
-export function getCommentList() {}
+export function getCommentList(
+    options: QueryCommentsParams
+) {
+    const sqlStr = 'SELECT comment.*, record.title FROM `comment` LEFT JOIN `record` ON record.id = comment.articleId;'
+}
 
 /**
  * 新增评论信息
@@ -12,10 +24,6 @@ export function addComment() {}
 
 
 
-
-interface DeleteCommentsParams {
-    ids: number[]
-}
 /**
  * 删除评论
  * */
