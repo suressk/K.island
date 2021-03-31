@@ -1,16 +1,13 @@
-import express, {Request, Response} from 'express'
+import {Request, Response} from 'express'
 import { login } from '../../services/permissionService'
 import { writeHead, writeResult } from '../../utils/writeResponse'
 import { publishToken, verifyToken } from '../../utils/jwt'
 const cookieKey = 'token'
-const expireTime = 3600 // 过期时间(s) - 1h
-const router = express.Router()
+const expireTime = 3600 * 24 // 过期时间(s) - 1D
+// const router = express.Router()
 
-export function Login (
-    req: Request,
-    res: Response
-) {
-    login(req.body, result => {
+export function Login (req: Request, res: Response) {
+    login(req.body).then((result: any) => {
         const { username, password } = req.body
         // 未查询到 username 的用户
         if (result.length === 0) {
@@ -31,38 +28,38 @@ export function Login (
             // 添加 authorization
             res.header("authorization", token)
             writeHead(res, 200)
-            res.write(writeResult(true, "登录成功", { token, expireTime }))
+            res.write(writeResult(true, "Successful", { token, expireTime }))
             res.end()
         } else {
             writeHead(res, 200)
-            res.write(writeResult(false, '您的密码貌似填错了呢'))
+            res.write(writeResult(false, 'Password error'))
             res.end()
         }
-    }, err => {
+    }).catch(err => {
         writeHead(res, 500)
-        res.write(writeResult(false, "Sorry! Fail to login", err))
+        res.write(writeResult(false, "Failed to sign in", err))
         res.end()
     })
 }
 
 // 后台管理系统登录
-router.post('/', (req, res) => {
-
-})
+// router.post('/', (req, res) => {
+//
+// })
 
 // 后台管理退出登录
-router.post('/logout', (req, res) => {
-    const verifyRes = verifyToken(req)
-    /**
-     * verifyRes = {
-     *     username: string,
-     *     password: string,
-     *     exp: number, // 过期时间（s）
-     *     iat: number // 颁发时间（s）
-     * }
-     * */
-    writeHead(res, 200)
-    res.send(verifyRes)
-})
+// router.post('/logout', (req, res) => {
+//     const verifyRes = verifyToken(req)
+//     /**
+//      * verifyRes = {
+//      *     username: string,
+//      *     password: string,
+//      *     exp: number, // 过期时间（s）
+//      *     iat: number // 颁发时间（s）
+//      * }
+//      * */
+//     writeHead(res, 200)
+//     res.send(verifyRes)
+// })
 
-export default router
+// export default router

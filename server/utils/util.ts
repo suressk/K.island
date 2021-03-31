@@ -69,16 +69,16 @@ export function getUpdateRecordParams (options: UpdateRecordOptions) {
     const params: any[] = []
     const utime = Date.now()
     if (options.is_delete === 0 || options.is_delete === 1) {
-        sqlStr = 'UPDATE records SET is_delete = ?, utime = ? WHERE id = ? AND uid = ?'
+        sqlStr = 'UPDATE `tbl_records` SET is_delete = ?, utime = ? WHERE id = ? AND uid = ?'
         params.push(options.is_delete, utime)
     } else if (options.views) {
-        sqlStr = 'UPDATE records SET views = ? WHERE id = ? AND uid = ?'
+        sqlStr = 'UPDATE `tbl_records` SET views = ? WHERE id = ? AND uid = ?'
         params.push(options.views)
     } else if (options.liked) {
-        sqlStr = 'UPDATE records SET liked = ? WHERE id = ? AND uid = ?'
+        sqlStr = 'UPDATE `tbl_records` SET liked = ? WHERE id = ? AND uid = ?'
         params.push(options.liked)
     } else {
-        sqlStr = 'UPDATE records SET title = ?, tag = ?, introduce = ?, content = ?, music = ?, cover = ?, utime = ? WHERE id = ? AND uid = ?'
+        sqlStr = 'UPDATE `tbl_records` SET title = ?, tag = ?, introduce = ?, content = ?, music = ?, cover = ?, utime = ? WHERE id = ? AND uid = ?'
         params.push(
             options.title,
             options.tag,
@@ -96,6 +96,21 @@ export function getUpdateRecordParams (options: UpdateRecordOptions) {
     }
 }
 
+// enum enMonth {
+//     Jan,
+//     Feb,
+//     Mar,
+//     Apr,
+//     May,
+//     Jun,
+//     Jul,
+//     Aug,
+//     Sep,
+//     Oct,
+//     Nov,
+//     Dec
+// }
+
 const enMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const specialDay = {
     1: '1st',
@@ -106,14 +121,16 @@ const specialDay = {
     23: '23rd',
     31: '31st'
 }
+const dateType = 'YYYY-MM-DD HH:mm:ss'
 
 /**
  * 日期格式化
  * */
 export function dateFormat (timeTemp: number) {
-    // 时间戳 => '2021-02-27 22:56' => ['2021', '02', '27', '22', '56']
-    let time: string | string[] = dayjs(timeTemp).format('YYYY-MM-DD HH:mm')
-    const reg = /-|:|\ /g
+    // 时间戳 => '2021-02-27 22:56:34' => ['2021', '02', '27', '22', '56', '34']
+    let time: string | string[] = dayjs(timeTemp).format(dateType)
+    // const reg = /-|:|\ /g
+    const reg = /[-: ]/g
     time = time.replace(reg, ',').split(',')
     // 天数取整 => 英文天数记
     const day = parseInt(time[2]) + ''
@@ -125,7 +142,8 @@ export function dateFormat (timeTemp: number) {
         monthNum: parseInt(time[1]) + 1,
         day: enDay,
         hour: time[3],
-        minute: time[4]
+        minute: time[4],
+        second: time[5]
     }
 }
 

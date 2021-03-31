@@ -70,7 +70,13 @@ export default defineComponent({
   async asyncData({ $axios, store }: Context): Promise<object | void> | object | void {
     try {
       // @ts-ignore
-      const { success, data } = await $axios.get('/record/list', { params: { pageNo: 1, pageSize: 10 } })
+      const { success, data } = await $axios.get('/record/list', {
+        params: {
+          pageNo: 1,
+          pageSize: 10,
+          group: 'MONTH'
+        }
+      })
       if (success) {
         // const result = createArticleListData(data.list)
         // const { total } = data

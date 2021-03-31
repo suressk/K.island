@@ -216,11 +216,15 @@ interface YearData<T> {
  * }
  * */
 export function createArticleListData (records: YearData<ArticleItem>) {
-  const years = Object.keys(records)
   const result: any = {}
-  years.forEach(year => {
+  for (const year in records) {
     result[year] = createMonthGroup(records[year])
-  })
+  }
+  // const years = Object.keys(records)
+  // years.forEach(year => {
+  //   result[year] = createMonthGroup(records[year])
+  // })
+  // console.log(result)
   return result
 }
 

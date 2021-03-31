@@ -1,63 +1,89 @@
 import { connectQuery, createConnection, connectQueryPro } from '../dao/DBUtil'
+import {getUpdateRecordParams, mapCreateTime, mapYearGroup} from '../utils/util'
 import { v4 as uuid } from 'uuid'
 import Query from 'mysql2/typings/mysql/lib/protocol/sequences/Query'
 import {
     QueryListOptions,
     RecordIdOptions,
     AddRecordOptions,
-    UpdateRecordOptions
+    UpdateRecordOptions, ArticleListItem,
 } from '../common/types'
-import { getUpdateRecordParams } from '../utils/util'
 
 /**
  * sql 语句
  * */
 const sqlStrObj = {
-    allRecords: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `records` ORDER BY ctime DESC LIMIT ?, ?',
-    filterListByViews: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `records` ORDER BY views DESC LIMIT ?, ?',
-    filterTitle: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `records` WHERE `title` LIKE ? ORDER BY ctime DESC LIMIT ?, ?',
-    filterTitleTotal: 'SELECT COUNT(uid) as total from `records` WHERE is_delete = 0 AND `title` LIKE ?',
-    filterShow: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime FROM `records` WHERE is_delete = 0 ORDER BY ctime DESC LIMIT ?, ?',
-    filterTotal: 'SELECT COUNT(uid) as total from `records` WHERE is_delete = 0',
-    allTotal: 'SELECT COUNT(uid) as total from `records`'
+    /* 所有文章分页 => 后台查询 */
+    allList: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `tbl_records` ORDER BY ctime DESC LIMIT ?, ?',
+    allTotal: 'SELECT COUNT(uid) as total from `tbl_records`',
+    /* 按标题模糊查询 分页 */
+    titleList: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `tbl_records` WHERE `title` LIKE ? ORDER BY ctime DESC LIMIT ?, ?',
+    titleTotal: 'SELECT COUNT(uid) as total from `tbl_records` WHERE is_delete = 0 AND `title` LIKE ?',
+    /* 所有 is_delete = 0 文章分页 */
+    showsList: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime FROM `tbl_records` WHERE is_delete = 0 ORDER BY ctime DESC LIMIT ?, ?',
+    showsTotal: 'SELECT COUNT(uid) as total from `tbl_records` WHERE is_delete = 0',
+    /* 按浏览量排序分页 */
+    viewsList: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `tbl_records` WHERE is_delete = 0 ORDER BY views DESC LIMIT ?, ?',
+    /* viewsTotal: '', 同 showTotal */
 }
 
 type ListParams = [number, number] | [string, number, number]
 
+interface QueryListParams {
+    listSqlStr: string
+    listParams: ListParams
+    totalSqlStr: string
+    totalParams: string[]
+}
+
 /**
- * 分页查询文章列表
+ * 获取分页查询 sql 语句及参数
  * */
-export function queryRecordList (
-    options: QueryListOptions,
-    success: (result: any) => void,
-    error: (err: Query.QueryError) => void
-) {
+function getQueryListParams(options: QueryListOptions): QueryListParams {
     const { pageNo, pageSize } = options
-    let params: ListParams = [(pageNo - 1) * pageSize, pageSize]
-    let sqlStr: string
-    let sqlTotalStr: string
+    let listParams: ListParams = [(pageNo - 1) * pageSize, pageSize] // 分页参数
+    let listSqlStr: string
+    let totalSqlStr: string
     let totalParams: string[] = []
     // 后台管理查询所有文章列表
     if (options.range && options.range === 'all') {
-        sqlStr = sqlStrObj.allRecords
-        sqlTotalStr = sqlStrObj.allTotal
+        listSqlStr = sqlStrObj.allList
+        totalSqlStr = sqlStrObj.allTotal
         // 按 title 模糊查询
         if (options.title) {
-            sqlStr = sqlStrObj.filterTitle
-            params = [`%${options.title}%`, ...params]
-            sqlTotalStr = sqlStrObj.filterTitleTotal
+            listSqlStr = sqlStrObj.titleList
+            listParams = [`%${options.title}%`, ...listParams]
+            totalSqlStr = sqlStrObj.titleTotal
             totalParams = [`%${options.title}%`]
         }
+    } else if (options.index === 1) {
+        listSqlStr = sqlStrObj.viewsList
+        totalSqlStr = sqlStrObj.showsTotal
+        totalParams = [`%${options.title}%`]
     } else {
         // 前端展示未删除文章
-        sqlStr = sqlStrObj.filterShow
-        sqlTotalStr = sqlStrObj.filterTotal
+        listSqlStr = sqlStrObj.showsList
+        totalSqlStr = sqlStrObj.showsTotal
     }
+
+    return {
+        listSqlStr,
+        listParams,
+        totalSqlStr,
+        totalParams
+    }
+}
+
+/**
+ * 分页查询文章列表
+ * */
+export function queryRecordList (options: QueryListOptions) {
+    const { listSqlStr, listParams, totalSqlStr, totalParams } = getQueryListParams(options)
     const connection = createConnection()
     connection.connect()
     // 查列表数据
     const getListPro = new Promise((resolve, reject) => {
-        connection.query(sqlStr, params, ((err, result) => {
+        connection.query(listSqlStr, listParams, ((err, result) => {
             if (!err) {
                 resolve(result)
             } else {
@@ -66,7 +92,7 @@ export function queryRecordList (
         }))
     })
     const getTotalPro = new Promise((resolve, reject) => {
-        connection.query(sqlTotalStr, totalParams, ((err, result) => {
+        connection.query(totalSqlStr, totalParams, ((err, result) => {
             if (!err) {
                 resolve(result)
             } else {
@@ -74,34 +100,60 @@ export function queryRecordList (
             }
         }))
     })
-    Promise.all([getListPro, getTotalPro]).then(([list, totalRes]) => {
-        success({
-            list,
-            // @ts-ignore
-            total: totalRes[0].total
+
+    return new Promise((resolve, reject) => {
+        Promise.all([getListPro, getTotalPro]).then(([list, totalRes]) => {
+            // 按月分组
+            if (options.group === 'MONTH') {
+                resolve({
+                    list: mapYearGroup(list as any),
+                    // @ts-ignore
+                    total: totalRes.length ? totalRes[0].total : 0
+                })
+            } else {
+                resolve({
+                    list: mapCreateTime(list as any),
+                    // @ts-ignore
+                    total: totalRes.length ? totalRes[0].total : 0
+                })
+            }
+            connection.end()
+        }).catch(err => {
+            reject(err)
+            connection.end()
         })
-        connection.end()
-    }).catch(err => {
-        error(err)
-        connection.end()
     })
 }
 
 /**
  * 查询文章详情信息
  * */
-export function queryRecordDetail (
-    options: RecordIdOptions,
-    success: (result: any) => void,
-    error: (err: Query.QueryError) => void
-) {
+export function queryRecordDetail (options: RecordIdOptions) {
     const { id, uid } = options
-    const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, liked, cover, music, ctime, utime FROM `records` WHERE id = ? AND uid = ?'
+    const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, liked, cover, music, ctime, utime FROM `tbl_records` WHERE id = ? AND uid = ?'
     const params = [id, uid]
     // connectQuery(sqlStr, params, success, error)
-    connectQueryPro(sqlStr, params)
-        .then(result => success(result))
-        .catch(err => error(err))
+    return new Promise((resolve, reject) => {
+        connectQueryPro(sqlStr, params)
+            .then((result: any) => {
+                resolve(result)
+                updateViews(result[0])
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
+
+/**
+ * 更新浏览量
+ * */
+function updateViews(info: ArticleListItem) {
+    const { id, uid, views } = info
+    // then nothing to do
+    updateRecord({ id, uid, views: views + 1 })
+        .then(() => {})
+        .catch(() => {})
 }
 
 /**
@@ -113,7 +165,7 @@ export function addRecord (
     error: (err: Query.QueryError) => void
 ) {
     const { title, tag, introduce, content, cover, music } = options
-    const sqlStr = 'INSERT INTO records (`uid`, `title`, `content`, `introduce`, `views`, `tag`, `cover`, `music`, `ctime`, `utime`, `is_delete`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    const sqlStr = 'INSERT INTO `tbl_records` (uid, title, content, introduce, views, tag, cover, music, ctime, utime, is_delete) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     const ctime = new Date().getTime()
     const uid = uuid()
     const params = [uid, title, content, introduce, 10, tag, cover, music, ctime, ctime, 0]
@@ -123,18 +175,19 @@ export function addRecord (
 /**
  * 修改（更新）文章信息
  * */
-export function updateRecord (
-    options: UpdateRecordOptions,
-    success: (result: any) => void,
-    error: (err: Query.QueryError) => void
-) {
+export function updateRecord (options: UpdateRecordOptions) {
     // 四种情况:
     // 1. 修改 is_delete —— 文章显示与否；
     // 2. 修改 views —— 文章访问量；
     // 3. 修改 liked —— 文章点赞(喜欢)量；
     // 4. 修改文章详情内容（title, tag, introduce, content, cover）
     const { sqlStr, params } = getUpdateRecordParams(options)
-    connectQuery(sqlStr, params, success, error)
+    // connectQuery(sqlStr, params, success, error)
+    return new Promise((resolve, reject) => {
+        connectQueryPro(sqlStr, params)
+            .then(result => resolve(result))
+            .catch(err => reject(err))
+    })
 }
 
 /**
@@ -146,7 +199,7 @@ export function deleteRecord (
     error: (err: Query.QueryError) => void
 ) {
     const { id, uid } = options
-    const sqlStr = 'DELETE FROM records WHERE id = ? and uid = ?'
+    const sqlStr = 'DELETE FROM `tbl_records` WHERE id = ? and uid = ?'
     const params = [id, uid]
     connectQuery(sqlStr, params, success, error)
 }

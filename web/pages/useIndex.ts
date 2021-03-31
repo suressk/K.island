@@ -77,7 +77,7 @@ export default function useIndex() {
 
   function nextChangeLoadStatus(data: any) {
     // @ts-ignore
-    vm.articleList = [...vm.articleList, ...plainArticleList(data.list)]
+    vm.articleList = [...vm.articleList, ...data.list]
     // @ts-ignore 总条数 还有更多
     if (vm.articleList.length < data.total) {
       // 当前页 +1

@@ -22,6 +22,7 @@ export interface QueryListOptions extends PageQueryParams {
     range?: string
     title?: string
     index?: number
+    group?: string
 }
 
 export interface RecordIdOptions {

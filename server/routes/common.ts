@@ -1,26 +1,33 @@
 import { queryRecordDetail, queryRecordList, updateRecord } from '../services/recordService'
 import { writeHead, writeResult } from '../utils/writeResponse'
 import { Request, Response } from 'express'
-import { mapCreateTime, mapYearGroup } from '../utils/util'
+import { mapCreateTime } from '../utils/util'
 import {ArticleListItem} from '../common/types'
+
+interface ListResult {
+    list: ArticleListItem[]
+    total: number
+}
 
 /**
  * 响应文章列表
  * */
 export function recordListResponse (req: Request, res: Response, range: string | undefined) {
     const { pageNo, pageSize } = req.query
-    const title: any = req.query.title
+    const index = req.query.index ? Number(req.query.index) : undefined
     queryRecordList({
+        ...req.query,
         pageNo: Number(pageNo),
         pageSize: Number(pageSize),
         range,
-        title
-    }, result => {
+        index
+    // @ts-ignore
+    }).then(({ list, total }: ListResult) => {
         // success
         writeHead(res, 200)
         res.write(writeResult(true, '查询成功！', {
-            list: mapYearGroup(result.list),
-            total: result.total
+            list,
+            total
         }))
         res.end()
     }, err => {
@@ -39,30 +46,13 @@ export function recordDetailResponse (req: Request, res: Response) {
     queryRecordDetail({
         id: Number(id),
         uid: uid as string
-    }, result => {
-        // 更新访问量
-        updateViews(result[0])
+    }).then((result: any) => {
         writeHead(res, 200)
         res.write(writeResult(true, '查询成功！',  mapCreateTime(result)[0]))
         res.end()
-    }, err => {
+    }).catch(err => {
         writeHead(res, 500)
         res.write(writeResult(false, '文章详情查询失败！', err))
         res.end()
     })
-}
-
-function updateViews(info: ArticleListItem) {
-    const { id, uid, views } = info
-    updateRecord(
-        {
-            id,
-            uid,
-            views: views + 1
-        },
-        result => {
-            console.log('update views success: ', result)
-        },
-        () => {}
-    )
 }

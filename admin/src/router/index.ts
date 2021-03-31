@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/index.vue'
-// import { getStorageToken } from '../utils/util'
+import { getStorageToken } from '../utils/util'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -70,14 +70,14 @@ const router = createRouter({
 })
 
 router.beforeEach((to: any, from: any, next: any) => {
-    next()
-    // const token = getStorageToken() // null | token
-    // // 去往非登录页且无 token
-    // if (!to.path.includes('login') && !token) {
-    //   next('/login')
-    // } else {
-    //   next()
-    // }
+    // next()
+    const token = getStorageToken() // null | token
+    // 去往非登录页且无 token
+    if (!to.path.includes('login') && !token) {
+      next('/login')
+    } else {
+      next()
+    }
 })
 
 // 路由后置守卫 由路由信息 设置标签页标题

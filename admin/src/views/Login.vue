@@ -1,12 +1,12 @@
 <template>
-  <div class="login-container">
-    <form class="login-form flex-col fixed-center">
+  <section class="login-container">
+    <div class="login-form flex-col fixed-center">
       <div class="avatar flex-center">
         <img src="../assets/images/avatar.png" alt="author">
       </div>
       <div class="form-item">
         <label class="ipt-item">
-          <input type="text" required v-model="username"/>
+          <input type="text" required v-model="username" autocomplete="off" />
           <span class="tip-label">Username</span>
           <span class="border-line"/>
         </label>
@@ -14,11 +14,12 @@
       <div class="form-item">
         <label class="ipt-item">
           <input
-              type="password"
-              :autocomplete="false"
-              required
-              v-model="password"
-              @keyup.enter="handleLogin"
+            type="password"
+            :autocomplete="false"
+            required
+            v-model="password"
+            @keyup.enter="handleLogin"
+            autocomplete="new-password"
           />
           <span class="tip-label">Password</span>
           <span class="border-line"/>
@@ -27,9 +28,9 @@
       <div class="form-item">
         <button class="btn-login" @click="handleLogin" type="button">SIGN IN</button>
       </div>
-    </form>
+    </div>
     <div class="hint">Hope that all the good things will come on schedule...</div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">

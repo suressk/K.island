@@ -1,13 +1,18 @@
-import { connectQuery } from '../dao/DBUtil'
-import Query from 'mysql2/typings/mysql/lib/protocol/sequences/Query'
+import {connectQueryPro} from '../dao/DBUtil'
 import { UserInfo } from '../common/types'
 
-export function login (
-    options: UserInfo,
-    success: (result: any) => void,
-    error: (err: Query.QueryError) => void
-) {
-    const sqlStr = 'SELECT username, password FROM `user` WHERE username = ?'
+export function login (options: UserInfo) {
+    const sqlStr = 'SELECT username, password FROM `tbl_user` WHERE username = ?'
     const params = [options.username]
-    connectQuery(sqlStr, params, success, error)
+    return new Promise((resolve, reject) => {
+        // connectQuery(sqlStr, params, success, error)
+        connectQueryPro(sqlStr, params)
+            .then(result => {
+                resolve(result)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+
 }

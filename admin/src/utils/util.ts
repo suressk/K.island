@@ -3,7 +3,8 @@ import { ACCESS_TOKEN, STORAGE_PREFIX } from '../store/mutation-types'
 import {
     TokenInfo,
     YearDataList,
-    RecordItem, Pagination
+    RecordItem,
+    Pagination
 } from '../types'
 import { ConfirmOptions, MessageType } from '../types/tip'
 import DAYJS from 'dayjs'
@@ -26,7 +27,7 @@ export function notify (
 
 export function infoNotify(description: string) {
     notification.info({
-        message: 'Something wrong~',
+        message: 'Notice~',
         description
     })
 }
@@ -72,12 +73,11 @@ export function Confirm (options: ConfirmOptions) {
  * */
 export function setStorageToken (info: TokenInfo): void {
     const now: number = new Date().getTime()
-    const tokenInfo: string = JSON.stringify({
+    const tokenInfo: TokenInfo = {
         token: info.token,
         expireTime: now + info.expireTime * 1000
-    })
-    const KEY = STORAGE_PREFIX + ACCESS_TOKEN
-    localStorage.setItem(KEY, tokenInfo)
+    }
+    setStorageItem<TokenInfo>(ACCESS_TOKEN, tokenInfo)
 }
 
 /**
@@ -85,38 +85,41 @@ export function setStorageToken (info: TokenInfo): void {
  * 过期则从 LocalStorage 中移除 token
  * */
 export function getStorageToken (): null | string {
-    const KEY = STORAGE_PREFIX + ACCESS_TOKEN
-    const tokenInfoStr: null | string = localStorage.getItem(KEY)
+    const tokenInfo = getStorageItem<TokenInfo>(ACCESS_TOKEN)
     // token 存在
-    if (tokenInfoStr !== null) {
-        const { token, expireTime }: TokenInfo = JSON.parse(tokenInfoStr)
+    if (tokenInfo !== null) {
+        const { token, expireTime } = tokenInfo
         const now: number = new Date().getTime()
         // 未过期
         if (expireTime > now) {
             return token
         }
         // token 过期 => 移除 token
-        localStorage.removeItem(KEY)
+        removeStorageItem(ACCESS_TOKEN)
     }
     return null
 }
 
-export function setStorageItem (name: string, value: string): void {
-    const KEY = STORAGE_PREFIX + name
-    localStorage.setItem(KEY, value)
-}
-
-export function getStorageItem (name: string): null | string {
-    const KEY = STORAGE_PREFIX + name
-    return localStorage.getItem(KEY)
-}
-
 /**
- * 移除 LocalStorage 中的相关项
+ * LocalStorage 操作
  * */
-export function removeStorageItem (name: string): void {
+export function setStorageItem<V> (name: string, value: V): void {
     const KEY = STORAGE_PREFIX + name
-    const infoStr: null | string = localStorage.getItem(KEY)
+    localStorage.setItem(KEY, JSON.stringify(value))
+}
+
+export function getStorageItem<V> (name: string): null | V {
+    const KEY = STORAGE_PREFIX + name
+    const value = localStorage.getItem(KEY)
+    if (value !== null) {
+        return JSON.parse(value) as V
+    }
+    return null
+}
+
+export function removeStorageItem (name: string): void {
+    const infoStr = getStorageItem(name)
+    const KEY = STORAGE_PREFIX + name
     if (infoStr !== null) {
         localStorage.removeItem(KEY)
     }
@@ -225,6 +228,17 @@ export function plainArticleList (records: YearDataList<RecordItem>): RecordItem
         result.push(...list)
     }
     return result
+}
+
+export function mapRecordTime(recordList: RecordItem[]) {
+    return recordList.map(item => {
+        return {
+            ...item,
+            show: item.is_delete === 0,
+            createTime: formatTime(item.ctime),
+            updateTime: formatTime(item.utime)
+        }
+    })
 }
 
 /**

@@ -19,8 +19,8 @@ export function querySubscribeList (
     success: (result: any) => void,
     error: (err: Query.QueryError) => void
 ) {
-    const queryListStr = 'SELECT * from `subscribe` ORDER BY ctime DESC LIMIT ?, ?'
-    const queryTotalStr = 'SELECT COUNT(id) as total from `subscribe`'
+    const queryListStr = 'SELECT id, uid, name, email, name, ctime from `tbl_subscribe` ORDER BY ctime DESC LIMIT ?, ?'
+    const queryTotalStr = 'SELECT COUNT(id) as total from `tbl_subscribe`'
     const { pageNo, pageSize } = options
     const connection = createConnection()
     connection.connect()
@@ -51,16 +51,24 @@ export function querySubscribeList (
         )
     })
 
-    Promise.all([listPro, totalPro]).then(([list, totalRes]) => {
-        success({
-            list,
-            // @ts-ignore
-            total: totalRes[0].total
+    return new Promise((resolve, reject) => {
+        Promise.all([listPro, totalPro]).then(([list, totalRes]) => {
+            resolve({
+                list,
+                // @ts-ignore
+                total: totalRes.length ? totalRes[0].total : 0
+            })
+            success({
+                list,
+                // @ts-ignore
+                total: totalRes[0].total
+            })
+            connection.end()
+        }).catch(err => {
+            error(err)
+            reject(err)
+            connection.end()
         })
-        connection.end()
-    }).catch(err => {
-        error(err)
-        connection.end()
     })
 }
 
@@ -73,7 +81,7 @@ export function querySubscribeInfo (
     error: (err: any) => void
 ) {
     const { email } = options
-    const sqlStr = 'SELECT id, email, name, ctime FROM `subscribe` WHERE email = ?'
+    const sqlStr = 'SELECT id, uid, email, name, ctime FROM `subscribe` WHERE email = ?'
     connectQuery(sqlStr, [email], success, error)
 }
 
@@ -87,7 +95,7 @@ export function verifyEmailCode (
     error: (err: any) => void
 ) {
     const { id, email, code } = options
-    const sqlStr = 'SELECT `id`, `email`, `code` FROM `verify_subscribe_info` WHERE `id` = ? AND `email` = ?'
+    const sqlStr = 'SELECT id, email, code FROM `tbl_verify_subscribe` WHERE id = ? AND email = ?'
     const connection = createConnection()
     connection.connect()
     connection.query(sqlStr, [id, email], (err, result) => {
@@ -105,7 +113,7 @@ export function verifyEmailCode (
                 }
             } else {
                 error({
-                    message: `No match to the email: ${email}`
+                    message: `Email not matched : ${email}`
                 })
             }
         } else {

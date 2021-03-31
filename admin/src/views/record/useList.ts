@@ -9,7 +9,7 @@ import {
 } from '../../types'
 import {useRouter} from 'vue-router'
 import {deleteRecord, getRecordList, updateRecord} from '../../api/api'
-import {errorNotify, plainArticleList, successNotify, warningNotify} from '../../utils/util' // 按年分组平铺
+import {errorNotify, successNotify, warningNotify, mapRecordTime} from '../../utils/util' // 按年分组平铺
 
 const columns = [
     {
@@ -193,7 +193,7 @@ export default function useList() {
             // @ts-ignore
             .then((res: RecordListResponseData<YearDataList<RecordItem>>) => {
                 if (res.success) {
-                    articleList.value = plainArticleList(res.data.list)
+                    articleList.value = mapRecordTime(res.data.list)
                     mapEditable(articleList.value)
                     pagination.total = res.data.total
                 } else {
@@ -205,9 +205,9 @@ export default function useList() {
             .catch(err => {
                 errorNotify(err.message)
                 articleList.value.length > 0 && (articleList.value = [])
+                loading.value = false
                 // articleList.value = data
                 // mapEditable(data)
-                loading.value = false
             })
     }
 

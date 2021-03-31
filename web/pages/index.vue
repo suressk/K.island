@@ -121,8 +121,8 @@ export default defineComponent({
         }
       })
       if (success) {
-        const { total } = data
-        const list = plainArticleList(data.list)
+        const { total, list } = data
+        // const list = plainArticleList(data.list)
         commitMutations(store, M_SET_TOTAL_ITEMS, total)
         // 还有更多文章（不是最后一页）
         if (list.length < total) {
