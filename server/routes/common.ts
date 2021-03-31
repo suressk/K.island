@@ -1,8 +1,8 @@
-import { queryRecordDetail, queryRecordList, updateRecord } from '../services/recordService'
+import { queryRecordDetail, queryRecordList } from '../services/recordService'
 import { writeHead, writeResult } from '../utils/writeResponse'
 import { Request, Response } from 'express'
 import { mapCreateTime } from '../utils/util'
-import {ArticleListItem} from '../common/types'
+import { ArticleListItem } from '../common/types'
 
 interface ListResult {
     list: ArticleListItem[]

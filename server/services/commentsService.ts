@@ -1,28 +1,34 @@
-import {connectQueryPro} from '../dao/DBUtil'
+import { connectQueryPro } from '../dao/DBUtil'
 
 interface QueryCommentsParams {
     articleId: number
-
 }
 
 interface DeleteCommentsParams {
     ids: number[]
 }
+
 /**
  * 分页查询评论信息
  * */
-export function getCommentList(
-    options: QueryCommentsParams
-) {
-    const sqlStr = 'SELECT comment.*, record.title FROM `comment` LEFT JOIN `record` ON record.id = comment.articleId;'
+export function getCommentList(options: QueryCommentsParams) {
+    const { articleId } = options
+    const sqlStr = 'SELECT c.*, r.title FROM `tbl_comments` as c LEFT JOIN `tbl_records` as r ON r.id = c.record_id WHERE c.record_id = ?;'
+    return new Promise((resolve, reject) => {
+        connectQueryPro(sqlStr, [articleId])
+            .then((result: any) => {
+                resolve(result)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
 }
 
 /**
  * 新增评论信息
  * */
 export function addComment() {}
-
-
 
 /**
  * 删除评论
@@ -40,22 +46,20 @@ export function deleteComments(options: DeleteCommentsParams) {
     })
 }
 
-type SqlStr = string
-
-function getDeleteSqlStr(ids: number[]): SqlStr {
+function getDeleteSqlStr(ids: number[]): string {
     const len = ids.length
     switch (len) {
         case 0:
             return ''
         case 1:
-            return 'DELETE FROM `comments` WHERE id = ?'
+            return 'DELETE FROM `tbl_comments` WHERE id = ?;'
         default:
             const arr: string[] = []
             arr.length = ids.length
             arr.fill('?')
-            let sqlStr = 'DELETE FROM `comments` WHERE id IN ('
+            let sqlStr = 'DELETE FROM `tbl_comments` WHERE id IN ('
             const str = arr.join(',')
-            sqlStr += str + ')'
+            sqlStr += str + ');'
             return sqlStr
     }
 }

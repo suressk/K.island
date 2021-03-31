@@ -1,10 +1,10 @@
-import {connectQuery, createConnection} from '../dao/DBUtil'
+import {connectQuery, connectQueryPro, createConnection} from '../dao/DBUtil'
+import { v4 as uuid } from 'uuid'
 import {
     DeleteSubscribeOptions,
     QuerySubscribeListOptions,
     VerifySubscribeOptions
 } from '../common/types'
-import Query from 'mysql2/typings/mysql/lib/protocol/sequences/Query'
 
 interface QuerySubscribeOptions {
     email: string;
@@ -14,13 +14,9 @@ interface QuerySubscribeOptions {
 /**
  * 分页查询订阅列表
  * */
-export function querySubscribeList (
-    options: QuerySubscribeListOptions,
-    success: (result: any) => void,
-    error: (err: Query.QueryError) => void
-) {
-    const queryListStr = 'SELECT id, uid, name, email, name, ctime from `tbl_subscribe` ORDER BY ctime DESC LIMIT ?, ?'
-    const queryTotalStr = 'SELECT COUNT(id) as total from `tbl_subscribe`'
+export function querySubscribeList (options: QuerySubscribeListOptions) {
+    const queryListStr = 'SELECT id, uid, name, email, name, ctime from `tbl_subscribe` ORDER BY ctime DESC LIMIT ?, ?;'
+    const queryTotalStr = 'SELECT COUNT(id) as total from `tbl_subscribe`;'
     const { pageNo, pageSize } = options
     const connection = createConnection()
     connection.connect()
@@ -58,14 +54,8 @@ export function querySubscribeList (
                 // @ts-ignore
                 total: totalRes.length ? totalRes[0].total : 0
             })
-            success({
-                list,
-                // @ts-ignore
-                total: totalRes[0].total
-            })
             connection.end()
         }).catch(err => {
-            error(err)
             reject(err)
             connection.end()
         })
@@ -81,7 +71,7 @@ export function querySubscribeInfo (
     error: (err: any) => void
 ) {
     const { email } = options
-    const sqlStr = 'SELECT id, uid, email, name, ctime FROM `subscribe` WHERE email = ?'
+    const sqlStr = 'SELECT id, uid, email, name, ctime FROM `tbl_subscribe` WHERE email = ?'
     connectQuery(sqlStr, [email], success, error)
 }
 
@@ -89,63 +79,74 @@ export function querySubscribeInfo (
  * 查询邮箱验证信息
  * [{ id: '', ... }]
  * */
-export function verifyEmailCode (
-    options: VerifySubscribeOptions,
-    success: (res: any) => void,
-    error: (err: any) => void
-) {
+export function verifyEmailCode (options: VerifySubscribeOptions) {
     const { id, email, code } = options
     const sqlStr = 'SELECT id, email, code FROM `tbl_verify_subscribe` WHERE id = ? AND email = ?'
     const connection = createConnection()
     connection.connect()
-    connection.query(sqlStr, [id, email], (err, result) => {
-        // 成功查询到验证信息
-        if (!err) {
-            // @ts-ignore
-            const item = result[0]
-            if (item) {
-                if (item.code === code) {
-                    success('success')
+    return new Promise((resolve, reject) => {
+        connection.query(
+            sqlStr,
+            [id, email],
+            (err, result) => {
+                // 成功查询到验证信息
+                if (!err) {
+                    // @ts-ignore
+                    const item = result[0]
+                    if (item) {
+                        if (item.code === code) {
+                            resolve('success')
+                        } else {
+                            reject({
+                                message: 'Verification code error'
+                            })
+                        }
+                    } else {
+                        reject({
+                            message: `Email not matched : ${email}`
+                        })
+                    }
                 } else {
-                    error({
-                        message: 'Verification code error'
-                    })
+                    reject(err)
                 }
-            } else {
-                error({
-                    message: `Email not matched : ${email}`
-                })
             }
-        } else {
-            error(err)
-        }
+        )
+        connection.end()
     })
-    connection.end()
 }
 
 /**
  * 新增订阅邮箱信息
  * */
-export function addSubscribeInfo (
-    options: QuerySubscribeOptions,
-    success: (res: any) => void,
-    error: (err: any) => void
-) {
+export function addSubscribeInfo (options: QuerySubscribeOptions) {
     const { email, name } = options
     const date = Date.now()
-    const sqlStr = 'INSERT INTO `subscribe` (email, name, ctime) values (?, ?, ?)'
-    connectQuery(sqlStr, [email, name, date], success, error)
+    const uid = uuid()
+    const sqlStr = 'INSERT INTO `tbl_subscribe` (uid, email, name, ctime) values (?, ?, ?, ?);'
+    return new Promise((resolve, reject) => {
+        connectQueryPro(sqlStr, [uid, email, name, date])
+            .then(result => {
+                resolve(result)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
 }
 
 /**
  * 删除订阅信息
  * */
-export function deleteSubscribe (
-    options: DeleteSubscribeOptions,
-    success: (result: any) => void,
-    error: (err: Query.QueryError) => void
-) {
-    const sqlStr = 'DELETE FROM `subscribe` WHERE id = ? AND email = ?'
+export function deleteSubscribe (options: DeleteSubscribeOptions) {
+    const sqlStr = 'DELETE FROM `tbl_subscribe` WHERE id = ? AND email = ?'
     const { id, email } = options
-    connectQuery(sqlStr, [id, email], success, error)
+    return new Promise((resolve, reject) => {
+        connectQueryPro(sqlStr, [id, email])
+            .then(result => {
+                resolve(result)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
 }

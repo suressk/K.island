@@ -21,7 +21,7 @@ router.post('/add', (req, res) => {
                 reject({
                     status: 416,
                     success: false,
-                    msg: '此邮箱已经订阅了哦~ 是你忘记了，还是写错邮箱辣？^_^'
+                    msg: '此邮箱已经订阅了哦~ 是你忘记了吗？'
                 })
             } else {
                 resolve({})
@@ -39,13 +39,7 @@ router.post('/add', (req, res) => {
 
     // 2. 发送邮箱验证
     pro.then(() => {
-        sendMail(
-            1,
-            {
-                email,
-                name
-            },
-            {
+        sendMail(1, { email, name }, {
                 email: 'sure_k@qq.com',
                 user: '',
                 pass: '',
@@ -55,7 +49,7 @@ router.post('/add', (req, res) => {
         )
     }).catch(err => {
         writeHead(res, err.status)
-        writeResult(err.success, err.msg)
+        writeResult(err.success, err.msg, err.data)
     })
 })
 
@@ -63,23 +57,22 @@ router.post('/add', (req, res) => {
  * 邮箱验证
  * */
 router.post('/verify', (req, res) => {
-    verifyEmailCode(
-        req.body,
-        () => {
+    verifyEmailCode(req.body)
+        .then(() => {
             // success 验证邮箱成功
             // 新增订阅
             addSubscribeInfo({
                 email: req.body.email,
                 name: req.body.name
-            }, result => {
+            }).then((result: any) => {
                 writeHead(res, 200)
                 writeResult(true, '小K. <<K.island>> 欢迎您', result)
-            }, err => {
+            }).catch(err => {
                 writeHead(res, 500)
                 writeResult(err.success, '小K.很遗憾地告诉您：小栈订阅失败了！麻烦联系一下小K.哟~', err)
             })
-        },
-        err => {
+        })
+        .catch(err => {
             writeHead(res, 500)
             writeResult(true, err.message, err)
         }

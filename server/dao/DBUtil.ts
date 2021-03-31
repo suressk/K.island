@@ -29,10 +29,7 @@ export function connectQuery (
     connection.end()
 }
 
-export function connectQueryPro (
-    sqlStr: string,
-    params: any[]
-) {
+export function connectQueryPro (sqlStr: string, params: any[]) {
     return new Promise((resolve, reject) => {
         const connection = createConnection()
         connection.connect()
