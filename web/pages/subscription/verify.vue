@@ -4,7 +4,7 @@
 
     <div class="content">
       <div class="verify-form absolute-center">
-        <div class="avatar flex-center">
+        <div class="modal-avatar flex-center">
           <img src="~~/static/images/avatar.png" alt="K.">
         </div>
 
