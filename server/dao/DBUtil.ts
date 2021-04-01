@@ -1,5 +1,4 @@
 import mysql from 'mysql2'
-import Query from 'mysql2/typings/mysql/lib/protocol/sequences/Query'
 
 export function createConnection () {
     return mysql.createConnection({
@@ -9,24 +8,6 @@ export function createConnection () {
         password: "xxx",
         database: "k_island"
     });
-}
-
-export function connectQuery (
-    sqlStr: string,
-    params: any[],
-    success: (result: any) => void,
-    error: (err: Query.QueryError) => void
-) {
-    const connection = createConnection()
-    connection.connect()
-    connection.query(sqlStr, params, ((err: any, result: any) => {
-        if (!err) {
-            success(result)
-        } else {
-            error(err)
-        }
-    }))
-    connection.end()
 }
 
 export function connectQueryPro (sqlStr: string, params: any[]) {

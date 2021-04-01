@@ -12,7 +12,7 @@ export default function verifyPermission (
     new Promise((resolve, reject) => {
         const verified = verifyToken(req)
         if (verified !== null) {
-            resolve('Have permission')
+            resolve('pass')
         } else {
             reject()
         }
@@ -20,7 +20,6 @@ export default function verifyPermission (
         next()
     }).catch(() => {
         writeHead(res, 403)
-        res.write(writeResult(false, "Sorry! You have no permissions!", {}))
-        res.end()
+        writeResult(res, false, "Sorry! You have no permissions!")
     })
 }

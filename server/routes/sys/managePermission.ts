@@ -1,5 +1,5 @@
 import {Request, Response} from 'express'
-import { login } from '../../services/permissionService'
+import { login } from '../../services/loginService'
 import { writeHead, writeResult } from '../../utils/writeResponse'
 import { publishToken } from '../../utils/jwt'
 const cookieKey = 'token'
@@ -12,8 +12,7 @@ export function Login (req: Request, res: Response) {
             // 未查询到 username 的用户
             if (result.length === 0) {
                 writeHead(res, 200)
-                res.write(writeResult(false, `未匹配到用户：${username} ，检查一下是不是用户名拼写错误？`))
-                res.end()
+                writeResult(res, false, `未匹配到用户：${username} ，检查一下是不是用户名拼写错误？`)
             } else if (password === result[0].password) {
                 // 用户名和密码均匹配 - 颁发 token
                 const token = publishToken({
@@ -28,17 +27,14 @@ export function Login (req: Request, res: Response) {
                 // 添加 authorization
                 res.header("authorization", token)
                 writeHead(res, 200)
-                res.write(writeResult(true, "Successful", { token, expireTime }))
-                res.end()
+                writeResult(res, true, "Successful", { token, expireTime })
             } else {
                 writeHead(res, 200)
-                res.write(writeResult(false, 'Password error'))
-                res.end()
+                writeResult(res, false, 'Password error')
             }
         })
         .catch(err => {
             writeHead(res, 500)
-            res.write(writeResult(false, "Failed to sign in", err))
-            res.end()
+            writeResult(res, false, "Failed to sign in", err)
         })
 }

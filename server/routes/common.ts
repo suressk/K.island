@@ -25,16 +25,14 @@ export function recordListResponse (req: Request, res: Response, range: string |
     }).then(({ list, total }: ListResult) => {
         // success
         writeHead(res, 200)
-        res.write(writeResult(true, '查询成功！', {
+        writeResult(res, true, '查询成功！', {
             list,
             total
-        }))
-        res.end()
+        })
     }, err => {
         // fail
         writeHead(res, 500)
-        res.write(writeResult(false, '文章列表查询失败', err))
-        res.end()
+        writeResult(res, false, '文章列表查询失败', err)
     })
 }
 
@@ -48,11 +46,9 @@ export function recordDetailResponse (req: Request, res: Response) {
         uid: uid as string
     }).then((result: any) => {
         writeHead(res, 200)
-        res.write(writeResult(true, '查询成功！',  mapCreateTime(result)[0]))
-        res.end()
+        writeResult(res, true, '查询成功！',  mapCreateTime(result)[0])
     }).catch(err => {
         writeHead(res, 500)
-        res.write(writeResult(false, '文章详情查询失败！', err))
-        res.end()
+        writeResult(res, false, '文章详情查询失败！', err)
     })
 }

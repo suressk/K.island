@@ -6,12 +6,20 @@
  * */
 import { Response } from 'express'
 
-export function writeResult (success: boolean, message: string, data: object = {}) {
-    return JSON.stringify({
-        success,
-        message,
-        data
-    })
+export function writeResult (
+    res: Response,
+    success: boolean,
+    message: string,
+    data: object = {}
+) {
+    res.write(
+        JSON.stringify({
+            success,
+            message,
+            data
+        })
+    )
+    res.end()
 }
 
 export function writeHead (res: Response, statusCode: number) {

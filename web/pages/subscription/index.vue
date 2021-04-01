@@ -37,6 +37,7 @@ import { defineComponent, ref } from '@nuxtjs/composition-api'
 import { checkEmail } from '~/utils/util'
 import KHeader from '~/components/KHeader/index.vue'
 import KWave from '~/components/KWave.vue'
+import notify from '~/components/notification'
 
 export default defineComponent({
   name: 'subscription',
@@ -68,14 +69,29 @@ export default defineComponent({
       }
       // email 格式正确
       if (isEmail.value && email.value !== '') {
-        console.log('订阅')
         // @ts-ignore
         root.$axios.post('/subscribe/add', {
           email: email.value
         }).then((res: any) => {
-          console.log(res)
+          if (res.success) {
+            notify({
+              type: 'success',
+              title: 'Congratulations~',
+              message: res.message
+            })
+          } else {
+            notify({
+              type: 'warning',
+              title: 'Sorry~',
+              message: res.message
+            })
+          }
         }).catch((err: any) => {
-          console.log(err)
+          notify({
+            type: 'error',
+            title: 'Something Wrong~',
+            message: err.message
+          })
         })
       }
     }
@@ -97,5 +113,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "assets/css/pages/subscription.scss";
+@import "../../assets/css/pages/subscription";
 </style>

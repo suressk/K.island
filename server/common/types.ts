@@ -84,6 +84,8 @@ export interface UpdateRecordOptions extends RecordInfo {
     uid: string
 }
 
+type EmailType = 'QQ' | '163' | 'GMAIL' | 'OUTLOOK'
+
 /**
  * 订阅信息
  * */
@@ -91,8 +93,8 @@ export interface SubscribeInfo {
     user: string
     pass: string
     name: string
-    email: string
-    emailType: 'QQ' | '163' | 'GMAIL' | 'OUTLOOK'
+    // email: string
+    emailType: EmailType
 }
 
 export interface SubscribeTipInfo {
@@ -104,4 +106,10 @@ export interface VerifySubscribeOptions {
     email: string
     id: number
     code: string
+}
+
+export enum EmailTipType {
+    VERIFY_EMAIL = 1,
+    NEW_RECORD,
+    NEW_COMMENT
 }

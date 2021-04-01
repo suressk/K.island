@@ -358,3 +358,12 @@ a:hover,
   position: relative;
   min-height: 100vh;
 }
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  img {
+    width: 100%;
+    border-radius: 50%;
+  }
+}

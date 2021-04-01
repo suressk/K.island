@@ -50,7 +50,7 @@
 import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
 import useCommentForm from './useCommentForm'
 import { CommentProps } from '~/types'
-import CubeLoading from '../loadingComponent/CubeLoading.vue'
+import CubeLoading from '../loadingComp/CubeLoading.vue'
 // import Modal from '../KModal/index.vue' => to improve
 
 export default defineComponent({

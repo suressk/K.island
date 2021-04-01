@@ -45,17 +45,6 @@ export function createCorsOptionsDelegate (req: Request, callback: CallBack) {
     callback(null, corsOptions);
 }
 
-export function verifyTokenResponse (req: Request, res: Response, callback: () => void) {
-    const verified = verifyToken(req)
-    if (verified === null) {
-        writeHead(res, 403)
-        res.write(writeResult(false, 'Token has expired...'))
-        res.end()
-    } else {
-        callback()
-    }
-}
-
 /**
  * 更新文章参数
  * 1. 显隐 => is_delete: 0 / 1
@@ -69,16 +58,16 @@ export function getUpdateRecordParams (options: UpdateRecordOptions) {
     const params: any[] = []
     const utime = Date.now()
     if (options.is_delete === 0 || options.is_delete === 1) {
-        sqlStr = 'UPDATE `tbl_records` SET is_delete = ?, utime = ? WHERE id = ? AND uid = ?'
+        sqlStr = 'UPDATE `tbl_records` SET is_delete = ?, utime = ? WHERE id = ? AND uid = ?;'
         params.push(options.is_delete, utime)
     } else if (options.views) {
-        sqlStr = 'UPDATE `tbl_records` SET views = ? WHERE id = ? AND uid = ?'
+        sqlStr = 'UPDATE `tbl_records` SET views = ? WHERE id = ? AND uid = ?;'
         params.push(options.views)
     } else if (options.liked) {
-        sqlStr = 'UPDATE `tbl_records` SET liked = ? WHERE id = ? AND uid = ?'
+        sqlStr = 'UPDATE `tbl_records` SET liked = ? WHERE id = ? AND uid = ?;'
         params.push(options.liked)
     } else {
-        sqlStr = 'UPDATE `tbl_records` SET title = ?, tag = ?, introduce = ?, content = ?, music = ?, cover = ?, utime = ? WHERE id = ? AND uid = ?'
+        sqlStr = 'UPDATE `tbl_records` SET title = ?, tag = ?, introduce = ?, content = ?, music = ?, cover = ?, utime = ? WHERE id = ? AND uid = ?;'
         params.push(
             options.title,
             options.tag,
@@ -177,4 +166,42 @@ export function mapYearGroup (dataList: ArticleListItem[]) {
         data[years[i]] = sortData
     }
     return data
+}
+
+/**
+ * 获取区间随机数（最小最大均能取到）
+ * */
+function getRandomNum (min: number, max: number): number {
+    return Math.round(Math.random() * (max - min) + min)
+}
+
+/**
+ * 生成 6 位随机验证码
+ * */
+export function createRandomVerifyCode() {
+    const randomArr = [
+        '0', '1', '2', '3', '4', '5',
+        '6', '7', '8', '9', 'A', 'B',
+        'C', 'D', 'E', 'F', 'G', 'H',
+        'I', 'J', 'K', 'L', 'M', 'N',
+        'O', 'P', 'Q', 'R', 'S', 'T',
+        'U', 'V', 'W', 'X', 'Y', 'Z'
+    ]
+    const len = randomArr.length
+    let res = ''
+    for (let i = 0; i < 6; i++) {
+        res += randomArr[getRandomNum(0, len)]
+    }
+    return res
+}
+
+/**
+ * 多条删除 sql 语句
+ * */
+export function getTableDeleteSqlStr (list: any[], tableName: string, param: string) {
+    const len = list.length
+    let arr: string[] = []
+    arr.length = len
+    arr.fill('?')
+    return ('DELETE FROM ' + tableName + ' WHERE ' + param + ' IN (' + arr.join(',') + ')')
 }

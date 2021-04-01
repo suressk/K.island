@@ -1,4 +1,5 @@
 import { connectQueryPro } from '../dao/DBUtil'
+import { getTableDeleteSqlStr } from '../utils/util'
 
 interface QueryCommentsParams {
     articleId: number
@@ -54,12 +55,6 @@ function getDeleteSqlStr(ids: number[]): string {
         case 1:
             return 'DELETE FROM `tbl_comments` WHERE id = ?;'
         default:
-            const arr: string[] = []
-            arr.length = ids.length
-            arr.fill('?')
-            let sqlStr = 'DELETE FROM `tbl_comments` WHERE id IN ('
-            const str = arr.join(',')
-            sqlStr += str + ');'
-            return sqlStr
+            return getTableDeleteSqlStr(ids, '`tbl_comments`', 'id')
     }
 }

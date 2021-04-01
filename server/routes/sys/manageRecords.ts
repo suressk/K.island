@@ -26,13 +26,11 @@ router.post('/add', (req, res) => {
     addRecord(req.body)
         .then((result: any) => {
             writeHead(res, 200)
-            res.write(writeResult(true, 'Successfully added', result))
-            res.end()
+            writeResult(res, true, 'Successfully added', result)
         })
         .catch(err => {
             writeHead(res, 500)
-            res.write(writeResult(false, 'Failed to add record', err))
-            res.end()
+            writeResult(res, false, 'Failed to add record', err)
         })
 })
 
@@ -43,13 +41,11 @@ router.put('/update', (req, res) => {
     updateRecord(req.body)
         .then((result: any) => {
             writeHead(res, 200)
-            res.write(writeResult(true, 'Successfully updated', result))
-            res.end()
+            writeResult(res, true, 'Successfully updated', result)
         })
         .catch(err => {
             writeHead(res, 500)
-            res.write(writeResult(false, 'Failed to update record', err))
-            res.end()
+            writeResult(res, false, 'Failed to update record', err)
         })
 })
 
@@ -60,12 +56,10 @@ router.delete('/delete', (req, res) => {
     deleteRecord(req.body)
         .then((result: any) => {
             writeHead(res, 200)
-            res.write(writeResult(true, 'Successfully deleted', result))
-            res.end()
+            writeResult(res, true, 'Successfully deleted', result)
         }).catch(err => {
             writeHead(res, 500)
-            res.write(writeResult(false, 'Failed to delete the record', err))
-            res.end()
+            writeResult(res, false, 'Failed to delete the record', err)
         })
 })
 

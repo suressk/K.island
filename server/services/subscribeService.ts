@@ -1,14 +1,15 @@
-import {connectQuery, connectQueryPro, createConnection} from '../dao/DBUtil'
-import { v4 as uuid } from 'uuid'
+import { connectQueryPro, createConnection } from '../dao/DBUtil'
 import {
     DeleteSubscribeOptions,
     QuerySubscribeListOptions,
     VerifySubscribeOptions
 } from '../common/types'
+import { v4 as uuid } from 'uuid'
+import { getTableDeleteSqlStr } from '../utils/util'
 
 interface QuerySubscribeOptions {
-    email: string;
-    name: string;
+    email: string
+    name?: string
 }
 
 /**
@@ -65,14 +66,117 @@ export function querySubscribeList (options: QuerySubscribeListOptions) {
 /**
  * 查询订阅信息
  * */
-export function querySubscribeInfo (
-    options: QuerySubscribeOptions,
-    success: (res: any) => void,
-    error: (err: any) => void
-) {
+export function querySubscribeInfo (options: QuerySubscribeOptions) {
     const { email } = options
-    const sqlStr = 'SELECT id, uid, email, name, ctime FROM `tbl_subscribe` WHERE email = ?'
-    connectQuery(sqlStr, [email], success, error)
+    const sqlStr = 'SELECT id, uid, email, name, ctime FROM `tbl_subscribe` WHERE email = ?;'
+    return new Promise((resolve, reject) => {
+        connectQueryPro(sqlStr, [email])
+            .then(result => {
+                resolve(result)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
+
+interface VerifyInfo {
+    email: string
+    code?: string
+}
+
+interface AddVerifyInfo extends VerifyInfo {
+    code: string
+}
+
+/**
+ * 存储邮箱待验证的验证码信息
+ * */
+export async function addVerifyCodeInfo (options: AddVerifyInfo) {
+    const { email, code } = options
+    const ctime = Date.now()
+    const uid = uuid()
+    const expiredTime = ctime + 3600 * 1000 // 1 小时有效期
+    // 插入新的验证码信息
+    let sqlStr = 'INSERT INTO `tbl_verify_subscribe` (uid, email, verify_code, ctime, expired_time) VALUES (?, ?, ?, ?, ?);'
+    let params = [uid, email, code, ctime, expiredTime]
+
+    // TODO ============================================================ Promise
+
+    new Promise((resolve, reject) => {
+        // 1. 检查是否存在验证码
+        getVerifyInfo({ email })
+            .then((list: any) => {
+                if (list.length > 0) {
+                    resolve(list[0].id)
+                } else {
+                    reject()
+                }
+            })
+            .catch(err => {
+                reject(err)
+            })
+    }).then((id: any) => {
+        // 2. 存在，则更新验证码
+        sqlStr = 'UPDATE `tbl_verify_subscribe` SET verify_code = ?, expired_time = ? WHERE id = ?;'
+        params = [code, expiredTime, id]
+    })
+
+    // 删除过期验证信息
+    await deleteExpiredVerifyInfo()
+
+    return new Promise((resolve, reject) => {
+        connectQueryPro(sqlStr, params)
+            .then(result => {
+                resolve(result)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+
+/**
+ * 查询验证表是否存在验证码信息
+ * */
+export function getVerifyInfo (options: VerifyInfo) {
+    const { email } = options
+    const sqlStr = 'SELECT id FROM `tbl_verify_subscribe` WHERE email = ?;'
+    return new Promise((resolve, reject) => {
+        connectQueryPro(sqlStr, [email])
+            .then(result => {
+                resolve(result)
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+
+/**
+ * 删除过期验证信息
+ * */
+export function deleteExpiredVerifyInfo () {
+    const now = Date.now()
+    const sqlStr = 'SELECT id FROM `tbl_verify_subscribe` WHERE expired_time < ?;'
+
+    const queryPro = new Promise((resolve, reject) => {
+        connectQueryPro(sqlStr, [now])
+            .then(ids => {
+                resolve(ids)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+
+    queryPro.then((ids: any) => {
+        if (ids && ids.length) {
+            const deleteSqlStr = getTableDeleteSqlStr(ids, '`tbl_verify_subscribe`', 'id')
+            connectQueryPro(deleteSqlStr, ids)
+                .then(() => undefined)
+        }
+    })
 }
 
 /**
@@ -81,7 +185,7 @@ export function querySubscribeInfo (
  * */
 export function verifyEmailCode (options: VerifySubscribeOptions) {
     const { id, email, code } = options
-    const sqlStr = 'SELECT id, email, code FROM `tbl_verify_subscribe` WHERE id = ? AND email = ?'
+    const sqlStr = 'SELECT id, email, code FROM `tbl_verify_subscribe` WHERE id = ? AND email = ?;'
     const connection = createConnection()
     connection.connect()
     return new Promise((resolve, reject) => {
@@ -122,7 +226,7 @@ export function addSubscribeInfo (options: QuerySubscribeOptions) {
     const { email, name } = options
     const date = Date.now()
     const uid = uuid()
-    const sqlStr = 'INSERT INTO `tbl_subscribe` (uid, email, name, ctime) values (?, ?, ?, ?);'
+    const sqlStr = 'INSERT INTO `tbl_subscribe` (uid, email, name, ctime) VALUES (?, ?, ?, ?);'
     return new Promise((resolve, reject) => {
         connectQueryPro(sqlStr, [uid, email, name, date])
             .then(result => {
