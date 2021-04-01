@@ -90,18 +90,21 @@ interface AddVerifyInfo extends VerifyInfo {
 }
 
 /**
- * 存储邮箱待验证的验证码信息
+ * 存储邮箱待验证的验证码信息（未过期则更新验证码）
  * */
-export async function addVerifyCodeInfo (options: AddVerifyInfo) {
+export function addVerifyCodeInfo (options: AddVerifyInfo) {
     const { email, code } = options
     const ctime = Date.now()
     const uid = uuid()
     const expiredTime = ctime + 3600 * 1000 // 1 小时有效期
-    // 插入新的验证码信息
+    // 插入新验证码信息的 sql 语句
     let sqlStr = 'INSERT INTO `tbl_verify_subscribe` (uid, email, verify_code, ctime, expired_time) VALUES (?, ?, ?, ?, ?);'
     let params = [uid, email, code, ctime, expiredTime]
 
-    // TODO ============================================================ Promise
+    /**
+     *  TODO === 用于保证验证码信息表 email - code 组合的唯一性（否则会出现多对 email - code 组合的情况）
+     *  TODO 但这里有多次连库及查删改操作 => 后面再考虑优化吧
+     *  */
 
     new Promise((resolve, reject) => {
         // 1. 检查是否存在验证码
@@ -122,15 +125,17 @@ export async function addVerifyCodeInfo (options: AddVerifyInfo) {
         params = [code, expiredTime, id]
     })
 
-    // 删除过期验证信息
-    await deleteExpiredVerifyInfo()
-
+    // 3. 插入 / 更新 验证码信息（更新验证信息成功或失败后再删除过期验证信息）
     return new Promise((resolve, reject) => {
         connectQueryPro(sqlStr, params)
             .then(result => {
+                // 4. 删除过期验证信息
+                deleteExpiredVerifyInfo()
                 resolve(result)
             })
             .catch(error => {
+                // 4. 删除过期验证信息
+                deleteExpiredVerifyInfo()
                 reject(error)
             })
     })
@@ -155,6 +160,9 @@ export function getVerifyInfo (options: VerifyInfo) {
 
 /**
  * 删除过期验证信息
+ * 'DELETE FROM `tbl_verify_subscribe` WHERE id IN (SELECT id FROM `tbl_verify_subscribe` WHERE expired_time < ?);'
+ * 不能同时作用于同一张表的 sql 语句
+ * TODO 猜测原因：可能是由于 delete 语句会先于后面 select 语句执行导致表数据更新异常的问题
  * */
 export function deleteExpiredVerifyInfo () {
     const now = Date.now()
