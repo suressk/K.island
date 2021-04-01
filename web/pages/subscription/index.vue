@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
-import { checkEmail } from '~/utils/util'
+import { checkIsEmail } from '~/utils/util'
 import KHeader from '~/components/KHeader/index.vue'
 import KWave from '~/components/KWave.vue'
 import notify from '~/components/notification'
@@ -55,7 +55,7 @@ export default defineComponent({
         isEmail.value = true // 不提示邮箱格式错误
         return
       }
-      isEmail.value = checkEmail(email.value)
+      isEmail.value = checkIsEmail(email.value)
     }
 
     function handleSubscribe () {
@@ -79,6 +79,7 @@ export default defineComponent({
               title: 'Congratulations~',
               message: res.message
             })
+            email.value = ''
           } else {
             notify({
               type: 'warning',

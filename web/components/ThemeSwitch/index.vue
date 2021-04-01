@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from '@nuxtjs/composition-api'
+import { defineComponent, ref, onBeforeMount } from '@nuxtjs/composition-api'
 import { debounce, getStorageValue, setStorageValue } from '~/utils/util'
 
 export default defineComponent({
@@ -24,7 +24,7 @@ export default defineComponent({
       document.body.className = dark.value ? 'k-dark' : ''
     }, 100)
 
-    onMounted(() => {
+    onBeforeMount(() => {
       const theme = getStorageValue('theme') || 'light'
       dark.value = theme === 'night'
       document.body.className = dark.value ? 'k-dark' : ''

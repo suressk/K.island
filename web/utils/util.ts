@@ -166,7 +166,7 @@ export function preventDefault (e: Event) {
 /**
  * 校验 Email 格式
  * */
-export function checkEmail (email: string): boolean {
+export function checkIsEmail (email: string): boolean {
   // const emailReg = /^([a-zA-Z]|[0-9])(\w|-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
   const emailReg = /\w+@([0-9a-zA-Z]+[-0-9a-zA-Z]*)(\.[0-9a-zA-Z]+[-0-9a-zA-Z]*)+/
   return emailReg.test(email)

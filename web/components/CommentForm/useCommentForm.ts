@@ -1,5 +1,5 @@
 import { ref, reactive, computed, SetupContext, nextTick } from '@nuxtjs/composition-api'
-import { checkEmail } from '~/utils/util'
+import { checkIsEmail } from '~/utils/util'
 import { CommentProps } from '~/types'
 
 let timer: number
@@ -46,7 +46,7 @@ export default function (props: CommentProps, ctx: SetupContext) {
       return
     }
     // 邮箱格式不正确
-    if (!checkEmail(email.value)) {
+    if (!checkIsEmail(email.value)) {
       tipIndex.value = 1
       return
     } else if (matchStationmasterEmail(email.value)) {

@@ -110,7 +110,7 @@ router.post('/verify', (req, res) => {
         })
         .catch(err => {
             writeHead(res, 500)
-            writeResult(res, true, err.message, err)
+            writeResult(res, false, err.message, err)
         }
     )
 })

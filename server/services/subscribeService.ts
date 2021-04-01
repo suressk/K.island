@@ -207,15 +207,15 @@ export function verifyEmailCode (options: VerifySubscribeOptions) {
                     const item = result[0]
                     if (item) {
                         if (item.code === code) {
-                            resolve('success')
+                            resolve('验证成功！恭喜您成功订阅小 K. 的小栈，有消息将会第一时间通知您哟，若要取消订阅，请联系小K.')
                         } else {
                             reject({
-                                message: 'Verification code error'
+                                message: '验证码错误！是不是输错验证码辣？'
                             })
                         }
                     } else {
                         reject({
-                            message: `Email not matched : ${email}`
+                            message: `没有匹配到您的邮箱呢: "${email}"，仔细检查一下？`
                         })
                     }
                 } else {
