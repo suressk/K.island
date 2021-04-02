@@ -1,10 +1,11 @@
 import express from 'express'
 import {SubscribeInfo, EmailTipType} from '../../common/types'
-import {querySubscribeInfo, addVerifyCodeInfo, addSubscribeInfo, verifyEmailCode} from '../../services/subscribeService'
+import {querySubscribeInfo, addVerifyCodeInfo, addSubscribeInfo, checkVerificationCode} from '../../services/subscribeService'
 import {writeHead, writeResult} from '../../utils/writeResponse'
 import {createRandomVerifyCode} from '../../utils/util'
 import sendMail from '../../utils/subscribe'
-import {authQQPass, authEmail} from '../../common/definition'
+import {authPass, authEmail} from '../../common/definition'
+import { v4 as uuid } from 'uuid'
 
 const router = express.Router()
 
@@ -19,11 +20,13 @@ router.post('/add', (req, res) => {
         querySubscribeInfo({ email })
             .then((result: any) => {
                 // 邮箱已存在
-                if (result.length > 0) {
+                if (result && result.length > 0) {
                     reject({
-                        status: 416,
+                        // status: 416,
+                        status: 200,
                         success: false,
-                        msg: '此邮箱已经订阅了哦~ 是你忘记了吗？'
+                        message: '你的邮箱已经订阅过小栈了~ 不用重复订阅的',
+                        data: {}
                     })
                 } else {
                     resolve({})
@@ -33,27 +36,28 @@ router.post('/add', (req, res) => {
                 reject({
                     status: 500,
                     success: false,
-                    msg: 'Something error in querying subscription information',
+                    message: 'Something error in querying subscription information',
                     data: error
                 })
             })
-        })
-
-    // 'stack_surek@outlook.com'
+        }
+    )
 
     // 2. 发送邮箱验证
     pro.then(() => {
         // 随机验证码
         const verifyCode = createRandomVerifyCode()
+        const uid = uuid()
 
         const auth = {
-            // email: 'sure_k@qq.com',
+            // email: authEmail.qq,
             user: authEmail.qq,
-            pass: authQQPass,
+            pass: authPass.qq,
             emailType: 'QQ',
             name: '小 K.'
         }
         const info = {
+            uid,
             email,
             url: `${req.headers.origin}/subscription/verify?email=${email}`,
             code: verifyCode
@@ -73,19 +77,26 @@ router.post('/add', (req, res) => {
                 // 表存储验证码信息
                 addVerifyCodeInfo({
                     code: verifyCode,
-                    email
-                }).then(() => undefined)
+                    email,
+                    uid
+                }).then((result) => {
+                    console.log('add code success: ', result)
+                    writeHead(res, 200)
+                    writeResult(res, true, '邮箱验证信息已发送！快去你的邮箱验证一下吧~')
+                }, err => {
+                    console.log('add code error: ', err)
+                    writeHead(res, 200)
+                    writeResult(res, false, '貌似出错了', err)
+                })
 
-                writeHead(res, 200)
-                writeResult(res, true, '邮箱验证信息已发送！快去你的邮箱验证一下吧~')
             })
             .catch(error => {
-                writeHead(res, 500)
-                writeResult(res, true, '邮箱验证信息发送失败！记得给小 K. 说一声哦~', error)
+                writeHead(res, 200)
+                writeResult(res, false, '邮箱验证信息发送失败！记得给 小K. 说一声哦~', error)
             })
     }).catch(err => {
         writeHead(res, err.status)
-        writeResult(res, err.success, err.msg, err.data)
+        writeResult(res, false, err.message, err.data)
     })
 })
 
@@ -93,25 +104,24 @@ router.post('/add', (req, res) => {
  * 邮箱验证
  * */
 router.post('/verify', (req, res) => {
-    console.log(req.body)
-    verifyEmailCode(req.body)
+    checkVerificationCode(req.body)
         .then(() => {
-            // success 验证邮箱成功
+            // { message: 'success' } 验证邮箱成功
             // 新增订阅
             addSubscribeInfo({
                 email: req.body.email,
                 name: req.body.name
-            }).then((result: any) => {
+            }).then(() => {
                 writeHead(res, 200)
-                writeResult(res, true, '小K. <<K.island>> 欢迎您', result)
+                writeResult(res, true, '恭喜你成功订阅 小K. 的小栈！若要取消订阅，请联系 小K.')
             }).catch(err => {
                 writeHead(res, 500)
-                writeResult(res, err.success, '小K.很遗憾地告诉您：小栈订阅失败了！麻烦联系一下小K.哟~', err)
+                writeResult(res, err.success, '小K. 很遗憾地告诉您：小栈订阅失败了！麻烦联系一下 小K.', err)
             })
         })
         .catch(err => {
-            writeHead(res, 500)
-            writeResult(res, false, err.message, err)
+            writeHead(res, err.status)
+            writeResult(res, false, err.message, err.error)
         }
     )
 })

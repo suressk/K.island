@@ -2,6 +2,34 @@ import { zhMonths } from './variable'
 import { ArticleItem } from '~/types'
 import { Store } from 'vuex'
 import DAYJS from 'dayjs'
+import notify from '~/components/notification'
+
+/**
+ * Notification func
+ * */
+export function successNotify (message: string) {
+  return notify({
+    type: 'success',
+    title: 'Congratulations',
+    message
+  })
+}
+
+export function warnNotify (message: string) {
+  return notify({
+    type: 'warning',
+    title: 'Sorry',
+    message
+  })
+}
+
+export function errorNotify (message: string) {
+  return notify({
+    type: 'error',
+    title: 'Failed',
+    message
+  })
+}
 
 /**
  * commit mutations
@@ -276,4 +304,19 @@ export function isToday(time: number): boolean {
   return (today.year === otherDay.year &&
     today.month === otherDay.month &&
     today.day === otherDay.day);
+}
+
+
+export function parseLocationSearch () {
+  const searchStr = decodeURIComponent(location.search)
+  if (searchStr) {
+    const obj: any = {}
+    const searchArr = searchStr.slice(1).split('&')
+    searchArr.forEach(item => {
+      const resArr = item.split('=')
+      obj[resArr[0]] = resArr[1]
+    })
+    return obj
+  }
+  return {}
 }

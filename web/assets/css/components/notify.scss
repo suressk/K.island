@@ -1,22 +1,21 @@
 /**
   notify transition
 */
-.scale-enter-active,
-.scale-leave-active {
+.scaleRight-enter-active,
+.scaleRight-leave-active {
   transition: all .5s;
 }
 
-.scale-enter,
-.scale-leave-to {
-  transform: translate(-50%, -50%) scale(0);
+.scaleRight-enter,
+.scaleRight-leave-to {
+  transform: translateX(320px) scale(0);
 }
 
 /** notification style */
 .notification {
   position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) scale(1);
+  top: 0;
+  right: 16px;
   z-index: 99;
   transition: all .3s;
   min-width: 250px;
@@ -25,9 +24,15 @@
   background-color: var(--snowWhite);
   border-radius: 5px;
   padding: 20px;
-  &.scale-enter,
-  &.scale-leave-to {
-    transform: translate(-50%, -50%) scale(0);
+  .icon-close {
+    color: var(--lightTxt);
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    transition: color .3s ease;
+    &:hover {
+      color: var(--primary);
+    }
   }
   .notify-header,
   .notify-body {

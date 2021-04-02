@@ -1,5 +1,5 @@
 import express from 'express'
-import { recordListResponse, recordDetailResponse } from '../common'
+import { recordListResponse, recordDetailResponse } from '../recordResponse'
 
 const router = express.Router()
 

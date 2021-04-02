@@ -1,11 +1,7 @@
 import { connectQueryPro, createConnection } from '../dao/DBUtil'
-import {
-    DeleteSubscribeOptions,
-    QuerySubscribeListOptions,
-    VerifySubscribeOptions
-} from '../common/types'
-import { v4 as uuid } from 'uuid'
 import { getTableDeleteSqlStr } from '../utils/util'
+import {DeleteSubscribeOptions, QuerySubscribeListOptions, VerifyEmailOptions} from '../common/types'
+import { v4 as uuid } from 'uuid'
 
 interface QuerySubscribeOptions {
     email: string
@@ -87,17 +83,17 @@ interface VerifyInfo {
 
 interface AddVerifyInfo extends VerifyInfo {
     code: string
+    uid: string
 }
 
 /**
  * 存储邮箱待验证的验证码信息（未过期则更新验证码）
  * */
-export function addVerifyCodeInfo (options: AddVerifyInfo) {
-    const { email, code } = options
+export async function addVerifyCodeInfo (options: AddVerifyInfo) {
+    const { uid, email, code } = options
     const ctime = Date.now()
-    const uid = uuid()
     const expiredTime = ctime + 3600 * 1000 // 1 小时有效期
-    // 插入新验证码信息的 sql 语句
+    // 插入新验证码信息
     let sqlStr = 'INSERT INTO `tbl_verify_subscribe` (uid, email, verify_code, ctime, expired_time) VALUES (?, ?, ?, ?, ?);'
     let params = [uid, email, code, ctime, expiredTime]
 
@@ -108,35 +104,65 @@ export function addVerifyCodeInfo (options: AddVerifyInfo) {
 
     new Promise((resolve, reject) => {
         // 1. 检查是否存在验证码
-        getVerifyInfo({ email })
+        getVerifyInfo({email})
             .then((list: any) => {
                 if (list.length > 0) {
-                    resolve(list[0].id)
-                } else {
-                    reject()
-                }
-            })
-            .catch(err => {
-                reject(err)
-            })
-    }).then((id: any) => {
-        // 2. 存在，则更新验证码
-        sqlStr = 'UPDATE `tbl_verify_subscribe` SET verify_code = ?, expired_time = ? WHERE id = ?;'
-        params = [code, expiredTime, id]
-    })
+                    const { id } = list[0]
+                    // 2. 存在，则更新验证码
+                    sqlStr = 'UPDATE `tbl_verify_subscribe` SET verify_code = ?, expired_time = ? WHERE id = ?;'
+                    params = [code, expiredTime, id]
 
-    // 3. 插入 / 更新 验证码信息（更新验证信息成功或失败后再删除过期验证信息）
-    return new Promise((resolve, reject) => {
-        connectQueryPro(sqlStr, params)
-            .then(result => {
-                // 4. 删除过期验证信息
-                deleteExpiredVerifyInfo()
-                resolve(result)
+                    return {}
+                } else {
+                    return {}
+                }
+            }, err => err)
+            .then(() => {
+                // 3. 插入 / 更新验证码
+                connectQueryPro(sqlStr, params)
+                    .then(result => resolve(result))
+                    .catch(error => reject(error))
             })
-            .catch(error => {
-                // 4. 删除过期验证信息
-                deleteExpiredVerifyInfo()
-                reject(error)
+
+    }).then(async (result) => {
+
+        // 4. 删除过期验证信息
+        await deleteExpiredVerifyInfo().then(() => {
+            console.log('delete success...')
+        }).catch(err => {
+            console.log(err)
+        })
+        return result
+    })
+}
+
+
+/**
+ * 删除过期验证信息
+ * 'DELETE FROM `tbl_verify_subscribe` WHERE id IN (SELECT id FROM `tbl_verify_subscribe` WHERE expired_time < ?);'
+ * 不能同时作用于同一张表的 sql 语句
+ * TODO 猜测原因：可能是由于 delete 语句会先于后面 select 语句执行导致表数据更新异常的问题
+ * */
+export function deleteExpiredVerifyInfo () {
+    const now = Date.now()
+    const sqlStr = 'SELECT id FROM `tbl_verify_subscribe` WHERE expired_time < ?;'
+
+    return new Promise((resolve, reject) => {
+        // 查询过期验证码 id[]
+        connectQueryPro(sqlStr, [now])
+            .then(ids => ids, err => err)
+            .then((ids: any) => {
+                if (!ids || !ids.length) reject('no expired code')
+
+                const deleteSqlStr = getTableDeleteSqlStr(ids, '`tbl_verify_subscribe`', 'id')
+                // 删除过期验证码信息
+                connectQueryPro(deleteSqlStr, ids)
+                    .then(() => {
+                        resolve('Successfully deleted')
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
             })
     })
 }
@@ -146,7 +172,7 @@ export function addVerifyCodeInfo (options: AddVerifyInfo) {
  * */
 export function getVerifyInfo (options: VerifyInfo) {
     const { email } = options
-    const sqlStr = 'SELECT id FROM `tbl_verify_subscribe` WHERE email = ?;'
+    const sqlStr = 'SELECT id, uid, email, verify_code, expired_time FROM `tbl_verify_subscribe` WHERE email = ?;'
     return new Promise((resolve, reject) => {
         connectQueryPro(sqlStr, [email])
             .then(result => {
@@ -159,70 +185,64 @@ export function getVerifyInfo (options: VerifyInfo) {
 }
 
 /**
- * 删除过期验证信息
- * 'DELETE FROM `tbl_verify_subscribe` WHERE id IN (SELECT id FROM `tbl_verify_subscribe` WHERE expired_time < ?);'
- * 不能同时作用于同一张表的 sql 语句
- * TODO 猜测原因：可能是由于 delete 语句会先于后面 select 语句执行导致表数据更新异常的问题
+ * 校验邮箱 —— 验证码
  * */
-export function deleteExpiredVerifyInfo () {
-    const now = Date.now()
-    const sqlStr = 'SELECT id FROM `tbl_verify_subscribe` WHERE expired_time < ?;'
-
-    const queryPro = new Promise((resolve, reject) => {
-        connectQueryPro(sqlStr, [now])
-            .then(ids => {
-                resolve(ids)
-            })
-            .catch(err => {
-                reject(err)
-            })
-    })
-
-    queryPro.then((ids: any) => {
-        if (ids && ids.length) {
-            const deleteSqlStr = getTableDeleteSqlStr(ids, '`tbl_verify_subscribe`', 'id')
-            connectQueryPro(deleteSqlStr, ids)
-                .then(() => undefined)
-        }
-    })
-}
-
-/**
- * 查询邮箱验证信息
- * [{ id: '', ... }]
- * */
-export function verifyEmailCode (options: VerifySubscribeOptions) {
+export function checkVerificationCode (options: VerifyEmailOptions) {
     const { email, code } = options
-    const sqlStr = 'SELECT email, code FROM `tbl_verify_subscribe` WHERE email = ?;'
-    const connection = createConnection()
-    connection.connect()
+    const now = Date.now()
     return new Promise((resolve, reject) => {
-        connection.query(
-            sqlStr,
-            [email],
-            (err, result: any[]) => {
-                // 成功查询到验证信息
-                if (!err) {
-                    const item = result[0]
-                    if (item) {
-                        if (item.code === code) {
-                            resolve('验证成功！恭喜您成功订阅小 K. 的小栈，有消息将会第一时间通知您哟，若要取消订阅，请联系小K.')
-                        } else {
-                            reject({
-                                message: '验证码错误！是不是输错验证码辣？'
-                            })
-                        }
-                    } else {
-                        reject({
-                            message: `没有匹配到您的邮箱呢: "${email}"，仔细检查一下？`
-                        })
-                    }
+        // 查询此邮箱是否已订阅
+        querySubscribeInfo({ email })
+            .then((list: any) => {
+                return (list.length > 0)
+            }, err => err)
+            .then(existed => {
+                if (existed) {
+                    reject({
+                        status: 200,
+                        message: '你的邮箱已订阅小栈，不用重复订阅操作哦~',
+                        error: {}
+                    })
                 } else {
-                    reject(err)
+                    // 邮箱和验证码 => 默认有值； 查询验证码信息
+                    getVerifyInfo({ email })
+                        .then((result: any) => {
+                            if (!result || result.length === 0) {
+                                reject({
+                                    status: 200,
+                                    message: `抱歉！没能成功匹配到您的邮箱（${email}）及验证信息 。确定发起过订阅吗？`,
+                                    error: {}
+                                })
+                            } else {
+                                const item = result[0]
+                                // 验证码过期（1小时有效）
+                                if (now > item.expired_time) {
+                                    reject({
+                                        status: 200,
+                                        message: '验证码已经过期辣！请回到订阅页面重新发起订阅哦~',
+                                        error: {}
+                                    })
+                                } else if (item.verify_code === code) {
+                                    // 验证通过
+                                    resolve({ message: 'success' })
+                                } else {
+                                    reject({
+                                        status: 200,
+                                        message: '验证码错误！是不是输错验证码辣？',
+                                        error: {}
+                                    })
+                                }
+                            }
+                        })
+                        .catch(err => {
+                            reject({
+                                status: 500,
+                                message: 'Server Internal Error',
+                                error: err
+                            })
+                        })
                 }
-            }
-        )
-        connection.end()
+            })
     })
 }
 

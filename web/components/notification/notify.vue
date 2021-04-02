@@ -1,5 +1,5 @@
 <template>
-  <transition name="scale">
+  <transition name="scaleRight">
     <div
       class="notification"
       v-show="visible"
@@ -11,6 +11,7 @@
         <i class="iconfont" :class="'icon-' + type" />
         <span class="notify-title" v-text="title" />
       </div>
+      <i class="iconfont icon-close" @click="close" />
       <div class="notify-body" v-text="message" />
     </div>
   </transition>
@@ -24,20 +25,20 @@ export default {
   data () {
     return {
       visible: false,
-      type: '',
+      type: 'info',
       title: '',
       message: '',
       timer: null,
-      duration: 4000,
+      duration: 5000,
       offset: 0,
-      zIndex: 99,
       closed: false
+      // zIndex: 99,
     }
   },
   computed: {
-    customStyle ({ zIndex }) {
-      // return `top: ${this.offset}px;`
-      return `z-index: ${zIndex};`
+    customStyle ({ offset }) {
+      return `top: ${offset}px;`
+      // return `z-index: ${zIndex};`
     }
   },
   methods: {

@@ -34,10 +34,9 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@nuxtjs/composition-api'
-import { checkIsEmail } from '~/utils/util'
+import { checkIsEmail, successNotify, warnNotify, errorNotify } from '~/utils/util'
 import KHeader from '~/components/KHeader/index.vue'
 import KWave from '~/components/KWave.vue'
-import notify from '~/components/notification'
 
 export default defineComponent({
   name: 'subscription',
@@ -74,25 +73,13 @@ export default defineComponent({
           email: email.value
         }).then((res: any) => {
           if (res.success) {
-            notify({
-              type: 'success',
-              title: 'Congratulations~',
-              message: res.message
-            })
+            successNotify(res.message)
             email.value = ''
           } else {
-            notify({
-              type: 'warning',
-              title: 'Sorry~',
-              message: res.message
-            })
+            warnNotify(res.message)
           }
         }).catch((err: any) => {
-          notify({
-            type: 'error',
-            title: 'Something Wrong~',
-            message: err.message
-          })
+          errorNotify(err.message)
         })
       }
     }

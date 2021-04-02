@@ -9,16 +9,16 @@
         </div>
 
         <div class="verify-item d-flex">
-          <span class="inp-tag">Email</span>
+          <span class="inp-tag">Name</span>
           <label>
-            <input type="text" placeholder="Enter your email..." v-model="email" />
+            <input type="text" placeholder="Enter your nickname..." v-model="name" />
           </label>
         </div>
 
         <div class="verify-item d-flex">
           <span class="inp-tag">Code</span>
           <label>
-            <input type="text" placeholder="Enter the verify code..." v-model="code" />
+            <input type="text" placeholder="Enter the verification code..." v-model="code" />
           </label>
         </div>
         <div class="btn-container">
@@ -39,24 +39,9 @@
 
 <script lang="ts">
 import { ref, computed, getCurrentInstance, defineComponent, onMounted } from '@nuxtjs/composition-api'
-import { checkIsEmail } from '~/utils/util'
-import notify from '~/components/notification'
+import { parseLocationSearch, successNotify, warnNotify, errorNotify } from '~/utils/util'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
-
-function parseSearch () {
-  const searchStr = decodeURIComponent(location.search)
-  if (searchStr) {
-    const obj: any = {}
-    const searchArr = searchStr.slice(1).split('&')
-    searchArr.forEach(item => {
-      const resArr = item.split('=')
-      obj[resArr[0]] = resArr[1]
-    })
-    return obj
-  }
-  return {}
-}
 
 export default defineComponent({
   name: 'verify',
@@ -64,61 +49,44 @@ export default defineComponent({
   setup() {
     const { proxy } = getCurrentInstance()!
     const email = ref<string>('')
+    const name = ref<string>('')
     const code = ref<string>('')
 
     const notAllowed = computed(() => {
-      return ((code.value.length === 0) || (email.value.length === 0))
+      return ((!code.value) || (!email.value) || (!name.value))
     })
 
     function handleVerifyCode () {
-      // 邮箱格式不对
-      if (!checkIsEmail(email.value)) {
-        notify({
-          type: 'warning',
-          title: 'Attention~',
-          message: '邮箱格式好像不太对吼~'
-        })
-        return
-      }
       // @ts-ignore
       proxy.$axios.post('/subscribe/verify', {
         email: email.value,
-        code: code.value
+        code: code.value,
+        name: name.value
       }).then((res: any) => {
         if (res.success) {
-          notify({
-            type: 'success',
-            title: 'Congratulations~',
-            message: res.message
-          })
-          setTimeout(() => {
-            proxy.$router.push('/')
-          }, 500)
+            successNotify(res.message)
         } else {
-          notify({
-            type: 'warning',
-            title: 'Sorry~',
-            message: res.message
-          })
+            warnNotify(res.message)
         }
       }).catch((err: any) => {
-        notify({
-          type: 'error',
-          title: 'Something Wrong~',
-          message: err.message
-        })
+          errorNotify(err.message)
       })
     }
 
     onMounted(() => {
-      const params = parseSearch()
-      email.value = params.email
+      const params = parseLocationSearch()
+      email.value = params.email || ''
     })
     return {
-      email,
+      name,
       code,
       notAllowed,
       handleVerifyCode
+    }
+  },
+  head() {
+    return {
+      title: '邮箱验证 | K.island'
     }
   }
 })
@@ -166,7 +134,7 @@ export default defineComponent({
           border: none;
           //display: inline-block;
           outline: none;
-          color: var(--ink);
+          color: var(--primary);
         }
       }
     }

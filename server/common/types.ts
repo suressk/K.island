@@ -2,8 +2,6 @@ export interface CorsOption {
     origin: boolean
 }
 
-export type CallBack = (arg0: null, arg1: CorsOption) => void
-
 export interface UserInfo {
     username: string
     password: string
@@ -84,7 +82,7 @@ export interface UpdateRecordOptions extends RecordInfo {
     uid: string
 }
 
-type EmailType = 'QQ' | '163' | 'GMAIL' | 'OUTLOOK'
+// type EmailType = 'QQ' | '163' | 'GMAIL' | 'OUTLOOK'
 
 /**
  * 订阅信息
@@ -93,8 +91,9 @@ export interface SubscribeInfo {
     user: string
     pass: string
     name: string
-    // email: string
-    emailType: EmailType
+    // emailType: EmailType
+    email?: string
+    uid?: string
 }
 
 export interface SubscribeTipInfo {
@@ -102,9 +101,9 @@ export interface SubscribeTipInfo {
     html: string
 }
 
-export interface VerifySubscribeOptions {
+export interface VerifyEmailOptions {
+    // uid: string
     email: string
-    // id: number
     code: string
 }
 

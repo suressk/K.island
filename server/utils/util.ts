@@ -1,9 +1,7 @@
 import multer from 'multer'
 import { v4 as uuid } from 'uuid'
-import { Request, Response } from 'express'
-import { CallBack, UpdateRecordOptions, ArticleListItem } from '../common/types'
-import { verifyToken } from './jwt'
-import { writeHead, writeResult } from './writeResponse'
+import { Request } from 'express'
+import {UpdateRecordOptions, ArticleListItem, CorsOption} from '../common/types'
 import dayjs from 'dayjs'
 
 const imgSuffixReg = /[.][a-z]+/
@@ -31,10 +29,12 @@ export function createMulterStorage (dir: string) {
  * */
 const WHITE_LIST = ['http://localhost:8108', 'http://localhost:8888', '*']
 
+type Callback = (arg0: null, arg1: CorsOption) => void
+
 /**
  * 创建跨域处理函数
  * */
-export function createCorsOptionsDelegate (req: Request, callback: CallBack) {
+export function createCorsOptionsDelegate (req: Request, callback: Callback) {
     let corsOptions: { origin: boolean }
     const reqOrigin: string | undefined = req.header('Origin')
     if (reqOrigin && WHITE_LIST.includes(reqOrigin)) {
@@ -110,25 +110,25 @@ const specialDay = {
     23: '23rd',
     31: '31st'
 }
-const dateType = 'YYYY-MM-DD HH:mm:ss'
+const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss'
 
 /**
  * 日期格式化
  * */
 export function dateFormat (timeTemp: number) {
     // 时间戳 => '2021-02-27 22:56:34' => ['2021', '02', '27', '22', '56', '34']
-    let time: string | string[] = dayjs(timeTemp).format(dateType)
+    let time: string | string[] = dayjs(timeTemp).format(DATE_FORMAT)
     // const reg = /-|:|\ /g
     const reg = /[-: ]/g
     time = time.replace(reg, ',').split(',')
     // 天数取整 => 英文天数记
-    const day = parseInt(time[2]) + ''
+    const day = +time[2]
     // @ts-ignore
     const enDay = specialDay[day] ? specialDay[day] : (day + 'th') as string
     return {
         year: time[0],
-        month: enMonths[parseInt(time[1])],
-        monthNum: parseInt(time[1]) + 1,
+        month: enMonths[+time[1]],
+        monthNum: +time[1] + 1,
         day: enDay,
         hour: time[3],
         minute: time[4],
@@ -169,10 +169,10 @@ export function mapYearGroup (dataList: ArticleListItem[]) {
 }
 
 /**
- * 获取区间随机数（最小最大均能取到）
+ * 获取区间随机整数（区间：[min, max) ）
  * */
 function getRandomNum (min: number, max: number): number {
-    return Math.round(Math.random() * (max - min) + min)
+    return Math.floor(Math.random() * (max - min) + min)
 }
 
 /**

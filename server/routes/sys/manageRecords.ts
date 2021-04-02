@@ -1,7 +1,7 @@
 import express from 'express'
 import { addRecord, updateRecord, deleteRecord } from '../../services/recordService'
 import { writeHead, writeResult } from '../../utils/writeResponse'
-import { recordDetailResponse, recordListResponse } from '../common'
+import { recordDetailResponse, recordListResponse } from '../recordResponse'
 
 const router = express.Router()
 

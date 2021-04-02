@@ -1,8 +1,5 @@
 <template>
-  <section
-    v-if="error.statusCode === 404 || error.statusCode === 500"
-    class="k-error"
-  >
+  <section v-if="error.statusCode === 404" class="not-found">
     <Empty />
 
     <ThemeSwitch />
@@ -27,7 +24,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.k-error {
+.not-found {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
