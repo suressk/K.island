@@ -5,3 +5,7 @@
 // }
 
 export const authQQPass = 'pxyjapaspmanbbff' // QQ邮箱授权码
+
+export const authEmail = {
+    qq: 'sure_k@qq.com'
+}

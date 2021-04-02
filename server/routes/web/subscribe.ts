@@ -1,14 +1,16 @@
 import express from 'express'
-import {querySubscribeInfo, addVerifyCodeInfo, addSubscribeInfo, verifyEmailCode} from '../../services/subscribeService'
-import { writeHead, writeResult } from '../../utils/writeResponse'
-import sendMail from '../../utils/subscribe'
-import { authQQPass } from '../../common/definition'
 import {SubscribeInfo, EmailTipType} from '../../common/types'
+import {querySubscribeInfo, addVerifyCodeInfo, addSubscribeInfo, verifyEmailCode} from '../../services/subscribeService'
+import {writeHead, writeResult} from '../../utils/writeResponse'
 import {createRandomVerifyCode} from '../../utils/util'
+import sendMail from '../../utils/subscribe'
+import {authQQPass, authEmail} from '../../common/definition'
 
 const router = express.Router()
 
-// 新增订阅
+/**
+ * 新增订阅
+ * */
 router.post('/add', (req, res) => {
     const email = req.body.email
     // const name = req.body.name
@@ -38,7 +40,6 @@ router.post('/add', (req, res) => {
         })
 
     // 'stack_surek@outlook.com'
-    const userEmail = 'sure_k@qq.com'
 
     // 2. 发送邮箱验证
     pro.then(() => {
@@ -47,7 +48,7 @@ router.post('/add', (req, res) => {
 
         const auth = {
             // email: 'sure_k@qq.com',
-            user: userEmail,
+            user: authEmail.qq,
             pass: authQQPass,
             emailType: 'QQ',
             name: '小 K.'
@@ -57,7 +58,6 @@ router.post('/add', (req, res) => {
             url: `${req.headers.origin}/subscription/verify?email=${email}`,
             code: verifyCode
         }
-        // console.log(JSON.stringify(req.headers))
         sendMail(EmailTipType.VERIFY_EMAIL, info, auth as SubscribeInfo)
             .then(() => {
                 /**
@@ -93,6 +93,7 @@ router.post('/add', (req, res) => {
  * 邮箱验证
  * */
 router.post('/verify', (req, res) => {
+    console.log(req.body)
     verifyEmailCode(req.body)
         .then(() => {
             // success 验证邮箱成功

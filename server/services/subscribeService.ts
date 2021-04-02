@@ -192,18 +192,17 @@ export function deleteExpiredVerifyInfo () {
  * [{ id: '', ... }]
  * */
 export function verifyEmailCode (options: VerifySubscribeOptions) {
-    const { id, email, code } = options
-    const sqlStr = 'SELECT id, email, code FROM `tbl_verify_subscribe` WHERE id = ? AND email = ?;'
+    const { email, code } = options
+    const sqlStr = 'SELECT email, code FROM `tbl_verify_subscribe` WHERE email = ?;'
     const connection = createConnection()
     connection.connect()
     return new Promise((resolve, reject) => {
         connection.query(
             sqlStr,
-            [id, email],
-            (err, result) => {
+            [email],
+            (err, result: any[]) => {
                 // 成功查询到验证信息
                 if (!err) {
-                    // @ts-ignore
                     const item = result[0]
                     if (item) {
                         if (item.code === code) {
@@ -250,7 +249,7 @@ export function addSubscribeInfo (options: QuerySubscribeOptions) {
  * 删除订阅信息
  * */
 export function deleteSubscribe (options: DeleteSubscribeOptions) {
-    const sqlStr = 'DELETE FROM `tbl_subscribe` WHERE id = ? AND email = ?'
+    const sqlStr = 'DELETE FROM `tbl_subscribe` WHERE id = ? AND email = ?;'
     const { id, email } = options
     return new Promise((resolve, reject) => {
         connectQueryPro(sqlStr, [id, email])

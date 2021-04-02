@@ -104,7 +104,7 @@ export interface SubscribeTipInfo {
 
 export interface VerifySubscribeOptions {
     email: string
-    id: number
+    // id: number
     code: string
 }
 
