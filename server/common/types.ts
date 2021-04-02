@@ -16,7 +16,7 @@ interface PageQueryParams {
 /**
  * 文章管理 相关请求参数类型定义
  * */
-export interface QueryListOptions extends PageQueryParams {
+export interface QueryRecordListOptions extends PageQueryParams {
     range?: string
     title?: string
     index?: number
@@ -35,6 +35,9 @@ export interface DeleteSubscribeOptions {
     id: number
     email: string
 }
+
+// 分页查询【留言】列表
+export type MessageListOptions = PageQueryParams
 
 /**
  * 数据库 records 表存储字段
@@ -91,9 +94,9 @@ export interface SubscribeInfo {
     user: string
     pass: string
     name: string
-    // emailType: EmailType
     email?: string
     uid?: string
+    // emailType: EmailType
 }
 
 export interface SubscribeTipInfo {
@@ -101,8 +104,7 @@ export interface SubscribeTipInfo {
     html: string
 }
 
-export interface VerifyEmailOptions {
-    // uid: string
+export interface CheckVerificationCodeOptions {
     email: string
     code: string
 }

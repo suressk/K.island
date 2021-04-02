@@ -78,11 +78,11 @@ export default function useMessage() {
     }
 
     onMounted(() => {
-        // getMsgList({
-        //     pageNo: 1,
-        //     pageSize: 10
-        // })
-        msgList.value = mapFormatCtimeList(list)
+        getMsgList({
+            pageNo: 1,
+            pageSize: 10
+        })
+        // msgList.value = mapFormatCtimeList(list)
     })
 
     function handlePageChange(curPagination: Pagination) {
@@ -108,7 +108,7 @@ export default function useMessage() {
             // @ts-ignore
             .then((res: ResponseData<any>) => {
                 if (res.success) {
-                    msgList.value = res.data.list
+                    msgList.value = mapFormatCtimeList(res.data.list)
                     pagination.total = res.data.total
                 } else {
                     warningNotify(res.message)

@@ -1,6 +1,6 @@
 import { connectQueryPro, createConnection } from '../dao/DBUtil'
 import { getTableDeleteSqlStr } from '../utils/util'
-import {DeleteSubscribeOptions, QuerySubscribeListOptions, VerifyEmailOptions} from '../common/types'
+import {DeleteSubscribeOptions, QuerySubscribeListOptions, CheckVerificationCodeOptions} from '../common/types'
 import { v4 as uuid } from 'uuid'
 
 interface QuerySubscribeOptions {
@@ -187,7 +187,7 @@ export function getVerifyInfo (options: VerifyInfo) {
 /**
  * 校验邮箱 —— 验证码
  * */
-export function checkVerificationCode (options: VerifyEmailOptions) {
+export function checkVerificationCode (options: CheckVerificationCodeOptions) {
     const { email, code } = options
     const now = Date.now()
     return new Promise((resolve, reject) => {

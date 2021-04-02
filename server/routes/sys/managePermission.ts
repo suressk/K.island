@@ -5,7 +5,7 @@ import { publishToken } from '../../utils/jwt'
 const cookieKey = 'token'
 const expireTime = 3600 * 24 // 过期时间(s) - 1D
 
-export function Login (req: Request, res: Response) {
+export default function loginPermission (req: Request, res: Response) {
     login(req.body)
         .then((result: any) => {
             const { username, password } = req.body

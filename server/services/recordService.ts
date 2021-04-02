@@ -2,10 +2,11 @@ import { createConnection, connectQueryPro } from '../dao/DBUtil'
 import {getUpdateRecordParams, mapCreateTime, mapYearGroup} from '../utils/util'
 import { v4 as uuid } from 'uuid'
 import {
-    QueryListOptions,
+    QueryRecordListOptions,
     RecordIdOptions,
     AddRecordOptions,
-    UpdateRecordOptions, ArticleListItem,
+    UpdateRecordOptions,
+    ArticleListItem
 } from '../common/types'
 
 /**
@@ -38,7 +39,7 @@ interface QueryListParams {
 /**
  * 获取分页查询 sql 语句及参数
  * */
-function getQueryListParams(options: QueryListOptions): QueryListParams {
+function getQueryListParams(options: QueryRecordListOptions): QueryListParams {
     const { pageNo, pageSize } = options
     let listParams: ListParams = [(pageNo - 1) * pageSize, pageSize] // 分页参数
     let listSqlStr: string
@@ -76,7 +77,7 @@ function getQueryListParams(options: QueryListOptions): QueryListParams {
 /**
  * 分页查询文章列表
  * */
-export function queryRecordList (options: QueryListOptions) {
+export function queryRecordList (options: QueryRecordListOptions) {
     const { listSqlStr, listParams, totalSqlStr, totalParams } = getQueryListParams(options)
     const connection = createConnection()
     connection.connect()

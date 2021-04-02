@@ -1,10 +1,11 @@
 import express, { NextFunction, Request, Response } from 'express'
 import cors from 'cors'
-import { createCorsOptionsDelegate } from './utils/util'
 import verifyPermission from './middleware/permission'
-import { Login } from './routes/sys/managePermission'
+import loginPermission from './routes/sys/managePermission'
+import { createCorsOptionsDelegate } from './utils/util'
 import manageRecord from './routes/sys/manageRecords'
 import manageImage from './routes/sys/manageImage'
+import manageMessage from './routes/sys/manageMessage'
 import viewRecords from './routes/web/records'
 import addComments from './routes/web/comments'
 import subscribe from './routes/web/subscribe'
@@ -33,9 +34,7 @@ app.get('/music/*', (req, res) => {
 })
 
 // 兼容旧的版本，使用新的 qs 库解析 body 消息体
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(express.urlencoded({ extended: true }));
 
 // 解析 json 格式请求体
 app.use(express.json());
@@ -44,27 +43,18 @@ app.use(express.json());
  * 后台系统
  * */
 // 系统登录
-app.post('/login', Login)
+app.post('/login', loginPermission)
+
 // 后台管理 token 验证 中间件
 app.use('/sys/*', verifyPermission)
-
-//      ||
-//     \||/
-//      \/
 
 // 文章管理 —— 增删改查 文章信息
 app.use('/sys/record', manageRecord)
 // 上传 / 删除 图片管理
 app.use('/sys/image', manageImage)
 // 留言信息 管理
-app.use('/sys/messages', (req, res, next) => {
-    res.send({
-        success: true,
-        data: {},
-        message: 'get message list'
-    })
-})
-// 留言信息 管理
+app.use('/sys/messages', manageMessage)
+// 评论 管理
 app.use('/sys/comments', (req, res, next) => {
     res.send({
         success: true,

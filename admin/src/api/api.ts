@@ -36,8 +36,8 @@ export const uploadIllustration = (fileData: FormData) => postUploadImage('/sys/
 export const deleteImage = (data: DeleteImageParams | undefined) => deleteAction('/sys/image/delete', data)
 
 // 查询留言信息
-export const getMessageList = (params: PageQueryParams) => getAction('/sys/messages', params)
-export const deleteMessages = (data: PageQueryParams) => deleteAction('/sys/messages', data)
+export const getMessageList = (params: PageQueryParams) => getAction('/sys/messages/list', params)
+export const deleteMessages = (data: PageQueryParams) => deleteAction('/sys/messages/delete', data)
 
 // 查询评论信息
 export const getCommentList = (params: PageQueryParams) => getAction('/sys/comments', params)
