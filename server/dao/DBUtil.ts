@@ -1,5 +1,4 @@
 import mysql from 'mysql2'
-// import mysqlPro from 'mysql2/promise'
 
 /**
  * 创建连接池
@@ -14,6 +13,8 @@ const pool = mysql.createPool({
     connectionLimit: 10, // 单次可创建最大连接数
     queueLimit: 0 // 连接池的最大请求数，从 getConnection 方法前依次排队。 0: 没有限制
 })
+
+const promisePool = pool.promise()
 
 // acquireTimeout: 5000, // 获取连接超时的毫秒数 TODO 【提示移除此配置项】
 
@@ -61,7 +62,7 @@ export function connectQueryPro (sqlStr: string, params: any[]) {
 /**
  * 连接池连接查询
  * */
-export function poolQuery (sqlStr: string, params: any[]) {
+export async function poolQuery (sqlStr: string, params: any[]) {
     return new Promise((resolve, reject) => {
 
         pool.query(sqlStr, params, ((err: any, result: any) => {
@@ -72,4 +73,9 @@ export function poolQuery (sqlStr: string, params: any[]) {
             }
         }))
     })
+}
+
+
+export async function promisePoolQuery (sqlStr: string, params: any[]) {
+    return await promisePool.query(sqlStr, params)
 }

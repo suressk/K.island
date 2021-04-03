@@ -1,4 +1,4 @@
-import { poolQuery } from '../dao/DBUtil'
+import {poolQuery, promisePoolQuery} from '../dao/DBUtil'
 import { MessageListOptions } from '../common/types'
 
 /**
@@ -9,6 +9,9 @@ export function getMessageList (options: MessageListOptions) {
     let listParams = [(pageNo - 1) * pageSize, pageSize] // 分页参数
     let listSqlStr = 'SELECT id, uid, content, name, ctime FROM `tbl_messages` ORDER BY ctime DESC LIMIT ?, ?;'
     let totalSqlStr: string = 'SELECT COUNT(id) as total FROM `tbl_messages`'
+
+    const result = promisePoolQuery(listSqlStr, listParams)
+    console.log('promise query: ', result)
 
     const listPro = new Promise((resolve, reject) => {
         poolQuery(listSqlStr, listParams)

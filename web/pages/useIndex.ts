@@ -10,8 +10,8 @@ import {
   throttle,
   getCurrentTime,
   removeListener,
-  plainArticleList,
-  commitMutations
+  commitMutations,
+  errorNotify
 } from '~/utils/util'
 import {
   M_SET_LOAD_STATUS,
@@ -24,9 +24,8 @@ import {
   TOTAL_ITEMS
 } from '~/store/mutation-types'
 import RainInit from '~/components/rainEffect/index'
-import { useState } from '~/utils/useStore'
-import Notification from '~/components/notification'
-import {ArticleDetail} from "~/types";
+import {useState} from '~/utils/useStore'
+import {ArticleDetail} from '~/types'
 
 /**
  * 首页 composition-api 代码风格 写法抽离
@@ -128,11 +127,7 @@ export default function useIndex() {
       if (loadingTimer) clearTimeout(loadingTimer)
       loadingTimer = setTimeout(() => {
         nextTick(() => {
-          Notification({
-            title: 'Something wrong~',
-            type: 'error',
-            message: '更多文章加载失败辣，麻烦联系一下小 K. 哦~'
-          })
+          errorNotify('更多文章加载失败辣，跟 小K. 说明一下吧~')
           commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOAD_MORE)
         })
       }, 500)

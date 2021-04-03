@@ -1,10 +1,10 @@
 import { VNode } from 'vue'
 
 export interface ConfirmOptions {
-    type: MessageType,
     content: string
     onOk: (...args: any[]) => any
     onCancel: (...args: any[]) => any
+    type?: MessageType,
     icon?: VNode,
     title?: string
     okText?: string

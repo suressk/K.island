@@ -34,19 +34,20 @@
 </template>
 
 <script lang="ts">
-import {LoginInfo, LoginResponse} from '../types'
-import {ACCESS_TOKEN} from '../store/mutation-types'
 import {defineComponent, reactive, toRefs} from 'vue'
 import {useRouter} from 'vue-router'
 import {login} from '../api/api'
-import md5 from 'md5'
 import {
   successNotify,
   warningNotify,
   errorNotify,
   setCookie,
-  setStorageToken
+  setStorageToken,
+  setStorageItem
 } from '../utils/util'
+import {LoginInfo, LoginResponse} from '../types'
+import md5 from 'md5'
+import {ACCESS_TOKEN, TOKEN_EXPIRED} from '../store/mutation-types'
 
 export default defineComponent({
   name: "Login",
@@ -71,6 +72,7 @@ export default defineComponent({
           successNotify(res.message)
           setStorageToken(res.data)
           setCookie(ACCESS_TOKEN, res.data.token, res.data.expireTime)
+          setStorageItem(TOKEN_EXPIRED, 0)
           setTimeout(() => {
             router.push('/')
           }, 500)

@@ -284,13 +284,14 @@ export function plainArticleList (records: YearData<ArticleItem>) {
   return result
 }
 
-const dayFormat = 'YYYY-MM-DD'
+const DATE_FORMAT = 'YYYY-MM-DD'
+
 /**
- * 判断是否是今天（年月日）
+ * 判断是否是今天（年月日 => 日期同一天）
  * */
 export function isToday(time: number): boolean {
-  const now = DAYJS(Date.now()).format(dayFormat).split('-') // today
-  const other = DAYJS(new Date(time)).format(dayFormat).split('-') // anotherDay
+  const now = DAYJS(Date.now()).format(DATE_FORMAT).split('-') // today
+  const other = DAYJS(new Date(time)).format(DATE_FORMAT).split('-') // anotherDay
   const today = {
     year: now[0],
     month: now[1],

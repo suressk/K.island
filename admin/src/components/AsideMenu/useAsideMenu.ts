@@ -1,17 +1,16 @@
-import { ref, createVNode } from 'vue'
-import { useRouter } from 'vue-router'
-import { Confirm, deleteCookie, removeStorageItem } from '../../utils/util'
-import { ACCESS_TOKEN } from '../../store/mutation-types'
+import {ref, createVNode} from 'vue'
+import {useRouter} from 'vue-router'
+import {Confirm, deleteCookie, removeStorageItem} from '../../utils/util'
+import {ACCESS_TOKEN} from '../../store/mutation-types'
 import {QuestionCircleOutlined} from '@ant-design/icons-vue'
 
-
 const menuList = [
-    { label: 'Overview', path: '/overview', icon: 'icon-overview' },
-    { label: 'Edit Record', path: '/edit', icon: 'icon-edit' },
-    { label: 'Record List', path: '/list', icon: 'icon-send' },
-    { label: 'Comment', path: '/comment', icon: 'icon-management' },
-    { label: 'Message', path: '/message', icon: 'icon-twitter' },
-    { label: 'Setting', path: '/setting', icon: 'icon-setting' }
+    {label: 'Overview', path: '/overview', icon: 'icon-overview'},
+    {label: 'Edit Record', path: '/edit', icon: 'icon-edit'},
+    {label: 'Record List', path: '/list', icon: 'icon-send'},
+    {label: 'Comment', path: '/comment', icon: 'icon-management'},
+    {label: 'Message', path: '/message', icon: 'icon-twitter'},
+    {label: 'Setting', path: '/setting', icon: 'icon-setting'}
 ]
 
 export default function useAsideMenu() {

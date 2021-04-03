@@ -39,11 +39,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, getCurrentInstance } from '@nuxtjs/composition-api'
-import { getStorageValue, setStorageValue, isToday } from '~/utils/util'
-import { MSG_LIMIT_NUM } from '~/store/mutation-types'
+import { defineComponent, onMounted, ref, getCurrentInstance, reactive } from '@nuxtjs/composition-api'
+import {getStorageValue, setStorageValue, isToday, warnNotify} from '~/utils/util'
+import {MSG_LIMIT_NUM} from '~/store/mutation-types'
 import Confirm from '~/components/popConfirm'
-import Notify from '~/components/notification'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import BackTop from '~/components/BackTop/index.vue'
@@ -61,7 +60,10 @@ export default defineComponent({
     const { proxy } = getCurrentInstance()!
     const showTip = ref<boolean>(true)
     const showModal = ref<boolean>(false)
-    let msgLimit: MsgLimitValue
+    let msgLimit = reactive<MsgLimitValue>({
+      time: 0,
+      added: 0
+    })
 
     function handleHideTipMsg() {
       showTip.value = false
@@ -83,22 +85,18 @@ export default defineComponent({
 
     function handleAddMessage() {
       if (isToday(msgLimit.time) && msgLimit.added > 5) {
-        Notify({
-          type: 'warning',
-          title: 'Sorry~',
-          message: '您一天最多只能写 5 条留言哦，明天再来叭~'
-        })
+        warnNotify('一天最多只能写 5 条留言哦，明天再来叭~')
         return
       }
       // @ts-ignore
-      console.log(proxy.$axios)
+      // console.log(proxy.$axios)
       /**
        * 添加 msg 成功，已留言数 +1
        * 时间更新？？？
        * */
       setStorageValue<MsgLimitValue>(MSG_LIMIT_NUM, {
         time: msgLimit.time,
-        added: msgLimit.added + 1
+        added: msgLimit.added++
       })
     }
     /**
@@ -107,10 +105,9 @@ export default defineComponent({
     function initMsgLimit() {
       const localLimit = getStorageValue<MsgLimitValue>(MSG_LIMIT_NUM)
 
-      msgLimit = {
-        time: Date.now(),
-        added: 0
-      }
+      msgLimit.time = Date.now()
+      msgLimit.added = 0
+
       // 初次加载 / 非今日 => 已留言数置为 0
       if (localLimit === null || !isToday(localLimit.time)) {
         setStorageValue<MsgLimitValue>(MSG_LIMIT_NUM, msgLimit)
