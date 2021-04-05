@@ -13,7 +13,8 @@ import {
   ArticleIds,
   UpdateArticleParams,
   PageQueryParams,
-  DeleteCommentsParams
+  DeleteCommentsParams,
+  DeleteMessagesParams
 } from '../types'
 
 // 登录
@@ -37,7 +38,7 @@ export const deleteImage = (data: DeleteImageParams | undefined) => deleteAction
 
 // 查询留言信息
 export const getMessageList = (params: PageQueryParams) => getAction('/sys/messages/list', params)
-export const deleteMessages = (data: PageQueryParams) => deleteAction('/sys/messages/delete', data)
+export const deleteMessages = (data: DeleteMessagesParams) => deleteAction('/sys/messages/delete', data)
 
 // 查询评论信息
 export const getCommentList = (params: PageQueryParams) => getAction('/sys/comments', params)

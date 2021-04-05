@@ -212,23 +212,23 @@ export function deleteCookie(name: string): void {
 /**
  * 平铺按年分组的文章列表
  * */
-export function plainArticleList(records: YearDataList<RecordItem>): RecordItem[] {
-    const years = Object.keys(records)
-    const len = years.length
-    const result: RecordItem[] = []
-    for (let i = 0; i < len; i++) {
-        const list = records[years[i]].map(item => {
-            return {
-                ...item,
-                show: item.is_delete === 0,
-                createTime: formatTime(item.ctime),
-                updateTime: formatTime(item.utime)
-            }
-        })
-        result.push(...list)
-    }
-    return result
-}
+// export function plainArticleList(records: YearDataList<RecordItem>): RecordItem[] {
+//     const years = Object.keys(records)
+//     const len = years.length
+//     const result: RecordItem[] = []
+//     for (let i = 0; i < len; i++) {
+//         const list = records[years[i]].map(item => {
+//             return {
+//                 ...item,
+//                 show: item.is_delete === 0,
+//                 createTime: formatTime(item.ctime),
+//                 updateTime: formatTime(item.utime)
+//             }
+//         })
+//         result.push(...list)
+//     }
+//     return result
+// }
 
 export function mapRecordTime(recordList: RecordItem[]) {
     return recordList.map(item => {

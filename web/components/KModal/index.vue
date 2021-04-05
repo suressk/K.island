@@ -85,15 +85,8 @@ export default defineComponent({
     flex-direction: column;
     .modal-avatar {
       position: absolute;
-      width: 5vw;
-      height: 5vw;
       overflow: hidden;
       border-radius: 50%;
-      left: 0;
-      top: -2vw;
-      img {
-        width: 100%;
-      }
     }
     .modal-header {
       margin-bottom: 20px;

@@ -8,6 +8,7 @@ import manageImage from './routes/sys/manageImage'
 import manageMessage from './routes/sys/manageMessage'
 import viewRecords from './routes/web/records'
 import addComments from './routes/web/comments'
+import addMessage from './routes/web/messages'
 import subscribe from './routes/web/subscribe'
 
 const app = express()
@@ -78,13 +79,7 @@ app.use('/record', viewRecords)
 // 用户评论
 app.use('/comment', addComments)
 // 用户评论
-app.use('/message', (req, res, next) => {
-    res.send({
-        success: true,
-        data: {},
-        message: 'add message list'
-    })
-})
+app.use('/message', addMessage)
 // 用户新增订阅、订阅验证
 app.use('/subscribe', subscribe)
 

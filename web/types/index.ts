@@ -94,3 +94,14 @@ export interface ModalProps {
   cancelText?: string
   showFooter?: boolean
 }
+
+/**
+ * 留言
+ * */
+export interface MsgListItem {
+  id: number
+  uid: string
+  name: string
+  content: string
+  ctime: number
+}

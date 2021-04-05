@@ -7,6 +7,10 @@ export interface UserInfo {
     password: string
 }
 
+export interface IdsOptions {
+    ids: number[]
+}
+
 // 分页查询参数
 interface PageQueryParams {
     pageNo: number
@@ -38,6 +42,12 @@ export interface DeleteSubscribeOptions {
 
 // 分页查询【留言】列表
 export type MessageListOptions = PageQueryParams
+
+
+export interface AddMessageOpt {
+    name: string
+    content: string
+}
 
 /**
  * 数据库 records 表存储字段

@@ -1,4 +1,4 @@
-import { connectQueryPro } from '../dao/DBUtil'
+import { poolQuery } from '../dao/DBUtil'
 import { getTableDeleteSqlStr } from '../utils/util'
 
 interface QueryCommentsParams {
@@ -16,7 +16,7 @@ export function getCommentList(options: QueryCommentsParams) {
     const { articleId } = options
     const sqlStr = 'SELECT c.*, r.title FROM `tbl_comments` as c LEFT JOIN `tbl_records` as r ON r.id = c.record_id WHERE c.record_id = ?;'
     return new Promise((resolve, reject) => {
-        connectQueryPro(sqlStr, [articleId])
+        poolQuery(sqlStr, [articleId])
             .then((result: any) => {
                 resolve(result)
             })
@@ -38,7 +38,7 @@ export function deleteComments(options: DeleteCommentsParams) {
     return new Promise((resolve, reject) => {
         const { ids } = options
         const sqlStr = getDeleteSqlStr(ids)
-        connectQueryPro(sqlStr, ids)
+        poolQuery(sqlStr, ids)
             .then(result => {
                 resolve(result)
             }).catch(err => {

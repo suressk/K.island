@@ -24,7 +24,7 @@ const promisePool = pool.promise()
 // 手动创建连接池连接
 // pool.getConnection(function(err, conn) {
 //     conn.query('');
-//     // 完成后请不要忘记释放连接！(将连接返回到连接池中)
+//     // 完成后释放连接
 //     conn.release();
 // })
 
@@ -44,25 +44,25 @@ export function createConnection() {
 /**
  * 单次创建数据库连接
  * */
-export function connectQueryPro (sqlStr: string, params: any[]) {
-    return new Promise((resolve, reject) => {
-        const connection = createConnection()
-        connection.connect()
-        connection.query(sqlStr, params, ((err: any, result: any) => {
-            if (!err) {
-                resolve(result)
-            } else {
-                reject(err)
-            }
-        }))
-        connection.end()
-    })
-}
+// export function connectQueryPro (sqlStr: string, params: any[]) {
+//     return new Promise((resolve, reject) => {
+//         const connection = createConnection()
+//         connection.connect()
+//         connection.query(sqlStr, params, ((err: any, result: any) => {
+//             if (!err) {
+//                 resolve(result)
+//             } else {
+//                 reject(err)
+//             }
+//         }))
+//         connection.end()
+//     })
+// }
 
 /**
  * 连接池连接查询
  * */
-export async function poolQuery (sqlStr: string, params: any[]) {
+export function poolQuery (sqlStr: string, params: any[]) {
     return new Promise((resolve, reject) => {
 
         pool.query(sqlStr, params, ((err: any, result: any) => {
@@ -75,7 +75,9 @@ export async function poolQuery (sqlStr: string, params: any[]) {
     })
 }
 
-
-export async function promisePoolQuery (sqlStr: string, params: any[]) {
-    return await promisePool.query(sqlStr, params)
+/**
+ * promise 式
+ * */
+export function promisePoolQuery (sqlStr: string, params: any[]) {
+    return promisePool.query(sqlStr, params)
 }

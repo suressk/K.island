@@ -1,4 +1,4 @@
-import { createConnection, connectQueryPro } from '../dao/DBUtil'
+import { createConnection, poolQuery } from '../dao/DBUtil'
 import {getUpdateRecordParams, mapCreateTime, mapYearGroup} from '../utils/util'
 import { v4 as uuid } from 'uuid'
 import {
@@ -12,7 +12,7 @@ import {
 /**
  * sql 语句
  * */
-const sqlStrObj = {
+const listSqlObj = {
     /* 所有文章分页 => 后台查询 */
     allList: 'SELECT id, uid, title, introduce, tag, views, liked, cover, ctime, utime, is_delete FROM `tbl_records` ORDER BY ctime DESC LIMIT ?, ?;',
     allTotal: 'SELECT COUNT(uid) as total from `tbl_records`;',
@@ -47,23 +47,23 @@ function getQueryListParams(options: QueryRecordListOptions): QueryListParams {
     let totalParams: string[] = []
     // 后台管理查询所有文章列表
     if (options.range && options.range === 'all') {
-        listSqlStr = sqlStrObj.allList
-        totalSqlStr = sqlStrObj.allTotal
+        listSqlStr = listSqlObj.allList
+        totalSqlStr = listSqlObj.allTotal
         // 按 title 模糊查询
         if (options.title) {
-            listSqlStr = sqlStrObj.titleList
+            listSqlStr = listSqlObj.titleList
             listParams = [`%${options.title}%`, ...listParams]
-            totalSqlStr = sqlStrObj.titleTotal
+            totalSqlStr = listSqlObj.titleTotal
             totalParams = [`%${options.title}%`]
         }
     } else if (options.index === 1) {
-        listSqlStr = sqlStrObj.viewsList
-        totalSqlStr = sqlStrObj.showsTotal
+        listSqlStr = listSqlObj.viewsList
+        totalSqlStr = listSqlObj.showsTotal
         totalParams = [`%${options.title}%`]
     } else {
         // 前端展示未删除文章
-        listSqlStr = sqlStrObj.showsList
-        totalSqlStr = sqlStrObj.showsTotal
+        listSqlStr = listSqlObj.showsList
+        totalSqlStr = listSqlObj.showsTotal
     }
 
     return {
@@ -134,7 +134,7 @@ export function queryRecordDetail (options: RecordIdOptions) {
     const params = [id, uid]
 
     return new Promise((resolve, reject) => {
-        connectQueryPro(sqlStr, params)
+        poolQuery(sqlStr, params)
             .then((result: any) => {
                 resolve(result)
                 updateViews(result[0])
@@ -166,7 +166,7 @@ export function addRecord (options: AddRecordOptions) {
     const uid = uuid()
     const params = [uid, title, content, introduce, tag, cover, music, ctime, ctime, 10, 0]
     return new Promise((resolve, reject) => {
-        connectQueryPro(sqlStr, params)
+        poolQuery(sqlStr, params)
             .then((result: any) => {
                 resolve(result)
             })
@@ -189,7 +189,7 @@ export function updateRecord (options: UpdateRecordOptions) {
     const { sqlStr, params } = getUpdateRecordParams(options)
     // connectQuery(sqlStr, params, success, error)
     return new Promise((resolve, reject) => {
-        connectQueryPro(sqlStr, params)
+        poolQuery(sqlStr, params)
             .then(result => resolve(result))
             .catch(err => reject(err))
     })
@@ -203,7 +203,7 @@ export function deleteRecord (options: RecordIdOptions) {
     const sqlStr = 'DELETE FROM `tbl_records` WHERE id = ? and uid = ?;'
     const params = [id, uid]
     return new Promise((resolve, reject) => {
-        connectQueryPro(sqlStr, params)
+        poolQuery(sqlStr, params)
             .then((result: any) => {
                 resolve(result)
             })

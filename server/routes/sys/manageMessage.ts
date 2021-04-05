@@ -1,13 +1,14 @@
 import express from 'express'
-import { getMessageList } from '../../services/messageService'
-import { MessageListOptions } from '../../common/types'
-import { writeHead, writeResult } from '../../utils/writeResponse'
+import {getMessageList, deleteMessage} from '../../services/messageService'
+import {writeHead, writeResult} from '../../utils/writeResponse'
 
 const router = express.Router()
 
-
+/**
+ * get message list
+ * */
 router.get('/list', (req, res) => {
-    const { pageNo, pageSize } = req.query
+    const {pageNo, pageSize} = req.query
     if (!pageNo || !pageSize) {
         writeHead(res, 416)
         writeResult(res, true, 'The parameter of pageNo or pageSize cannot be lack')
@@ -17,14 +18,30 @@ router.get('/list', (req, res) => {
         pageNo: +pageNo,
         pageSize: +pageSize
     })
-    .then((result: any) => {
-        writeHead(res, 200)
-        writeResult(res, true, '留言列表查询成功！', result)
-    })
-    .catch(error => {
-        writeHead(res, 500)
-        writeResult(res, false, '留言列表查询失败！', error)
-    })
+        .then((result: any) => {
+            writeHead(res, 200)
+            writeResult(res, true, 'Successfully got the message list~', result)
+        })
+        .catch(error => {
+            writeHead(res, 500)
+            writeResult(res, false, 'Something wrong happened with getting message list!', error)
+        })
+})
+
+/**
+ * delete messages
+ * */
+router.delete('/delete', (req, res) => {
+    const ids = req.body.ids
+    deleteMessage({ids})
+        .then(() => {
+            writeHead(res, 200)
+            writeResult(res, true, 'Successfully deleted', {})
+        })
+        .catch(error => {
+            writeHead(res, 500)
+            writeResult(res, false, 'Failed to delete the messages', error)
+        })
 })
 
 export default router

@@ -25,12 +25,12 @@
 1. vue 3.0 (全家桶) +  + 自定义组件
 2. typescript 类型检查系统初试
 
-### backstage
+### admin
 
 1. 技术栈：
 
-    - vue3.0 + vue-router 4.0 + vuex
-    - Element-plus (按需引入)
+    - vue 3.0 + vue-router 4.0 + vuex 
+    - Ant Design Vue (按需引入)
 
 ### web
 

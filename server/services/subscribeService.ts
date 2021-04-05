@@ -1,4 +1,4 @@
-import { connectQueryPro, createConnection } from '../dao/DBUtil'
+import { poolQuery, createConnection } from '../dao/DBUtil'
 import { getTableDeleteSqlStr } from '../utils/util'
 import {DeleteSubscribeOptions, QuerySubscribeListOptions, CheckVerificationCodeOptions} from '../common/types'
 import { v4 as uuid } from 'uuid'
@@ -66,7 +66,7 @@ export function querySubscribeInfo (options: QuerySubscribeOptions) {
     const { email } = options
     const sqlStr = 'SELECT id, uid, email, name, ctime FROM `tbl_subscribe` WHERE email = ?;'
     return new Promise((resolve, reject) => {
-        connectQueryPro(sqlStr, [email])
+        poolQuery(sqlStr, [email])
             .then(result => {
                 resolve(result)
             })
@@ -119,7 +119,7 @@ export async function addVerifyCodeInfo (options: AddVerifyInfo) {
             }, err => err)
             .then(() => {
                 // 3. 插入 / 更新验证码
-                connectQueryPro(sqlStr, params)
+                poolQuery(sqlStr, params)
                     .then(result => resolve(result))
                     .catch(error => reject(error))
             })
@@ -149,14 +149,14 @@ export function deleteExpiredVerifyInfo () {
 
     return new Promise((resolve, reject) => {
         // 查询过期验证码 id[]
-        connectQueryPro(sqlStr, [now])
+        poolQuery(sqlStr, [now])
             .then(ids => ids, err => err)
             .then((ids: any) => {
                 if (!ids || !ids.length) reject('no expired code')
 
                 const deleteSqlStr = getTableDeleteSqlStr(ids, '`tbl_verify_subscribe`', 'id')
                 // 删除过期验证码信息
-                connectQueryPro(deleteSqlStr, ids)
+                poolQuery(deleteSqlStr, ids)
                     .then(() => {
                         resolve('Successfully deleted')
                     })
@@ -174,7 +174,7 @@ export function getVerifyInfo (options: VerifyInfo) {
     const { email } = options
     const sqlStr = 'SELECT id, uid, email, verify_code, expired_time FROM `tbl_verify_subscribe` WHERE email = ?;'
     return new Promise((resolve, reject) => {
-        connectQueryPro(sqlStr, [email])
+        poolQuery(sqlStr, [email])
             .then(result => {
                 resolve(result)
             })
@@ -255,7 +255,7 @@ export function addSubscribeInfo (options: QuerySubscribeOptions) {
     const uid = uuid()
     const sqlStr = 'INSERT INTO `tbl_subscribe` (uid, email, name, ctime) VALUES (?, ?, ?, ?);'
     return new Promise((resolve, reject) => {
-        connectQueryPro(sqlStr, [uid, email, name, date])
+        poolQuery(sqlStr, [uid, email, name, date])
             .then(result => {
                 resolve(result)
             })
@@ -272,7 +272,7 @@ export function deleteSubscribe (options: DeleteSubscribeOptions) {
     const sqlStr = 'DELETE FROM `tbl_subscribe` WHERE id = ? AND email = ?;'
     const { id, email } = options
     return new Promise((resolve, reject) => {
-        connectQueryPro(sqlStr, [id, email])
+        poolQuery(sqlStr, [id, email])
             .then(result => {
                 resolve(result)
             })

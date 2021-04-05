@@ -1,8 +1,9 @@
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios'
 import {ResponseData, ErrorResponse} from '../types'
-import {getStorageToken, errorNotify, Confirm, getStorageItem, setStorageItem} from '../utils/util'
-import {useRouter} from 'vue-router'
-import {TOKEN_EXPIRED} from '../store/mutation-types'
+import {getStorageToken, errorNotify, Confirm, getStorageItem, setStorageItem, removeStorageItem} from '../utils/util'
+import {ACCESS_TOKEN, TOKEN_EXPIRED} from '../store/mutation-types'
+import router from '../router'
+// import {useRouter} from 'vue-router'
 
 const service: AxiosInstance = axios.create({
     baseURL: 'http://localhost:9527' || '/',
@@ -18,12 +19,14 @@ const handleError = (err: ErrorResponse) => {
         const data = err.response.data
         const status = err.response.status
         const tokenExpired = getStorageItem(TOKEN_EXPIRED)
-        debugger
-        const router = useRouter() // TODO ========= get undefined
+        // debugger
+        // console.log(router)
+        // const router = useRouter() // TODO ========= get undefined
 
         switch (status) {
             case 403:
                 errorNotify('Token has expired...', `${status}`)
+                removeStorageItem(ACCESS_TOKEN)
                 if (tokenExpired === 0) {
                     Confirm({
                         title: 'Confirm',

@@ -1,7 +1,7 @@
 import {reactive, ref, Ref, onMounted, unref, computed} from 'vue'
 import {MsgListItem, Pagination, PageQueryParams, ResponseData} from '../../types'
-import {getMessageList} from '../../api/api'
-import {errorNotify, warningNotify, mapFormatCtimeList} from '../../utils/util'
+import {deleteMessages, getMessageList} from '../../api/api'
+import {errorNotify, warningNotify, mapFormatCtimeList, successNotify} from '../../utils/util'
 import { ColumnProps } from 'ant-design-vue/es/table/interface'
 type Key = ColumnProps['key']
 
@@ -97,8 +97,20 @@ export default function useMessage() {
         })
     }
 
+    // 单条删除
     function handleDeleteMsg(info: MsgListItem) {
-        console.log(info)
+        const { id } = info
+        deleteMessages({
+            ids: [id]
+        }).then((res: any) => {
+            if (res.success) {
+                successNotify(res.message)
+            } else {
+                warningNotify(res.message)
+            }
+        }).catch(err => {
+            errorNotify(err.message)
+        })
     }
 
     // 查询留言信息列表

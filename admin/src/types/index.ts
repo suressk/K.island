@@ -117,6 +117,7 @@ export interface CommentItem {
 export interface DeleteCommentsParams {
     ids: number[]
 }
+export type DeleteMessagesParams = DeleteCommentsParams
 
 /**
  * request params type
