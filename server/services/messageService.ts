@@ -11,7 +11,6 @@ export async function getMessageList(options: MessageListOptions) {
     let listSqlStr = 'SELECT id, uid, content, name, ctime FROM `tbl_messages` ORDER BY ctime DESC LIMIT ?, ?;'
     let totalSqlStr: string = 'SELECT COUNT(id) as total FROM `tbl_messages`'
 
-
     try {
         const [list] = await promisePoolQuery(listSqlStr, listParams)
         const [total] = await promisePoolQuery(totalSqlStr, [])
@@ -20,40 +19,6 @@ export async function getMessageList(options: MessageListOptions) {
     } catch (err) {
         return err
     }
-
-    // const listPro = new Promise((resolve, reject) => {
-    //     poolQuery(listSqlStr, listParams)
-    //         .then(result => {
-    //             resolve(result)
-    //         })
-    //         .catch(error => {
-    //             reject(error)
-    //         })
-    // })
-    //
-    // const totalPro = new Promise((resolve, reject) => {
-    //     poolQuery(totalSqlStr, [])
-    //         .then(result => {
-    //             resolve(result)
-    //         })
-    //         .catch(error => {
-    //             reject(error)
-    //         })
-    // })
-    //
-    // return new Promise((resolve, reject) => {
-    //     Promise.all([listPro, totalPro])
-    //         .then(([list, totalRes]) => {
-    //             resolve({
-    //                 list,
-    //                 // @ts-ignore
-    //                 total: totalRes[0].total || 0
-    //             })
-    //         })
-    //         .catch(err => {
-    //             reject(err)
-    //         })
-    // })
 }
 
 

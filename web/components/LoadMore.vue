@@ -47,7 +47,7 @@ export default defineComponent({
 .load-more {
   text-align: center;
   width: 100%;
-  height: 70px;
+  height: 60px;
   padding: 20px 0;
   margin-top: 20px;
   background-color: var(--white);

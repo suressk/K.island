@@ -46,7 +46,13 @@
 
       <!--   留言列表   -->
       <ul class='message-list'>
-        <li class='message-item'></li>
+        <li
+          class='message-item'
+          v-for='msg in msgList'
+          :key='msg.uid'
+        >
+          {{ msg.content }}
+        </li>
       </ul>
 
       <button class='btn btn-success' @click='confirm'>Confirm</button>
@@ -61,10 +67,18 @@
 
 <script lang='ts'>
 import { defineComponent } from '@nuxtjs/composition-api'
-import { CURRENT_PAGE, LOAD_MORE, LOAD_STATUS, MSG_LIMIT_NUM, TOTAL_ITEMS } from '~/store/mutation-types'
+import { CURRENT_PAGE, LOAD_MORE, LOAD_STATUS, LOADING, MSG_LIMIT_NUM, TOTAL_ITEMS } from '~/store/mutation-types'
 import { mapState } from 'vuex'
 import { Context } from '@nuxt/types'
-import { getStorageValue, setStorageValue, isToday, warnNotify, successNotify, errorNotify } from '~/utils/util'
+import {
+  getStorageValue,
+  setStorageValue,
+  isToday,
+  warnNotify,
+  successNotify,
+  errorNotify,
+  commitMutations
+} from '~/utils/util'
 import Confirm from '~/components/popConfirm'
 import scrollMixin from '~/mixin/scroller'
 import KHeader from '~/components/KHeader/index.vue'
@@ -94,19 +108,20 @@ export default defineComponent({
         }
       })
       if (success) {
+        // @ts-ignore
+        commitMutations(ctx.$store, TOTAL_ITEMS, data.total)
+        debugger
         return {
-          msgList: [...data.list],
-          total: data.total
+          msgList: data.list
         }
-      }
-      return {
-        msgList: [],
-        total: 0
+      } else {
+        return {
+          msgList: []
+        }
       }
     } catch (e) {
       return {
-        msgList: [],
-        total: 0
+        msgList: []
       }
     }
   },
@@ -146,8 +161,25 @@ export default defineComponent({
       })
     },
     // get message list
-    getMessageList() {
-      console.log('get message list run...')
+    async getMessageList() {
+      const curTotal = this.currentPage * 10
+      if (curTotal >= this.totalItems) return
+
+      // load more messages
+      const current = this.currentPage + 1
+      commitMutations(this.$store, CURRENT_PAGE, current)
+      commitMutations(this.$store, LOAD_STATUS, LOADING) // 正在加载
+      // @ts-ignore
+      const { success, data } = await this.$axios.get('/message/list', {
+        params: {
+          pageNo: current,
+          pageSize: 10
+        }
+      })
+      if (success) {
+        // @ts-ignore
+        this.msgList = []
+      }
     },
     handleAddMessage() {
       if (isToday(this.msgLimit.time) && this.msgLimit.added >= 5) {
@@ -198,6 +230,7 @@ export default defineComponent({
   },
   mounted() {
     this.initMsgLimit()
+    console.log(this.totalItems)
   },
   watch: {
     scrollerIsBottom(flag) {

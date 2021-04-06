@@ -14,8 +14,8 @@ router.get('/list', (req, res) => {
         pageNo: +pageNo,
         pageSize: +pageSize
     }).then((result: any) => {
-        console.log('query message list success then')
-        console.log(result)
+        // console.log('query message list success then')
+        // console.log(result)
         writeHead(res, 200)
         writeResult(res, true, 'Successfully got the message list~', result)
     }).catch(error => {
