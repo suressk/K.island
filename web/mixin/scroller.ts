@@ -4,7 +4,7 @@ export default {
   data() {
     return {
       scrollerIsBottom: false,
-      currentScroll: null,
+      currentScrollTop: null,
       scrollDirection: null,
       scrollFunc: () => {}
     }
@@ -19,7 +19,7 @@ export default {
         return
       }
       // @ts-ignore
-      this.currentScroll = scrollTop
+      this.currentScrollTop = scrollTop
       // @ts-ignore
       this.scrollerIsBottom = ((scrollTop + windowH) >= (scrollHeight - 10))
     }
@@ -37,13 +37,13 @@ export default {
     removeListener(window, 'scroll', this.scrollFunc)
   },
   watch: {
-    currentScroll(top: number, lastTop: number) {
+    currentScrollTop(top: number, lastTop: number) {
       if (top === null || top === undefined) {
         return
       }
-      const s = top - lastTop < 0
+      const isTop = top - lastTop < 0
       // @ts-ignore
-      this.scrollDirection = s ? 'top' : 'bottom'
+      this.scrollDirection = isTop ? 'top' : 'bottom'
     }
   }
 }

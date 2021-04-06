@@ -46,7 +46,7 @@ export type MessageListOptions = PageQueryParams
 
 export interface AddMessageOpt {
     name: string
-    content: string
+    message: string
 }
 
 /**

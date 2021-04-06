@@ -1,7 +1,7 @@
-import { poolQuery, createConnection } from '../dao/DBUtil'
-import { getTableDeleteSqlStr } from '../utils/util'
+import {poolQuery, promisePoolQuery} from '../dao/DBUtil'
+import {getTableDeleteSqlStr} from '../utils/util'
 import {DeleteSubscribeOptions, QuerySubscribeListOptions, CheckVerificationCodeOptions} from '../common/types'
-import { v4 as uuid } from 'uuid'
+import {v4 as uuid} from 'uuid'
 
 interface QuerySubscribeOptions {
     email: string
@@ -11,59 +11,26 @@ interface QuerySubscribeOptions {
 /**
  * 分页查询订阅列表
  * */
-export function querySubscribeList (options: QuerySubscribeListOptions) {
-    const queryListStr = 'SELECT id, uid, name, email, name, ctime from `tbl_subscribe` ORDER BY ctime DESC LIMIT ?, ?;'
-    const queryTotalStr = 'SELECT COUNT(id) as total from `tbl_subscribe`;'
-    const { pageNo, pageSize } = options
-    const connection = createConnection()
-    connection.connect()
-    const listPro = new Promise((resolve, reject) => {
-        connection.query(
-            queryListStr,
-            [pageNo, pageSize],
-            (err, result) => {
-                if (!err) {
-                    resolve(result)
-                } else {
-                    reject(err)
-                }
-            }
-        )
-    })
-    const totalPro = new Promise((resolve, reject) => {
-        connection.query(
-            queryTotalStr,
-            [],
-            (err, result) => {
-                if (!err) {
-                    resolve(result)
-                } else {
-                    reject(err)
-                }
-            }
-        )
-    })
-
-    return new Promise((resolve, reject) => {
-        Promise.all([listPro, totalPro]).then(([list, totalRes]) => {
-            resolve({
-                list,
-                // @ts-ignore
-                total: totalRes.length ? totalRes[0].total : 0
-            })
-            connection.end()
-        }).catch(err => {
-            reject(err)
-            connection.end()
-        })
-    })
+export async function querySubscribeList(options: QuerySubscribeListOptions) {
+    const listStr = 'SELECT id, uid, name, email, name, ctime from `tbl_subscribe` ORDER BY ctime DESC LIMIT ?, ?;'
+    const totalStr = 'SELECT COUNT(id) as total from `tbl_subscribe`;'
+    const {pageNo, pageSize} = options
+    const listParams = [(pageNo - 1) * pageSize, pageSize]
+    try {
+        const [list] = await promisePoolQuery(listStr, listParams)
+        const [totalRes] = await promisePoolQuery(totalStr, [])
+        // @ts-ignore
+        return {list, total: (totalRes.length ? totalRes[0].total : 0)}
+    } catch (err) {
+        return err
+    }
 }
 
 /**
  * 查询订阅信息
  * */
-export function querySubscribeInfo (options: QuerySubscribeOptions) {
-    const { email } = options
+export function querySubscribeInfo(options: QuerySubscribeOptions) {
+    const {email} = options
     const sqlStr = 'SELECT id, uid, email, name, ctime FROM `tbl_subscribe` WHERE email = ?;'
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, [email])
@@ -89,8 +56,8 @@ interface AddVerifyInfo extends VerifyInfo {
 /**
  * 存储邮箱待验证的验证码信息（未过期则更新验证码）
  * */
-export async function addVerifyCodeInfo (options: AddVerifyInfo) {
-    const { uid, email, code } = options
+export async function addVerifyCodeInfo(options: AddVerifyInfo) {
+    const {uid, email, code} = options
     const ctime = Date.now()
     const expiredTime = ctime + 3600 * 1000 // 1 小时有效期
     // 插入新验证码信息
@@ -107,7 +74,7 @@ export async function addVerifyCodeInfo (options: AddVerifyInfo) {
         getVerifyInfo({email})
             .then((list: any) => {
                 if (list.length > 0) {
-                    const { id } = list[0]
+                    const {id} = list[0]
                     // 2. 存在，则更新验证码
                     sqlStr = 'UPDATE `tbl_verify_subscribe` SET verify_code = ?, expired_time = ? WHERE id = ?;'
                     params = [code, expiredTime, id]
@@ -143,7 +110,7 @@ export async function addVerifyCodeInfo (options: AddVerifyInfo) {
  * 不能同时作用于同一张表的 sql 语句
  * TODO 猜测原因：可能是由于 delete 语句会先于后面 select 语句执行导致表数据更新异常的问题
  * */
-export function deleteExpiredVerifyInfo () {
+export function deleteExpiredVerifyInfo() {
     const now = Date.now()
     const sqlStr = 'SELECT id FROM `tbl_verify_subscribe` WHERE expired_time < ?;'
 
@@ -170,8 +137,8 @@ export function deleteExpiredVerifyInfo () {
 /**
  * 查询验证表是否存在验证码信息
  * */
-export function getVerifyInfo (options: VerifyInfo) {
-    const { email } = options
+export function getVerifyInfo(options: VerifyInfo) {
+    const {email} = options
     const sqlStr = 'SELECT id, uid, email, verify_code, expired_time FROM `tbl_verify_subscribe` WHERE email = ?;'
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, [email])
@@ -187,12 +154,12 @@ export function getVerifyInfo (options: VerifyInfo) {
 /**
  * 校验邮箱 —— 验证码
  * */
-export function checkVerificationCode (options: CheckVerificationCodeOptions) {
-    const { email, code } = options
+export function checkVerificationCode(options: CheckVerificationCodeOptions) {
+    const {email, code} = options
     const now = Date.now()
     return new Promise((resolve, reject) => {
         // 查询此邮箱是否已订阅
-        querySubscribeInfo({ email })
+        querySubscribeInfo({email})
             .then((list: any) => {
                 return (list.length > 0)
             }, err => err)
@@ -205,12 +172,12 @@ export function checkVerificationCode (options: CheckVerificationCodeOptions) {
                     })
                 } else {
                     // 邮箱和验证码 => 默认有值； 查询验证码信息
-                    getVerifyInfo({ email })
+                    getVerifyInfo({email})
                         .then((result: any) => {
                             if (!result || result.length === 0) {
                                 reject({
                                     status: 200,
-                                    message: `抱歉！没能成功匹配到您的邮箱（${email}）及验证信息 。确定发起过订阅吗？`,
+                                    message: `抱歉！没能成功匹配到您的邮箱（${email}）及验证信息，确定发起过订阅吗？`,
                                     error: {}
                                 })
                             } else {
@@ -224,7 +191,7 @@ export function checkVerificationCode (options: CheckVerificationCodeOptions) {
                                     })
                                 } else if (item.verify_code === code) {
                                     // 验证通过
-                                    resolve({ message: 'success' })
+                                    resolve({message: 'success'})
                                 } else {
                                     reject({
                                         status: 200,
@@ -249,8 +216,8 @@ export function checkVerificationCode (options: CheckVerificationCodeOptions) {
 /**
  * 新增订阅邮箱信息
  * */
-export function addSubscribeInfo (options: QuerySubscribeOptions) {
-    const { email, name } = options
+export function addSubscribeInfo(options: QuerySubscribeOptions) {
+    const {email, name} = options
     const date = Date.now()
     const uid = uuid()
     const sqlStr = 'INSERT INTO `tbl_subscribe` (uid, email, name, ctime) VALUES (?, ?, ?, ?);'
@@ -268,9 +235,9 @@ export function addSubscribeInfo (options: QuerySubscribeOptions) {
 /**
  * 删除订阅信息
  * */
-export function deleteSubscribe (options: DeleteSubscribeOptions) {
+export function deleteSubscribe(options: DeleteSubscribeOptions) {
     const sqlStr = 'DELETE FROM `tbl_subscribe` WHERE id = ? AND email = ?;'
-    const { id, email } = options
+    const {id, email} = options
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, [id, email])
             .then(result => {

@@ -1,6 +1,6 @@
-import { createConnection, poolQuery } from '../dao/DBUtil'
+import {poolQuery, promisePoolQuery} from '../dao/DBUtil'
 import {getUpdateRecordParams, mapCreateTime, mapYearGroup} from '../utils/util'
-import { v4 as uuid } from 'uuid'
+import {v4 as uuid} from 'uuid'
 import {
     QueryRecordListOptions,
     RecordIdOptions,
@@ -40,7 +40,7 @@ interface QueryListParams {
  * 获取分页查询 sql 语句及参数
  * */
 function getQueryListParams(options: QueryRecordListOptions): QueryListParams {
-    const { pageNo, pageSize } = options
+    const {pageNo, pageSize} = options
     let listParams: ListParams = [(pageNo - 1) * pageSize, pageSize] // 分页参数
     let listSqlStr: string
     let totalSqlStr: string
@@ -77,59 +77,37 @@ function getQueryListParams(options: QueryRecordListOptions): QueryListParams {
 /**
  * 分页查询文章列表
  * */
-export function queryRecordList (options: QueryRecordListOptions) {
-    const { listSqlStr, listParams, totalSqlStr, totalParams } = getQueryListParams(options)
-    const connection = createConnection()
-    connection.connect()
-    // 查列表数据
-    const getListPro = new Promise((resolve, reject) => {
-        connection.query(listSqlStr, listParams, ((err, result) => {
-            if (!err) {
-                resolve(result)
-            } else {
-                reject(err)
-            }
-        }))
-    })
-    const getTotalPro = new Promise((resolve, reject) => {
-        connection.query(totalSqlStr, totalParams, ((err, result) => {
-            if (!err) {
-                resolve(result)
-            } else {
-                reject(err)
-            }
-        }))
-    })
+export async function queryRecordList(options: QueryRecordListOptions) {
+    const {listSqlStr, listParams, totalSqlStr, totalParams} = getQueryListParams(options)
 
-    return new Promise((resolve, reject) => {
-        Promise.all([getListPro, getTotalPro]).then(([list, totalRes]) => {
-            // 按月分组
-            if (options.group === 'MONTH') {
-                resolve({
-                    list: mapYearGroup(list as any),
-                    // @ts-ignore
-                    total: totalRes.length ? totalRes[0].total : 0
-                })
-            } else {
-                resolve({
-                    list: mapCreateTime(list as any),
-                    // @ts-ignore
-                    total: totalRes.length ? totalRes[0].total : 0
-                })
+    try {
+        const [list] = await promisePoolQuery(listSqlStr, listParams)
+        const [totalRes] = await promisePoolQuery(totalSqlStr, totalParams)
+
+        // 按月份分组
+        if (options.group === 'MONTH') {
+            return {
+                list: mapYearGroup(list as any),
+                // @ts-ignore
+                total: totalRes.length ? totalRes[0].total : 0
             }
-            connection.end()
-        }).catch(err => {
-            reject(err)
-            connection.end()
-        })
-    })
+        } else {
+            return {
+                list: mapCreateTime(list as any),
+                // @ts-ignore
+                total: totalRes.length ? totalRes[0].total : 0
+            }
+        }
+    } catch (err) {
+        return err
+    }
 }
 
 /**
  * 查询文章详情信息
  * */
-export function queryRecordDetail (options: RecordIdOptions) {
-    const { id, uid } = options
+export function queryRecordDetail(options: RecordIdOptions) {
+    const {id, uid} = options
     const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, liked, cover, music, ctime, utime FROM `tbl_records` WHERE id = ? AND uid = ?;'
     const params = [id, uid]
 
@@ -149,18 +127,20 @@ export function queryRecordDetail (options: RecordIdOptions) {
  * 更新浏览量
  * */
 function updateViews(info: ArticleListItem) {
-    const { id, uid, views } = info
+    const {id, uid, views} = info
     // then nothing to do
-    updateRecord({ id, uid, views: views + 1 })
-        .then(() => {})
-        .catch(() => {})
+    updateRecord({id, uid, views: views + 1})
+        .then(() => {
+        })
+        .catch(() => {
+        })
 }
 
 /**
  * 插入（新建）文章
  * */
-export function addRecord (options: AddRecordOptions) {
-    const { title, tag, introduce, content, cover, music } = options
+export function addRecord(options: AddRecordOptions) {
+    const {title, tag, introduce, content, cover, music} = options
     const sqlStr = 'INSERT INTO `tbl_records` (uid, title, content, introduce, tag, cover, music, ctime, utime, views, is_delete) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
     const ctime = Date.now()
     const uid = uuid()
@@ -180,13 +160,13 @@ export function addRecord (options: AddRecordOptions) {
 /**
  * 修改（更新）文章信息
  * */
-export function updateRecord (options: UpdateRecordOptions) {
+export function updateRecord(options: UpdateRecordOptions) {
     // 四种情况:
     // 1. 修改 is_delete —— 文章显示与否；
     // 2. 修改 views —— 文章访问量；
     // 3. 修改 liked —— 文章点赞(喜欢)量；
     // 4. 修改文章详情内容（title, tag, introduce, content, cover）
-    const { sqlStr, params } = getUpdateRecordParams(options)
+    const {sqlStr, params} = getUpdateRecordParams(options)
     // connectQuery(sqlStr, params, success, error)
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, params)
@@ -198,8 +178,8 @@ export function updateRecord (options: UpdateRecordOptions) {
 /**
  * 删除文章 (真删除)
  * */
-export function deleteRecord (options: RecordIdOptions) {
-    const { id, uid } = options
+export function deleteRecord(options: RecordIdOptions) {
+    const {id, uid} = options
     const sqlStr = 'DELETE FROM `tbl_records` WHERE id = ? and uid = ?;'
     const params = [id, uid]
     return new Promise((resolve, reject) => {

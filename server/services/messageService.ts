@@ -16,7 +16,7 @@ export async function getMessageList(options: MessageListOptions) {
         const [list] = await promisePoolQuery(listSqlStr, listParams)
         const [total] = await promisePoolQuery(totalSqlStr, [])
         // @ts-ignore
-        return { list, total: total[0].total }
+        return { list, total: total[0].total || 0 }
     } catch (err) {
         return err
     }
@@ -61,12 +61,12 @@ export async function getMessageList(options: MessageListOptions) {
  * 新增留言信息
  * */
 export async function addMessage(options: AddMessageOpt) {
-    const {name, content} = options
+    const {name, message} = options
     const ctime = Date.now()
     const uid = uuid()
 
     const sqlStr = 'INSERT INTO `tbl_messages` (uid, name, content, ctime) VALUES (?, ?, ?, ?);'
-    const params = [uid, name, content, ctime]
+    const params = [uid, name, message, ctime]
 
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, params)

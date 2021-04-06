@@ -31,18 +31,18 @@ const promisePool = pool.promise()
 /**
  * 创建数据库连接
  * */
-export function createConnection() {
-    return mysql.createConnection({
-        host: 'localhost',
-        port: 3306,
-        user: 'root',
-        password: 'xxx',
-        database: 'k_island'
-    });
-}
+// export function createConnection() {
+//     return mysql.createConnection({
+//         host: 'localhost',
+//         port: 3306,
+//         user: 'root',
+//         password: 'xxx',
+//         database: 'k_island'
+//     });
+// }
 
 /**
- * 单次创建数据库连接
+ * 单次创建数据库连接查询
  * */
 // export function connectQueryPro (sqlStr: string, params: any[]) {
 //     return new Promise((resolve, reject) => {
