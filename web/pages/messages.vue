@@ -51,11 +51,13 @@
           v-for='msg in msgList'
           :key='msg.uid'
         >
-          {{ msg.content }}
+          <div>
+            <p class='message-content'>{{ msg.content }}</p>
+            <span class='time'>{{ msg.ctime }}</span>
+          </div>
+          <p class='message-form'>{{ msg.name }}</p>
         </li>
       </ul>
-
-      <button class='btn btn-success' @click='confirm'>Confirm</button>
 
       <LoadMore :load-status='loadStatus' :show-load-more='false' />
     </div>
@@ -67,9 +69,19 @@
 
 <script lang='ts'>
 import { defineComponent } from '@nuxtjs/composition-api'
-import { CURRENT_PAGE, LOAD_MORE, LOAD_STATUS, LOADING, MSG_LIMIT_NUM, TOTAL_ITEMS } from '~/store/mutation-types'
 import { mapState } from 'vuex'
-import { Context } from '@nuxt/types'
+import {
+  CURRENT_PAGE,
+  LOAD_MORE,
+  LOAD_STATUS,
+  LOADING,
+  MSG_LIMIT_NUM,
+  M_SET_CURRENT_PAGE,
+  M_SET_LOAD_STATUS,
+  M_RESET_LOAD_MORE,
+  M_SET_TOTAL_ITEMS,
+  TOTAL_ITEMS, NO_MORE
+} from '~/store/mutation-types'
 import {
   getStorageValue,
   setStorageValue,
@@ -79,7 +91,7 @@ import {
   errorNotify,
   commitMutations
 } from '~/utils/util'
-import Confirm from '~/components/popConfirm'
+import { Context } from '@nuxt/types'
 import scrollMixin from '~/mixin/scroller'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
@@ -87,6 +99,7 @@ import BackTop from '~/components/BackTop/index.vue'
 import Modal from '~/components/KModal/index.vue'
 import LoadMore from '~/components/LoadMore.vue'
 
+// import Confirm from '~/components/popConfirm'
 // import { MsgListItem } from '~/types'
 
 interface MsgLimitValue {
@@ -109,17 +122,17 @@ export default defineComponent({
       })
       if (success) {
         // @ts-ignore
-        commitMutations(ctx.$store, TOTAL_ITEMS, data.total)
-        debugger
+        const { list, total } = data
+        commitMutations(ctx.store, M_SET_TOTAL_ITEMS, total)
         return {
-          msgList: data.list
+          msgList: list
         }
       } else {
         return {
           msgList: []
         }
       }
-    } catch (e) {
+    } catch (err) {
       return {
         msgList: []
       }
@@ -151,15 +164,6 @@ export default defineComponent({
     showAddMsgModal() {
       this.showModal = true
     },
-    confirm() {
-      Confirm({
-        type: 'warning',
-        message: 'Are you sure ?',
-        onOk: () => {
-          // handleAddMessage()
-        }
-      })
-    },
     // get message list
     async getMessageList() {
       const curTotal = this.currentPage * 10
@@ -167,49 +171,60 @@ export default defineComponent({
 
       // load more messages
       const current = this.currentPage + 1
-      commitMutations(this.$store, CURRENT_PAGE, current)
-      commitMutations(this.$store, LOAD_STATUS, LOADING) // 正在加载
-      // @ts-ignore
-      const { success, data } = await this.$axios.get('/message/list', {
-        params: {
-          pageNo: current,
-          pageSize: 10
-        }
-      })
-      if (success) {
+      commitMutations(this.$store, M_SET_CURRENT_PAGE, current)
+      commitMutations(this.$store, M_SET_LOAD_STATUS, LOADING) // 正在加载
+      try {
         // @ts-ignore
-        this.msgList = []
+        const { success, data } = await this.$axios.get('/message/list', {
+          params: {
+            pageNo: current,
+            pageSize: 10
+          }
+        })
+        if (success) {
+          const { list, total } = data
+          // @ts-ignore
+          this.msgList = [...this.msgList, list]
+          // @ts-ignore
+          if (this.msgList.length < total) {
+            commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 正在加载
+          } else {
+            commitMutations(this.$store, M_SET_LOAD_STATUS, NO_MORE) // 正在加载
+          }
+
+
+        }
+
+      } catch (err) {
+
       }
     },
-    handleAddMessage() {
-      if (isToday(this.msgLimit.time) && this.msgLimit.added >= 5) {
+    async handleAddMessage() {
+      if (isToday(this.msgLimit.time) && this.msgLimit.added > 5) {
         warnNotify('一天只能写 5 条留言哦，明天再来叭~')
         return
       }
       try {
         // @ts-ignore
-        proxy.$axios.post('/message/add', {
+        const { success, message } = await this.$axios.post('/message/add', {
           name: this.name,
           message: this.message
-        }).then((res: any) => {
-          if (res.success) {
-            successNotify(res.message)
-          } else {
-            warnNotify(res.message)
-          }
-        }).catch((err: any) => {
-          errorNotify(err.message)
         })
+        if (success) {
+          successNotify(message)
+          /**
+           * 添加 msg 成功，已留言数 +1
+           * */
+          setStorageValue<MsgLimitValue>(MSG_LIMIT_NUM, {
+            time: this.msgLimit.time,
+            added: this.msgLimit.added++
+          })
+        } else {
+          warnNotify(message)
+        }
       } catch (e) {
         errorNotify(e.message)
       }
-      /**
-       * 添加 msg 成功，已留言数 +1
-       * */
-      setStorageValue<MsgLimitValue>(MSG_LIMIT_NUM, {
-        time: this.msgLimit.time,
-        added: this.msgLimit.added++
-      })
     },
     /**
      * 初始化新增留言限制数
@@ -230,16 +245,19 @@ export default defineComponent({
   },
   mounted() {
     this.initMsgLimit()
-    console.log(this.totalItems)
+  },
+  beforeDestroy() {
+    commitMutations(this.$store, M_RESET_LOAD_MORE)
   },
   watch: {
     scrollerIsBottom(flag) {
+      console.log('scrollerIsBottom value: ', flag)
       flag && (this.loadStatus === LOAD_MORE) && this.getMessageList()
     }
   },
   head() {
     return {
-      title: '留言板 — 留下你对世间生活的感悟吧 | K.island'
+      title: '留言板 — 留下你想说的话吧 | K.island'
     }
   }
 })

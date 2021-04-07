@@ -14,8 +14,6 @@ router.get('/list', (req, res) => {
         pageNo: +pageNo,
         pageSize: +pageSize
     }).then((result: any) => {
-        // console.log('query message list success then')
-        // console.log(result)
         writeHead(res, 200)
         writeResult(res, true, 'Successfully got the message list~', result)
     }).catch(error => {
@@ -29,15 +27,16 @@ router.get('/list', (req, res) => {
  * */
 router.post('/add', (req, res) => {
     const name = req.body.name as string,
-        message = req.body.content as string
+        message = req.body.message as string
     addMessage({name, message})
-        .then((result: any) => {
+        .then(() => {
             writeHead(res, 200)
-            writeResult(res, true, 'Successfully added a message~', result)
-        }).catch(error => {
-        writeHead(res, 500)
-        writeResult(res, false, 'Failed to add a message~', error)
-    })
+            writeResult(res, true, 'Successfully left a message~')
+        })
+        .catch(error => {
+            writeHead(res, 500)
+            writeResult(res, false, 'Message failed~', error)
+        })
 })
 
 export default router
