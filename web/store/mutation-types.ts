@@ -29,5 +29,5 @@ export const ARTICLE_DETAIL = 'articleDetail'
 /**
  * localStorage values
  * */
-export const MSG_LIMIT_NUM = 'msgLimitNumPerDay' // 每日新增 msg 限制数
+export const LEAVE_MSG_LIMIT = 'leaveMsgLimit' // 每日新增 msg 限制数
 

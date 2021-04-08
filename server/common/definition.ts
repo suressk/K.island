@@ -1,7 +1,7 @@
 
 // 邮箱授权码
 export const authPass = {
-    qq: 'pxyjapaspmanbbff'
+    qq: 'xxx'
 }
 
 export const authEmail = {

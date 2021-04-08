@@ -4,6 +4,9 @@ import { Store } from 'vuex'
 import DAYJS from 'dayjs'
 import notify from '~/components/notification'
 
+const PRE_FIXED = 'K_'
+const DATE_FORMAT = 'YYYY-MM-DD'
+
 /**
  * Notification func
  * */
@@ -214,16 +217,16 @@ export function getCurrentTime () {
 /**
  * 获取 localstorage 存储的数据
  * */
-export function getStorageValue<V> (key: string): null | V {
-  const value = localStorage.getItem('K_' + key)
+export function getStorageItem<V> (key: string): null | V {
+  const value = localStorage.getItem(PRE_FIXED + key)
   return (value ? JSON.parse(value) : null)
 }
 
 /**
  * 将数据存储到 localstorage
  * */
-export function setStorageValue<V> (key: string, value: V): void {
-  localStorage.setItem('K_' + key, JSON.stringify(value))
+export function setStorageItem<V> (key: string, value: V): void {
+  localStorage.setItem(PRE_FIXED + key, JSON.stringify(value))
 }
 
 interface YearData<T> {
@@ -245,14 +248,9 @@ interface YearData<T> {
  * */
 export function createArticleListData (records: YearData<ArticleItem>) {
   const result: any = {}
-  for (const year in records) {
-    result[year] = createMonthGroup(records[year])
+  for (const yearStr in records) {
+    result[yearStr] = createMonthGroup(records[yearStr])
   }
-  // const years = Object.keys(records)
-  // years.forEach(year => {
-  //   result[year] = createMonthGroup(records[year])
-  // })
-  // console.log(result)
   return result
 }
 
@@ -284,8 +282,6 @@ export function plainArticleList (records: YearData<ArticleItem>) {
   return result
 }
 
-const DATE_FORMAT = 'YYYY-MM-DD'
-
 /**
  * 判断是否是今天（年月日 => 日期同一天）
  * */
@@ -307,17 +303,19 @@ export function isToday(time: number): boolean {
     today.day === otherDay.day);
 }
 
-
+/**
+ * 解析查询参数
+ * */
 export function parseLocationSearch () {
   const searchStr = decodeURIComponent(location.search)
+  const obj: any = {}
   if (searchStr) {
-    const obj: any = {}
     const searchArr = searchStr.slice(1).split('&')
     searchArr.forEach(item => {
       const resArr = item.split('=')
       obj[resArr[0]] = resArr[1]
     })
-    return obj
+    // return obj
   }
-  return {}
+  return obj
 }

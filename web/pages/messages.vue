@@ -13,10 +13,10 @@
       </transition>
 
       <div class='add-message'>
-        <button class='btn btn-primary' @click='showAddMsgModal'>Leave a Message</button>
+        <button class='btn btn-primary' @click='showModal'>Leave a Message</button>
         <!--   添加留言 modal   -->
         <Modal
-          :visible.sync='showModal'
+          :visible.sync='modalVisible'
           @ok='handleAddMessage'
         >
           <template v-slot:avatar>
@@ -27,7 +27,7 @@
           <div class='message-form'>
             <div class='message-from-item'>
               <label>
-                <input type='text' placeholder='Enter your nickname' v-model='name'>
+                <input type='text' placeholder='Enter your nickname' v-model='nickName'>
               </label>
             </div>
             <div class='message-from-item'>
@@ -35,7 +35,7 @@
                 <textarea
                   class='message-content scroller'
                   placeholder='Enter the message what you wanna to leave...'
-                  v-model='message'
+                  v-model='messageContent'
                 />
               </label>
             </div>
@@ -75,7 +75,7 @@ import {
   LOAD_MORE,
   LOAD_STATUS,
   LOADING,
-  MSG_LIMIT_NUM,
+  LEAVE_MSG_LIMIT,
   M_SET_CURRENT_PAGE,
   M_SET_LOAD_STATUS,
   M_RESET_LOAD_MORE,
@@ -83,8 +83,8 @@ import {
   TOTAL_ITEMS, NO_MORE
 } from '~/store/mutation-types'
 import {
-  getStorageValue,
-  setStorageValue,
+  getStorageItem,
+  setStorageItem,
   isToday,
   warnNotify,
   successNotify,
@@ -92,6 +92,7 @@ import {
   commitMutations
 } from '~/utils/util'
 import { Context } from '@nuxt/types'
+import { PaginationParams } from '~/types'
 import scrollMixin from '~/mixin/scroller'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
@@ -102,9 +103,9 @@ import LoadMore from '~/components/LoadMore.vue'
 // import Confirm from '~/components/popConfirm'
 // import { MsgListItem } from '~/types'
 
-interface MsgLimitValue {
+interface MsgLimitInfo {
   time: number
-  added: number
+  name: string
 }
 
 export default defineComponent({
@@ -141,12 +142,12 @@ export default defineComponent({
   data() {
     return {
       showTip: true,
-      showModal: false,
-      name: '',
-      message: '',
+      modalVisible: false,
+      nickName: '',
+      messageContent: '',
       msgLimit: {
         time: 0,
-        added: 0
+        name: ''
       }
     }
   },
@@ -161,87 +162,90 @@ export default defineComponent({
     hideTipMsg() {
       this.showTip = false
     },
-    showAddMsgModal() {
-      this.showModal = true
+    showModal() {
+      this.modalVisible = true
+      this.nickName = this.msgLimit.name
+    },
+    hideModal() {
+      this.modalVisible = false
+      this.messageContent = ''
     },
     // get message list
-    async getMessageList() {
-      const curTotal = this.currentPage * 10
-      if (curTotal >= this.totalItems) return
-
-      // load more messages
-      const current = this.currentPage + 1
-      commitMutations(this.$store, M_SET_CURRENT_PAGE, current)
+    async getMessageList(params: PaginationParams) {
       commitMutations(this.$store, M_SET_LOAD_STATUS, LOADING) // 正在加载
       try {
         // @ts-ignore
-        const { success, data } = await this.$axios.get('/message/list', {
-          params: {
-            pageNo: current,
-            pageSize: 10
-          }
-        })
+        const { success, message, data } = await this.$axios.get('/message/list', { params })
         if (success) {
           const { list, total } = data
-          // @ts-ignore
-          this.msgList = [...this.msgList, list]
-          // @ts-ignore
+          commitMutations(this.$store, M_SET_CURRENT_PAGE, params.pageNo) // 当前页 +1
+          commitMutations(this.$store, M_SET_TOTAL_ITEMS, total) // 总条数更新
+          // @ts-ignore 还有更多留言
           if (this.msgList.length < total) {
-            commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 正在加载
+            commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 还有更多 可加载
           } else {
-            commitMutations(this.$store, M_SET_LOAD_STATUS, NO_MORE) // 正在加载
+            commitMutations(this.$store, M_SET_LOAD_STATUS, NO_MORE) // 没有更多
           }
-
-
+          // @ts-ignore
+          params.pageNo > 1 ? (this.msgList = [...this.msgList, ...list]) : (this.msgLimit = list)
+        } else {
+          warnNotify(message)
+          commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 还有更多 可加载
         }
-
       } catch (err) {
-
+        errorNotify(err.message)
+        commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 还有更多 可加载
       }
     },
     async handleAddMessage() {
-      if (isToday(this.msgLimit.time) && this.msgLimit.added > 5) {
-        warnNotify('一天只能写 5 条留言哦，明天再来叭~')
+      const vm = this
+      // 限定时间是今日
+      if (isToday(this.msgLimit.time)) {
+        warnNotify('为了避免恶意或误操作留言刷屏，小K. 限定了一天只能写 1 条留言哦，明天再来叭~')
         return
       }
       try {
         // @ts-ignore
-        const { success, message } = await this.$axios.post('/message/add', {
-          name: this.name,
-          message: this.message
+        const { success, message } = await vm.$axios.post('/message/add', {
+          name: this.nickName,
+          message: this.messageContent
         })
         if (success) {
           successNotify(message)
           /**
-           * 添加 msg 成功，已留言数 +1
+           * 添加 msg 成功，时间更新
            * */
-          setStorageValue<MsgLimitValue>(MSG_LIMIT_NUM, {
-            time: this.msgLimit.time,
-            added: this.msgLimit.added++
+          vm.msgLimit.time = Date.now()
+          vm.msgLimit.name = vm.nickName
+          setStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT, vm.msgLimit)
+          vm.hideModal()
+          vm.getMessageList({
+            pageNo: 1,
+            pageSize: 10
+          }).then(() => {
+            commitMutations(vm.$store, M_SET_CURRENT_PAGE, 1)
           })
         } else {
           warnNotify(message)
         }
-      } catch (e) {
-        errorNotify(e.message)
+      } catch (err) {
+        errorNotify(err.message)
       }
     },
     /**
      * 初始化新增留言限制数
      * */
     initMsgLimit() {
-      const localLimit = getStorageValue<MsgLimitValue>(MSG_LIMIT_NUM)
+      const localLimit = getStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT)
 
-      this.msgLimit.time = Date.now()
-      this.msgLimit.added = 0
-
-      // 初次加载 / 非今日 => 已留言数置为 0
+      // 初次加载 / 非今日
       if (localLimit === null || !isToday(localLimit.time)) {
-        setStorageValue<MsgLimitValue>(MSG_LIMIT_NUM, this.msgLimit)
+        setStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT, { time: Date.now(), name: '' })
         return
       }
-      this.msgLimit = { ...localLimit }
-    }
+      // 曾留言 且是今日
+      this.msgLimit = localLimit
+    },
   },
   mounted() {
     this.initMsgLimit()
@@ -251,13 +255,19 @@ export default defineComponent({
   },
   watch: {
     scrollerIsBottom(flag) {
-      console.log('scrollerIsBottom value: ', flag)
-      flag && (this.loadStatus === LOAD_MORE) && this.getMessageList()
+      // @ts-ignore
+      if (flag && (this.loadStatus === LOAD_MORE) && (this.msgList.length < this.totalItems)) {
+        // 滚动到页底，加载下一页数据
+        this.getMessageList({
+          pageNo: this.currentPage + 1,
+          pageSize: 10
+        })
+      }
     }
   },
   head() {
     return {
-      title: '留言板 — 留下你想说的话吧 | K.island'
+      title: '留言板 — Leave what you wanna to say | K.island'
     }
   }
 })
