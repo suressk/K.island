@@ -11,7 +11,7 @@ import {
 import { addListener, removeListener, throttle } from '~/utils/util'
 import QRCode from 'qrcode'
 
-export default function useHeader() {
+export default function useHeader(props: any) {
   const vm = getCurrentInstance()!
   let audio: HTMLAudioElement | null = null
   const showTitle = ref<boolean>(false)
@@ -65,10 +65,10 @@ export default function useHeader() {
     audio = vm.refs.musicRef as HTMLAudioElement
     const qrCodeContainer = document.getElementById('qrcode') as HTMLCanvasElement
     QRCode.toCanvas(qrCodeContainer, window.location.href)
-    addListener(document, 'scroll', fnScroll)
+    props.needScroll && addListener(document, 'scroll', fnScroll)
   })
   onBeforeUnmount(() => {
-    removeListener(document, 'scroll', fnScroll)
+    props.needScroll && removeListener(document, 'scroll', fnScroll)
   })
   return {
     showTitle,

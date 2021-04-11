@@ -8,6 +8,16 @@ interface QuerySubscribeOptions {
     name?: string
 }
 
+interface VerifyInfo {
+    email: string
+    code?: string
+}
+
+interface AddVerifyInfo extends VerifyInfo {
+    code: string
+    uid: string
+}
+
 /**
  * 分页查询订阅列表
  * */
@@ -41,16 +51,6 @@ export function querySubscribeInfo(options: QuerySubscribeOptions) {
                 reject(err)
             })
     })
-}
-
-interface VerifyInfo {
-    email: string
-    code?: string
-}
-
-interface AddVerifyInfo extends VerifyInfo {
-    code: string
-    uid: string
 }
 
 /**
@@ -102,7 +102,6 @@ export async function addVerifyCodeInfo(options: AddVerifyInfo) {
         return result
     })
 }
-
 
 /**
  * 删除过期验证信息

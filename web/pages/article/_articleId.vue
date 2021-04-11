@@ -1,22 +1,22 @@
 <template>
-  <section class="k-article-info">
-    <KHeader :custom-title="articleDetail.title" />
+  <section class='k-article-info'>
+    <KHeader :title='articleDetail.title' :need-scroll='true' />
 
-    <div class="content">
-      <div class="article-content" :class="articleClass">
-        <h1 class="title">
+    <div class='content'>
+      <div class='article-content' :class='articleClass'>
+        <h1 class='article-title'>
           {{ articleDetail.title }}
         </h1>
-        <div class="stuffix d-flex">
-          <span class="time tip">
-            {{ articleDetail.time.day }} {{articleDetail.time.month }}, {{ articleDetail.time.year }}
+        <div class='stuffix d-flex'>
+          <span class='time tip'>
+            {{ articleDetail.time.day }} {{ articleDetail.time.month }}, {{ articleDetail.time.year }}
           </span>
-          <span class="r-hover tip views d-flex">
-            <i class="iconfont icon-view" />
+          <span class='r-hover tip views d-flex'>
+            <i class='iconfont icon-view' />
             {{ articleDetail.views }}
           </span>
-          <span class="g-hover tip tag d-flex">
-            <i class="iconfont icon-tag" />
+          <span class='g-hover tip tag d-flex'>
+            <i class='iconfont icon-tag' />
             {{ articleDetail.tag }}
           </span>
           <!--<span class="comments tip d-flex">-->
@@ -26,20 +26,20 @@
         </div>
 
         <div
-          class="info"
-          :class="articleClass"
-          v-html="htmlContent"
+          class='article-info'
+          :class='articleClass'
+          v-html='htmlContent'
         />
       </div>
 
-      <button class="btn-primary btn" @click="handleShowCommentForm">Add Comment</button>
+      <button class='btn-primary btn' @click='handleShowCommentForm'>Add Comment</button>
 
       <Modal
-        title="添加评论"
-        :visible.sync="addCommentVisible"
-        :show-footer="false"
+        title='添加评论'
+        :visible.sync='addCommentVisible'
+        :show-footer='false'
       >
-        <CommentForm @submit-comment="handleGetCommentInfo" />
+        <CommentForm @submit-comment='handleGetCommentInfo' />
       </Modal>
 
       <ThemeSwitch />
@@ -48,8 +48,8 @@
   </section>
 </template>
 
-<script lang="ts">
-import {defineComponent, ref} from '@nuxtjs/composition-api'
+<script lang='ts'>
+import { defineComponent, ref } from '@nuxtjs/composition-api'
 import { parseMarkdownFile } from '~/utils/marked'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import { Context } from '@nuxt/types'
@@ -101,12 +101,15 @@ export default defineComponent({
   },
   setup() {
     const addCommentVisible = ref<boolean>(false)
+
     function handleGetCommentInfo(info: CommentInfo) {
       console.log(info)
     }
+
     function handleShowCommentForm() {
       addCommentVisible.value = true
     }
+
     return {
       addCommentVisible,
       handleGetCommentInfo,
@@ -122,7 +125,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss">
+<style lang='scss'>
 @import "assets/css/components/marked.scss";
 
 .k-article-info {
@@ -130,9 +133,11 @@ export default defineComponent({
     width: 800px;
     margin: 0 auto;
   }
+
   .stuffix {
     padding: 10px 0;
-    &>span {
+
+    & > span {
       margin-right: 10px;
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <section class="subscription">
-    <KHeader custom-title="(≖ᴗ≖)✧" />
+    <KHeader />
 
     <div class="main-content flex-col-center scroller-light">
       <h2 class="tip-title flex-center">[ 人生如逆旅，我亦是行人 ]</h2>

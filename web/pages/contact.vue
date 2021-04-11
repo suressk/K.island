@@ -1,6 +1,6 @@
 <template>
   <section class="k-contact">
-    <KHeader custom-title="(≖ᴗ≖)✧" />
+    <KHeader />
     <div class="content">
       <h3 class="title">你好！我是 K.</h3>
       <p class="part">PART 1</p>

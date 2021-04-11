@@ -11,7 +11,7 @@
           />
         </span>
       </h1>
-      <span class="k-title txt-overflow" :title="customTitle" :class="{ active: showTitle }">{{ customTitle }}</span>
+      <span class="k-title txt-overflow" :title="title" :class="{ active: showTitle }">{{ title }}</span>
       <ul class="header-r-nav flex-center">
         <li class="r-nav-item flex-center qrcode">
           <i class="iconfont icon-qrcode trans-all-03" />
@@ -45,18 +45,22 @@ import { defineComponent } from '@nuxtjs/composition-api'
 export default defineComponent({
   name: 'KHeader',
   props: {
-    customTitle: {
+    title: {
       type: String,
       default: 'K. (≖ᴗ≖)✧'
     },
     music: {
       type: String,
       default: 'http://localhost:9527/music/lightMusic.mp3'
+    },
+    needScroll: {
+      type: Boolean,
+      default: false
     }
   },
-  setup () {
+  setup (props) {
     return {
-      ...useHeader()
+      ...useHeader(props)
     }
   }
 })

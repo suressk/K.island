@@ -24,10 +24,11 @@ export const NO_MORE = -1
 export const LOAD_STATUS = 'loadStatus'
 export const TOTAL_ITEMS = 'totalItems'
 export const CURRENT_PAGE = 'curPage'
-export const ARTICLE_DETAIL = 'articleDetail'
+// export const ARTICLE_DETAIL = 'articleDetail'
 
 /**
  * localStorage values
  * */
 export const LEAVE_MSG_LIMIT = 'leaveMsgLimit' // 每日新增 msg 限制数
+export const MSG_TIP_SHOW = 'msgTipShow' // msg 提示信息显示与否
 

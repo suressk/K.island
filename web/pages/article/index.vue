@@ -1,6 +1,6 @@
 <template>
   <section class="k-article-page">
-    <KHeader custom-title="(≖ᴗ≖)✧" />
+    <KHeader title="(≖ᴗ≖)✧" />
     <!--  文章列表页  -->
     <div v-if="Object.keys(listData).length === 0" class="nothing-content flex-center">
       <Empty>

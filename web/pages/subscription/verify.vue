@@ -1,6 +1,6 @@
 <template>
   <section class="verify-subscription">
-    <KHeader custom-title="(≖ᴗ≖)✧" />
+    <KHeader />
 
     <div class="content">
       <div class="verify-form absolute-center">

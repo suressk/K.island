@@ -6,6 +6,7 @@ import { createCorsOptionsDelegate } from './utils/util'
 import manageRecord from './routes/sys/manageRecords'
 import manageImage from './routes/sys/manageImage'
 import manageMessage from './routes/sys/manageMessage'
+
 import viewRecords from './routes/web/records'
 import addComments from './routes/web/comments'
 import addMessage from './routes/web/messages'

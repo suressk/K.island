@@ -5,7 +5,7 @@
       <!--    v-show="showTip"    -->
       <transition name='fadeUp' mode='out-in'>
         <div class='tip-message' v-show='showTip'>
-          <i class='iconfont icon-close' @click='hideTipMsg' />
+          <i class='iconfont icon-close' @click='toggleTipMsg(false)' />
           <p>😍 你可以在这里写下你想对 Ta 说的话，然后悄悄地扔个网址给 Ta ~ <span class='tip'>（你的内心OS：我直接给人家说不香吗？）</span></p>
           <p>❤️ 你也可以在这里写下你想说的励志鸡汤，伤感心情，牢骚小文，也或是当一回文人墨客<span class='tip'>（小K.都是欢迎的）</span></p>
           <p>🤨 <span class='tip'>如果你的有些言论太过敏感或是不太合适展示给大家看的内容，小 K. 看到后可能会删掉哦~ 还是记得多传播积极的东西哦</span></p>
@@ -13,49 +13,56 @@
       </transition>
 
       <div class='add-message'>
-        <button class='btn btn-primary' @click='showModal'>Leave a Message</button>
-        <!--   添加留言 modal   -->
-        <Modal
-          :visible.sync='modalVisible'
-          @ok='handleAddMessage'
+        <button
+          class='btn btn-success'
+          @click='toggleTipMsg(true)'
+          :disabled='showTip'
         >
-          <template v-slot:avatar>
-            <img src='~~/static/images/avatar.png' alt='K. avatar'>
-          </template>
+          Show Tip Message
+        </button>
+        <button class='btn btn-primary' @click='showModal'>Leave a Message</button>
+      </div>
 
-          <!--  edit message form  -->
-          <div class='message-form'>
-            <div class='message-from-item'>
-              <label>
-                <input type='text' placeholder='Enter your nickname' v-model='nickName'>
-              </label>
-            </div>
-            <div class='message-from-item'>
-              <label>
+      <!--   添加留言 modal   -->
+      <Modal
+        :visible.sync='modalVisible'
+        @ok='handleLeaveMessage'
+      >
+        <template v-slot:avatar>
+          <img src='~~/static/images/avatar.png' alt='K. avatar'>
+        </template>
+
+        <!--  edit message form  -->
+        <div class='message-form'>
+          <div class='message-from-item'>
+            <label>
+              <input type='text' placeholder='Enter your nickname' v-model='nickName'>
+            </label>
+          </div>
+          <div class='message-from-item'>
+            <label>
                 <textarea
                   class='message-content scroller'
                   placeholder='Enter the message what you wanna to leave...'
                   v-model='messageContent'
                 />
-              </label>
-            </div>
+            </label>
           </div>
+        </div>
 
-        </Modal>
-      </div>
-
+      </Modal>
       <!--   留言列表   -->
       <ul class='message-list'>
         <li
-          class='message-item'
+          class='tip-message message-item'
           v-for='msg in msgList'
           :key='msg.uid'
         >
-          <div>
-            <p class='message-content'>{{ msg.content }}</p>
-            <span class='time'>{{ msg.ctime }}</span>
-          </div>
-          <p class='message-form'>{{ msg.name }}</p>
+          <p class='message-content'>{{ msg.content }}</p>
+          <p class='message-form'>
+            <span class='time'>{{ DAYJS(msg.ctime).format(dateFormat) }}</span>
+            <span>{{ msg.name }}</span>
+          </p>
         </li>
       </ul>
 
@@ -68,6 +75,7 @@
 </template>
 
 <script lang='ts'>
+import DAYJS from 'dayjs'
 import { defineComponent } from '@nuxtjs/composition-api'
 import { mapState } from 'vuex'
 import {
@@ -80,7 +88,7 @@ import {
   M_SET_LOAD_STATUS,
   M_RESET_LOAD_MORE,
   M_SET_TOTAL_ITEMS,
-  TOTAL_ITEMS, NO_MORE
+  TOTAL_ITEMS, NO_MORE, MSG_TIP_SHOW
 } from '~/store/mutation-types'
 import {
   getStorageItem,
@@ -148,7 +156,8 @@ export default defineComponent({
       msgLimit: {
         time: 0,
         name: ''
-      }
+      },
+      dateFormat: 'YYYY-MM-DD'
     }
   },
   computed: {
@@ -159,12 +168,17 @@ export default defineComponent({
     })
   },
   methods: {
-    hideTipMsg() {
-      this.showTip = false
+    DAYJS,
+    toggleTipMsg(flag: boolean) {
+      this.showTip = flag
+      setStorageItem(MSG_TIP_SHOW, flag)
     },
     showModal() {
+      const localLimit = getStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT)
+      if (localLimit) {
+        this.nickName = localLimit.name
+      }
       this.modalVisible = true
-      this.nickName = this.msgLimit.name
     },
     hideModal() {
       this.modalVisible = false
@@ -187,7 +201,7 @@ export default defineComponent({
             commitMutations(this.$store, M_SET_LOAD_STATUS, NO_MORE) // 没有更多
           }
           // @ts-ignore
-          params.pageNo > 1 ? (this.msgList = [...this.msgList, ...list]) : (this.msgLimit = list)
+          params.pageNo > 1 ? (this.msgList = this.msgList.concat(list)) : (this.msgList = list)
         } else {
           warnNotify(message)
           commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 还有更多 可加载
@@ -197,10 +211,11 @@ export default defineComponent({
         commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 还有更多 可加载
       }
     },
-    async handleAddMessage() {
+    async handleLeaveMessage() {
       const vm = this
+      const localLimit = getStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT)
       // 限定时间是今日
-      if (isToday(this.msgLimit.time)) {
+      if (localLimit && isToday(localLimit.time)) {
         warnNotify('为了避免恶意或误操作留言刷屏，小K. 限定了一天只能写 1 条留言哦，明天再来叭~')
         return
       }
@@ -215,9 +230,10 @@ export default defineComponent({
           /**
            * 添加 msg 成功，时间更新
            * */
-          vm.msgLimit.time = Date.now()
-          vm.msgLimit.name = vm.nickName
-          setStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT, vm.msgLimit)
+          setStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT, {
+            time: Date.now(),
+            name: vm.nickName
+          })
           vm.hideModal()
           vm.getMessageList({
             pageNo: 1,
@@ -237,14 +253,18 @@ export default defineComponent({
      * */
     initMsgLimit() {
       const localLimit = getStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT)
+      const tipMsgShow = getStorageItem<boolean>(MSG_TIP_SHOW)
 
-      // 初次加载 / 非今日
-      if (localLimit === null || !isToday(localLimit.time)) {
-        setStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT, { time: Date.now(), name: '' })
-        return
+      // 提示信息显隐
+      if (tipMsgShow !== null) {
+        this.showTip = tipMsgShow
       }
-      // 曾留言 且是今日
-      this.msgLimit = localLimit
+
+      // 初次加载 / 未曾留言
+      if (localLimit === null) {
+        const lastDay = Date.now() - (24 * 3600 * 1000)
+        setStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT, { time: lastDay, name: '' })
+      }
     },
   },
   mounted() {
