@@ -18,7 +18,7 @@ const columns = [
     {
         title: 'Message',
         dataIndex: 'content',
-        width: '45%'
+        width: '50%'
     },
     {
         title: 'Create Time',

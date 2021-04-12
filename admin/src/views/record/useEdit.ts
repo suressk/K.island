@@ -14,9 +14,6 @@ const rules = {
     cover: [
         { required: true, message: 'Input cover link or upload an image', trigger: 'blur' }
     ],
-    music: [
-        { required: true, message: 'Input music link', trigger: 'blur' }
-    ],
     content: [
         { required: true, message: 'Input article content', trigger: 'blur' }
     ]

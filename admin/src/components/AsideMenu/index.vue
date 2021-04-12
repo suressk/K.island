@@ -71,9 +71,9 @@ export default defineComponent({
   .menu-item {
     padding: 10px 0 10px 30px;
     color: inherit;
-    border-right: 5px solid transparent;
+    border-right: 3px solid transparent;
     font-size: 14px;
-    transition: all .5s;
+    transition: all .3s ease;
     cursor: pointer;
     margin-bottom: 3px;
     &.router-link-exact-active,

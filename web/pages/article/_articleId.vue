@@ -4,25 +4,13 @@
 
     <div class='content'>
       <div class='article-content' :class='articleClass'>
-        <h1 class='article-title'>
-          {{ articleDetail.title }}
-        </h1>
         <div class='stuffix d-flex'>
           <span class='time tip'>
             {{ articleDetail.time.day }} {{ articleDetail.time.month }}, {{ articleDetail.time.year }}
           </span>
-          <span class='r-hover tip views d-flex'>
-            <i class='iconfont icon-view' />
-            {{ articleDetail.views }}
-          </span>
-          <span class='g-hover tip tag d-flex'>
-            <i class='iconfont icon-tag' />
-            {{ articleDetail.tag }}
-          </span>
-          <!--<span class="comments tip d-flex">-->
-          <!--  <i class="iconfont icon-comment" />-->
-          <!--  {{ articleDetail.time.day }}-->
-          <!--</span>-->
+          <span class='tip tag d-flex'>分类 {{ articleDetail.tag }}</span>
+          <span class='tip views d-flex'>浏览 {{ articleDetail.views }}</span>
+          <span class="tip liked d-flex">喜欢 {{ articleDetail.liked }}</span>
         </div>
 
         <div
@@ -134,11 +122,21 @@ export default defineComponent({
     margin: 0 auto;
   }
 
-  .stuffix {
-    padding: 10px 0;
+  .article-content {
+    & > .stuffix {
+      margin: 20px 0;
+      padding: 10px 0;
 
-    & > span {
-      margin-right: 10px;
+      & > span {
+        margin-right: 15px;
+      }
+    }
+
+    .article-info {
+      p {
+        line-height: 36px;
+        margin-bottom: 20px;
+      }
     }
   }
 }

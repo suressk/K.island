@@ -174,7 +174,7 @@
 
 .tip {
   color: var(--tipColor);
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
 }
 
@@ -364,8 +364,8 @@ a:hover,
   height: 100px;
   left: -5px;
   top: -50px;
-  border: 5px solid var(--opacity-cyan-3);
   img {
+    border: 5px solid var(--opacity-cyan-3);
     width: 100%;
     border-radius: 50%;
   }

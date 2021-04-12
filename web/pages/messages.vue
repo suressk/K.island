@@ -108,9 +108,6 @@ import BackTop from '~/components/BackTop/index.vue'
 import Modal from '~/components/KModal/index.vue'
 import LoadMore from '~/components/LoadMore.vue'
 
-// import Confirm from '~/components/popConfirm'
-// import { MsgListItem } from '~/types'
-
 interface MsgLimitInfo {
   time: number
   name: string
@@ -149,7 +146,7 @@ export default defineComponent({
   },
   data() {
     return {
-      showTip: true,
+      showTip: false,
       modalVisible: false,
       nickName: '',
       messageContent: '',
@@ -162,9 +159,9 @@ export default defineComponent({
   },
   computed: {
     ...mapState({
-      totalItems: (state: any) => state[TOTAL_ITEMS],
-      currentPage: (state: any) => state[CURRENT_PAGE],
-      loadStatus: (state: any) => state[LOAD_STATUS]
+      totalItems: (state: any): number => state[TOTAL_ITEMS],
+      currentPage: (state: any): number => state[CURRENT_PAGE],
+      loadStatus: (state: any): number => state[LOAD_STATUS]
     })
   },
   methods: {
@@ -187,21 +184,38 @@ export default defineComponent({
     // get message list
     async getMessageList(params: PaginationParams) {
       commitMutations(this.$store, M_SET_LOAD_STATUS, LOADING) // 正在加载
+      const start = Date.now()
       try {
         // @ts-ignore
         const { success, message, data } = await this.$axios.get('/message/list', { params })
+        const end = Date.now()
         if (success) {
-          const { list, total } = data
-          commitMutations(this.$store, M_SET_CURRENT_PAGE, params.pageNo) // 当前页 +1
-          commitMutations(this.$store, M_SET_TOTAL_ITEMS, total) // 总条数更新
-          // @ts-ignore 还有更多留言
-          if (this.msgList.length < total) {
-            commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 还有更多 可加载
+          let pro: Promise<any>
+          // 请求耗时不超过 500ms
+          if (end - start < 500) {
+            pro = new Promise(resolve => {
+              setTimeout(() => {
+                resolve('')
+              }, 500)
+            })
           } else {
-            commitMutations(this.$store, M_SET_LOAD_STATUS, NO_MORE) // 没有更多
+            pro = Promise.resolve()
           }
-          // @ts-ignore
-          params.pageNo > 1 ? (this.msgList = this.msgList.concat(list)) : (this.msgList = list)
+
+          // 500ms 加载状态
+          pro.then(() => {
+            const { list, total } = data
+            commitMutations(this.$store, M_SET_CURRENT_PAGE, params.pageNo) // 当前页 +1
+            commitMutations(this.$store, M_SET_TOTAL_ITEMS, total) // 总条数更新
+            // @ts-ignore
+            params.pageNo > 1 ? (this.msgList = this.msgList.concat(list)) : (this.msgList = list)
+            // @ts-ignore 还有更多留言
+            if (this.msgList.length < total) {
+              commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 还有更多 可加载
+            } else {
+              commitMutations(this.$store, M_SET_LOAD_STATUS, NO_MORE) // 没有更多
+            }
+          })
         } else {
           warnNotify(message)
           commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 还有更多 可加载
