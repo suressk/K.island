@@ -54,8 +54,6 @@ export function deleteMessage(options: IdsOptions) {
     let str = params.join(',')
     sqlStr = sqlStr + str + ');'
 
-    console.log(sqlStr);
-    console.log(ids);
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, ids)
             .then(result => {
