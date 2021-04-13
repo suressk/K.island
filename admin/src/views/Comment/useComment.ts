@@ -81,24 +81,18 @@ export default function useComment() {
         showSizeChanger: true
     })
     const commentList: Ref<CommentItem[]> = ref([])
-    const checkedKeys = ref<Key[]>([])
-    const canDelete = computed(() => (checkedKeys.value.length > 0))
+    const selectedRowKeys = ref<Key[]>([])
+    const canDelete = computed(() => (selectedRowKeys.value.length > 0))
     const replyVisible = ref<boolean>(false)
 
-    const rowSelection = {
-        onChange: (selectedRowKeys: Key[], selectedRows: CommentItem[]) => {
-            checkedKeys.value = selectedRowKeys
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
-        // 判定不可选中的项
-        getCheckboxProps: (record: CommentItem) => ({
-            disabled: record.name === 'ssk',
-            name: record.name,
-        })
-    }
     onMounted(() => {
         commentList.value = mapFormatCtimeList(list)
     })
+
+
+    function onSelectChange(selectedKeys: Key[]) {
+        selectedRowKeys.value = selectedKeys
+    }
 
     function handlePageChange(curPagination: Pagination) {
         const current = curPagination!.current!
@@ -116,13 +110,13 @@ export default function useComment() {
         getCommentList(params)
             // @ts-ignore
             .then((res: ResponseData<ListRes<CommentItem[]>>) => {
-                if (res.success) {
-                    commentList.value = res.data.list
-                    pagination.total = res.data.total
-                } else {
-                    warningNotify(res.message)
-                }
                 loading.value = false
+                if (!res.success) {
+                    warningNotify(res.message)
+                    return
+                }
+                commentList.value = res.data.list
+                pagination.total = res.data.total
             }).catch(err => {
                 loading.value = false
                 errorNotify(err.message)
@@ -135,29 +129,28 @@ export default function useComment() {
         deleteComments(params)
             // @ts-ignore
             .then((res: ResponseData<any>) => {
-                if (res.success) {
-                    successNotify(res.message)
-                    getComments({
-                        pageNo: pagination.current,
-                        pageSize: pagination.pageSize
-                    })
-                } else {
+                if (!res.success) {
                     warningNotify(res.message)
+                    return
                 }
+                successNotify(res.message)
+                getComments({
+                    pageNo: pagination.current,
+                    pageSize: pagination.pageSize
+                })
             }).catch(err => {
                 errorNotify(err.message)
-        })
+            })
     }
 
-    // 删除单条评论
-    function handleDeleteOneComment (info: CommentItem) {
-        delMultipleComments({ ids: [info.id] })
-    }
-
-    // 删除多条
-    function handleDeleteMultipleComments () {
-        // @ts-ignore
-        delMultipleComments({ ids: checkedKeys.value })
+    // 删除评论 按钮点击事件
+    function handleDeleteComments (info: CommentItem | null) {
+        if (info === null) {
+            // @ts-ignore
+            delMultipleComments({ ids: [...selectedRowKeys.value] })
+        } else {
+            delMultipleComments({ ids: [info.id] })
+        }
     }
 
     function handleOpenReply(info: CommentItem) {
@@ -170,12 +163,12 @@ export default function useComment() {
         columns,
         pagination,
         commentList,
-        rowSelection,
         canDelete,
         replyVisible,
+        selectedRowKeys,
+        onSelectChange,
         handlePageChange,
-        handleDeleteOneComment,
-        handleDeleteMultipleComments,
+        handleDeleteComments,
         handleOpenReply
     }
 }

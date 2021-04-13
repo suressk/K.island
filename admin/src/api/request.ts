@@ -3,7 +3,6 @@ import {ResponseData, ErrorResponse} from '../types'
 import {getStorageToken, errorNotify, Confirm, getStorageItem, setStorageItem, removeStorageItem} from '../utils/util'
 import {ACCESS_TOKEN, TOKEN_EXPIRED} from '../store/mutation-types'
 import router from '../router'
-// import {useRouter} from 'vue-router'
 
 const service: AxiosInstance = axios.create({
     baseURL: 'http://localhost:9527' || '/',
@@ -19,31 +18,39 @@ const handleError = (err: ErrorResponse) => {
         const data = err.response.data
         const status = err.response.status
         const tokenExpired = getStorageItem(TOKEN_EXPIRED)
-        // debugger
-        // console.log(router)
-        // const router = useRouter() // TODO ========= get undefined
 
         switch (status) {
             case 403:
-                errorNotify('Token has expired...', `${status}`)
+                errorNotify('The Token Has Expired', `${status}`)
                 removeStorageItem(ACCESS_TOKEN)
-                if (tokenExpired === 0) {
-                    Confirm({
-                        title: 'Confirm',
-                        content: 'Token has expired, redirect to Login Page?',
-                        onOk: () => {
-                            router.push('/login')
-                        },
-                        onCancel: () => undefined
-                    })
+                new Promise((resolve, reject) => {
+                    if (tokenExpired === 0) {
+                        Confirm({
+                            title: 'Confirm',
+                            content: 'Token has expired, redirect to Login Page?',
+                            onOk: () => {
+                                router.push('/login')
+                                resolve(true)
+                            },
+                            onCancel: () => {
+                                reject(false)
+                            }
+                        })
+                    }
+                }).then(() => {
                     setStorageItem(TOKEN_EXPIRED, 1)
-                }
+                }, () => {
+                    setStorageItem(TOKEN_EXPIRED, 0)
+                })
                 break
             case 404:
-                errorNotify('Resource Not Found...', `${status}`)
+                errorNotify('Resource Not Found', `${status}`)
+                break
+            case 416:
+                errorNotify('Incorrect Request Parameters !', `${status}`)
                 break
             case 500:
-                errorNotify('Server Internal Error...', `${status}`)
+                errorNotify('Server Internal Error', `${status}`)
                 break
             default:
                 errorNotify(data.message, `${status}`)
@@ -77,11 +84,6 @@ service.interceptors.request.use(
  * response interceptor
  */
 service.interceptors.response.use((resp: AxiosResponse): AxiosResponse<ResponseData<any>> => {
-    // const data = resp.data.data;
-    // if (data.token) {
-    //   // LocalStorage 存储 token
-    //   setStorageToken(data.token)
-    // }
     return resp.data
 }, handleError)
 

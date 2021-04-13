@@ -132,7 +132,7 @@ export default defineComponent({
       }
     }
 
-    .article-info {
+    .mood {
       p {
         line-height: 36px;
         margin-bottom: 20px;

@@ -32,20 +32,20 @@ const columns = [
     }
 ]
 
-const list = [
-    {
-        id: 1001,
-        name: 'ssk',
-        content: '希望世界美好如初',
-        ctime: Date.now()
-    },
-    {
-        id: 1002,
-        name: 'sure',
-        content: `Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! `,
-        ctime: Date.now()
-    }
-]
+// const list = [
+//     {
+//         id: 1001,
+//         name: 'ssk',
+//         content: '希望世界美好如初',
+//         ctime: Date.now()
+//     },
+//     {
+//         id: 1002,
+//         name: 'sure',
+//         content: `Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! `,
+//         ctime: Date.now()
+//     }
+// ]
 
 /**
  * 留言信息管理
@@ -62,19 +62,12 @@ export default function useMessage() {
         showSizeChanger: true
     })
     const msgList: Ref<MsgListItem[]> = ref([])
+    const canDelete = computed<boolean>(() => selectedRowKeys.value.length > 0)
 
-    const checkedKeys = ref<Key[]>([])
+    const selectedRowKeys = ref<Key[]>([]) // 行选中的 key
 
-    const rowSelection = {
-        onChange: (selectedRowKeys: Key[], selectedRows: MsgListItem[]) => {
-            checkedKeys.value = selectedRowKeys
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
-        // 判定不可选中的项
-        getCheckboxProps: (record: MsgListItem) => ({
-            disabled: record.name === 'ssk',
-            name: record.name,
-        })
+    function onSelectChange(selectedKeys: Key[]) {
+        selectedRowKeys.value = selectedKeys
     }
 
     onMounted(() => {
@@ -82,7 +75,6 @@ export default function useMessage() {
             pageNo: 1,
             pageSize: 10
         })
-        // msgList.value = mapFormatCtimeList(list)
     })
 
     function handlePageChange(curPagination: Pagination) {
@@ -98,19 +90,29 @@ export default function useMessage() {
     }
 
     // 单条删除
-    function handleDeleteMsg(info: MsgListItem) {
-        const { id } = info
-        deleteMessages({
-            ids: [id]
-        }).then((res: any) => {
-            if (res.success) {
+    function handleDeleteMsg(info: MsgListItem | null) {
+        const ids: Key[] = []
+        if (info === null) {
+            ids.push(...selectedRowKeys.value)
+        } else  {
+            ids.push(info.id)
+        }
+        // @ts-ignore
+        deleteMessages({ ids })
+            .then((res: any) => {
+                if (!res.success) {
+                    warningNotify(res.message)
+                    return
+                }
                 successNotify(res.message)
-            } else {
-                warningNotify(res.message)
-            }
-        }).catch(err => {
-            errorNotify(err.message)
-        })
+                getMsgList({
+                    pageNo: pagination.current,
+                    pageSize: pagination.pageSize
+                })
+            })
+            .catch(err => {
+                errorNotify(err.message)
+            })
     }
 
     // 查询留言信息列表
@@ -122,6 +124,7 @@ export default function useMessage() {
                 if (res.success) {
                     msgList.value = mapFormatCtimeList(res.data.list)
                     pagination.total = res.data.total
+                    selectedRowKeys.value.length && (selectedRowKeys.value = [])
                 } else {
                     warningNotify(res.message)
                 }
@@ -138,7 +141,9 @@ export default function useMessage() {
         columns,
         pagination,
         msgList,
-        rowSelection,
+        selectedRowKeys,
+        canDelete,
+        onSelectChange,
         handlePageChange,
         handleDeleteMsg
     }

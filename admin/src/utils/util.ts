@@ -63,7 +63,8 @@ export function Confirm(options: ConfirmOptions) {
         onCancel: options.onCancel,
         title: options.title,
         okText: options.okText,
-        cancelText: options.cancelText
+        cancelText: options.cancelText,
+        maskClosable: false
     })
 }
 

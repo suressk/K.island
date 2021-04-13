@@ -2,13 +2,23 @@
   <section class="message-board scroller">
     <h3 class="primary-title mb-1">Message Management</h3>
 
+    <div class="mb-1" style="text-align: right;">
+      <button
+        class="btn btn-danger"
+        :disabled="!canDelete"
+        @click="handleDeleteMsg(null)"
+      >
+        Multiple Delete
+      </button>
+    </div>
+
     <a-table
       :loading="loading"
       :columns="columns"
       :row-key="item => item.id"
       :pagination="pagination"
       :data-source="msgList"
-      :row-selection="rowSelection"
+      :row-selection="{ selectedRowKeys, onChange: onSelectChange }"
       @change="handlePageChange"
     >
       <template #id="{ index }">

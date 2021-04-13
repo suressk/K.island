@@ -43,6 +43,13 @@ const routes: Array<RouteRecordRaw> = [
                 title: '评论管理'
             },
             component: () => import('../views/Comment/index.vue')
+        }, {
+            path: 'setting',
+            name: 'setting',
+            meta: {
+                title: '主页设置'
+            },
+            component: () => import('../views/Setting/index.vue')
         }]
     },
     {

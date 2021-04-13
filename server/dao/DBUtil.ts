@@ -6,7 +6,7 @@ import mysql from 'mysql2'
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'xxx',
+    password: 'NdMexHd.1008...',
     database: 'k_island',
     charset: 'utf8',
     waitForConnections: true, // true: 连接排队等待可用连接。false: 立即抛出错误

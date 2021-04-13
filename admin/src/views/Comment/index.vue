@@ -2,11 +2,11 @@
   <section class="comment-board">
     <h3 class="primary-title mb-1">Comment Management</h3>
 
-    <div class="mb-1" style="text-align: end;">
+    <div class="mb-1" style="text-align: right;">
       <button
         class="btn btn-danger"
         :disabled="!canDelete"
-        @click="handleDeleteMultipleComments"
+        @click="handleDeleteComments(null)"
       >
         Multiple Delete
       </button>
@@ -18,7 +18,7 @@
       :row-key="item => item.id"
       :pagination="pagination"
       :data-source="commentList"
-      :row-selection="rowSelection"
+      :row-selection="{ selectedRowKeys, onChange: onSelectChange }"
       @change="handlePageChange"
     >
 
@@ -28,7 +28,7 @@
 
           <pop-confirm
             title="Sure to delete ?"
-            @confirm="handleDeleteOneComment(record)"
+            @confirm="handleDeleteComments(record)"
           >
             <i class="iconfont icon-delete" />
           </pop-confirm>
