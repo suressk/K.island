@@ -276,3 +276,20 @@ export function mapFormatCtimeList<T extends CtimeItem>(list: T[]) {
         })
     )
 }
+
+/**
+ * 解析查询参数
+ * */
+export function parseLocationSearch() {
+    const searchStr = decodeURIComponent(location.search)
+    const obj: any = {}
+    if (searchStr) {
+        const searchArr = searchStr.slice(1).split('&')
+        searchArr.forEach(item => {
+            const resArr = item.split('=')
+            obj[resArr[0]] = resArr[1]
+        })
+    }
+    return obj
+}
+

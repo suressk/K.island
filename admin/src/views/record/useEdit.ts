@@ -1,21 +1,21 @@
-import { ref, reactive, UnwrapRef, toRaw } from 'vue'
-import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
-import { RecordInfo, ResponseData } from '../../types'
-import {uploadCover} from '../../api/api'
-import {warningNotify, errorNotify} from '../../utils/util'
+import {ref, reactive, UnwrapRef, toRaw, onMounted} from 'vue'
+import {ValidateErrorEntity} from 'ant-design-vue/es/form/interface'
+import {RecordInfo, ResponseData} from '../../types'
+import {uploadCover, addRecord} from '../../api/api'
+import {warningNotify, errorNotify, successNotify, parseLocationSearch} from '../../utils/util'
 
 const rules = {
     title: [
-        { required: true, message: 'Input article title', trigger: 'blur' }
+        {required: true, message: 'Input article title', trigger: 'blur'}
     ],
     introduce: [
-        { required: true, message: 'Input article introduce', trigger: 'blur' }
+        {required: true, message: 'Input article introduce', trigger: 'blur'}
     ],
     cover: [
-        { required: true, message: 'Input cover link or upload an image', trigger: 'blur' }
+        {required: true, message: 'Input cover link or upload an image', trigger: 'blur'}
     ],
     content: [
-        { required: true, message: 'Input article content', trigger: 'blur' }
+        {required: true, message: 'Input article content', trigger: 'blur'}
     ]
 }
 
@@ -23,8 +23,8 @@ function isImage(file: File) {
     return file.type.match(/image/g)
 }
 
-export default function useEdit () {
-    const formRef = ref();
+export default function useEdit() {
+    const formRef = ref()
     const recordInfo: UnwrapRef<RecordInfo> = reactive({
         title: '',
         tag: 'Mood',
@@ -34,24 +34,30 @@ export default function useEdit () {
         content: ''
     })
     const tagOptions = ref<String[]>(['JS', 'Mood', 'Study Note', 'FrontEnd', 'BackEnd'])
-    // 上传文章 loading 状态
-    const uploading = ref<boolean>(false)
-
+    const uploading = ref<boolean>(false) // 上传文章 loading 状态
+    const isUpdate = ref<boolean>(false) // 新增文章 / 更新文章
     const uploadCoverSwitch = ref<boolean>(false)
     const previewVisible = ref<boolean>(false)
     const previewImage = ref<string | undefined>('')
+
+    onMounted(() => {
+        const params = parseLocationSearch()
+        console.log('get location search params: ', params)
+    })
+
     const submit = () => {
         formRef.value
             .validate()
             .then(() => {
                 console.log('values', recordInfo, toRaw(recordInfo))
+                handleUploadRecord()
             })
             .catch((error: ValidateErrorEntity<RecordInfo>) => {
                 console.log('error', error)
             })
     }
 
-    function handleUploadCover (files: FileList) {
+    function handleUploadCover(files: FileList) {
         if (files.length < 1) return
         const file = files[0]
         if (!isImage(file)) {
@@ -77,6 +83,32 @@ export default function useEdit () {
             if (typeof cover === 'string') {
                 recordInfo.cover = cover
             }
+        })
+    }
+
+    // 上传文章
+    function handleUploadRecord() {
+        if (isUpdate.value) {
+            // 更新文章
+            // updateRecord({})
+            return
+        }
+        // 新增文章
+        addRecord({
+            title: recordInfo.title,
+            tag: recordInfo.tag,
+            introduce: recordInfo.introduce,
+            content: recordInfo.content,
+            music: recordInfo.music,
+            cover: recordInfo.cover
+        }).then((res: any) => {
+            if (res.success) {
+                successNotify(res.message)
+            } else {
+                warningNotify(res.message)
+            }
+        }).catch(err => {
+            errorNotify(err.message)
         })
     }
 

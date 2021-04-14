@@ -90,13 +90,13 @@
       <!--   封面图预览   -->
       <div v-if="recordInfo.cover" class="preview-cover right-in flex-center">
         <img :src="recordInfo.cover" alt="Preview image">
-        <i class="iconfont icon-delete absolute-center" />
+        <i class="iconfont icon-delete absolute-center"/>
       </div>
 
       <div class="upload-article">
-        <a-button type="primary" :loading="uploading">
+        <a-button type="primary" :loading="uploading" @click="submit">
           <template #icon>
-            <SendOutlined />
+            <SendOutlined/>
           </template>
           UPLOAD
         </a-button>
@@ -106,17 +106,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import {defineComponent} from 'vue'
 import useEdit from './useEdit'
 import UploadButton from '../../components/UploadButton.vue'
-import { Input, Select, Form, Button, Modal, Switch } from 'ant-design-vue'
-import { SendOutlined } from '@ant-design/icons-vue'
+import {Input, Select, Form, Button, Modal, Switch} from 'ant-design-vue'
+import {SendOutlined} from '@ant-design/icons-vue'
 
 export default defineComponent({
   name: "EditRecord",
   components: {
     UploadButton,
-    'a-input' :Input,
+    'a-input': Input,
     'a-textarea': Input.TextArea,
     'a-select': Select,
     'a-select-option': Select.Option,
@@ -139,9 +139,11 @@ export default defineComponent({
 .edit-record {
   width: 100%;
   height: 100%;
+
   .form-container {
     padding: 30px 0;
     position: relative;
+
     .upload-cover-btn {
       position: absolute;
       left: 100px;
@@ -149,6 +151,7 @@ export default defineComponent({
       height: 35px;
       line-height: 25px;
     }
+
     .preview-cover {
       position: absolute;
       left: 45%;
@@ -158,6 +161,7 @@ export default defineComponent({
       width: 340px;
       height: 220px;
       overflow: hidden;
+
       &::after {
         content: "";
         position: absolute;
@@ -167,32 +171,39 @@ export default defineComponent({
         width: 100%;
         height: 100%;
       }
+
       &:hover {
         &::after {
           background-color: var(--opacity-cyan-3);
         }
+
         .icon-delete {
           opacity: 1;
         }
       }
+
       img {
         width: 100%;
       }
+
       .icon-delete {
         font-size: 1.5rem;
         color: var(--tipColor);
         z-index: 10;
         opacity: 0;
+
         &:hover {
           color: var(--error);
         }
       }
     }
+
     /*  */
     .editor {
       height: 600px;
       border: 1px solid var(--border);
     }
+
     .upload-article {
       margin-top: 20px;
     }
