@@ -207,6 +207,11 @@
 /**
   scroll
 */
+.scroller,
+.scroller-light {
+  overflow: auto;
+}
+
 .scroller-light::-webkit-scrollbar,
 .scroller::-webkit-scrollbar,
 .scroller-light::-webkit-scrollbar-corner,
@@ -367,6 +372,10 @@ div.ant-notification-notice {
       background-color: var(--success);
     }
   }
+}
+
+button.ant-btn {
+  border-radius: 5px;
 }
 
 

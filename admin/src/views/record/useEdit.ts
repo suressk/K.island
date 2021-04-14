@@ -34,6 +34,8 @@ export default function useEdit () {
         content: ''
     })
     const tagOptions = ref<String[]>(['JS', 'Mood', 'Study Note', 'FrontEnd', 'BackEnd'])
+    // 上传文章 loading 状态
+    const uploading = ref<boolean>(false)
 
     const uploadCoverSwitch = ref<boolean>(false)
     const previewVisible = ref<boolean>(false)
@@ -78,18 +80,16 @@ export default function useEdit () {
         })
     }
 
-    // 测试图片
-    // 'https://th.bing.com/th/id/R65398d6ad86129f9628c0ad80da4040c?rik=C3qNS9mZOQk%2b5A&riu=http%3a%2f%2fwww.shijuepi.com%2fuploads%2fallimg%2f200918%2f1-20091Q10420.jpg&ehk=QBNuJIbVP1qo%2bwUD3YzXcvL4H5iHivOHXUnzzRw%2bWfU%3d&risl=&pid=ImgRaw'
-
     return {
         formRef,
         recordInfo,
         tagOptions,
         rules,
-        submit,
-        handleUploadCover,
         previewVisible,
         previewImage,
-        uploadCoverSwitch
+        uploadCoverSwitch,
+        uploading,
+        submit,
+        handleUploadCover
     }
 }

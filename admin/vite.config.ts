@@ -47,6 +47,12 @@ export default defineConfig({
             ['/@comp/', 'src/components'],
         ]),
     },
+    optimizeDeps: {
+        include: [
+            '@kangc/v-md-editor/lib/theme/github.js',
+            '@kangc/v-md-editor/lib/theme/vuepress.js'
+        ]
+    }
 })
 
 // export default ({ command, mode }: ConfigEnv): UserConfig => {

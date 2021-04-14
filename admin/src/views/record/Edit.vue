@@ -9,6 +9,7 @@
         :rules="rules"
         :label-col="{ span: 2 }"
         :wrapper-col="{ span: 8 }"
+        autocomplete="off"
       >
         <a-form-item name="title" label="文章标题">
           <a-input
@@ -66,7 +67,7 @@
 
         <a-form-item label="切换图源">
           <a-switch
-            checked-children="UPLOAD"
+            checked-children="LOAD"
             un-checked-children="LINK"
             v-model:checked="uploadCoverSwitch"
           />
@@ -77,15 +78,28 @@
             accept="image/*"
             @change="handleUploadCover"
           >
-            Upload cover
+            Upload Cover
           </upload-button>
         </a-form-item>
 
       </a-form>
 
+      <!--   编辑文章内容   -->
+      <v-md-editor v-model:value="recordInfo.content" class="editor"/>
+
+      <!--   封面图预览   -->
       <div v-if="recordInfo.cover" class="preview-cover right-in flex-center">
         <img :src="recordInfo.cover" alt="Preview image">
         <i class="iconfont icon-delete absolute-center" />
+      </div>
+
+      <div class="upload-article">
+        <a-button type="primary" :loading="uploading">
+          <template #icon>
+            <SendOutlined />
+          </template>
+          UPLOAD
+        </a-button>
       </div>
     </div>
   </div>
@@ -95,7 +109,8 @@
 import { defineComponent } from 'vue'
 import useEdit from './useEdit'
 import UploadButton from '../../components/UploadButton.vue'
-import { Input, Select, Form, Upload, Modal, Switch } from 'ant-design-vue'
+import { Input, Select, Form, Button, Modal, Switch } from 'ant-design-vue'
+import { SendOutlined } from '@ant-design/icons-vue'
 
 export default defineComponent({
   name: "EditRecord",
@@ -107,9 +122,10 @@ export default defineComponent({
     'a-select-option': Select.Option,
     'a-form': Form,
     'a-form-item': Form.Item,
-    'a-upload': Upload,
     'a-modal': Modal,
-    'a-switch': Switch
+    'a-button': Button,
+    'a-switch': Switch,
+    SendOutlined
   },
   setup() {
     return {
@@ -124,7 +140,7 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   .form-container {
-    margin: 30px auto 10px;
+    padding: 30px 0;
     position: relative;
     .upload-cover-btn {
       position: absolute;
@@ -171,6 +187,14 @@ export default defineComponent({
           color: var(--error);
         }
       }
+    }
+    /*  */
+    .editor {
+      height: 600px;
+      border: 1px solid var(--border);
+    }
+    .upload-article {
+      margin-top: 20px;
     }
   }
 }
