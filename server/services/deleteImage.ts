@@ -28,8 +28,8 @@ function checkFileExist (filePath: string) {
 export function deleteImage (relativePath: string) {
     let fullPath = resolvePath(relativePath)
     // 替换可能存在的 "//" 或 "\\"
-    fullPath = fullPath.replace('//', '/')
-    fullPath = fullPath.replace('\\\\', '\\')
+    fullPath = fullPath.replace(/\/\//g, '/')
+    fullPath = fullPath.replace(/\\\\/g, '\\')
     return new Promise((resolve, reject) => {
         checkFileExist(fullPath).then(() => {
             fs.unlink(fullPath, (err: any) => {

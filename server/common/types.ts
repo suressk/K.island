@@ -88,6 +88,7 @@ export interface AddRecordOptions {
     content: string
     cover: string
     music: string
+    liked?: number
 }
 
 export interface UpdateRecordOptions extends RecordInfo {

@@ -27,7 +27,7 @@ router.post('/upload_plate', uploadIllustration.single('plate'), (req, res) => {
 })
 
 // 删除图片文件
-router.delete('/', (req, res) => {
+router.delete('/delete', (req, res) => {
     const { relativePath } = req.body
     deleteImage(relativePath).then(() => {
         // 删除成功

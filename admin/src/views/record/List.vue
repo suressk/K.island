@@ -38,7 +38,7 @@
         <a-tag color="blue">{{ text }}</a-tag>
       </template>
       <template #cover="{ text }">
-        <img v-if="text" :src="text" alt="cover-image">
+        <img v-if="text" :src="text" alt="cover">
         <a-tag v-else color="red">No Cover</a-tag>
       </template>
       <template #createTime="{ text }">

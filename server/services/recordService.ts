@@ -130,10 +130,8 @@ function updateViews(info: ArticleListItem) {
     const {id, uid, views} = info
     // then nothing to do
     updateRecord({id, uid, views: views + 1})
-        .then(() => {
-        })
-        .catch(() => {
-        })
+        .then(() => {})
+        .catch(() => {})
 }
 
 /**
@@ -141,10 +139,10 @@ function updateViews(info: ArticleListItem) {
  * */
 export function addRecord(options: AddRecordOptions) {
     const {title, tag, introduce, content, cover, music} = options
-    const sqlStr = 'INSERT INTO `tbl_records` (uid, title, content, introduce, tag, cover, music, ctime, utime, views, is_delete) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
+    const sqlStr = 'INSERT INTO `tbl_records` (uid, title, content, introduce, tag, cover, music, ctime, utime, views, liked, is_delete) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
     const ctime = Date.now()
     const uid = uuid()
-    const params = [uid, title, content, introduce, tag, cover, music, ctime, ctime, 10, 0]
+    const params = [uid, title, content, introduce, tag, cover, music, ctime, ctime, 10, 1, 0]
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, params)
             .then((result: any) => {
@@ -177,6 +175,7 @@ export function updateRecord(options: UpdateRecordOptions) {
 
 /**
  * 删除文章 (真删除)
+ * then => delete cover
  * */
 export function deleteRecord(options: RecordIdOptions) {
     const {id, uid} = options

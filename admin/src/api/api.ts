@@ -30,11 +30,11 @@ export const updateRecord = (params: UpdateArticleParams) => putAction('/sys/rec
 
 // 上传封面图
 export const uploadCover = (fileData: FormData) => postUploadImage('/sys/image/upload_cover', fileData)
+// 删除封面图
+export const deleteCover = (data: DeleteImageParams) => deleteAction('/sys/image/delete', data)
 // 上传文章插图
 export const uploadIllustration = (fileData: FormData) => postUploadImage('/sys/image/upload_plate', fileData)
 
-// 删除图片
-export const deleteImage = (data: DeleteImageParams | undefined) => deleteAction('/sys/image/delete', data)
 
 // 查询留言信息
 export const getMessageList = (params: PageQueryParams) => getAction('/sys/messages/list', params)
