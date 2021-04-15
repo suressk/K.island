@@ -73,7 +73,7 @@
           />
           <upload-button
             v-if="uploadCoverSwitch"
-            custom-type="primary"
+            type="primary"
             class="upload-cover-btn"
             accept="image/*"
             @change="handleUploadCover"
@@ -98,7 +98,7 @@
           <template #icon>
             <SendOutlined/>
           </template>
-          UPLOAD
+          SUBMIT
         </a-button>
       </div>
     </div>
@@ -106,17 +106,17 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, toRaw} from 'vue'
+import {defineComponent} from 'vue'
 import {errorNotify, parseLocationSearch, successNotify, warningNotify} from '../../utils/util'
 import {addRecord, deleteCover, getRecordDetail, uploadCover, updateRecord} from '../../api/api'
 import {ValidateErrorEntity} from 'ant-design-vue/es/form/interface'
-import {RecordInfo, ResponseData} from '../../types'
+import {ArticleIds, RecordInfo, RecordItem, ResponseData} from '../../types'
 import UploadButton from '../../components/UploadButton.vue'
 import {Input, Select, Form, Button, Modal, Switch} from 'ant-design-vue'
 import {SendOutlined} from '@ant-design/icons-vue'
 import {rules, isImage} from './useEdit'
 
-const tagOptions = ['JS', 'Mood', 'Study Note', 'FrontEnd', 'BackEnd']
+const tagOptions = ['Mood', 'JS', 'Study Note', 'FrontEnd', 'BackEnd']
 
 export default defineComponent({
   name: "EditRecord",
@@ -155,20 +155,20 @@ export default defineComponent({
     }
   },
   methods: {
-    handleUploadCover(files) {
-      if (files.length < 1) return
-      const file = files[0]
+    handleUploadCover(file: File) {
+      if (!(file instanceof File)) return
+
       if (!isImage(file)) {
         warningNotify('You should choose an image file')
         return
       }
+      // 创建上传图片的数据对象
       new Promise(resolve => {
-        // 创建上传图片的数据对象
         const formData = new FormData()
         formData.append('cover', file)
         formData.append('filename', file.name)
         // @ts-ignore
-        uploadCover(formData).then((res: ResponseData<any>) => {
+        uploadCover(formData).then((res: ResponseData<{ cover: string }>) => {
           if (res.success) {
             resolve(res.data.cover)
           } else {
@@ -199,7 +199,7 @@ export default defineComponent({
           errorNotify(err.message)
         })
     },
-    getRecordInfo(params) {
+    getRecordInfo(params: ArticleIds) {
       getRecordDetail(params).then((res: any) => {
         if (!res.success) {
           warningNotify(res.message)
@@ -210,14 +210,14 @@ export default defineComponent({
         errorNotify(err.message)
       })
     },
-    assignRecord(info) {
+    assignRecord(info: RecordItem) {
       this.recordInfo = {
         title: info.title,
         tag: info.tag,
         introduce: info.introduce,
         cover: info.cover,
-        music: info.music,
-        content: info.content
+        music: info.music as string,
+        content: info.content as string
       }
       this.updateInfo = {
         id: info.id,
@@ -240,6 +240,7 @@ export default defineComponent({
     },
     // 底部按钮触发表单验证
     submit() {
+      // @ts-ignore
       this.$refs.formRef.validate()
         .then(() => {
           if (this.isUpdate) {
@@ -271,7 +272,7 @@ export default defineComponent({
       updateRecord({
         ...this.recordInfo,
         ...this.updateInfo
-      }).then(res => {
+      }).then((res: any) => {
         if (res.success) {
           successNotify(res.message)
         } else {
@@ -291,11 +292,6 @@ export default defineComponent({
       this.isUpdate = false
     }
   }
-  // setup() {
-  //   return {
-  //     ...useEdit()
-  //   }
-  // }
 })
 </script>
 

@@ -1,47 +1,85 @@
 <template>
-  <button class="upload-file btn" :class="'btn-' + customType" @click="handleClick">
+  <button
+    class="upload-file btn"
+    :class="'btn-' + type"
+    @click="handleClick"
+  >
     <slot>Upload</slot>
     <input
       type="file"
       class="select-file-input"
       :accept="accept"
       ref="fileInpRef"
-      @change="emitChooseFile"
+      @change="fileChange"
     >
   </button>
 </template>
 
-<script lang="ts">
-import { defineComponent, nextTick, getCurrentInstance, ComponentInternalInstance } from 'vue'
+<script>
+import {defineComponent} from 'vue'
+import {warningNotify} from '../utils/util'
 
 export default defineComponent({
   name: "UploadButton",
   props: {
-    customType: {
+    type: {
       type: String,
-      default: ''
+      default: 'primary'
     },
     accept: String,
+    uploadFilename: {
+      type: String,
+      default: 'filename'
+    }
   },
-  setup(props, { emit }) {
-    const { proxy }: ComponentInternalInstance = getCurrentInstance()!
-    function handleClick() {
-      const inpRef = proxy?.$refs.fileInpRef as HTMLInputElement
-      inpRef.click()
-    }
-
-    // Event type ??? InputEvent ?
-    function emitChooseFile(e: any) {
-      e.preventDefault()
-      emit('change', e.target.files) // 选中的文件
-      nextTick(() => {
-        e.target.value = ''
-      })
-    }
+  data() {
     return {
-      handleClick,
-      emitChooseFile
+      inpRef: null
     }
+  },
+  methods: {
+    handleClick() {
+      this.inpRef && this.inpRef.click()
+    },
+    fileChange(e) {
+      try {
+        const file = this.getFile()
+        if (file === null) return
+        this.$emit('change', file)
+        // this.emitFormData(file)
+        // this.preview(file)
+        this.$nextTick(() => {
+          e.target.value = ''
+        })
+      } catch (error) {
+        console.debug('choose file error: ', error)
+      }
+    },
+    preview(file) {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = e => {
+        console.log(e)
+        // const imgUrl = e.result
+        // element.insertAdjacentHTML
+      }
+    },
+    emitFormData(file) {
+      const fd = new FormData()
+      fd.append([this.uploadFilename], file.name)
+      fd.append('file', file)
+      this.$emit('change', fd)
+    },
+    getFile() {
+      if (this.inpRef && this.inpRef.files.length === 0) {
+        warningNotify("Haven't choose a file!")
+        return null
+      }
+      return this.inpRef.files[0]
+    }
+  },
+  mounted() {
+    this.inpRef = this.$refs.fileInpRef
   }
 })
 </script>
@@ -49,8 +87,9 @@ export default defineComponent({
 <style lang="scss">
 .upload-file {
   padding: 5px 20px;
+
   .select-file-input {
-    display: none!important;
+    display: none !important;
   }
 
 }
