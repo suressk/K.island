@@ -12,7 +12,7 @@
     margin: 1rem 0;
     font-family: Arial, Helvetica, sans-serif;
     padding-left: 1rem;
-    color: var(--ink);
+    //color: var(--ink);
     border-left: 5px solid transparent;
   }
   h1 {
@@ -40,7 +40,7 @@
     border-left-color: var(--lightBlue);
   }
   a {
-    color: var(--lightCyan);
+    color: var(--dark-primary);
     transition: all 0.3s;
     &:hover {
       color: var(--primary);

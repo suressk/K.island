@@ -98,4 +98,10 @@ body.k-dark {
     }
   }
 
+  // 留言板
+  .k-message {
+    .message-list .message-item {
+      background-color: var(--opacity-cyan-1);
+    }
+  }
 }

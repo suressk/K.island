@@ -149,6 +149,10 @@ export interface ArticleIds {
     uid: string
 }
 
+export interface DeleteRecordParams extends ArticleIds {
+    relativePath?: string
+}
+
 export interface UpdateArticleParams extends ArticleInfo {
     id: number
     uid: string

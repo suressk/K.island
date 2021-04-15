@@ -2,8 +2,9 @@ import {createVNode} from 'vue'
 import {notification, Modal} from 'ant-design-vue'
 import {ACCESS_TOKEN, STORAGE_PREFIX} from '../store/mutation-types'
 import {QuestionCircleOutlined} from '@ant-design/icons-vue'
-import {TokenInfo, YearDataList, RecordItem} from '../types'
+import {TokenInfo, RecordItem} from '../types'
 import {ConfirmOptions, MessageType} from '../types/tip'
+import {domainUrl} from '../api/request'
 import DAYJS from 'dayjs'
 
 /**
@@ -293,3 +294,15 @@ export function parseLocationSearch() {
     return obj
 }
 
+/**
+ * 获取本服务器上封面图相对路径
+ * serverPath => /images/cover/xxx.xxx
+ * */
+export function getCoverRelativePath(url: string): string | undefined {
+    const len = domainUrl.length
+    // 是上传存储于本服务器上的图片
+    if (url.includes(domainUrl)) {
+        return url.substring(len)
+    }
+    return undefined
+}

@@ -9,7 +9,7 @@ import {
 } from '../../types'
 import {useRouter} from 'vue-router'
 import {deleteRecord, getRecordList, updateRecord} from '../../api/api'
-import {errorNotify, successNotify, warningNotify, mapRecordTime} from '../../utils/util' // 按年分组平铺
+import {errorNotify, successNotify, warningNotify, mapRecordTime, getCoverRelativePath} from '../../utils/util'
 
 const columns = [
     {
@@ -65,34 +65,6 @@ const columns = [
         slots: {customRender: 'action'}
     }
 ]
-
-// 测试数据
-// const data = [
-//     {
-//         id: 1001,
-//         uid: 'asdasd',
-//         title: 'title',
-//         ctime: 1602156934000,
-//         utime: 1602263614000,
-//         introduce: 'introduce',
-//         tag: 'JS',
-//         cover: 'http://localhost:9527/images/cover/941c6c10-9538-44ed-9b56-3bc487529d7e.jpg',
-//         views: 1,
-//         is_delete: 1
-//     },
-//     {
-//         id: 1002,
-//         uid: 'as12d',
-//         title: 'tiasf_asdale',
-//         ctime: 1602156964000,
-//         utime: 1602263514000,
-//         introduce: 'introduce asfdasf',
-//         tag: 'JSasfsa ',
-//         cover: 'http://localhost:9527/images/cover/941c6c10-9538-44ed-9b56-3bc487529d7e.jpg',
-//         views: 1,
-//         is_delete: 0
-//     }
-// ]
 
 /**
  * 文章列表
@@ -226,9 +198,10 @@ export default function useList() {
      * 删除文章 icon-delete
      * */
     function handleDeleteRecord(item: RecordItem) {
-        const {id, uid} = item
+        const {id, uid, cover} = item
+        const relativePath = getCoverRelativePath(cover)
         // @ts-ignore
-        deleteRecord({ id, uid }).then((res: ResponseData<object>) => {
+        deleteRecord({ id, uid, relativePath }).then((res: ResponseData<object>) => {
             if (res.success) {
                 successNotify(res.message)
                 getRecords({

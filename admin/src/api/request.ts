@@ -4,8 +4,10 @@ import {getStorageToken, errorNotify, Confirm, getStorageItem, setStorageItem, r
 import {ACCESS_TOKEN, TOKEN_EXPIRED} from '../store/mutation-types'
 import router from '../router'
 
+export const domainUrl = 'http://localhost:9527'
+
 const service: AxiosInstance = axios.create({
-    baseURL: 'http://localhost:9527' || '/',
+    baseURL: domainUrl || '/',
     timeout: 9000
 })
 

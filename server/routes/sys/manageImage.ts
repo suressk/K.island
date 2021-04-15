@@ -1,7 +1,7 @@
 import express from 'express'
 import multer from 'multer'
 import { writeHead, writeResult } from '../../utils/writeResponse'
-import { deleteImage } from '../../services/deleteImage'
+import { imageService } from '../../services/imageService'
 import { createMulterStorage } from '../../utils/util'
 
 const router = express.Router()
@@ -29,7 +29,7 @@ router.post('/upload_plate', uploadIllustration.single('plate'), (req, res) => {
 // 删除图片文件
 router.delete('/delete', (req, res) => {
     const { relativePath } = req.body
-    deleteImage(relativePath).then(() => {
+    imageService(relativePath).then(() => {
         // 删除成功
         writeHead(res, 200)
         writeResult(res, true, 'Successfully deleted !')

@@ -93,7 +93,7 @@
       <!--   编辑文章内容   -->
       <v-md-editor v-model="recordInfo.content" class="editor"/>
 
-      <div class="upload-article">
+      <div class="submit-container">
         <a-button type="primary" :loading="uploading" @click="submit">
           <template #icon>
             <SendOutlined/>
@@ -107,7 +107,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {errorNotify, parseLocationSearch, successNotify, warningNotify} from '../../utils/util'
+import {errorNotify, parseLocationSearch, successNotify, warningNotify, getCoverRelativePath} from '../../utils/util'
 import {addRecord, deleteCover, getRecordDetail, uploadCover, updateRecord} from '../../api/api'
 import {ValidateErrorEntity} from 'ant-design-vue/es/form/interface'
 import {ArticleIds, RecordInfo, RecordItem, ResponseData} from '../../types'
@@ -162,6 +162,8 @@ export default defineComponent({
         warningNotify('You should choose an image file')
         return
       }
+      // @ts-ignore
+      this.$refs.formRef.clearValidate() // 移除表单的校验结果
       // 创建上传图片的数据对象
       new Promise(resolve => {
         const formData = new FormData()
@@ -184,8 +186,11 @@ export default defineComponent({
       })
     },
     handleDeleteCover() {
-      const index = this.recordInfo.cover.indexOf('/images')
-      const relativePath = this.recordInfo.cover.substring(index) // server 根路径的相对路径
+      const relativePath = getCoverRelativePath(this.recordInfo.cover)
+      if (!relativePath) {
+        warningNotify("This picture doesn't exist on your server, just clear the link text")
+        return
+      }
       deleteCover({ relativePath })
         .then((res: any) => {
           if (!res.success) {
@@ -238,7 +243,7 @@ export default defineComponent({
         uid: ''
       }
     },
-    // 底部按钮触发表单验证
+    // 底部按钮触发表单验证 => 新增 / 更新文章
     submit() {
       // @ts-ignore
       this.$refs.formRef.validate()
@@ -260,6 +265,7 @@ export default defineComponent({
       }).then((res: any) => {
         if (res.success) {
           successNotify(res.message)
+          this.resetOption()
         } else {
           warningNotify(res.message)
         }
@@ -315,11 +321,11 @@ export default defineComponent({
     .preview-cover {
       position: absolute;
       left: 50%;
-      top: 235px;
+      top: 40px;
       border: 1px solid var(--border);
       border-radius: 5px;
-      width: 340px;
-      height: 220px;
+      width: 45%;
+      height: 400px;
       overflow: hidden;
 
       &::after {
@@ -347,24 +353,20 @@ export default defineComponent({
       }
 
       .icon-delete {
-        font-size: 1.5rem;
+        font-size: 2rem;
         color: var(--tipColor);
         z-index: 10;
         opacity: 0;
-
-        &:hover {
-          color: var(--error);
-        }
       }
     }
 
-    /*  */
+    /* 文章内容编辑器 */
     .editor {
       height: 600px;
       border: 1px solid var(--border);
     }
 
-    .upload-article {
+    .submit-container {
       margin-top: 20px;
     }
   }

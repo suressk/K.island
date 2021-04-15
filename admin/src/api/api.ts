@@ -13,6 +13,7 @@ import {
   ArticleIds,
   UpdateArticleParams,
   PageQueryParams,
+  DeleteRecordParams,
   DeleteCommentsParams,
   DeleteMessagesParams
 } from '../types'
@@ -25,7 +26,7 @@ export const login = (params: LoginParams) => postAction('/login', params)
 export const addRecord = (params: NewArticleParams) => postAction('/sys/record/add', params)
 export const getRecordList = (params: QueryArticleListParams) => getAction('/sys/record/list', params)
 export const getRecordDetail = (params: ArticleIds) => getAction('/sys/record/detail', params)
-export const deleteRecord = (params: ArticleIds) => deleteAction('/sys/record/delete', params)
+export const deleteRecord = (params: DeleteRecordParams) => deleteAction('/sys/record/delete', params)
 export const updateRecord = (params: UpdateArticleParams) => putAction('/sys/record/update', params)
 
 // 上传封面图
