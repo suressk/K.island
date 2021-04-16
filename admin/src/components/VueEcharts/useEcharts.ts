@@ -6,7 +6,7 @@ import {
     ComponentInternalInstance
 } from 'vue'
 import * as echarts from 'echarts'
-import { throttle } from '../../utils/util'
+import {throttle} from '../../utils/util'
 
 interface EchartsProps {
     options: echarts.EChartsOption
@@ -19,7 +19,12 @@ export default function useEcharts(props: EchartsProps) {
     let echartsInstance: echarts.EChartsType
     let chartEl: HTMLElement
 
-    function initEChart (options: echarts.EChartsOption) {
+    // const resizeStyle = reactive<{ width: string, height: string }>({
+    //     width: '100%',
+    //     height: '100%'
+    // })
+
+    function initEChart(options: echarts.EChartsOption) {
         if (echartsInstance) {
             return
         }
@@ -38,7 +43,11 @@ export default function useEcharts(props: EchartsProps) {
 
     // 监听 window resize
     const listenResize = throttle(() => {
+        // const { width, height } = chartEl.getBoundingClientRect()
+        // resizeStyle.width = width + 'px'
+        // resizeStyle.height = height + 'px'
         echartsInstance.setOption(props.options, false)
+        echartsInstance.resize() // 画布大小自适应 resize
     }, 200)
 
     onMounted(() => {

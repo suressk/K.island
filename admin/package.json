@@ -11,6 +11,7 @@
     "ant-design-vue": "^2.1.0",
     "axios": "^0.21.1",
     "dayjs": "^1.10.4",
+    "default-passive-events": "^2.0.0",
     "echarts": "^5.0.2",
     "md5": "^2.3.0",
     "vue": "^3.0.5",

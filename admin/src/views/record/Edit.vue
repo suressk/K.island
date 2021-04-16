@@ -229,19 +229,20 @@ export default defineComponent({
         uid: info.uid
       }
     },
-    resetOption() {
-      this.recordInfo = {
-        title: '',
-        tag: 'Mood',
-        introduce: '',
-        cover: '',
-        music: '',
-        content: ''
-      }
-      this.updateInfo = {
-        id: -1,
-        uid: ''
-      }
+    clearContent() {
+      this.recordInfo.content = ''
+      // this.recordInfo = {
+      //   title: '',
+      //   tag: 'Mood',
+      //   introduce: '',
+      //   cover: '',
+      //   music: '',
+      //   content: ''
+      // }
+      // this.updateInfo = {
+      //   id: -1,
+      //   uid: ''
+      // }
     },
     // 底部按钮触发表单验证 => 新增 / 更新文章
     submit() {
@@ -265,7 +266,9 @@ export default defineComponent({
       }).then((res: any) => {
         if (res.success) {
           successNotify(res.message)
-          this.resetOption()
+          this.clearContent()
+          // @ts-ignore
+          this.$refs.formRef.resetFields() // 重置表单内容及验证结果
         } else {
           warningNotify(res.message)
         }
@@ -291,12 +294,14 @@ export default defineComponent({
   },
   mounted() {
     const params = parseLocationSearch()
-    if (Object.keys(params).length > 0) {
-      this.isUpdate = true
-      this.getRecordInfo(params)
-    } else {
-      this.isUpdate = false
-    }
+    this.isUpdate = !!(params.id && params.uid)
+    this.isUpdate && this.getRecordInfo(params)
+    // if (Object.keys(params).length > 0) {
+    //   this.isUpdate = true
+    //   this.getRecordInfo(params)
+    // } else {
+    //   this.isUpdate = false
+    // }
   }
 })
 </script>
