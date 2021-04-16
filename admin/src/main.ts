@@ -2,7 +2,6 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-// import useAntd from './plugins/useAntd'
 import 'vite-plugin-svg-icons/register'
 
 /**
@@ -16,7 +15,14 @@ import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js'
 import '@kangc/v-md-editor/lib/style/base-editor.css'
 import '@kangc/v-md-editor/lib/theme/style/vuepress.css'
 
-VueMarkdownEditor.use(vuepressTheme)
+/**
+ * 扩展 vue 代码语法高亮
+ * */
+VueMarkdownEditor.use(vuepressTheme, {
+    codeHighlightExtensionMap: {
+        vue: 'xml'
+    }
+})
 // VueMarkdownEditor.use(githubTheme)
 
 const app = createApp(App)

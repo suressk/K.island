@@ -1,8 +1,8 @@
 import express from 'express'
-import { addRecord, updateRecord, deleteRecord } from '../../services/recordService'
-import { imageService } from '../../services/imageService'
-import { writeHead, writeResult } from '../../utils/writeResponse'
-import { recordDetailResponse, recordListResponse } from '../recordResponse'
+import {addRecord, updateRecord, deleteRecord, sendNotification} from '../../services/recordService'
+import {imageService} from '../../services/imageService'
+import {writeHead, writeResult} from '../../utils/writeResponse'
+import {queryRecordListResp, queryRecordDetailResp} from '../recordResponse'
 
 const router = express.Router()
 
@@ -10,14 +10,14 @@ const router = express.Router()
  * 查询文章列表
  * */
 router.get('/list', (req, res) => {
-    recordListResponse(req, res, 'all')
+    queryRecordListResp(req, res, 'all')
 })
 
 /**
  * 查询文章详情
  * */
 router.get('/detail', (req, res) => {
-    recordDetailResponse(req, res)
+    queryRecordDetailResp(req, res)
 })
 
 /**
@@ -26,6 +26,10 @@ router.get('/detail', (req, res) => {
 router.post('/add', (req, res) => {
     addRecord(req.body)
         .then(() => {
+            /**
+             * 给订阅者发送通知
+             * */
+            sendNotification()
             writeHead(res, 200)
             writeResult(res, true, 'Successfully added')
         })
@@ -79,15 +83,15 @@ router.delete('/delete', (req, res) => {
     })
 
     const delRecordPro = new Promise((resolve, reject) => {
-        deleteRecord({ id, uid })
+        deleteRecord({id, uid})
             .then(() => {
                 resolve('Successfully deleted the record')
             }).catch(err => {
-                reject({
-                    message: 'Failed to delete the record',
-                    error: err
-                })
+            reject({
+                message: 'Failed to delete the record',
+                error: err
             })
+        })
     })
 
     Promise.all([delCoverPro, delRecordPro])

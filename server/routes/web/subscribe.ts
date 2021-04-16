@@ -1,11 +1,17 @@
 import express from 'express'
 import {SubscribeInfo, EmailTipType} from '../../common/types'
-import {querySubscribeInfo, addVerifyCodeInfo, addSubscribeInfo, checkVerificationCode} from '../../services/subscribeService'
+import {
+    querySubscribeInfo,
+    addVerifyCodeInfo,
+    addSubscribeInfo,
+    checkVerificationCode
+} from '../../services/subscribeService'
 import {writeHead, writeResult} from '../../utils/writeResponse'
 import {createRandomVerifyCode} from '../../utils/util'
 import sendMail from '../../utils/subscribe'
-import {authPass, authEmail} from '../../common/definition'
-import { v4 as uuid } from 'uuid'
+import {authMailInfo} from '../../utils/mail'
+import {v4 as uuid} from 'uuid'
+// import {authPass, authEmail} from '../../common/definition'
 
 const router = express.Router()
 
@@ -17,7 +23,7 @@ router.post('/add', (req, res) => {
     // const name = req.body.name
     // 1. 查询此邮箱是否存在
     const pro = new Promise((resolve, reject) => {
-        querySubscribeInfo({ email })
+        querySubscribeInfo({email})
             .then((result: any) => {
                 // 邮箱已存在
                 if (result && result.length > 0) {
@@ -26,10 +32,10 @@ router.post('/add', (req, res) => {
                         status: 200,
                         success: false,
                         message: '你的邮箱已经订阅过小栈了~ 不用重复订阅的',
-                        data: {}
+                        error: {}
                     })
                 } else {
-                    resolve({})
+                    resolve(true)
                 }
             })
             .catch(error => {
@@ -37,11 +43,11 @@ router.post('/add', (req, res) => {
                     status: 500,
                     success: false,
                     message: 'Something error in querying subscription information',
-                    data: error
+                    error: error
                 })
             })
-        }
-    )
+
+    })
 
     // 2. 发送邮箱验证
     pro.then(() => {
@@ -49,46 +55,38 @@ router.post('/add', (req, res) => {
         const verifyCode = createRandomVerifyCode()
         const uid = uuid()
 
-        const auth = {
-            // email: authEmail.qq,
-            user: authEmail.qq,
-            pass: authPass.qq,
-            emailType: 'QQ',
-            name: '小 K.'
-        }
         const info = {
             uid,
             email,
             url: `${req.headers.origin}/subscription/verify?email=${email}`,
             code: verifyCode
         }
-        sendMail(EmailTipType.VERIFY_EMAIL, info, auth as SubscribeInfo)
+        /**
+         * sendMail.then:
+         *
+         * result: {
+         *     accepted: [the email],
+         *     envelop: {
+         *         from: auth email,
+         *         to: [the email]
+         *     },
+         *     ... // others msg
+         * }
+         * */
+        sendMail(EmailTipType.VERIFY_EMAIL, info, authMailInfo as SubscribeInfo)
             .then(() => {
-                /**
-                 * result: {
-                 *     accepted: [the email],
-                 *     envelop: {
-                 *         from: auth email,
-                 *         to: [the email]
-                 *     },
-                 *     ... // others msg
-                 * }
-                 * */
                 // 表存储验证码信息
                 addVerifyCodeInfo({
                     code: verifyCode,
                     email,
                     uid
-                }).then((result) => {
-                    console.log('add code success: ', result)
+                }).then(() => {
                     writeHead(res, 200)
                     writeResult(res, true, '邮箱验证信息已发送！快去你的邮箱验证一下吧~')
                 }, err => {
-                    console.log('add code error: ', err)
                     writeHead(res, 200)
                     writeResult(res, false, '貌似出错了', err)
                 })
-
             })
             .catch(error => {
                 writeHead(res, 200)
@@ -96,7 +94,7 @@ router.post('/add', (req, res) => {
             })
     }).catch(err => {
         writeHead(res, err.status)
-        writeResult(res, false, err.message, err.data)
+        writeResult(res, false, err.message, err.error)
     })
 })
 
@@ -106,8 +104,7 @@ router.post('/add', (req, res) => {
 router.post('/verify', (req, res) => {
     checkVerificationCode(req.body)
         .then(() => {
-            // { message: 'success' } 验证邮箱成功
-            // 新增订阅
+            // 邮箱验证成功 => 新增订阅
             addSubscribeInfo({
                 email: req.body.email,
                 name: req.body.name
@@ -122,8 +119,7 @@ router.post('/verify', (req, res) => {
         .catch(err => {
             writeHead(res, err.status)
             writeResult(res, false, err.message, err.error)
-        }
-    )
+        })
 })
 
 export default router

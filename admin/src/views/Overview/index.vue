@@ -64,7 +64,6 @@ export default defineComponent({
     width: 30%;
     transition: all .3s ease;
     border: 1px solid var(--border);
-    cursor: pointer;
     &:hover {
       transform: translateY(-5px);
       border-color: transparent;

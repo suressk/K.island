@@ -1,5 +1,7 @@
 import {poolQuery, promisePoolQuery} from '../dao/DBUtil'
 import {getUpdateRecordParams, mapCreateTime, mapYearGroup} from '../utils/util'
+import sendMail from '../utils/subscribe'
+import {queryAllSubscribe} from './subscribeService'
 import {v4 as uuid} from 'uuid'
 import {
     QueryRecordListOptions,
@@ -152,7 +154,23 @@ export function addRecord(options: AddRecordOptions) {
                 reject(err)
             })
     })
-    // connectQuery(sqlStr, params, success, error)
+}
+
+interface EmailItemResult {
+    email: string
+}
+/**
+ * 发送发布文章通知
+ * */
+export function sendNotification() {
+    queryAllSubscribe().then((res: any) => {
+        const emailList = res.map((item: EmailItemResult) => item.email);
+        console.log('查询所有订阅邮箱： ', emailList)
+        // TODO => 发送邮件
+    }).catch(err => {
+        console.log('查询所有订阅邮箱失败： ', err)
+    })
+    // sendMail(2, )
 }
 
 /**
@@ -162,8 +180,8 @@ export function updateRecord(options: UpdateRecordOptions) {
     // 四种情况:
     // 1. 修改 is_delete —— 文章显示与否；
     // 2. 修改 views —— 文章访问量；
-    // 3. 修改 liked —— 文章点赞(喜欢)量；
-    // 4. 修改文章详情内容（title, tag, introduce, content, cover）
+    // 3. 修改 liked —— 文章点赞(喜欢)量； <暂时未做>
+    // 4. 修改文章详情内容（title, tag, introduce, content, cover...）
     const {sqlStr, params} = getUpdateRecordParams(options)
     // connectQuery(sqlStr, params, success, error)
     return new Promise((resolve, reject) => {

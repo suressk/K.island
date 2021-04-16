@@ -31,7 +31,7 @@ interface SendEmailInfo {
  * @param {*} info
  * @param {*} auth
  * */
-function sendMail(type: number, info: SendEmailInfo, auth: SubscribeInfo) {
+export default function sendMail(type: number, info: SendEmailInfo, auth: SubscribeInfo) {
 
     const transporter = nodemailer.createTransport({
         // host: mode[info.emailType],
@@ -129,5 +129,3 @@ function createTipInfo(type: number, info: SendEmailInfo, auth: SubscribeInfo): 
             }
     }
 }
-
-export default sendMail

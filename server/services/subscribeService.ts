@@ -37,7 +37,20 @@ export async function querySubscribeList(options: QuerySubscribeListOptions) {
 }
 
 /**
- * 查询订阅信息
+ * 查询已订阅邮箱
+ * */
+export async function queryAllSubscribe() {
+    const sqlStr = 'SELECT email FROM `tbl_subscribe`'
+    try {
+        const [list] = await promisePoolQuery(sqlStr, [])
+        return list
+    } catch (err) {
+        return err
+    }
+}
+
+/**
+ * 查询一条订阅信息
  * */
 export function querySubscribeInfo(options: QuerySubscribeOptions) {
     const {email} = options

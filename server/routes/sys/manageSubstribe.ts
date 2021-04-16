@@ -22,7 +22,7 @@ router.get('/list', (req, res) => {
             })
         }).catch(error => {
             writeHead(res, 200)
-            writeResult(res, false, '订阅信息列表查询失败咯！', error)
+            writeResult(res, false, '订阅信息列表查询失败！', error)
         })
 })
 
@@ -34,7 +34,7 @@ router.delete('/delete', (req, res) => {
     console.log('delete subscribe body: ', req.body)
     const email = req.query.email as string
     writeHead(res, 200)
-    writeResult(res, true, `${email} successfully deleted`)
+    writeResult(res, true, `Successfully deleted the email: ${email}`)
     // deleteSubscribe({
     //     id: 1,
     //     email
