@@ -24,19 +24,28 @@ router.get('/detail', (req, res) => {
  * 新增文章
  * */
 router.post('/add', (req, res) => {
-    addRecord(req.body)
-        .then(() => {
-            /**
-             * 给订阅者发送通知
-             * */
-            sendNotification()
-            writeHead(res, 200)
-            writeResult(res, true, 'Successfully added')
-        })
-        .catch(err => {
-            writeHead(res, 500)
-            writeResult(res, false, 'Failed to add record', err)
-        })
+    const addRecordPro = addRecord(req.body)
+
+    // 新增文章失成功
+    addRecordPro.then(() => {
+        /**
+         * 给订阅者发送通知
+         * */
+        sendNotification(req.headers.origin as string, req.body.title)
+            .then((result: any) => {
+                writeHead(res, 200)
+                writeResult(res, true, 'Successfully added the article, ' + result.message)
+            })
+            .catch(err => {
+                writeHead(res, 200)
+                writeResult(res, true, 'Successfully added the article, ' + err.message, err)
+            })
+    })
+    // 新增文章失败
+    addRecordPro.catch(err => {
+        writeHead(res, 500)
+        writeResult(res, false, 'Failed to add record', err)
+    })
 })
 
 /**

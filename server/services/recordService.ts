@@ -1,6 +1,7 @@
 import {poolQuery, promisePoolQuery} from '../dao/DBUtil'
 import {getUpdateRecordParams, mapCreateTime, mapYearGroup} from '../utils/util'
-import sendMail from '../utils/subscribe'
+import sendMail from '../utils/sendMail'
+import {authMailInfo} from '../utils/sendMail'
 import {queryAllSubscribe} from './subscribeService'
 import {v4 as uuid} from 'uuid'
 import {
@@ -160,17 +161,41 @@ interface EmailItemResult {
     email: string
 }
 /**
- * 发送发布文章通知
+ * 发送发布文章通知 type: 2
+ * @param {*} origin 网站路径（因为没去再查一遍，取不到文章 id，指向网站首页即可）
+ * @param {*} title 文章标题
  * */
-export function sendNotification() {
-    queryAllSubscribe().then((res: any) => {
-        const emailList = res.map((item: EmailItemResult) => item.email);
-        console.log('查询所有订阅邮箱： ', emailList)
-        // TODO => 发送邮件
-    }).catch(err => {
-        console.log('查询所有订阅邮箱失败： ', err)
+export function sendNotification(origin: string, title: string) {
+    return new Promise((resolve, reject) => {
+        // 查询已订阅邮箱 email
+        queryAllSubscribe().then((res: any) => {
+            const emailList = res.map((item: EmailItemResult) => item.email);
+            const data = {
+                url: origin,
+                email: emailList,
+                title
+            }
+            // TODO => 发送邮件 type: 2 （新文章通知）
+            sendMail(2, data, authMailInfo)
+                .then(() => {
+                    resolve({
+                        message: 'Successfully sent the new article notification'
+                    })
+                })
+                .catch(err => {
+                    reject({
+                        message: 'Something went wrong when posting the new article notification',
+                        error: err
+                    })
+                })
+        })
+        .catch(err => {
+            reject({
+                message: 'Something went wrong when querying the subscription email',
+                error: err
+            })
+        })
     })
-    // sendMail(2, )
 }
 
 /**

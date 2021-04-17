@@ -1,17 +1,17 @@
 import {Request, Response} from 'express'
-import { login } from '../../services/loginService'
-import { writeHead, writeResult } from '../../utils/writeResponse'
-import { publishToken, expireTime } from '../../utils/jwt'
+import {login} from '../../services/loginService'
+import {writeHead, writeResult} from '../../utils/writeResponse'
+import {publishToken, expireTime} from '../../utils/jwt'
 // const cookieKey = 'token'
 
-export default function loginPermission (req: Request, res: Response) {
+export default function loginPermission(req: Request, res: Response) {
     login(req.body)
         .then((result: any) => {
-            const { username, password } = req.body
+            const {username, password} = req.body
             // 未查询到 username 的用户
             if (result.length === 0) {
                 writeHead(res, 200)
-                writeResult(res, false, `Username not matched：${username} !`)
+                writeResult(res, false, `Didn't match the username：${username} !`)
             } else if (password === result[0].password) {
                 // 用户名和密码均匹配 - 颁发 token
                 const token = publishToken({
@@ -26,7 +26,7 @@ export default function loginPermission (req: Request, res: Response) {
                 // 添加 authorization
                 res.header("authorization", token)
                 writeHead(res, 200)
-                writeResult(res, true, "Login successful !", { token, expireTime })
+                writeResult(res, true, "Login successful !", {token, expireTime})
             } else {
                 writeHead(res, 200)
                 writeResult(res, false, 'Password error')

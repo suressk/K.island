@@ -14,10 +14,7 @@ const pool = mysql.createPool({
     queueLimit: 0 // 连接池的最大请求数，从 getConnection 方法前依次排队。 0: 没有限制
 })
 
-const promisePool = pool.promise()
-
 // acquireTimeout: 5000, // 获取连接超时的毫秒数 TODO 【提示移除此配置项】
-
 // pool.query() || pool.execute() || pool.getConnection()
 // query() 和 execute() 会自动获取连接并自动释放连接
 
@@ -27,6 +24,29 @@ const promisePool = pool.promise()
 //     // 完成后释放连接
 //     conn.release();
 // })
+
+/**
+ * 连接池连接查询
+ * */
+export function poolQuery (sqlStr: string, params: any[]) {
+    return new Promise((resolve, reject) => {
+        pool.query(sqlStr, params, ((err: any, result: any) => {
+            if (!err) {
+                resolve(result)
+            } else {
+                reject(err)
+            }
+        }))
+    })
+}
+
+/**
+ * promise 式
+ * */
+const promisePool = pool.promise()
+export function promisePoolQuery (sqlStr: string, params: any[]) {
+    return promisePool.query(sqlStr, params)
+}
 
 /**
  * 创建数据库连接
@@ -58,26 +78,3 @@ const promisePool = pool.promise()
 //         connection.end()
 //     })
 // }
-
-/**
- * 连接池连接查询
- * */
-export function poolQuery (sqlStr: string, params: any[]) {
-    return new Promise((resolve, reject) => {
-
-        pool.query(sqlStr, params, ((err: any, result: any) => {
-            if (!err) {
-                resolve(result)
-            } else {
-                reject(err)
-            }
-        }))
-    })
-}
-
-/**
- * promise 式
- * */
-export function promisePoolQuery (sqlStr: string, params: any[]) {
-    return promisePool.query(sqlStr, params)
-}

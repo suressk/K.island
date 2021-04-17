@@ -8,8 +8,8 @@ import {
 } from '../../services/subscribeService'
 import {writeHead, writeResult} from '../../utils/writeResponse'
 import {createRandomVerifyCode} from '../../utils/util'
-import sendMail from '../../utils/subscribe'
-import {authMailInfo} from '../../utils/mail'
+import sendMail from '../../utils/sendMail'
+import {authMailInfo} from '../../utils/sendMail'
 import {v4 as uuid} from 'uuid'
 // import {authPass, authEmail} from '../../common/definition'
 

@@ -1,14 +1,7 @@
 import nodemailer from 'nodemailer'
-import { SubscribeInfo, SubscribeTipInfo } from '../common/types'
-import { createRandomVerifyCode } from './util'
-
-const wishStr = `
-    <div style='background: #eff5fb;border-left: 4px solid #c2e1ff;padding: 20px;margin-top: 30px;border-radius: 0 10px 10px 0;font-size: 0.8rem;color: #7d7f7f;line-height: 1.5;'>
-        - If we don’t have a chance to meet, then I’m here to wish you good morning, good afternoon and good night~<br>
-        - May the beauty of the world arrive as expected~<br>
-        - Remember to smile and say: I'm fine.(Just for myself - K.)
-    </div>
-`
+import {SubscribeInfo, SubscribeTipInfo} from '../common/types'
+import {authPass, authEmail} from '../common/definition'
+// import {createRandomVerifyCode} from './util'
 
 const serviceMap = {
     qq: 'QQ',
@@ -17,13 +10,31 @@ const serviceMap = {
     outlook: 'Outlook365'
 }
 
+/**
+ * QQ 邮箱
+ * */
+export const authMailInfo = {
+    user: authEmail.qq,
+    pass: authPass.qq,
+    emailType: 'QQ',
+    name: '小 K.'
+}
+
 interface SendEmailInfo {
     url: string
-    email?: string
+    email?: string | string[]
     name?: string
     title?: string
     code?: string
 }
+
+const wishStr = `
+    <div style='background: #eff5fb;border-left: 4px solid #c2e1ff;padding: 20px;margin-top: 30px;border-radius: 0 10px 10px 0;font-size: 0.8rem;color: #7d7f7f;line-height: 1.5;'>
+        - If we don’t have a chance to meet, then I’m here to wish you good morning, good afternoon and good night~<br>
+        - May the beauty of the world arrive as expected~<br>
+        - Remember to smile and say: I'm fine.(Just for myself - K.)
+    </div>
+`
 
 /**
  * send email
@@ -65,7 +76,7 @@ export default function sendMail(type: number, info: SendEmailInfo, auth: Subscr
  * 创建 option
  * */
 function createOption(type: number, info: SendEmailInfo, auth: SubscribeInfo) {
-    const { subject, html } = createTipInfo(type, info, auth)
+    const {subject, html} = createTipInfo(type, info, auth)
 
     return {
         from: `${auth.name} <${auth.user}>`,
