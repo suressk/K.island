@@ -3,7 +3,7 @@
     <KHeader />
     <div class="content">
       <h3 class="title">你好！我是 K.</h3>
-      <p class="part">PART 1</p>
+      <p class="part">PART 1 《About Me》</p>
       <ul class="introduce-list">
         <li class="item">脚踩 95 后边缘的小 K.</li>
         <li class="item">家居巴蜀之旁，毗邻三峡之坝</li>
@@ -19,8 +19,8 @@
         <li class="item">浮生溺毙杯中物，今日不做明日愁</li>
       </ul>
       <p class="part">你好，陌生人，承蒙遇见，三生有幸~</p>
-      <p class="part">佛曰：前世五百次的回眸才换得今世的擦肩而过，我用一千次回眸换得今生在你面前的驻足停留</p>
-      <p class="part">茫茫人海中，人与人相遇、相知、相爱、相守是一件十分不易的事情，大家要珍惜缘分，生命的轮转就是轮回，一个人的生命只有一次！佛没说今世该如何做，但佛也算说了，因果就在轮回之中...</p>
+      <p class="part">佛曰：前世五百次的回眸才换得今世的擦肩而过。前世的我莫不是用了千百次的回眸才能换得今生的你在此驻足停留？！哈哈哈~</p>
+      <p class="part">茫茫人海中，人与人相遇、相知乃至相爱、相守是皆是十分不易的事情，希望大家能够珍惜缘分，生命的轮转就是轮回，一个人的生命只有一次！佛没说今世该如何做，但佛也算说了，因果就在轮回之中...</p>
       <div class="link-area">
         <span class="link-item">
           <i class="iconfont icon-wechat" />

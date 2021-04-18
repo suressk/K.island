@@ -44,6 +44,8 @@
   --lightCyan: #14ffec; // 淡青
   --opacity-cyan-1: rgba(112, 243, 255, .1);
   --opacity-cyan-3: rgba(112, 243, 255, .3);
+  --primary-border: #40a9ff;
+  --primary-shadow: rgba(24, 144, 255, .2);
   //--dark-primary: rgb(3, 110, 184);
   --success: rgba(0, 184, 148,1.0);
   --dark-success: #00bc12; // 油绿
@@ -254,13 +256,14 @@
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  transition: all .3s;
+  transition: all .3s ease;
   color: var(--tipColor);
   border: 1px solid var(--border);
   outline: none;
-  &:hover {
-    color: var(--primary);
-    border-color: var(--primary);
+  &:not([disabled]):hover {
+    //color: var(--primary-border);
+    border-color: var(--primary-border);
+    box-shadow: 0 0 0 2px var(--primary-shadow);
   }
   &[disabled] {
     background-color: var(--lightBg)!important;
@@ -276,6 +279,7 @@
   &.btn-primary {
     background-color: var(--dark-primary);
     &:hover {
+      //color: var(--white);
       background-color: var(--primary);
     }
   }
@@ -293,20 +297,20 @@
   }
 }
 
-.r-hover,
-.g-hover {
-  cursor: pointer;
-  padding: 3px 5px;
-  margin: 0 10px;
-  position: relative;
-  transition: all .3s;
-}
-.r-hover:hover {
-  color: var(--error);
-}
-.g-hover:hover {
-  color: var(--success);
-}
+//.r-hover,
+//.g-hover {
+//  cursor: pointer;
+//  padding: 3px 5px;
+//  margin: 0 10px;
+//  position: relative;
+//  transition: all .3s;
+//}
+//.r-hover:hover {
+//  color: var(--error);
+//}
+//.g-hover:hover {
+//  color: var(--success);
+//}
 
 a:hover,
 .link:hover {
@@ -350,7 +354,6 @@ a:hover,
 /** content 内容区 */
 .content {
   width: 800px;
-  //border: 1px solid var(--border);
   border-left: none;
   border-right: none;
   margin: 0 auto;
@@ -372,6 +375,18 @@ a:hover,
 }
 
 input, textarea {
-  border: none;
   outline: none;
+  border: 1px solid var(--border);
+  padding: 10px 20px;
+  border-radius: 5px;
+  width: 100%;
+  transition: all .3s ease;
+  &:focus {
+    border-color: var(--primary-border);
+    box-shadow: 0 0 0 2px var(--primary-shadow);
+  }
+}
+
+textarea {
+  resize: none;
 }

@@ -4,7 +4,7 @@ import { CommentProps } from '~/types'
 
 let timer: number
 
-function matchStationmasterEmail (email: string) {
+function matchStationmasterEmail(email: string) {
   switch (email) {
     case 'sure_k@qq.com':
     case '865801275@qq.com':
@@ -19,15 +19,22 @@ function matchStationmasterEmail (email: string) {
 /**
  * TODO =====> add comment => validate myself
  * */
-export default function (props: CommentProps, ctx: SetupContext) {
+export default function(props: CommentProps, ctx: SetupContext) {
   const name = ref<string>('')
   const email = ref<string>('')
   const comment = ref<string>('')
   const tipIndex = ref<number>(-1)
+  /**
+   * 被回复（评论）者的信息
+   * */
+  const mentions = reactive({
+    name: '',
+    email: ''
+  })
   const tipTxt = reactive([
     '您的昵称不能是空白哦~',
     '邮箱格式貌似不太对呢~',
-    '嗯？胆敢冒充站长？！来人！拉出去枪毙五分钟！！！',
+    '胆敢冒充站长？！拉出去枪毙五分钟！！！',
     '多说一点儿吧，至少能成一句诗~',
     '偷偷告诉我，你作文是不是 0 分~',
     'Submitting...',
@@ -39,7 +46,7 @@ export default function (props: CommentProps, ctx: SetupContext) {
     return (name.value === '' || email.value === '' || comment.value === '')
   })
 
-  function handleSubmit () {
+  function handleSubmit() {
     // name 全空格或 Tab 制表符等空字符串
     if (!name.value.trim()) {
       tipIndex.value = 0
@@ -58,6 +65,9 @@ export default function (props: CommentProps, ctx: SetupContext) {
       return
     }
     tipIndex.value = 7
+
+    // addComment()
+
     ctx.emit('submit-comment', {
       name: name.value,
       email: email.value,
@@ -78,6 +88,7 @@ export default function (props: CommentProps, ctx: SetupContext) {
     disabledSubmit,
     tipTxt,
     tipIndex,
+    mentions,
     handleSubmit
   }
 }

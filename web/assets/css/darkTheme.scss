@@ -96,6 +96,12 @@ body.k-dark {
     p {
       color: var(--dark-txt);
     }
+    blockquote {
+      background-color: var(--opacityBg);
+    }
+    pre {
+      background-color: var(--opacity-cyan-1);
+    }
   }
 
   // 留言板

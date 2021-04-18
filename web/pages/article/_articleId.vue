@@ -10,7 +10,7 @@
           </span>
           <span class='tip tag d-flex'>分类 {{ articleDetail.tag }}</span>
           <span class='tip views d-flex'>浏览 {{ articleDetail.views }}</span>
-          <span class="tip liked d-flex">喜欢 {{ articleDetail.liked }}</span>
+          <span class='tip liked d-flex'>喜欢 {{ articleDetail.liked }}</span>
         </div>
 
         <div
@@ -20,15 +20,18 @@
         />
       </div>
 
-      <button class='btn-primary btn' @click='handleShowCommentForm'>Add Comment</button>
+      <div class='add-comment'>
+        <button class='btn-primary btn' @click='showComment(true)'>Add Comment</button>
 
-      <Modal
-        title='添加评论'
-        :visible.sync='addCommentVisible'
-        :show-footer='false'
-      >
-        <CommentForm @submit-comment='handleGetCommentInfo' />
-      </Modal>
+        <Modal
+          title='评论'
+          :visible.sync='addCommentVisible'
+          :show-footer='false'
+          class='comment-modal'
+        >
+          <CommentForm @submit-comment='getCommentInfo' />
+        </Modal>
+      </div>
 
       <ThemeSwitch />
     </div>
@@ -37,11 +40,12 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 import { parseMarkdownFile } from '~/utils/marked'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import { Context } from '@nuxt/types'
 import { CommentInfo } from '~/types'
+import { successNotify, warnNotify, errorNotify } from '~/utils/util'
 import CommentForm from '~/components/CommentForm/index.vue'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
@@ -87,21 +91,43 @@ export default defineComponent({
       }
     }
   },
-  setup() {
-    const addCommentVisible = ref<boolean>(false)
-
-    function handleGetCommentInfo(info: CommentInfo) {
-      console.log(info)
-    }
-
-    function handleShowCommentForm() {
-      addCommentVisible.value = true
-    }
-
+  data() {
     return {
-      addCommentVisible,
-      handleGetCommentInfo,
-      handleShowCommentForm
+      addCommentVisible: false
+    }
+  },
+  methods: {
+    showComment(flag: Boolean) {
+      this.addCommentVisible = flag
+    },
+    getCommentInfo(info: CommentInfo) {
+      console.log(info) // name, email, comment
+      console.log(this.articleDetail) // 文章详情
+      const vm = this
+      // 新增评论 / 回复他人评论
+      try {
+        // @ts-ignore
+        vm.$axios.post('/comment/add', {
+          name: 'sure',
+          email: 'sure_k@qq.com',
+          articleId: 1008,
+          topicId: null,
+          parentId: null,
+          comment: '新增评论'
+        }).then((res: any) => {
+          if (!res.success) {
+            warnNotify(res.message)
+            return
+          }
+          successNotify(res.message)
+          // @ts-ignore
+          vm.showComment(false)
+        }).catch((err: any) => {
+          errorNotify(err.message)
+        })
+      } catch (err) {
+        console.error(err)
+      }
     }
   },
   head() {
@@ -137,6 +163,16 @@ export default defineComponent({
         line-height: 36px;
         margin-bottom: 20px;
       }
+    }
+  }
+
+  .add-comment {
+    margin: 20px 0;
+  }
+
+  .comment-modal {
+    .modal-content {
+      padding: 20px;
     }
   }
 }

@@ -91,6 +91,10 @@ export default defineComponent({
     .modal-header {
       margin-bottom: 20px;
       height: 30px;
+      user-select: none;
+      .modal-title {
+        font-size: 1.5rem;
+      }
     }
     .modal-body {
       flex: 1;

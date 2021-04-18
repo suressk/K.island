@@ -11,6 +11,7 @@
   margin-bottom: 20px;
   color: var(--tipColor);
   user-select: none;
+  animation: slideInDown .3s ease-in .2s forwards;
   // border-bottom: 1px solid var(--lightBg);
   .header-content {
     width: 100%;
@@ -137,7 +138,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background-color: var(--color7);
+    background-color: var(--dark-primary);
     height: 2px;
     width: 0;
     z-index: 20;
@@ -150,5 +151,14 @@
     background-color: var(--error);
     height: 2px;
     width: 0;
+  }
+}
+
+@keyframes slideInDown {
+  0% {
+    transform: translateY(-50px);
+  }
+  100% {
+    transform: translateY(0);
   }
 }

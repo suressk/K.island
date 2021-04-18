@@ -53,11 +53,11 @@ export default defineComponent({
     visibility: hidden;
     font-size: 1.5rem;
     &.active {
-      animation: slideInDown .3s ease-in-out .2s forwards;
+      animation: slideFadeInDown .3s ease-in-out .2s forwards;
     }
   }
 }
-@keyframes slideInDown {
+@keyframes slideFadeInDown {
   0% {
     transform: translateY(-30px);
     opacity: 0;

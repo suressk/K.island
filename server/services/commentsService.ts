@@ -1,5 +1,6 @@
 import { poolQuery } from '../dao/DBUtil'
 import { getTableDeleteSqlStr } from '../utils/util'
+import { v4 as uuid } from 'uuid'
 
 interface QueryCommentsParams {
     articleId: number
@@ -26,10 +27,34 @@ export function getCommentList(options: QueryCommentsParams) {
     })
 }
 
+interface AddCommentOption {
+    articleId: number
+    parentId: number | null /*  */
+    comment: string /* 评论内容 */
+    name: string
+    email: string
+    topicId: string
+}
 /**
  * 新增评论信息
  * */
-export function addComment() {}
+export function addComment(options: AddCommentOption) {
+    const {articleId, parentId, comment, name, email, topicId} = options
+    const uid = uuid()
+    const ctime = Date.now()
+    const newTopicId = topicId === null ? uuid() : topicId
+    const sqlStr = 'INSERT INTO `tbl_comments` (uid, record_id, parent_id, content, topic_id, name, email, ctime) VALUES (?, ?, ?, ?, ?, ?, ?, ?);'
+    const params = [uid, articleId, parentId, comment, newTopicId, name, email, ctime]
+    return new Promise((resolve, reject) => {
+        poolQuery(sqlStr, params)
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
 
 /**
  * 删除评论

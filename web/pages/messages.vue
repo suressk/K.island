@@ -130,6 +130,12 @@ export default defineComponent({
         // @ts-ignore
         const { list, total } = data
         commitMutations(ctx.store, M_SET_TOTAL_ITEMS, total)
+        // 不是全部 message
+        if (list.length < total) {
+          commitMutations(ctx.store, M_SET_LOAD_STATUS, LOAD_MORE)
+        } else {
+          commitMutations(ctx.store, M_SET_LOAD_STATUS, NO_MORE)
+        }
         return {
           msgList: list
         }

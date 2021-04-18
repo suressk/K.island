@@ -27,18 +27,11 @@
   .message-form {
     .message-from-item {
       margin: 1rem 0;
+      padding: 0 2px; /* for input shadow */
       input {
-        border: 1px solid var(--border);
-        width: 100%;
         height: 40px;
-        padding: 10px 20px;
-        border-radius: 5px;
       }
       textarea {
-        border: 1px solid var(--border);
-        width: 100%;
-        padding: 10px 20px;
-        border-radius: 5px;
         min-height: 20vh;
         max-height: 20vh;
         overflow: auto;

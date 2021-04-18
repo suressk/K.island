@@ -29,11 +29,13 @@ export default function useHeader(props: any) {
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
     const scrollHeight = document.documentElement.offsetHeight || document.body.offsetHeight
     const winHeight = window.innerHeight
+    // 滚动位置指示条宽度取整数百分比
+    viewProgress.value = Math.round(100 * (scrollTop + winHeight) / scrollHeight) + '%'
     if (scrollTop >= 100) {
-      viewProgress.value = 100 * (scrollTop + winHeight) / scrollHeight + '%'
       !showTitle.value && (showTitle.value = true)
       return
     }
+    // 滚动距离小于 100px，滚动指示条宽度置为 0
     viewProgress.value = '0'
     showTitle.value && (showTitle.value = false)
   }
