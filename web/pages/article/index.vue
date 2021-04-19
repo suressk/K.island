@@ -87,7 +87,7 @@ export default defineComponent({
       const {success, data} = await $axios.get('/record/list', {
         params: {
           pageNo: 1,
-          pageSize: 10,
+          pageSize: 1,
           group: 'MONTH'
         }
       })
@@ -122,20 +122,17 @@ export default defineComponent({
       curPage: (state: any) => state[CURRENT_PAGE],
       totalItems: (state: any) => state[TOTAL_ITEMS],
       status: (state: any) => state[LOAD_STATUS]
-    }),
-    articleListLen() {
-      return 10
-    }
+    })
   },
   methods: {
     toDetailPage(articleItem: ArticleItem) {
       const { uid, id} = articleItem
       this.$router.push(`/article/${uid}_${id}`)
     },
-    async loadMore() {
+    loadMore() {
       this.getArticleList(this.curPage + 1)
     },
-    getArticleList(nextPage: number) {
+    async getArticleList(nextPage: number) {
       commitMutations(this.$store, M_SET_LOAD_STATUS, LOADING)
       const vm = this
       const start = Date.now()
@@ -152,6 +149,7 @@ export default defineComponent({
 
         const end = Date.now()
         if (success) {
+          console.log('article list: ', data)
           vm.updateStatus(start, end)
         }
       } catch (err) {
@@ -159,12 +157,13 @@ export default defineComponent({
       }
     },
     updateStatus(start: number, end: number) {
-
+      console.log(start, end)
     }
   },
   mounted() {
     // @ts-ignore
     console.log('文章列表: ', this.listData)
+    this.getArticleList(2)
   },
   watch: {
     scrollerIsBottom(flag) {
