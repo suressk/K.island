@@ -9,6 +9,7 @@ import {
   preventDefault,
   throttle,
   getCurrentTime,
+  addListener,
   removeListener,
   commitMutations,
   errorNotify
@@ -54,11 +55,13 @@ export default function useIndex() {
     sceneWidth.value = document.documentElement.clientWidth + 'px'
   }
 
+  const resizeListener = throttle(pageInit, 100)
+
   function init() {
     pageInit()
     RainInit()
     today.value = getCurrentTime()
-    window.onresize = throttle(pageInit, 100)
+    addListener(window, 'resize', resizeListener)
   }
 
   // navigation
@@ -127,7 +130,7 @@ export default function useIndex() {
       if (loadingTimer) clearTimeout(loadingTimer)
       loadingTimer = setTimeout(() => {
         nextTick(() => {
-          errorNotify('更多文章加载失败辣，跟 小K. 说明一下吧~')
+          errorNotify('更多文章加载失败辣，跟 小K. 说一声吧~')
           commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOAD_MORE)
         })
       }, 500)
@@ -137,7 +140,7 @@ export default function useIndex() {
   onMounted(() => { init() })
 
   onBeforeUnmount(() => {
-    window.onresize = null
+    removeListener(window, 'resize', resizeListener)
     document.body.style.overflowY = ''
   })
 

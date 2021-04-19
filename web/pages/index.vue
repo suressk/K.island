@@ -96,7 +96,7 @@ import {
   M_RESET_LOAD_MORE,
   M_SET_CURRENT_PAGE,
   M_SET_LOAD_STATUS,
-  M_SET_TOTAL_ITEMS
+  M_SET_TOTAL_ITEMS, LOAD_MORE
 } from '~/store/mutation-types'
 // import html2canvas from 'html2canvas'
 
@@ -122,11 +122,11 @@ export default defineComponent({
       })
       if (success) {
         const { total, list } = data
-        // const list = plainArticleList(data.list)
         commitMutations(store, M_SET_TOTAL_ITEMS, total)
         // 还有更多文章（不是最后一页）
         if (list.length < total) {
           commitMutations(store, M_SET_CURRENT_PAGE, store.state[CURRENT_PAGE] + 1)
+          commitMutations(store, M_SET_LOAD_STATUS, LOAD_MORE)
         } else {
           commitMutations(store, M_SET_LOAD_STATUS, NO_MORE)
         }
@@ -140,28 +140,7 @@ export default defineComponent({
       }
     } catch (e) {
       return {
-        articleList: [
-          // {
-          //   id: 1,
-          //   uid: '12sd',
-          //   title: 'Test Title',
-          //   introduce: 'J i a n J i e',
-          //   time: {
-          //     year: '2021',
-          //     month: 'Feb',
-          //     monthNum: 1,
-          //     day: '21st',
-          //     hour: '13',
-          //     minute: '14',
-          //   },
-          //   tag: 'JS',
-          //   views: 250,
-          //   liked: 162,
-          //   cover: 'https://cdn.pixabay.com/photo/2020/12/27/12/07/sunrise-5863751_960_720.png',
-          //   ctime: 1616134131862,
-          //   utime: 1616134131862,
-          // }
-        ]
+        articleList: []
       }
     }
   },

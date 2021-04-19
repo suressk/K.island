@@ -1,6 +1,6 @@
 <template>
   <section class="k-article-page">
-    <KHeader title="(≖ᴗ≖)✧" />
+    <KHeader title="(≖ᴗ≖)✧"/>
     <!--  文章列表页  -->
     <div v-if="Object.keys(listData).length === 0" class="nothing-content flex-center">
       <Empty>
@@ -14,21 +14,21 @@
       <!--   月份分组   -->
       <div
         class="year-list"
-        v-for="(yearsVal, year, idx) in listData"
+        v-for="(yearItem, year, idx) in listData"
         :key="idx"
       >
         <ul
           class="month-list"
-          v-for="(monthsVal, month) in yearsVal"
+          v-for="(monthItem, month) in yearItem"
           :key="month"
         >
           <li class="month">{{ month + ', ' + year }}</li>
           <li class="month-item">
             <div
               class="article-item"
-              v-for="articleItem in monthsVal"
+              v-for="articleItem in monthItem"
               :key="articleItem.uid"
-              @click="handleToDetail(articleItem)"
+              @click="toDetailPage(articleItem)"
             >
               <div class="img-box"></div>
               <div class="article-content flex-col-around">
@@ -48,29 +48,43 @@
 
     </div>
 
-    <ThemeSwitch />
+    <ThemeSwitch/>
+    <LoadMore :load-status="status"/>
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
-import { Context } from '@nuxt/types'
-import { M_RESET_LOAD_MORE, M_SET_TOTAL_ITEMS } from '~/store/mutation-types'
+import {defineComponent} from '@nuxtjs/composition-api'
+import {mapState} from 'vuex'
+import {
+  NO_MORE,
+  LOAD_MORE,
+  M_RESET_LOAD_MORE,
+  M_SET_LOAD_STATUS,
+  M_SET_TOTAL_ITEMS,
+  LOADING,
+  CURRENT_PAGE,
+  TOTAL_ITEMS,
+  LOAD_STATUS
+} from '~/store/mutation-types'
+import {Context} from '@nuxt/types'
+import {ArticleItem} from '~/types'
 import {commitMutations, createArticleListData} from '~/utils/util'
-import useArticle from './useArticle'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import Empty from '~/components/Empty.vue'
-// import Notification from '~/components/notification'
+import LoadMore from '~/components/LoadMore.vue'
+import scrollMixin from '~/mixin/scroller'
 
 export default defineComponent({
   name: 'Article',
-  components: { KHeader, ThemeSwitch, Empty },
+  mixins: [scrollMixin],
+  components: {KHeader, ThemeSwitch, Empty, LoadMore},
   // @ts-ignore => merge to data
-  async asyncData({ $axios, store }: Context): Promise<object | void> | object | void {
+  async asyncData({$axios, store}: Context): Promise<object | void> | object | void {
     try {
       // @ts-ignore
-      const { success, data } = await $axios.get('/record/list', {
+      const {success, data} = await $axios.get('/record/list', {
         params: {
           pageNo: 1,
           pageSize: 10,
@@ -78,11 +92,15 @@ export default defineComponent({
         }
       })
       if (success) {
-        // const result = createArticleListData(data.list)
-        // const { total } = data
-        commitMutations(store, M_SET_TOTAL_ITEMS, data.total)
+        const {list, total} = data
+        commitMutations(store, M_SET_TOTAL_ITEMS, total)
+        if (list.length < total) {
+          commitMutations(store, M_SET_LOAD_STATUS, LOAD_MORE)
+        } else {
+          commitMutations(store, M_SET_LOAD_STATUS, NO_MORE)
+        }
         return {
-          listData: createArticleListData(data.list)
+          listData: createArticleListData(list)
         }
       }
       return {
@@ -94,17 +112,72 @@ export default defineComponent({
       }
     }
   },
-  setup (props, ctx: SetupContext) {
+  data() {
     return {
-      ...useArticle(ctx)
+
     }
   },
-  // @ts-ignore
-  beforeRouteLeave(to, from, next) {
-    commitMutations(this.$store, M_RESET_LOAD_MORE)
-    next()
+  computed: {
+    ...mapState({
+      curPage: (state: any) => state[CURRENT_PAGE],
+      totalItems: (state: any) => state[TOTAL_ITEMS],
+      status: (state: any) => state[LOAD_STATUS]
+    }),
+    articleListLen() {
+      return 10
+    }
   },
-  head () {
+  methods: {
+    toDetailPage(articleItem: ArticleItem) {
+      const { uid, id} = articleItem
+      this.$router.push(`/article/${uid}_${id}`)
+    },
+    async loadMore() {
+      this.getArticleList(this.curPage + 1)
+    },
+    getArticleList(nextPage: number) {
+      commitMutations(this.$store, M_SET_LOAD_STATUS, LOADING)
+      const vm = this
+      const start = Date.now()
+      try {
+        commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOADING)
+        // @ts-ignore
+        const {success, data} = await vm.$axios.get('/record/list', {
+          params: {
+            pageNo: nextPage,
+            pageSize: 10,
+            group: 'MONTH'
+          }
+        })
+
+        const end = Date.now()
+        if (success) {
+          vm.updateStatus(start, end)
+        }
+      } catch (err) {
+
+      }
+    },
+    updateStatus(start: number, end: number) {
+
+    }
+  },
+  mounted() {
+    // @ts-ignore
+    console.log('文章列表: ', this.listData)
+  },
+  watch: {
+    scrollerIsBottom(flag) {
+      // @ts-ignore
+      if (flag && (this.status === LOAD_MORE) && (this.msgList.length < this.totalItems)) {
+        // this.getMessageList()
+      }
+    }
+  },
+  beforeDestroy() {
+    commitMutations(this.$store, M_RESET_LOAD_MORE)
+  },
+  head() {
     return {
       title: 'Article | K.island'
     }
@@ -113,5 +186,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "assets/css/pages/article.scss";
+@import "assets/css/pages/article";
 </style>
