@@ -1,5 +1,5 @@
 import {poolQuery, promisePoolQuery} from '../dao/DBUtil'
-import {getUpdateRecordParams, mapCreateTime, mapYearGroup} from '../utils/util'
+import {getUpdateRecordParams, mapCreateTime} from '../utils/util'
 import sendMail from '../utils/sendMail'
 import {authMailInfo} from '../utils/sendMail'
 import {queryAllSubscribe} from './subscribeService'
@@ -49,7 +49,7 @@ function getQueryListParams(options: QueryRecordListOptions): QueryListParams {
     let totalSqlStr: string
     let totalParams: string[] = []
     // 后台管理查询所有文章列表
-    if (options.range && options.range === 'all') {
+    if (options.range === 'all') {
         listSqlStr = listSqlObj.allList
         totalSqlStr = listSqlObj.allTotal
         // 按 title 模糊查询
@@ -60,9 +60,9 @@ function getQueryListParams(options: QueryRecordListOptions): QueryListParams {
             totalParams = [`%${options.title}%`]
         }
     } else if (options.index === 1) {
+        // web 首页文章按 views 排序
         listSqlStr = listSqlObj.viewsList
         totalSqlStr = listSqlObj.showsTotal
-        totalParams = [`%${options.title}%`]
     } else {
         // 前端展示未删除文章
         listSqlStr = listSqlObj.showsList
@@ -87,19 +87,10 @@ export async function queryRecordList(options: QueryRecordListOptions) {
         const [list] = await promisePoolQuery(listSqlStr, listParams)
         const [totalRes] = await promisePoolQuery(totalSqlStr, totalParams)
 
-        // 按月份分组
-        if (options.group === 'MONTH') {
-            return {
-                list: mapYearGroup(list as any),
-                // @ts-ignore
-                total: totalRes.length ? totalRes[0].total : 0
-            }
-        } else {
-            return {
-                list: mapCreateTime(list as any),
-                // @ts-ignore
-                total: totalRes.length ? totalRes[0].total : 0
-            }
+        return {
+            list: mapCreateTime(list as any[]),
+            // @ts-ignore
+            total: totalRes.length ? totalRes[0].total : 0
         }
     } catch (err) {
         return err

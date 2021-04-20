@@ -16,14 +16,12 @@ export function queryRecordListResp(req: Request, res: Response, range: string |
     const {pageNo, pageSize} = req.query
     const index = req.query.index ? Number(req.query.index) : undefined
     queryRecordList({
-        ...req.query,
         pageNo: Number(pageNo),
         pageSize: Number(pageSize),
         range,
         index
         // @ts-ignore
     }).then(({list, total}: ListResult) => {
-        // success
         writeHead(res, 200)
         writeResult(res, true, 'Successfully get article list！', {
             list,

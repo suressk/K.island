@@ -143,30 +143,30 @@ export function mapCreateTime (dataList: ArticleListItem[]) {
     return dataList.map(item => ({ ...item, time: dateFormat(item.ctime) }))
 }
 
-/**
- * 插入 time: dateFormat() => time
- * 生成按年分组的数据
- * */
-export function mapYearGroup (dataList: ArticleListItem[]) {
-    const mapData = mapCreateTime(dataList)
-    const data: any = {}
-    const years: string[] = [] // 所有年份
-    mapData.forEach(item => {
-        if (!years.includes(item.time.year)) {
-            years.push(item.time.year)
-        }
-    })
-    const yearLen = years.length
-    // 年份从大到小排序
-    years.sort((a, b) => Number(b) - Number(a))
-    for (let i = 0; i < yearLen; i++) {
-        const sortData = mapData.filter(item => item.time.year === years[i])
-        // 月份从大到小排序
-        sortData.sort((a, b) => (b.time.monthNum - a.time.monthNum))
-        data[years[i]] = sortData
-    }
-    return data
-}
+// /**
+//  * 插入 time: dateFormat() => time
+//  * 生成按年分组的数据
+//  * */
+// export function mapYearGroup (dataList: ArticleListItem[]) {
+//     const mapData = mapCreateTime(dataList)
+//     const data: any = {}
+//     const years: string[] = [] // 所有年份
+//     mapData.forEach(item => {
+//         if (!years.includes(item.time.year)) {
+//             years.push(item.time.year)
+//         }
+//     })
+//     const yearLen = years.length
+//     // 年份从大到小排序
+//     years.sort((a, b) => Number(b) - Number(a))
+//     for (let i = 0; i < yearLen; i++) {
+//         const sortData = mapData.filter(item => item.time.year === years[i])
+//         // 月份从大到小排序
+//         sortData.sort((a, b) => (b.time.monthNum - a.time.monthNum))
+//         data[years[i]] = sortData
+//     }
+//     return data
+// }
 
 /**
  * 获取区间随机整数（区间：[min, max) ）
@@ -198,10 +198,9 @@ export function createRandomVerifyCode() {
 /**
  * 多条删除 sql 语句
  * */
-export function getTableDeleteSqlStr (list: any[], tableName: string, param: string) {
-    const len = list.length
+export function getTableDeleteSqlStr (list: any[], tableName: string, conditionName: string) {
     let arr: string[] = []
-    arr.length = len
+    arr.length = list.length
     arr.fill('?')
-    return ('DELETE FROM ' + tableName + ' WHERE ' + param + ' IN (' + arr.join(',') + ')')
+    return ('DELETE FROM ' + tableName + ' WHERE ' + conditionName + ' IN (' + arr.join(',') + ');')
 }

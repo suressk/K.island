@@ -11,6 +11,11 @@ export default {
   },
   methods: {
     handleScroll() {
+      /**
+       * scrollTop: 滚动条滚动距离
+       * scrollHeight: 整屏高度（含不可见区域）
+       * clientHeight: 可视区高度
+       * */
       const props = ['scrollTop', 'scrollHeight', 'clientHeight']
       // @ts-ignore
       const [scrollTop, scrollHeight, windowH] = props.map(prop => getWindowProp(prop))
@@ -41,9 +46,8 @@ export default {
       if (top === null || top === undefined) {
         return
       }
-      const isTop = top - lastTop < 0
       // @ts-ignore
-      this.scrollDirection = isTop ? 'top' : 'bottom'
+      this.scrollDirection = (top - lastTop < 0) ? 'top' : 'bottom'
     }
   }
 }

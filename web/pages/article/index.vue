@@ -30,7 +30,9 @@
               :key="articleItem.uid"
               @click="toDetailPage(articleItem)"
             >
-              <div class="img-box"></div>
+              <div class="cover-box flex-center">
+                <img v-if='articleItem.cover' :src='articleItem.cover' alt='cover'>
+              </div>
               <div class="article-content flex-col-around">
                 <span class="title txt-overflow">{{ articleItem.title }}</span>
                 <span class="tip-txt txt-overflow">
@@ -69,7 +71,7 @@ import {
 } from '~/store/mutation-types'
 import {Context} from '@nuxt/types'
 import {ArticleItem} from '~/types'
-import {commitMutations, createArticleListData} from '~/utils/util'
+import {commitMutations, mapYearGroup, createArticleListData} from '~/utils/util'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import Empty from '~/components/Empty.vue'
@@ -87,8 +89,7 @@ export default defineComponent({
       const {success, data} = await $axios.get('/record/list', {
         params: {
           pageNo: 1,
-          pageSize: 1,
-          group: 'MONTH'
+          pageSize: 10
         }
       })
       if (success) {
@@ -100,7 +101,7 @@ export default defineComponent({
           commitMutations(store, M_SET_LOAD_STATUS, NO_MORE)
         }
         return {
-          listData: createArticleListData(list)
+          listData: createArticleListData(mapYearGroup(list))
         }
       }
       return {

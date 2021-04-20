@@ -229,6 +229,30 @@ export function setStorageItem<V> (key: string, value: V): void {
   localStorage.setItem(PRE_FIXED + key, JSON.stringify(value))
 }
 
+/**
+ * 插入 time: dateFormat() => time
+ * 生成按年分组的数据
+ * */
+export function mapYearGroup (dataList: ArticleItem[]) {
+  const data: any = {}
+  const years: string[] = [] // 所有年份
+  dataList.forEach(item => {
+    if (!years.includes(item.time.year)) {
+      years.push(item.time.year)
+    }
+  })
+  const yearLen = years.length
+  // 年份从大到小排序
+  years.sort((a, b) => Number(b) - Number(a))
+  for (let i = 0; i < yearLen; i++) {
+    const sortData = dataList.filter(item => item.time.year === years[i])
+    // 月份从大到小排序
+    sortData.sort((a, b) => (b.time.monthNum - a.time.monthNum))
+    data[years[i]] = sortData
+  }
+  return data
+}
+
 interface YearData<T> {
   [prop: string]: T[];
 }
