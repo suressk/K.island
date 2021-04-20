@@ -139,7 +139,6 @@ export default defineComponent({
       const start = Date.now()
       try {
         commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOADING)
-        // @ts-ignore
         const {success, data} = await vm.$axios.get('/record/list', {
           params: {
             pageNo: nextPage,

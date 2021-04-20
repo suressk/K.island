@@ -1,6 +1,6 @@
 import multer from 'multer'
-import { v4 as uuid } from 'uuid'
-import { Request } from 'express'
+import {v4 as uuid} from 'uuid'
+import {Request} from 'express'
 import {UpdateRecordOptions, ArticleListItem, CorsOption} from '../common/types'
 import dayjs from 'dayjs'
 
@@ -9,7 +9,7 @@ const imgSuffixReg = /[.][a-z]+/
 /**
  * 创建图片存储处理函数
  * */
-export function createMulterStorage (dir: string) {
+export function createMulterStorage(dir: string) {
     return multer.diskStorage({
         destination(req, file, cb) {
             cb(null, './images/' + dir) // 图片存储路径
@@ -34,13 +34,13 @@ type Callback = (arg0: null, arg1: CorsOption) => void
 /**
  * 创建跨域处理函数
  * */
-export function createCorsOptionsDelegate (req: Request, callback: Callback) {
+export function createCorsOptionsDelegate(req: Request, callback: Callback) {
     let corsOptions: { origin: boolean }
     const reqOrigin: string | undefined = req.header('Origin')
     if (reqOrigin && WHITE_LIST.includes(reqOrigin)) {
-        corsOptions = { origin: true }
+        corsOptions = {origin: true}
     } else {
-        corsOptions = { origin: false }
+        corsOptions = {origin: false}
     }
     callback(null, corsOptions);
 }
@@ -52,8 +52,8 @@ export function createCorsOptionsDelegate (req: Request, callback: Callback) {
  * 3. 点赞 => liked: number
  * 4. 文章内容更新 => title, tag, introduce, cover, music
  * */
-export function getUpdateRecordParams (options: UpdateRecordOptions) {
-    const { id, uid } = options
+export function getUpdateRecordParams(options: UpdateRecordOptions) {
+    const {id, uid} = options
     let sqlStr: string = ''
     const params: any[] = []
     const utime = Date.now()
@@ -115,7 +115,7 @@ const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss'
 /**
  * 日期格式化
  * */
-export function dateFormat (timeTemp: number) {
+export function dateFormat(timeTemp: number) {
     // 时间戳 => '2021-02-27 22:56:34' => ['2021', '02', '27', '22', '56', '34']
     let time: string | string[] = dayjs(timeTemp).format(DATE_FORMAT)
     // const reg = /-|:|\ /g
@@ -139,8 +139,8 @@ export function dateFormat (timeTemp: number) {
 /**
  * 创建时间对象
  * */
-export function mapCreateTime (dataList: ArticleListItem[]) {
-    return dataList.map(item => ({ ...item, time: dateFormat(item.ctime) }))
+export function mapCreateTime(dataList: ArticleListItem[]) {
+    return dataList.map(item => ({...item, time: dateFormat(item.ctime)}))
 }
 
 // /**
@@ -171,7 +171,7 @@ export function mapCreateTime (dataList: ArticleListItem[]) {
 /**
  * 获取区间随机整数（区间：[min, max) ）
  * */
-function getRandomNum (min: number, max: number): number {
+function getRandomNum(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min) + min)
 }
 
@@ -198,7 +198,7 @@ export function createRandomVerifyCode() {
 /**
  * 多条删除 sql 语句
  * */
-export function getTableDeleteSqlStr (list: any[], tableName: string, conditionName: string) {
+export function getTableDeleteSqlStr(list: any[], tableName: string, conditionName: string) {
     let arr: string[] = []
     arr.length = list.length
     arr.fill('?')
