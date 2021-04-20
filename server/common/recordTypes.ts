@@ -1,3 +1,5 @@
+import { PageQueryParams } from './commonTypes'
+
 /**
  * 文章管理相关类型定义
  * */
@@ -41,8 +43,15 @@ export interface AddRecordParams {
     liked?: number
 }
 
+// 查询文章列表参数
+export interface GetRecordListParams extends PageQueryParams {
+    range?: string
+    title?: string
+    index?: number
+}
+
 // 更新文章参数
 export interface UpdateRecordParams extends RecordInfo {
     id: number
-    email: string
+    email?: string
 }

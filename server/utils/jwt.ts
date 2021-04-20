@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import {Request} from 'express'
-import {UserInfo} from '../common/types'
+import {AuthorInfo} from '../common/types'
 import {CERT} from '../common/definition'
 
 // import fs from 'fs'
@@ -15,7 +15,7 @@ export const expireTime = 3600 * 24 * 7 // token 过期时间（7天，单位为
  * @param {*} info 携带信息（{ username: '', password: '' }）
  * @param {*} expiresIn 过期时间（number: 3600 <s> 或 表示时间跨度的 string：'7d', '1h' ...）
  */
-export function publishToken(info: UserInfo, expiresIn: string | number = expireTime) {
+export function publishToken(info: AuthorInfo, expiresIn: string | number = expireTime) {
     return jwt.sign(info, CERT, {expiresIn})
 }
 

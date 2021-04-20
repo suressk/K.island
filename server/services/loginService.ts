@@ -1,7 +1,7 @@
 import {poolQuery} from '../db/DBUtil'
-import { UserInfo } from '../common/types'
+import { AuthorInfo } from '../common/types'
 
-export function login (options: UserInfo) {
+export function login (options: AuthorInfo) {
     const sqlStr = 'SELECT username, password FROM `tbl_user` WHERE username = ?;'
     const params = [options.username]
     return new Promise((resolve, reject) => {

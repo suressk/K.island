@@ -5,11 +5,11 @@ import {authMailInfo} from '../utils/sendMail'
 import {queryAllSubscribe} from './subscribeService'
 import {v4 as uuid} from 'uuid'
 import {
-    QueryRecordListOptions,
-    IdOptions,
-    AddRecordOptions,
-    UpdateRecordOptions,
-    ArticleListItem
+    GetRecordListParams,
+    IdOption,
+    AddRecordParams,
+    UpdateRecordParams,
+    RecordItem
 } from '../common/types'
 
 /**
@@ -42,7 +42,7 @@ interface QueryListParams {
 /**
  * 获取分页查询 sql 语句及参数
  * */
-function getQueryListParams(options: QueryRecordListOptions): QueryListParams {
+function getQueryListParams(options: GetRecordListParams): QueryListParams {
     const {pageNo, pageSize} = options
     let listParams: ListParams = [(pageNo - 1) * pageSize, pageSize] // 分页参数
     let listSqlStr: string
@@ -80,7 +80,7 @@ function getQueryListParams(options: QueryRecordListOptions): QueryListParams {
 /**
  * 分页查询文章列表
  * */
-export async function queryRecordList(options: QueryRecordListOptions) {
+export async function queryRecordList(options: GetRecordListParams) {
     const {listSqlStr, listParams, totalSqlStr, totalParams} = getQueryListParams(options)
 
     try {
@@ -100,7 +100,7 @@ export async function queryRecordList(options: QueryRecordListOptions) {
 /**
  * 查询文章详情信息
  * */
-export function queryRecordDetail(options: IdOptions) {
+export function queryRecordDetail(options: IdOption) {
     const {id, uid} = options
     const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, liked, cover, music, ctime, utime FROM `tbl_records` WHERE id = ? AND uid = ?;'
     const params = [id, uid]
@@ -120,7 +120,7 @@ export function queryRecordDetail(options: IdOptions) {
 /**
  * 更新浏览量
  * */
-function updateViews(info: ArticleListItem) {
+function updateViews(info: RecordItem) {
     const {id, uid, views} = info
     // then nothing to do
     updateRecord({id, uid, views: views + 1})
@@ -131,7 +131,7 @@ function updateViews(info: ArticleListItem) {
 /**
  * 插入（新建）文章
  * */
-export function addRecord(options: AddRecordOptions) {
+export function addRecord(options: AddRecordParams) {
     const {title, tag, introduce, content, cover, music} = options
     const sqlStr = 'INSERT INTO `tbl_records` (uid, title, content, introduce, tag, cover, music, ctime, utime, views, liked, is_delete) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
     const ctime = Date.now()
@@ -192,7 +192,7 @@ export function sendNotification(origin: string, title: string) {
 /**
  * 修改（更新）文章信息
  * */
-export function updateRecord(options: UpdateRecordOptions) {
+export function updateRecord(options: UpdateRecordParams) {
     // 四种情况:
     // 1. 修改 is_delete —— 文章显示与否；
     // 2. 修改 views —— 文章访问量；
@@ -210,7 +210,7 @@ export function updateRecord(options: UpdateRecordOptions) {
  * 删除文章 (真删除)
  * then => delete cover
  * */
-export function deleteRecord(options: IdOptions) {
+export function deleteRecord(options: IdOption) {
     const {id, uid} = options
     const sqlStr = 'DELETE FROM `tbl_records` WHERE id = ? and uid = ?;'
     const params = [id, uid]

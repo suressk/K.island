@@ -1,7 +1,7 @@
 import multer from 'multer'
 import {v4 as uuid} from 'uuid'
 import {Request} from 'express'
-import {UpdateRecordOptions, ArticleListItem, CorsOption} from '../common/types'
+import {RecordItem, CorsOption, UpdateRecordParams} from '../common/types'
 import dayjs from 'dayjs'
 
 const imgSuffixReg = /[.][a-z]+/
@@ -52,7 +52,7 @@ export function createCorsOptionsDelegate(req: Request, callback: Callback) {
  * 3. 点赞 => liked: number
  * 4. 文章内容更新 => title, tag, introduce, cover, music
  * */
-export function getUpdateRecordParams(options: UpdateRecordOptions) {
+export function getUpdateRecordParams(options: UpdateRecordParams) {
     const {id, uid} = options
     let sqlStr: string = ''
     const params: any[] = []
@@ -124,7 +124,7 @@ export function dateFormat(timeTemp: number) {
 /**
  * 创建时间对象
  * */
-export function mapCreateTime(dataList: ArticleListItem[]) {
+export function mapCreateTime(dataList: RecordItem[]) {
     return dataList.map(item => ({...item, time: dateFormat(item.ctime)}))
 }
 
@@ -132,7 +132,7 @@ export function mapCreateTime(dataList: ArticleListItem[]) {
 //  * 插入 time: dateFormat() => time
 //  * 生成按年分组的数据
 //  * */
-// export function mapYearGroup (dataList: ArticleListItem[]) {
+// export function mapYearGroup (dataList: RecordItem[]) {
 //     const mapData = mapCreateTime(dataList)
 //     const data: any = {}
 //     const years: string[] = [] // 所有年份

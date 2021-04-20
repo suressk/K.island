@@ -1,11 +1,11 @@
 import {Request, Response} from 'express'
-import {ArticleListItem} from '../common/types'
+import {RecordItem} from '../common/types'
 import {queryRecordDetail, queryRecordList} from '../services/recordService'
 import {writeHead, writeResult} from '../utils/writeResponse'
 import {mapCreateTime} from '../utils/util'
 
 interface ListResult {
-    list: ArticleListItem[]
+    list: RecordItem[]
     total: number
 }
 

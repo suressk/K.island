@@ -1,6 +1,6 @@
 import {poolQuery, promisePoolQuery} from '../db/DBUtil'
 import {getTableDeleteSqlStr} from '../utils/util'
-import {DeleteSubscribeOptions, QuerySubscribeListOptions, CheckVerificationCodeOptions} from '../common/types'
+import {DeleteSubscribeParams, GetSubscribeListParams, VerifyCodeParams} from '../common/types'
 import {v4 as uuid} from 'uuid'
 
 interface QuerySubscribeOptions {
@@ -21,7 +21,7 @@ interface AddVerifyInfo extends VerifyInfo {
 /**
  * 分页查询订阅列表
  * */
-export async function querySubscribeList(options: QuerySubscribeListOptions) {
+export async function querySubscribeList(options: GetSubscribeListParams) {
     const listStr = 'SELECT id, uid, name, email, name, ctime from `tbl_subscribe` ORDER BY ctime DESC LIMIT ?, ?;'
     const totalStr = 'SELECT COUNT(id) as total from `tbl_subscribe`;'
     const {pageNo, pageSize} = options
@@ -166,7 +166,7 @@ export function getVerifyInfo(options: VerifyInfo) {
 /**
  * 校验邮箱 —— 验证码
  * */
-export function checkVerificationCode(options: CheckVerificationCodeOptions) {
+export function checkVerificationCode(options: VerifyCodeParams) {
     const {email, code} = options
     const now = Date.now()
     return new Promise((resolve, reject) => {
@@ -247,7 +247,7 @@ export function addSubscribeInfo(options: QuerySubscribeOptions) {
 /**
  * 删除订阅信息
  * */
-export function deleteSubscribe(options: DeleteSubscribeOptions) {
+export function deleteSubscribe(options: DeleteSubscribeParams) {
     const sqlStr = 'DELETE FROM `tbl_subscribe` WHERE id = ? AND email = ?;'
     const {id, email} = options
     return new Promise((resolve, reject) => {

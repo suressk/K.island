@@ -1,5 +1,5 @@
 import express from 'express'
-import {SubscribeInfo, EmailTipType} from '../../common/types'
+import {AuthSubscribeInfo, SendEmailType} from '../../common/types'
 import {
     querySubscribeInfo,
     addVerifyCodeInfo,
@@ -73,7 +73,7 @@ router.post('/add', (req, res) => {
          *     ... // others msg
          * }
          * */
-        sendMail(EmailTipType.VERIFY_EMAIL, info, authMailInfo as SubscribeInfo)
+        sendMail(SendEmailType.VERIFY_EMAIL, info, authMailInfo as AuthSubscribeInfo)
             .then(() => {
                 // 表存储验证码信息
                 addVerifyCodeInfo({

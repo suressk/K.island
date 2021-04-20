@@ -9,7 +9,7 @@ export interface IdOption {
 
 // 删除参数 id => 数组
 export interface IdList {
-    id: number[]
+    ids: number[]
 }
 
 // 分页查询参数

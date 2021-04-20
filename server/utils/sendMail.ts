@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer'
-import {SubscribeInfo, SubscribeTipInfo} from '../common/types'
+import {AuthSubscribeInfo, CreateSubscribeEmailInfo} from '../common/types'
 import {authPass, authEmail} from '../common/definition'
 // import {createRandomVerifyCode} from './util'
 
@@ -42,7 +42,7 @@ const wishStr = `
  * @param {*} info
  * @param {*} auth
  * */
-export default function sendMail(type: number, info: SendEmailInfo, auth: SubscribeInfo) {
+export default function sendMail(type: number, info: SendEmailInfo, auth: AuthSubscribeInfo) {
 
     const transporter = nodemailer.createTransport({
         // host: mode[info.emailType],
@@ -75,7 +75,7 @@ export default function sendMail(type: number, info: SendEmailInfo, auth: Subscr
 /**
  * 创建 option
  * */
-function createOption(type: number, info: SendEmailInfo, auth: SubscribeInfo) {
+function createOption(type: number, info: SendEmailInfo, auth: AuthSubscribeInfo) {
     const {subject, html} = createTipInfo(type, info, auth)
 
     return {
@@ -89,7 +89,7 @@ function createOption(type: number, info: SendEmailInfo, auth: SubscribeInfo) {
 /**
  * 创建邮件信息内容
  * */
-function createTipInfo(type: number, info: SendEmailInfo, auth: SubscribeInfo): SubscribeTipInfo {
+function createTipInfo(type: number, info: SendEmailInfo, auth: AuthSubscribeInfo): CreateSubscribeEmailInfo {
     switch (type) {
         case 1:
             return {

@@ -1,5 +1,5 @@
 import express from 'express'
-import {getMessageList, deleteMessage} from '../../services/messageService'
+import {getMessageList, deleteMessages} from '../../services/messageService'
 import {writeHead, writeResult} from '../../utils/writeResponse'
 
 const router = express.Router()
@@ -33,7 +33,7 @@ router.get('/list', (req, res) => {
  * */
 router.delete('/delete', (req, res) => {
     const ids = req.body.ids
-    deleteMessage({ids})
+    deleteMessages({ids})
         .then(() => {
             writeHead(res, 200)
             writeResult(res, true, 'Successfully deleted', {})
