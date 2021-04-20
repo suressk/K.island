@@ -1,6 +1,7 @@
-import { ref, reactive, computed, SetupContext, nextTick } from '@nuxtjs/composition-api'
-import { checkIsEmail } from '~/utils/util'
-import { CommentProps } from '~/types'
+import {ref, reactive, toRefs, computed, SetupContext, nextTick, onMounted} from '@nuxtjs/composition-api'
+import {checkIsEmail, getStorageItem} from '~/utils/util'
+import {CommentProps} from '~/types'
+import {COMMENT_USER} from '~/store/mutation-types'
 
 let timer: number
 
@@ -16,21 +17,26 @@ function matchStationmasterEmail(email: string) {
   }
 }
 
+interface CommentUserInfo {
+  name: string
+  email: string
+}
+
+function getLocalUserInfo(): CommentUserInfo {
+  const userInfo = getStorageItem<CommentUserInfo>(COMMENT_USER)
+  return (userInfo ? userInfo : { name: '', email: ''})
+}
+
 /**
  * TODO =====> add comment => validate myself
  * */
-export default function(props: CommentProps, ctx: SetupContext) {
-  const name = ref<string>('')
-  const email = ref<string>('')
-  const comment = ref<string>('')
-  const tipIndex = ref<number>(-1)
-  /**
-   * 被回复（评论）者的信息
-   * */
-  const mentions = reactive({
+export default function (props: CommentProps, ctx: SetupContext) {
+  const user = reactive({
     name: '',
-    email: ''
+    email: '',
+    comment: ''
   })
+  const tipIndex = ref<number>(-1)
   const tipTxt = reactive([
     '您的昵称不能是空白哦~',
     '邮箱格式貌似不太对呢~',
@@ -42,25 +48,32 @@ export default function(props: CommentProps, ctx: SetupContext) {
     'Successfully completed, Nice!'
   ])
 
+  // 初始化评论人信息
+  onMounted(() => {
+    const userInfo = getLocalUserInfo()
+    user.name = userInfo.name
+    user.email = userInfo.email
+  })
+
   const disabledSubmit = computed(() => {
-    return (name.value === '' || email.value === '' || comment.value === '')
+    return (user.name === '' || user.email === '' || user.comment === '')
   })
 
   function handleSubmit() {
     // name 全空格或 Tab 制表符等空字符串
-    if (!name.value.trim()) {
+    if (!user.name.trim()) {
       tipIndex.value = 0
       return
     }
     // 邮箱格式不正确
-    if (!checkIsEmail(email.value)) {
+    if (!checkIsEmail(user.email)) {
       tipIndex.value = 1
       return
-    } else if (matchStationmasterEmail(email.value)) {
+    } else if (matchStationmasterEmail(user.email)) {
       tipIndex.value = 2
       return
     }
-    if (comment.value.length < 5) {
+    if (user.comment.length < 5) {
       tipIndex.value = 3
       return
     }
@@ -69,9 +82,9 @@ export default function(props: CommentProps, ctx: SetupContext) {
     // addComment()
 
     ctx.emit('submit-comment', {
-      name: name.value,
-      email: email.value,
-      comment: comment.value
+      name: user.name,
+      email: user.email,
+      comment: user.comment
     })
     nextTick(() => {
       if (timer) clearTimeout(timer)
@@ -82,13 +95,10 @@ export default function(props: CommentProps, ctx: SetupContext) {
   }
 
   return {
-    name,
-    email,
-    comment,
+    ...toRefs(user),
     disabledSubmit,
     tipTxt,
     tipIndex,
-    mentions,
     handleSubmit
   }
 }

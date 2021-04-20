@@ -1,6 +1,6 @@
 <template>
   <section class='k-article-info'>
-    <KHeader :title='articleDetail.title' :need-scroll='true' />
+    <KHeader :title='articleDetail.title' :need-scroll='true'/>
 
     <div class='content'>
       <div class='article-content' :class='articleClass'>
@@ -29,23 +29,25 @@
           :show-footer='false'
           class='comment-modal'
         >
-          <CommentForm @submit-comment='getCommentInfo' />
+          <CommentForm @submit-comment='getCommentInfo'/>
         </Modal>
       </div>
 
-      <ThemeSwitch />
+      <div class="comment-list"></div>
+
+      <ThemeSwitch/>
     </div>
-    <BackTop />
+    <BackTop/>
   </section>
 </template>
 
 <script lang='ts'>
-import { defineComponent } from '@nuxtjs/composition-api'
-import { parseMarkdownFile } from '~/utils/marked'
+import {defineComponent} from '@nuxtjs/composition-api'
+import {parseMarkdownFile} from '~/utils/marked'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
-import { Context } from '@nuxt/types'
-import { CommentInfo } from '~/types'
-import { successNotify, warnNotify, errorNotify } from '~/utils/util'
+import {Context} from '@nuxt/types'
+import {CommentInfo} from '~/types'
+import {successNotify, warnNotify, errorNotify} from '~/utils/util'
 import CommentForm from '~/components/CommentForm/index.vue'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
@@ -54,16 +56,16 @@ import Modal from '~/components/KModal/index.vue'
 
 export default defineComponent({
   name: 'ArticleId',
-  components: { KHeader, CommentForm, ThemeSwitch, BackTop, Modal },
+  components: {KHeader, CommentForm, ThemeSwitch, BackTop, Modal},
   // @ts-ignore
-  async asyncData({ params, $axios }: Context): Promise<object | void> | object | void {
-    const { articleId } = params
+  async asyncData({params, $axios}: Context): Promise<object | void> | object | void {
+    const {articleId} = params
     const paramsArr = articleId.split('_') // 路径参数由 uid_id 拼接而来
     const uid = paramsArr[0],
       id = paramsArr[1]
     try {
-      const { success, data } = await $axios.get('/record/detail', {
-        params: { uid, id }
+      const {success, data} = await $axios.get('/record/detail', {
+        params: {uid, id}
       })
       // success to get article content
       if (success) {
@@ -93,7 +95,8 @@ export default defineComponent({
   },
   data() {
     return {
-      addCommentVisible: false
+      addCommentVisible: false,
+      isReply: false /* 评论/回复他人评论： false === 评论文章；true === 回复他人 */
     }
   },
   methods: {
@@ -101,6 +104,7 @@ export default defineComponent({
       this.addCommentVisible = flag
     },
     getCommentInfo(info: CommentInfo) {
+      const {name, email, comment} = info
       console.log(info) // name, email, comment
       console.log(this.articleDetail) // 文章详情
       const vm = this
@@ -108,12 +112,12 @@ export default defineComponent({
       try {
         // @ts-ignore
         vm.$axios.post('/comment/add', {
-          name: 'sure',
-          email: 'sure_k@qq.com',
+          name: name,
+          email: email,
           articleId: 1008,
           topicId: null,
           parentId: null,
-          comment: '新增评论'
+          comment: comment
         }).then((res: any) => {
           if (!res.success) {
             warnNotify(res.message)
@@ -126,8 +130,11 @@ export default defineComponent({
           errorNotify(err.message)
         })
       } catch (err) {
-        console.error(err)
+        errorNotify(err.message)
       }
+    },
+    reply() {
+
     }
   },
   head() {
