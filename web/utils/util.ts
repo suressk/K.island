@@ -110,12 +110,12 @@ export function getWindowProp(type: string) {
  * 滚动条滚动事件处理
  * */
 let rafId = -1 // 存储调用 requestAnimationFrame() 的返回值，用于取消动画
-export function singleScroll (domSelector: string, type: string, speed = 10) {
+export function singleScroll (domSelector: string, type: string = 'top', speed = 10) {
   // DOM元素 计算位置
   const dom = document.querySelector(domSelector) as HTMLElement
   const top = dom.offsetTop
   // 滚动的目标位置
-  let target: number
+  let target: number = 0
   if (type === 'top') {
     target = 0
   // } else if (type === 'comment') {
@@ -129,8 +129,6 @@ export function singleScroll (domSelector: string, type: string, speed = 10) {
   }
   let lastScrollTop = 0  // 上次滚动到的位置点
 
-  // rafId = window.requestAnimationFrame(handleScroll)
-
   handleScroll()
 
   function handleScroll () {
@@ -140,16 +138,18 @@ export function singleScroll (domSelector: string, type: string, speed = 10) {
     // const distance = scrollTop / speed // 减速回滚 —— 每次滚动距离
     // const distance = (scrollTop / speed) | 0 // 取整
     // const distance = ~~(scrollTop / speed) // 取整
-    // const distance = Math.floor(scrollTop / speed)
     scrollTop = document.body.scrollTop = document.documentElement.scrollTop = scrollTop + distance
 
     let canceled
-    if (type === 'top') {
-      canceled = scrollTop === target || (lastScrollTop && scrollTop > lastScrollTop)
-    // } else if (type === 'comment') {
-    //   canceled = (lastScrollTop && scrollTop > lastScrollTop) || scrollTop <= target || scrollTop === 0
-    } else {
-      canceled = scrollTop <= lastScrollTop || (scrollTop + distance) >= target
+    switch (type) {
+      case 'top':
+        canceled = scrollTop === target || (lastScrollTop && (scrollTop > lastScrollTop))
+        break
+      // case 'comment':
+      //   canceled = (lastScrollTop && scrollTop > lastScrollTop) || scrollTop <= target || scrollTop === 0
+      //   break
+      default:
+        canceled = scrollTop <= lastScrollTop || (scrollTop + distance) >= target
     }
     // 到达目标位置或滚动滚轮取消滚动
     if (canceled) {

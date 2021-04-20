@@ -1,7 +1,7 @@
 <template>
   <!--  评论表单  -->
   <div class='comment-form'>
-    <span class='mentions txt-overflow' :class='{show: mentions.name}'>@{{ mentions.name }}</span>
+    <span class='mentions txt-overflow' :class='{show: mentionsName}'>@{{ mentionsName }}</span>
     <div class='d-flex chat-container'>
       <label class='name-txt'>
         <i class='iconfont icon-name' />
@@ -52,6 +52,12 @@ import CubeLoading from '../loadingComp/CubeLoading.vue'
 export default defineComponent({
   name: 'CommentForm',
   components: { CubeLoading },
+  props: {
+    mentionsName: {
+      type: String,
+      default: ''
+    }
+  },
   setup(props: CommentProps, ctx: SetupContext) {
     return {
       ...useCommentForm(props, ctx)

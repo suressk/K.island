@@ -2,7 +2,7 @@
   <section class="k-article-page">
     <KHeader title="(≖ᴗ≖)✧"/>
     <!--  文章列表页  -->
-    <div v-if="Object.keys(listData).length === 0" class="nothing-content flex-center">
+    <div v-if="Object.keys(articleList).length === 0" class="nothing-content flex-center">
       <Empty>
         <span class="tip txt-overflow">空无一物 (≖ᴗ≖)✧</span>
       </Empty>
@@ -14,7 +14,7 @@
       <!--   月份分组   -->
       <div
         class="year-list"
-        v-for="(yearItem, year, idx) in listData"
+        v-for="(yearItem, year, idx) in articleList"
         :key="idx"
       >
         <ul
@@ -48,10 +48,10 @@
         </ul>
       </div>
 
+      <LoadMore :load-status="status"/>
     </div>
 
     <ThemeSwitch/>
-    <LoadMore :load-status="status"/>
   </section>
 </template>
 
@@ -60,18 +60,19 @@ import {defineComponent} from '@nuxtjs/composition-api'
 import {mapState} from 'vuex'
 import {
   NO_MORE,
-  LOAD_MORE,
-  M_RESET_LOAD_MORE,
-  M_SET_LOAD_STATUS,
-  M_SET_TOTAL_ITEMS,
   LOADING,
+  LOAD_MORE,
   CURRENT_PAGE,
   TOTAL_ITEMS,
-  LOAD_STATUS
+  LOAD_STATUS,
+  M_SET_LOAD_STATUS,
+  M_SET_TOTAL_ITEMS,
+  M_SET_CURRENT_PAGE,
+  M_RESET_LOAD_MORE
 } from '~/store/mutation-types'
 import {Context} from '@nuxt/types'
 import {ArticleItem} from '~/types'
-import {commitMutations, mapYearGroup, createArticleListData} from '~/utils/util'
+import {commitMutations, mapYearGroup, createArticleListData, errorNotify} from '~/utils/util'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import Empty from '~/components/Empty.vue'
@@ -85,7 +86,6 @@ export default defineComponent({
   // @ts-ignore => merge to data
   async asyncData({$axios, store}: Context): Promise<object | void> | object | void {
     try {
-      // @ts-ignore
       const {success, data} = await $axios.get('/record/list', {
         params: {
           pageNo: 1,
@@ -101,75 +101,101 @@ export default defineComponent({
           commitMutations(store, M_SET_LOAD_STATUS, NO_MORE)
         }
         return {
-          listData: createArticleListData(mapYearGroup(list))
+          listData: list
         }
       }
       return {
-        listData: {}
+        listData: []
       }
     } catch (e) {
       return {
-        listData: {}
+        listData: []
       }
     }
   },
   data() {
-    return {
-
-    }
+    return {}
   },
   computed: {
     ...mapState({
       curPage: (state: any) => state[CURRENT_PAGE],
       totalItems: (state: any) => state[TOTAL_ITEMS],
       status: (state: any) => state[LOAD_STATUS]
-    })
+    }),
+    /* 更改为 computed 渲染 article list 便于合并请求得到的文章列表 */
+    articleList({listData}) {
+      return createArticleListData(mapYearGroup(listData))
+    }
   },
   methods: {
     toDetailPage(articleItem: ArticleItem) {
-      const { uid, id} = articleItem
+      const {uid, id} = articleItem
       this.$router.push(`/article/${uid}_${id}`)
     },
     loadMore() {
       this.getArticleList(this.curPage + 1)
     },
     async getArticleList(nextPage: number) {
-      commitMutations(this.$store, M_SET_LOAD_STATUS, LOADING)
       const vm = this
+      commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOADING)
       const start = Date.now()
       try {
-        commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOADING)
         const {success, data} = await vm.$axios.get('/record/list', {
           params: {
             pageNo: nextPage,
-            pageSize: 10,
-            group: 'MONTH'
+            pageSize: 10
           }
         })
-
-        const end = Date.now()
         if (success) {
-          console.log('article list: ', data)
-          vm.updateStatus(start, end)
+          const {total, list} = data
+          vm.updateLoadStatus(start, list, true, total)
+        } else {
+          vm.updateLoadStatus(start, [], false)
         }
       } catch (err) {
-
+        // 请求失败，关闭 loading 状态，提示错误信息
+        commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOAD_MORE)
+        errorNotify(err.message)
       }
     },
-    updateStatus(start: number, end: number) {
-      console.log(start, end)
+    updateLoadStatus(
+      start: number,
+      articleList: ArticleItem[],
+      success: Boolean,
+      total?: number
+    ) {
+      const end = Date.now()
+      // 总条数有值则更新
+      total && commitMutations(this.$store, M_SET_TOTAL_ITEMS, total)
+      new Promise(resolve => {
+        if (end - start > 500) {
+          resolve('')
+        } else {
+          setTimeout(() => {
+            resolve('')
+          }, 500)
+        }
+      }).then(() => {
+        // @ts-ignore
+        this.listData = [...this.listData, ...articleList]
+        // @ts-ignore
+        if (this.listData.length < total) {
+          // 还有更多文章
+          commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE)
+        } else {
+          // 没有更多
+          commitMutations(this.$store, M_SET_LOAD_STATUS, NO_MORE)
+        }
+        // 请求成功 => 当前页 +1
+        success && commitMutations<number>(this.$store, M_SET_CURRENT_PAGE, this.curPage + 1)
+      })
     }
   },
-  mounted() {
-    // @ts-ignore
-    console.log('文章列表: ', this.listData)
-    this.getArticleList(2)
-  },
   watch: {
-    scrollerIsBottom(flag) {
+    scrollerIsBottom(isBottom) {
       // @ts-ignore
-      if (flag && (this.status === LOAD_MORE) && (this.msgList.length < this.totalItems)) {
-        // this.getMessageList()
+      if (isBottom && (this.status === LOAD_MORE) && (this.msgList.length < this.totalItems)) {
+        this.getArticleList(this.curPage + 1)
       }
     }
   },
