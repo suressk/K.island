@@ -1,4 +1,4 @@
-import {poolQuery, promisePoolQuery} from '../dao/DBUtil'
+import {poolQuery, promisePoolQuery} from '../db/DBUtil'
 import {MessageListOptions, AddMessageOpt, IdsOptions} from '../common/types'
 import {v4 as uuid} from 'uuid'
 

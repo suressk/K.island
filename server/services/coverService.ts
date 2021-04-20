@@ -25,7 +25,7 @@ function checkFileExist (filePath: string) {
 /**
  * 删除图片
  * */
-export function imageService (relativePath: string) {
+export function coverService (relativePath: string) {
     let fullPath = resolvePath(relativePath)
     // 替换可能存在的 "//" 或 "\\"
     fullPath = fullPath.replace(/\/\//g, '/')

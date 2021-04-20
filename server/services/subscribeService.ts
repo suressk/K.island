@@ -1,4 +1,4 @@
-import {poolQuery, promisePoolQuery} from '../dao/DBUtil'
+import {poolQuery, promisePoolQuery} from '../db/DBUtil'
 import {getTableDeleteSqlStr} from '../utils/util'
 import {DeleteSubscribeOptions, QuerySubscribeListOptions, CheckVerificationCodeOptions} from '../common/types'
 import {v4 as uuid} from 'uuid'

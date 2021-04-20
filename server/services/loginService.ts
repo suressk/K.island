@@ -1,4 +1,4 @@
-import {poolQuery} from '../dao/DBUtil'
+import {poolQuery} from '../db/DBUtil'
 import { UserInfo } from '../common/types'
 
 export function login (options: UserInfo) {

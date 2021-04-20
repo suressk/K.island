@@ -1,4 +1,4 @@
-import {poolQuery, promisePoolQuery} from '../dao/DBUtil'
+import {poolQuery, promisePoolQuery} from '../db/DBUtil'
 import {getUpdateRecordParams, mapCreateTime} from '../utils/util'
 import sendMail from '../utils/sendMail'
 import {authMailInfo} from '../utils/sendMail'
@@ -6,7 +6,7 @@ import {queryAllSubscribe} from './subscribeService'
 import {v4 as uuid} from 'uuid'
 import {
     QueryRecordListOptions,
-    RecordIdOptions,
+    IdOptions,
     AddRecordOptions,
     UpdateRecordOptions,
     ArticleListItem
@@ -100,7 +100,7 @@ export async function queryRecordList(options: QueryRecordListOptions) {
 /**
  * 查询文章详情信息
  * */
-export function queryRecordDetail(options: RecordIdOptions) {
+export function queryRecordDetail(options: IdOptions) {
     const {id, uid} = options
     const sqlStr = 'SELECT id, uid, title, introduce, content, tag, views, liked, cover, music, ctime, utime FROM `tbl_records` WHERE id = ? AND uid = ?;'
     const params = [id, uid]
@@ -199,7 +199,6 @@ export function updateRecord(options: UpdateRecordOptions) {
     // 3. 修改 liked —— 文章点赞(喜欢)量； <暂时未做>
     // 4. 修改文章详情内容（title, tag, introduce, content, cover...）
     const {sqlStr, params} = getUpdateRecordParams(options)
-    // connectQuery(sqlStr, params, success, error)
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, params)
             .then(result => resolve(result))
@@ -211,7 +210,7 @@ export function updateRecord(options: UpdateRecordOptions) {
  * 删除文章 (真删除)
  * then => delete cover
  * */
-export function deleteRecord(options: RecordIdOptions) {
+export function deleteRecord(options: IdOptions) {
     const {id, uid} = options
     const sqlStr = 'DELETE FROM `tbl_records` WHERE id = ? and uid = ?;'
     const params = [id, uid]

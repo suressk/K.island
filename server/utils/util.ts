@@ -85,21 +85,6 @@ export function getUpdateRecordParams(options: UpdateRecordOptions) {
     }
 }
 
-// enum enMonth {
-//     Jan,
-//     Feb,
-//     Mar,
-//     Apr,
-//     May,
-//     Jun,
-//     Jul,
-//     Aug,
-//     Sep,
-//     Oct,
-//     Nov,
-//     Dec
-// }
-
 const enMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const specialDay = {
     1: '1st',

@@ -1,6 +1,6 @@
 import express from 'express'
 import {addRecord, updateRecord, deleteRecord, sendNotification} from '../../services/recordService'
-import {imageService} from '../../services/imageService'
+import {coverService} from '../../services/coverService'
 import {writeHead, writeResult} from '../../utils/writeResponse'
 import {queryRecordListResp, queryRecordDetailResp} from '../recordResponse'
 
@@ -26,7 +26,7 @@ router.get('/detail', (req, res) => {
 router.post('/add', (req, res) => {
     const addRecordPro = addRecord(req.body)
 
-    // 新增文章失成功
+    // 新增文章成功
     addRecordPro.then(() => {
         /**
          * 给订阅者发送通知
@@ -38,7 +38,7 @@ router.post('/add', (req, res) => {
             })
             .catch(err => {
                 writeHead(res, 200)
-                writeResult(res, true, 'Successfully added the article, ' + err.message, err)
+                writeResult(res, false, 'Successfully added the article, ' + err.message, err)
             })
     })
     // 新增文章失败
@@ -72,16 +72,13 @@ router.delete('/delete', (req, res) => {
     const uid = req.body.uid
 
     const delCoverPro = new Promise((resolve, reject) => {
-        imageService(relativePath)
+        coverService(relativePath)
             .then(() => {
-                resolve('Successfully deleted the cover')
+                resolve('Successfully deleted the cover.')
             })
             .catch(err => {
                 if (err === 'not exist') {
-                    reject({
-                        message: "The cover doesn't exist",
-                        error: {}
-                    })
+                    resolve(`The cover doesn't exist, maybe you have deleted before.`)
                 } else {
                     reject({
                         message: err.message,
@@ -94,19 +91,19 @@ router.delete('/delete', (req, res) => {
     const delRecordPro = new Promise((resolve, reject) => {
         deleteRecord({id, uid})
             .then(() => {
-                resolve('Successfully deleted the record')
+                resolve('Successfully deleted the record.')
             }).catch(err => {
             reject({
-                message: 'Failed to delete the record',
+                message: 'Failed to delete the record.',
                 error: err
             })
         })
     })
 
     Promise.all([delCoverPro, delRecordPro])
-        .then(() => {
+        .then(([coverMsg, recordMsg]) => {
             writeHead(res, 200)
-            writeResult(res, true, 'Successfully deleted the record and the cover')
+            writeResult(res, true, `${recordMsg} \r\n ${coverMsg}`)
         })
         .catch(err => {
             writeHead(res, 500)

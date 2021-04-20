@@ -26,7 +26,7 @@ export interface QueryRecordListOptions extends PageQueryParams {
     index?: number
 }
 
-export interface RecordIdOptions {
+export interface IdOptions {
     id: number
     uid: string
 }
@@ -92,7 +92,7 @@ export interface AddRecordOptions {
 
 export interface UpdateRecordOptions extends RecordInfo {
     id: number
-    uid: string
+    email: string
 }
 
 // type EmailType = 'QQ' | '163' | 'GMAIL' | 'OUTLOOK'
@@ -121,6 +121,6 @@ export interface CheckVerificationCodeOptions {
 
 export enum EmailTipType {
     VERIFY_EMAIL = 1,
-    NEW_RECORD,
-    NEW_COMMENT
+    ADD_RECORD,
+    ADD_COMMENT
 }
