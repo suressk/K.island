@@ -112,9 +112,13 @@ export default defineComponent({
       try {
         // @ts-ignore
         vm.$axios.post('/comment/add', {
-          name: name,
-          email: email,
-          articleId: 1008,
+          fromName: name,
+          fromEmail: email,
+          toName: '小K.',
+          toEmail: 'sure_k@qq.com',
+          articleId: vm.articleDetail.id,
+          articleUid: vm.articleDetail.uid,
+          articleTitle: vm.articleDetail.title,
           topicId: null,
           parentId: null,
           comment: comment
@@ -124,7 +128,6 @@ export default defineComponent({
             return
           }
           successNotify(res.message)
-          // @ts-ignore
           vm.showComment(false)
         }).catch((err: any) => {
           errorNotify(err.message)

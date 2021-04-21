@@ -1,15 +1,16 @@
 import {poolQuery, promisePoolQuery} from '../db/DBUtil'
 import {getUpdateRecordParams, mapCreateTime} from '../utils/util'
 import sendMail from '../utils/sendMail'
-import {authMailInfo} from '../utils/sendMail'
+import {authorMailInfo} from '../common/definition'
 import {queryAllSubscribe} from './subscribeService'
+import {SendEmailType} from '../common/types'
 import {v4 as uuid} from 'uuid'
 import {
-    GetRecordListParams,
     IdOption,
+    RecordItem,
+    GetRecordListParams,
     AddRecordParams,
-    UpdateRecordParams,
-    RecordItem
+    UpdateRecordParams
 } from '../common/types'
 
 /**
@@ -32,7 +33,7 @@ const listSqlObj = {
 
 type ListParams = [number, number] | [string, number, number]
 
-interface QueryListParams {
+interface QueryListOptions {
     listSqlStr: string
     listParams: ListParams
     totalSqlStr: string
@@ -42,7 +43,7 @@ interface QueryListParams {
 /**
  * 获取分页查询 sql 语句及参数
  * */
-function getQueryListParams(options: GetRecordListParams): QueryListParams {
+function getQueryListParams(options: GetRecordListParams): QueryListOptions {
     const {pageNo, pageSize} = options
     let listParams: ListParams = [(pageNo - 1) * pageSize, pageSize] // 分页参数
     let listSqlStr: string
@@ -124,8 +125,8 @@ function updateViews(info: RecordItem) {
     const {id, uid, views} = info
     // then nothing to do
     updateRecord({id, uid, views: views + 1})
-        .then(() => {})
-        .catch(() => {})
+        .then(() => undefined)
+        .catch(() => undefined)
 }
 
 /**
@@ -167,7 +168,7 @@ export function sendNotification(origin: string, title: string) {
                 title
             }
             // TODO => 发送邮件 type: 2 （新文章通知）
-            sendMail(2, data, authMailInfo)
+            sendMail(SendEmailType.ADD_RECORD, data, authorMailInfo)
                 .then(() => {
                     resolve({
                         message: 'Successfully sent the new article notification'
@@ -201,8 +202,12 @@ export function updateRecord(options: UpdateRecordParams) {
     const {sqlStr, params} = getUpdateRecordParams(options)
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, params)
-            .then(result => resolve(result))
-            .catch(err => reject(err))
+            .then(result => {
+                resolve(result)
+            })
+            .catch(err => {
+                reject(err)
+            })
     })
 }
 

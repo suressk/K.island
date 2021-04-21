@@ -2,13 +2,6 @@
  * 订阅类型定义
  * */
 
-// 查询订阅列表参数（TODO email 可作为过滤条件，免去多页翻页查找要移除订阅的 email）
-export interface GetSubscribeListParams extends PageQueryParams {
-    email?: string
-}
-
-import {PageQueryParams} from './commonTypes'
-
 // 删除订阅信息参数
 export interface DeleteSubscribeParams {
     id: number

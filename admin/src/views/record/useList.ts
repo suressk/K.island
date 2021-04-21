@@ -107,7 +107,7 @@ export default function useList() {
      * 切换文章显隐
      * */
     function switchChange(record: RecordItem, show: boolean) {
-        console.log(show) // true => 显示； false => 隐藏
+        // console.log(show) // true => 显示； false => 隐藏
         const {id, uid} = record
         const matchItem = articleList.value.filter(item => id === item.id)[0]
         updateRecord({

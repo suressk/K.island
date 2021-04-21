@@ -10,7 +10,7 @@ import manageMessage from './routes/sys/manageMessage'
 import viewRecords from './routes/web/records'
 import addComments from './routes/web/comments'
 import addMessage from './routes/web/messages'
-import subscribe from './routes/web/subscribe'
+import subscribe from './routes/web/subscribes'
 
 const app = express()
 

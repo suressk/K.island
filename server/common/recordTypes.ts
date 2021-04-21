@@ -1,5 +1,3 @@
-import { PageQueryParams } from './commonTypes'
-
 /**
  * 文章管理相关类型定义
  * */
@@ -44,7 +42,9 @@ export interface AddRecordParams {
 }
 
 // 查询文章列表参数
-export interface GetRecordListParams extends PageQueryParams {
+export interface GetRecordListParams {
+    pageNo: number
+    pageSize: number
     range?: string
     title?: string
     index?: number

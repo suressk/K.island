@@ -9,7 +9,7 @@ import { defineComponent } from '@nuxtjs/composition-api'
 // import { CommentInfo } from '~/types'
 
 export default defineComponent({
-  name: 'Comment',
+  name: 'CommentList',
   components: {},
   setup() {
 
@@ -19,5 +19,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "../../assets/css/components/commentList";
+@import "/assets/css/components/commentList";
 </style>

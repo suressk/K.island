@@ -9,7 +9,7 @@ import {
 import {writeHead, writeResult} from '../../utils/writeResponse'
 import {createRandomVerifyCode} from '../../utils/util'
 import sendMail from '../../utils/sendMail'
-import {authMailInfo} from '../../utils/sendMail'
+import {authorMailInfo} from '../../common/definition'
 import {v4 as uuid} from 'uuid'
 // import {authPass, authEmail} from '../../common/definition'
 
@@ -73,7 +73,7 @@ router.post('/add', (req, res) => {
          *     ... // others msg
          * }
          * */
-        sendMail(SendEmailType.VERIFY_EMAIL, info, authMailInfo as AuthSubscribeInfo)
+        sendMail(SendEmailType.VERIFY_EMAIL, info, authorMailInfo as AuthSubscribeInfo)
             .then(() => {
                 // 表存储验证码信息
                 addVerifyCodeInfo({

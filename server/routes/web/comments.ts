@@ -1,6 +1,9 @@
 import express from 'express'
-import { addComment } from '../../services/commentsService'
-import {writeHead, writeResult} from "../../utils/writeResponse";
+import {addComment} from '../../services/commentService'
+import {writeHead, writeResult} from '../../utils/writeResponse'
+import sendMail from '../../utils/sendMail'
+import {SendEmailType} from '../../common/types'
+import {authorMailInfo} from '../../common/definition'
 
 const router = express.Router()
 
@@ -8,14 +11,25 @@ const router = express.Router()
  * 评论文章 / 回复评论
  * */
 router.post('/add', (req, res) => {
-    // const name = req.body.name
-    // const email = req.body.email
     try {
-        const { name, email, articleId, topicId, parentId, comment } = req.body
-        console.log('Request Body: ', name, email, articleId, topicId, parentId, comment)
+        const {
+            fromName,
+            fromEmail,
+            toName,
+            toEmail,
+            articleId,
+            topicId,
+            parentId,
+            comment,
+            articleUid,
+            articleTitle
+        } = req.body
+        console.log('Request Body: ', fromName, fromEmail, articleId, topicId, parentId, comment)
         addComment({
-            name,
-            email,
+            fromName,
+            fromEmail,
+            toName,
+            toEmail,
             articleId,
             topicId,
             parentId,
@@ -23,6 +37,19 @@ router.post('/add', (req, res) => {
         }).then(() => {
             writeHead(res, 200)
             writeResult(res, true, 'Congratulations！You have posted a comment')
+            // 评论文章或者回复 小K. 的，不发送回复信息邮件
+            if (toEmail === authorMailInfo.user) return
+
+            const info = {
+                name: toName,
+                title: articleTitle,
+                url: `${req.headers.origin}/article/${articleUid}_${articleId}` /* 邮件跳转文章详情页 */
+            }
+            sendMail(SendEmailType.ADD_COMMENT, info, authorMailInfo)
+                .then(res => {
+                    console.dir(res)
+                    console.log('邮件发送成功!')
+                })
         }).catch(err => {
             writeHead(res, 500)
             writeResult(res, false, 'Something wrong with adding a comment', err)

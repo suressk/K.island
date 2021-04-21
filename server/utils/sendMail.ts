@@ -1,24 +1,7 @@
 import nodemailer from 'nodemailer'
 import {AuthSubscribeInfo, CreateSubscribeEmailInfo} from '../common/types'
-import {authPass, authEmail} from '../common/definition'
+import {mailService} from '../common/definition'
 // import {createRandomVerifyCode} from './util'
-
-const serviceMap = {
-    qq: 'QQ',
-    163: '163',
-    gmail: 'Gmail',
-    outlook: 'Outlook365'
-}
-
-/**
- * QQ 邮箱
- * */
-export const authMailInfo = {
-    user: authEmail.qq,
-    pass: authPass.qq,
-    emailType: 'QQ',
-    name: '小 K.'
-}
 
 interface SendEmailInfo {
     url: string
@@ -32,7 +15,7 @@ const wishStr = `
     <div style='background: #eff5fb;border-left: 4px solid #c2e1ff;padding: 20px;margin-top: 30px;border-radius: 0 10px 10px 0;font-size: 0.8rem;color: #7d7f7f;line-height: 1.5;'>
         - If we don’t have a chance to meet, then I’m here to wish you good morning, good afternoon and good night~<br>
         - May the beauty of the world arrive as expected~<br>
-        - Remember to smile and say: I'm fine.(Just for myself - K.)
+        - Remember to face life with a smile...
     </div>
 `
 
@@ -45,8 +28,7 @@ const wishStr = `
 export default function sendMail(type: number, info: SendEmailInfo, auth: AuthSubscribeInfo) {
 
     const transporter = nodemailer.createTransport({
-        // host: mode[info.emailType],
-        service: serviceMap.qq,
+        service: mailService.qq,
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
