@@ -49,12 +49,12 @@ interface AddCommentOption {
 export function addComment(options: AddCommentOption) {
     const {articleId, parentId, comment, fromEmail, fromName, topicId} = options
     const toName = options.toName ? options.toName : authorMailInfo.user
-    const toEmail = options.toEmail ? options.toName : authorMailInfo.name
+    const toEmail = options.toEmail ? options.toEmail : authorMailInfo.name
     const uid = uuid()
     const ctime = Date.now()
     const newTopicId = topicId === null ? uid : topicId
-    const sqlStr = 'INSERT INTO `tbl_comments` (uid, record_id, parent_id, content, topic_id, from_name, from_email, ctime, to_name, to_email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
-    const params = [uid, articleId, parentId, comment, newTopicId, fromName, fromEmail, ctime, toName, toEmail]
+    const sqlStr = 'INSERT INTO `tbl_comments` (uid, record_id, parent_id, content, topic_id, from_name, from_email, ctime, to_name, to_email, is_read) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
+    const params = [uid, articleId, parentId, comment, newTopicId, fromName, fromEmail, ctime, toName, toEmail, 0]
 
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, params)

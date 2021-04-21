@@ -33,7 +33,7 @@
         </Modal>
       </div>
 
-      <div class="comment-list"></div>
+      <Comment :comment-list='commentList' />
 
       <ThemeSwitch/>
     </div>
@@ -49,6 +49,7 @@ import {Context} from '@nuxt/types'
 import {CommentInfo} from '~/types'
 import {successNotify, warnNotify, errorNotify} from '~/utils/util'
 import CommentForm from '~/components/CommentForm/index.vue'
+import Comment from '~/components/CommentList/index.vue'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import BackTop from '~/components/BackTop/index.vue'
@@ -56,7 +57,7 @@ import Modal from '~/components/KModal/index.vue'
 
 export default defineComponent({
   name: 'ArticleId',
-  components: {KHeader, CommentForm, ThemeSwitch, BackTop, Modal},
+  components: {KHeader, CommentForm, ThemeSwitch, BackTop, Modal, Comment},
   // @ts-ignore
   async asyncData({params, $axios}: Context): Promise<object | void> | object | void {
     const {articleId} = params
@@ -64,15 +65,15 @@ export default defineComponent({
     const uid = paramsArr[0],
       id = paramsArr[1]
     try {
-      const {success, data} = await $axios.get('/record/detail', {
+      const recordRes = await $axios.get('/record/detail', {
         params: {uid, id}
       })
       // success to get article content
-      if (success) {
+      if (recordRes.success) {
         return {
-          articleDetail: data,
-          htmlContent: parseMarkdownFile(data.content),
-          articleClass: data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
+          articleDetail: recordRes.data,
+          htmlContent: parseMarkdownFile(recordRes.data.content),
+          articleClass: recordRes.data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
         }
       } else {
         return {
@@ -96,7 +97,8 @@ export default defineComponent({
   data() {
     return {
       addCommentVisible: false,
-      isReply: false /* 评论/回复他人评论： false === 评论文章；true === 回复他人 */
+      commentList: []
+      // isReply: false /* 评论/回复他人评论： false === 评论文章；true === 回复他人 */
     }
   },
   methods: {
@@ -136,9 +138,28 @@ export default defineComponent({
         errorNotify(err.message)
       }
     },
+    // 新增评论
+    addComment() {
+
+    },
+    // 回复评论 / 评论他人评论
     reply() {
 
+    },
+    getComment() {
+      this.$axios.get('/comment/list', {
+        params: {articleId: this.articleDetail.id}
+      }).then((res: any) => {
+        if (res.success) {
+          this.commentList = res.data
+        }
+      }).catch(err => {
+        errorNotify(err.message)
+      })
     }
+  },
+  mounted() {
+    this.getComment()
   },
   head() {
     return {

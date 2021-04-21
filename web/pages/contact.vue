@@ -31,9 +31,9 @@
         <span class="link-item">
           <i class="iconfont icon-email" />
           <span class="k-popover flex-col-start">
-            <span class="txt-overflow">🍻sure_k@qq.com</span>
-            <span class="txt-overflow">🍸stack_surek@outlook.com</span>
-            <!--<span class="txt-overflow">🥂songkun.1008@gmail.com</span>-->
+            <span class="txt-overflow">🍻{{ AuthorInfo.qq }}</span>
+            <span class="txt-overflow">🍸{{ AuthorInfo.outlook }}</span>
+            <!--<span class="txt-overflow">🥂{{ AuthorInfo.gmail }}</span>-->
           </span>
         </span>
         <a class="link-item" href="https://github.com/suerssk/K.island" target="_blank">
@@ -51,12 +51,18 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
+import { AuthorInfo } from '~/store/mutation-types'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 
 export default defineComponent({
   name: 'About',
   components: { KHeader, ThemeSwitch },
+  setup() {
+    return {
+      AuthorInfo
+    }
+  },
   head () {
     return {
       title: "Hi!I'm K. | K.island"

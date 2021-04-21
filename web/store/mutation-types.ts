@@ -31,3 +31,11 @@ export const LEAVE_MSG_LIMIT = 'leaveMsgLimit' // 每日新增 msg 限制数
 export const MSG_TIP_SHOW = 'msgTipShow' // msg 提示信息显示与否
 export const COMMENT_USER = 'commentUser' // 评论者信息
 
+/**
+ * static variable
+ * */
+export const AuthorInfo = {
+  qq: 'sure_k@qq.com',
+  outlook: 'stack_surek@outlook.com',
+  gmail: 'songkun.1008@gmail.com'
+}

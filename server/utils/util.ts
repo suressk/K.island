@@ -54,7 +54,7 @@ export function createCorsOptionsDelegate(req: Request, callback: Callback) {
  * */
 export function getUpdateRecordParams(options: UpdateRecordParams) {
     const {id, uid} = options
-    let sqlStr: string = ''
+    let sqlStr: string
     const params: any[] = []
     const utime = Date.now()
     if (options.is_delete === 0 || options.is_delete === 1) {
@@ -184,8 +184,28 @@ export function createRandomVerifyCode() {
  * 多条删除 sql 语句
  * */
 export function getTableDeleteSqlStr(list: any[], tableName: string, conditionName: string) {
-    let arr: string[] = []
+    const arr: string[] = []
     arr.length = list.length
     arr.fill('?')
     return ('DELETE FROM ' + tableName + ' WHERE ' + conditionName + ' IN (' + arr.join(',') + ');')
+}
+
+/**
+ * 评论列表分组
+ * */
+export function groupCommentList(list: any[]) {
+    // 一级
+    const result: any[] = list.filter(item => item.parent_id === null)
+    const otherItems = list.filter(item => item.parent_id !== null)
+    // 按时间排序就放置于浏览器处理了
+    for (const resItem of result) {
+        !resItem.children && (resItem.children = [])
+        otherItems.forEach((item, index) => {
+            if (item.parent_id === resItem.id) {
+                resItem.children.push(item)
+                delete otherItems[index] // 此举为下次循环稍作优化，减少后续内层循环次数
+            }
+        })
+    }
+    return result
 }
