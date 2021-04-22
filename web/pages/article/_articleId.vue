@@ -65,15 +65,15 @@ export default defineComponent({
     const uid = paramsArr[0],
       id = paramsArr[1]
     try {
-      const recordRes = await $axios.get('/record/detail', {
+      const { success, data } = await $axios.get('/record/detail', {
         params: {uid, id}
       })
       // success to get article content
-      if (recordRes.success) {
+      if (success) {
         return {
-          articleDetail: recordRes.data,
-          htmlContent: parseMarkdownFile(recordRes.data.content),
-          articleClass: recordRes.data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
+          articleDetail: data,
+          htmlContent: parseMarkdownFile(data.content),
+          articleClass: data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
         }
       } else {
         return {
