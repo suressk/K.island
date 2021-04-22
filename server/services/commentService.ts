@@ -1,7 +1,7 @@
 import {poolQuery} from '../db/DBUtil'
 import {getTableDeleteSqlStr} from '../utils/util'
 import {v4 as uuid} from 'uuid'
-import {IdList} from '../common/types'
+import {IdList, PageQueryParams, AddCommentParams} from '../common/types'
 import {authorMailInfo} from '../common/definition'
 
 interface QueryCommentsParams {
@@ -9,12 +9,14 @@ interface QueryCommentsParams {
 }
 
 /**
- * 分页查询评论信息（前端页面）
+ * 分页查询评论信息（web）
  * */
 export function getRecordComment(options: QueryCommentsParams) {
     const {articleId} = options
-    // const sqlStr = 'SELECT c.*, r.title FROM `tbl_comments` as c LEFT JOIN `tbl_records` as r ON r.id = c.record_id WHERE c.record_id = ?;'
-    const sqlStr = 'SELECT * FROM `tbl_comments` WHERE record_id = ?;'
+    // 按评论时间升序排序
+    const sqlStr = `SELECT id, uid, record_id as recordId, topic_id as topicId, parent_id as parentId,
+        from_name as fromName, from_email as fromEmail, to_name as toName, to_email as toEmail,
+        is_read as isRead FROM tbl_comments WHERE record_id = ? ORDER BY ctime;`
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, [articleId])
             .then((result: any) => {
@@ -27,26 +29,32 @@ export function getRecordComment(options: QueryCommentsParams) {
 }
 
 /**
- * 查询所有评论
+ * 查询所有评论（sys）
  * */
-export function getAllComments() {}
-
-
-interface AddCommentOption {
-    articleId: number /* 文章 id */
-    parentId: number | null /* 评论对象 这条评论记录的 id */
-    comment: string /* 评论内容 */
-    fromName: string /* 当前评论者 nickname */
-    fromEmail: string /* 当前评论者 email */
-    topicId: string /* 话题 id => 分组标识 */
-    toName?: string /* TODO 评论对象的 name （待定） */
-    toEmail?: string /* TODO 评论对象的 email （待定） */
+export function getAllComments(options: PageQueryParams) {
+    const {pageNo, pageSize} = options
+    const params = [(pageNo - 1) * pageSize, pageSize] // 分页参数
+    const sqlStr = `
+        SELECT c.id, c.uid, c.record_id as recordId, c.topic_id as topicId, c.parent_id as parentId,
+        c.from_name as fromName, c.from_email as fromEmail, c.to_name as toName, c.to_email as toEmail,
+        c.is_read as isRead, r.title FROM tbl_comments as c
+        LEFT JOIN tbl_records as r ON r.id = c.record_id ORDER BY ctime DESC LIMIT ?, ?;
+    `
+    return new Promise((resolve, reject) => {
+        poolQuery(sqlStr, params)
+            .then(result => {
+                resolve(result)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
 }
 
 /**
  * 新增评论信息 / 回复评论
  * */
-export function addComment(options: AddCommentOption) {
+export function addComment(options: AddCommentParams) {
     const {articleId, parentId, comment, fromEmail, fromName, topicId} = options
     const toName = options.toName ? options.toName : authorMailInfo.user
     const toEmail = options.toEmail ? options.toEmail : authorMailInfo.name
@@ -69,6 +77,16 @@ export function addComment(options: AddCommentOption) {
 }
 
 /**
+ * 更新评论内容
+ * 1. => 已读状态
+ * TODO 2. 已回复状态
+ * TODO 3. 更新评论内容
+ * */
+export function updateComment() {
+
+}
+
+/**
  * 删除评论
  * */
 export function deleteComments(options: IdList) {
@@ -78,7 +96,8 @@ export function deleteComments(options: IdList) {
         poolQuery(sqlStr, ids)
             .then(() => {
                 resolve('')
-            }).catch(err => {
+            })
+            .catch(err => {
                 reject(err)
             })
     })

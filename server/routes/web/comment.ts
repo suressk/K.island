@@ -20,7 +20,7 @@ router.get('/list', (req, res) => {
         })
         .catch(error => {
             writeHead(res, 500)
-            writeResult(res, false, 'Something wrong with getting the article comment list!', error)
+            writeResult(res, false, 'Something wrong with querying the article comment list!', error)
         })
 })
 
@@ -41,7 +41,7 @@ router.post('/add', (req, res) => {
             articleUid,
             articleTitle
         } = req.body
-        // console.log('Request Body: ', fromName, fromEmail, articleId, topicId, parentId, comment)
+
         addComment({
             fromName,
             fromEmail,

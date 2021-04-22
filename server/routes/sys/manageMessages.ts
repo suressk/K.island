@@ -11,7 +11,7 @@ router.get('/list', (req, res) => {
     const {pageNo, pageSize} = req.query
     if (!pageNo || !pageSize) {
         writeHead(res, 416)
-        writeResult(res, true, 'The parameter of pageNo or pageSize cannot be lack')
+        writeResult(res, true, 'The parameters of pageNo or pageSize cannot be lack')
         return
     }
     getMessageList({

@@ -12,42 +12,42 @@ const routes: Array<RouteRecordRaw> = [
             path: 'overview',
             name: 'overview',
             meta: {
-                title: '统计概览'
+                title: 'Overview'
             },
             component: () => import('../views/Overview/index.vue')
         }, {
             path: 'edit',
             name: 'edit',
             meta: {
-                title: '文章编辑'
+                title: 'Edit Article'
             },
             component: () => import('../views/record/Edit.vue')
         }, {
             path: 'list',
             name: 'list',
             meta: {
-                title: '文章列表'
+                title: 'Article List'
             },
             component: () => import('../views/record/List.vue')
         }, {
             path: 'message',
             name: 'message',
             meta: {
-                title: '留言管理'
+                title: 'Messages'
             },
             component: () => import('../views/Message/index.vue')
         }, {
             path: 'comment',
             name: 'comment',
             meta: {
-                title: '评论管理'
+                title: 'Comments'
             },
             component: () => import('../views/Comment/index.vue')
         }, {
             path: 'setting',
             name: 'setting',
             meta: {
-                title: '主页设置'
+                title: 'Setting'
             },
             component: () => import('../views/Setting/index.vue')
         }]
@@ -57,7 +57,7 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Login',
         meta: {
             requireAuth: true,
-            title: '嘀！加油站'
+            title: 'Sign In'
         },
         component: () => import('../views/Login.vue')
     },
@@ -65,7 +65,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/:catchAll(.*)',
         name: 'NotFound',
         meta: {
-            title: '诶？！迷路了叭'
+            title: 'Not Found'
         },
         component: () => import('../views/NotFound.vue')
     }

@@ -45,7 +45,9 @@ export {
     CreateSubscribeEmailInfo,
     AuthSubscribeInfo
 } from './subscribeTypes'
-// 查询订阅列表参数（TODO email 可作为过滤条件，免去多页翻页查找要移除订阅的 email）
+
+// 查询订阅列表参数
+// TODO 新增 email 字段作为模糊查询条件，免去多页翻页查找要移除订阅的 email
 export interface GetSubscribeListParams extends PageQueryParams {
     email?: string
 }
@@ -54,3 +56,6 @@ export interface GetSubscribeListParams extends PageQueryParams {
 export {AddMessageParams} from './messageTypes'
 // 分页查询【留言】列表
 export type QueryMessageParams = PageQueryParams
+
+/* comment service */
+export {AddCommentParams} from './commentTypes'

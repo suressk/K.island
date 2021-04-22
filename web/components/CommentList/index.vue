@@ -1,11 +1,21 @@
 <template>
-  <section class="comment">
+  <section class='comment'>
     <div class='comment-header flex-between'>
       <span class='comment-title'>Comment List({{ commentNum }})</span>
 
-      <button class='btn btn-primary'>Add Comment</button>
+      <button class='btn btn-primary' @click='showModal'>Add Comment</button>
+
+      <Modal
+        title='评论'
+        :visible.sync='visible'
+        :show-footer='false'
+        class='comment-modal'
+      >
+        <CommentForm @submit-comment='getCommentInfo'/>
+      </Modal>
     </div>
 
+    <!--  评论列表  -->
     <ul class='comment-list'>
       <li
         class='comment-item'
@@ -15,41 +25,70 @@
         <div class='item-head d-flex'>
           <div class='comment-avatar flex-center'>
             <img
-              v-if='commentItem.from_email === AuthorInfo.qq || commentItem.from_email === AuthorInfo.outlook'
+              v-if='commentItem.fromEmail === AuthorInfo.qq || commentItem.fromEmail === AuthorInfo.outlook'
               src='~~/static/images/avatar.png'
               alt='小K.'
             >
-            <span v-else>{{ commentItem.from_name.substring(0, 2) }}</span>
+            <span v-else>{{ commentItem.fromName.substring(0, 2) }}</span>
           </div>
 
           <div class='comment-nickname flex-between'>
-            <div>
-              <span class='nickname'>{{ commentItem.from_name }}</span>
-              <template v-if='commentItem.to_name'>
-                @ <span class='nickname'>{{ commentItem.to_name }}</span>
-              </template>
-            </div>
+            <span class='nickname'>{{ commentItem.fromName }}</span>
             <div class='time'>
               <span class='comment-reply'>Reply</span>
               <span class='comment-time'>{{ DAYJS(commentItem.ctime).format(timeFormat) }}</span>
             </div>
           </div>
         </div>
-
         <p class='comment-content'>{{ commentItem.content }}</p>
+
+        <!--    二级评论    -->
+        <ul class='children-list'>
+          <li
+            class='comment-item'
+            v-for='childItem in commentItem.children'
+            :key='childItem.id'
+          >
+            <div class='item-head d-flex'>
+              <div class='comment-avatar flex-center'>
+                <img
+                  v-if='childItem.fromEmail === AuthorInfo.qq || childItem.fromEmail === AuthorInfo.outlook'
+                  src='~~/static/images/avatar.png'
+                  alt='小K.'
+                >
+                <span v-else>{{ childItem.fromName.substring(0, 2) }}</span>
+              </div>
+
+              <div class='comment-nickname flex-between'>
+                <div>
+                  <span class='nickname'>{{ childItem.fromName }}</span>
+                  @
+                  <span class='nickname'>{{ childItem.toName }}</span>
+                </div>
+                <div class='time'>
+                  <span class='comment-reply'>Reply</span>
+                  <span class='comment-time'>{{ DAYJS(commentItem.ctime).format(timeFormat) }}</span>
+                </div>
+              </div>
+            </div>
+            <p class='comment-content'>{{ commentItem.content }}</p>
+          </li>
+        </ul>
       </li>
     </ul>
   </section>
 </template>
 
-<script lang="ts">
+<script lang='ts'>
 import { defineComponent } from '@nuxtjs/composition-api'
+import Modal from '~/components/KModal/index.vue'
+import CommentForm from '~/components/CommentForm/index.vue'
 import useComment from './useComment'
 import DAYJS from 'dayjs'
 
 export default defineComponent({
   name: 'CommentList',
-  components: {},
+  components: { Modal, CommentForm },
   props: {
     commentList: {
       type: Array,
@@ -66,13 +105,13 @@ export default defineComponent({
     }
   },
   computed: {
-    commentNum({commentList}) {
+    commentNum({ commentList }: any) {
       return commentList.length
     }
   }
 })
 </script>
 
-<style lang="scss">
+<style lang='scss'>
 @import "/assets/css/components/commentList";
 </style>

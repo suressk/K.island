@@ -19,22 +19,22 @@ import {
 } from '../types'
 
 // 登录
-export const login = (params: LoginParams) => postAction('/login', params)
-// const logout = (params: LoginInfo) => postAction('/logout', params)
+export const login = (params: LoginParams) => postAction('/sys/login', params)
+// const logout = (params: LoginInfo) => postAction('/sys/logout', params)
 
 // 文章管理
-export const addRecord = (params: NewArticleParams) => postAction('/sys/record/add', params)
-export const getRecordList = (params: QueryArticleListParams) => getAction('/sys/record/list', params)
-export const getRecordDetail = (params: ArticleIds) => getAction('/sys/record/detail', params)
-export const deleteRecord = (params: DeleteRecordParams) => deleteAction('/sys/record/delete', params)
-export const updateRecord = (params: UpdateArticleParams) => putAction('/sys/record/update', params)
+export const addRecord = (params: NewArticleParams) => postAction('/sys/records/add', params)
+export const getRecordList = (params: QueryArticleListParams) => getAction('/sys/records/list', params)
+export const getRecordDetail = (params: ArticleIds) => getAction('/sys/records/detail', params)
+export const deleteRecord = (params: DeleteRecordParams) => deleteAction('/sys/records/delete', params)
+export const updateRecord = (params: UpdateArticleParams) => putAction('/sys/records/update', params)
 
 // 上传封面图
-export const uploadCover = (fileData: FormData) => postUploadImage('/sys/image/upload_cover', fileData)
+export const uploadCover = (fileData: FormData) => postUploadImage('/sys/images/upload_cover', fileData)
 // 删除封面图
-export const deleteCover = (data: DeleteImageParams) => deleteAction('/sys/image/delete', data)
+export const deleteCover = (data: DeleteImageParams) => deleteAction('/sys/images/delete', data)
 // 上传文章插图
-export const uploadIllustration = (fileData: FormData) => postUploadImage('/sys/image/upload_plate', fileData)
+// export const uploadIllustration = (fileData: FormData) => postUploadImage('/sys/images/upload_plate', fileData)
 
 
 // 查询留言信息

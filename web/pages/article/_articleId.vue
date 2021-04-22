@@ -107,8 +107,6 @@ export default defineComponent({
     },
     getCommentInfo(info: CommentInfo) {
       const {name, email, comment} = info
-      console.log(info) // name, email, comment
-      console.log(this.articleDetail) // 文章详情
       const vm = this
       // 新增评论 / 回复他人评论
       try {

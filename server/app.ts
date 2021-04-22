@@ -1,16 +1,19 @@
-import express, { NextFunction, Request, Response } from 'express'
+import express, {NextFunction, Request, Response} from 'express'
 import cors from 'cors'
 import verifyPermission from './middleware/permission'
-import loginPermission from './routes/sys/managePermission'
-import { createCorsOptionsDelegate } from './utils/util'
-import manageRecord from './routes/sys/manageRecords'
-import manageImage from './routes/sys/manageCover'
-import manageMessage from './routes/sys/manageMessage'
+import {createCorsOptionsDelegate} from './utils/util'
 
-import viewRecords from './routes/web/records'
-import addComments from './routes/web/comments'
-import addMessage from './routes/web/messages'
-import subscribe from './routes/web/subscribes'
+import signIn from './routes/sys/managePermission'
+import manageRecords from './routes/sys/manageRecords'
+import manageImage from './routes/sys/manageCover'
+import manageMessages from './routes/sys/manageMessages'
+import manageComments from './routes/sys/manageComments'
+import manageSubscribes from './routes/sys/manageSubscribes'
+
+import record from './routes/web/record'
+import comment from './routes/web/comment'
+import message from './routes/web/message'
+import subscribe from './routes/web/subscribe'
 
 const app = express()
 
@@ -36,53 +39,49 @@ app.get('/music/*', (req, res) => {
 })
 
 // 兼容旧的版本，使用新的 qs 库解析 body 消息体
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 // 解析 json 格式请求体
 app.use(express.json());
 
 /**
- * 后台系统
+ * sys 端
  * */
+
 // 系统登录
-app.post('/login', loginPermission)
+app.post('/sys/login', signIn)
 
 // 后台管理 token 验证 中间件
 app.use('/sys/*', verifyPermission)
 
 // 文章管理 —— 增删改查 文章信息
-app.use('/sys/record', manageRecord)
+app.use('/sys/records', manageRecords)
 // 上传 / 删除 图片管理
-app.use('/sys/image', manageImage)
+app.use('/sys/images', manageImage)
 // 留言信息 管理
-app.use('/sys/messages', manageMessage)
+app.use('/sys/messages', manageMessages)
 // 评论 管理
-app.use('/sys/comments', (req, res, next) => {
-    res.send({
-        success: true,
-        data: {},
-        message: 'get message list'
-    })
-})
+app.use('/sys/comments', manageComments)
 
 // 订阅信息 管理
-app.use('/sys/subscribe', subscribe)
-
-
-
+app.use('/sys/subscribes', manageSubscribes)
 
 
 /**
- * 前端系统
+ * web 端
  * */
+
 // 文章信息
-app.use('/record', viewRecords)
+app.use('/record', record)
 // 用户评论
-app.use('/comment', addComments)
+app.use('/comment', comment)
 // 用户评论
-app.use('/message', addMessage)
+app.use('/message', message)
 // 用户新增订阅、订阅验证
 app.use('/subscribe', subscribe)
+
+
+
 
 app.listen(port, () => {
     console.log(`server is listening at ${host}:${port}...`)

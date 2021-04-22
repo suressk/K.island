@@ -26,7 +26,7 @@
         </label>
       </div>
       <div class="form-item">
-        <button class="btn-login" @click="handleLogin" type="button">SIGN IN</button>
+        <button class="btn btn-primary btn-login" @click="handleLogin" type="button">SIGN IN</button>
       </div>
     </div>
     <div class="hint">Hope that all the good things will come on schedule...</div>
