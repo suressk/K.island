@@ -1,7 +1,7 @@
 <template>
   <!--  评论表单  -->
   <div class='comment-form'>
-    <span class='mentions txt-overflow' :class='{show: mentionsName}'>@{{ mentionsName }}</span>
+    <span class='mentions txt-overflow' :class='{show: mentionsName}'>@ {{ mentionsName }}</span>
     <div class='d-flex chat-container'>
       <label class='name-txt'>
         <i class='iconfont icon-name' />

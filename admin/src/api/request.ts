@@ -32,10 +32,10 @@ const handleError = (err: ErrorResponse) => {
                             content: 'Token has expired, redirect to Login Page?',
                             onOk: () => {
                                 router.push('/login')
-                                resolve(true)
+                                resolve(1)
                             },
                             onCancel: () => {
-                                reject(false)
+                                reject(0)
                             }
                         })
                     }

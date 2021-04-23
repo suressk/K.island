@@ -92,12 +92,35 @@ export interface CommentInfo {
   email: string;
   comment: string;
 }
+
+export interface ReplyInfo extends CommentInfo {
+  toName?: string
+  toEmail?: string
+  parentId?: number
+  topicId?: string
+}
+
 export interface ModalProps {
   visible?: boolean
   title?: string
   okText?: string
   cancelText?: string
   showFooter?: boolean
+}
+
+export type CommentItem = {
+  id: number
+  uid: string
+  parentId: number | null
+  recordId: number
+  fromName: string
+  fromEmail: string
+  toName: string
+  toEmail: string
+  ctime: number
+  content: string
+  topicId: string
+  children?: CommentItem[]
 }
 
 /**

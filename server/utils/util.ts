@@ -2,7 +2,7 @@ import multer from 'multer'
 import {v4 as uuid} from 'uuid'
 import {Request} from 'express'
 import {RecordItem, CorsOption, UpdateRecordParams} from '../common/types'
-import dayjs from 'dayjs'
+import DAYJS from 'dayjs'
 
 const imgSuffixReg = /[.][a-z]+/
 
@@ -102,7 +102,7 @@ const DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss'
  * */
 export function dateFormat(timeTemp: number) {
     // 时间戳 => '2021-02-27 22:56:34' => ['2021', '02', '27', '22', '56', '34']
-    let time: string | string[] = dayjs(timeTemp).format(DATE_FORMAT)
+    let time: string | string[] = DAYJS(timeTemp).format(DATE_FORMAT)
     // const reg = /-|:|\ /g
     const reg = /[-: ]/g
     time = time.replace(reg, ',').split(',')
@@ -195,13 +195,13 @@ export function getTableDeleteSqlStr(list: any[], tableName: string, conditionNa
  * */
 export function groupCommentList(list: any[]) {
     // 一级
-    const result: any[] = list.filter(item => item.parent_id === null)
-    const otherItems = list.filter(item => item.parent_id !== null)
+    const result: any[] = list.filter(item => item.parentId === null)
+    const otherItems = list.filter(item => item.parentId !== null)
     // 按时间排序就放置于浏览器处理了
     for (const resItem of result) {
         !resItem.children && (resItem.children = [])
         otherItems.forEach((item, index) => {
-            if (item.parent_id === resItem.id) {
+            if (item.parentId === resItem.id) {
                 resItem.children.push(item)
                 delete otherItems[index] // 此举为下次循环稍作优化，减少后续内层循环次数
             }

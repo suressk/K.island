@@ -6,7 +6,7 @@
       <div class='article-content' :class='articleClass'>
         <div class='stuffix d-flex'>
           <span class='time tip'>
-            {{ articleDetail.time.day }} {{ articleDetail.time.month }}, {{ articleDetail.time.year }}
+            {{ articleDetail.time.day }} {{ articleDetail.time.month }} {{ articleDetail.time.year }}
           </span>
           <span class='tip tag d-flex'>分类 {{ articleDetail.tag }}</span>
           <span class='tip views d-flex'>浏览 {{ articleDetail.views }}</span>
@@ -20,20 +20,7 @@
         />
       </div>
 
-      <div class='add-comment'>
-        <button class='btn-primary btn' @click='showComment(true)'>Add Comment</button>
-
-        <Modal
-          title='评论'
-          :visible.sync='addCommentVisible'
-          :show-footer='false'
-          class='comment-modal'
-        >
-          <CommentForm @submit-comment='getCommentInfo'/>
-        </Modal>
-      </div>
-
-      <Comment :comment-list='commentList' />
+      <Comment :comment-list='commentList' @reply='addComment' />
 
       <ThemeSwitch/>
     </div>
@@ -46,7 +33,8 @@ import {defineComponent} from '@nuxtjs/composition-api'
 import {parseMarkdownFile} from '~/utils/marked'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import {Context} from '@nuxt/types'
-import {CommentInfo} from '~/types'
+import {ReplyInfo} from '~/types'
+import {AuthorInfo} from '~/store/mutation-types'
 import {successNotify, warnNotify, errorNotify} from '~/utils/util'
 import CommentForm from '~/components/CommentForm/index.vue'
 import Comment from '~/components/CommentList/index.vue'
@@ -96,39 +84,42 @@ export default defineComponent({
   },
   data() {
     return {
-      addCommentVisible: false,
-      commentList: []
+      commentList: [],
+      commentStatus: -1
       // isReply: false /* 评论/回复他人评论： false === 评论文章；true === 回复他人 */
     }
   },
   methods: {
-    showComment(flag: Boolean) {
-      this.addCommentVisible = flag
-    },
-    getCommentInfo(info: CommentInfo) {
+    addComment(info: ReplyInfo) {
       const {name, email, comment} = info
+      const toName = info.toName || AuthorInfo.name
+      const toEmail = info.toEmail || AuthorInfo.qq
+      const topicId = info.topicId || null
+      const parentId = info.parentId || null
       const vm = this
       // 新增评论 / 回复他人评论
       try {
         // @ts-ignore
         vm.$axios.post('/comment/add', {
+          toName,
+          toEmail,
+          topicId,
+          parentId,
+          comment,
           fromName: name,
           fromEmail: email,
-          toName: '小K.',
-          toEmail: 'sure_k@qq.com',
+          /* @ts-ignore */
           articleId: vm.articleDetail.id,
+          /* @ts-ignore */
           articleUid: vm.articleDetail.uid,
-          articleTitle: vm.articleDetail.title,
-          topicId: null,
-          parentId: null,
-          comment: comment
+          /* @ts-ignore */
+          articleTitle: vm.articleDetail.title
         }).then((res: any) => {
           if (!res.success) {
             warnNotify(res.message)
             return
           }
           successNotify(res.message)
-          vm.showComment(false)
         }).catch((err: any) => {
           errorNotify(err.message)
         })
@@ -136,27 +127,21 @@ export default defineComponent({
         errorNotify(err.message)
       }
     },
-    // 新增评论
-    addComment() {
-
-    },
-    // 回复评论 / 评论他人评论
-    reply() {
-
-    },
     getComment() {
       this.$axios.get('/comment/list', {
+        /* @ts-ignore */
         params: {articleId: this.articleDetail.id}
       }).then((res: any) => {
         if (res.success) {
           this.commentList = res.data
         }
-      }).catch(err => {
+      }).catch((err: any) => {
         errorNotify(err.message)
       })
     }
   },
   mounted() {
+    // @ts-ignore
     this.getComment()
   },
   head() {
@@ -178,6 +163,7 @@ export default defineComponent({
   }
 
   .article-content {
+    min-height: calc(100vh - 300px);
     & > .stuffix {
       margin: 20px 0;
       padding: 10px 0;

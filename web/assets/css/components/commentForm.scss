@@ -11,6 +11,7 @@
     width: 100%;
     display: inline-block;
     visibility: hidden;
+    user-select: none;
     &.show {
       visibility: visible;
     }

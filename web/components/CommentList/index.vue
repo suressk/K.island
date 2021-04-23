@@ -3,7 +3,7 @@
     <div class='comment-header flex-between'>
       <span class='comment-title'>Comment List({{ commentNum }})</span>
 
-      <button class='btn btn-primary' @click='showModal'>Add Comment</button>
+      <button class='btn btn-primary' @click='reply(false)'>Add Comment</button>
 
       <Modal
         title='评论'
@@ -11,12 +11,15 @@
         :show-footer='false'
         class='comment-modal'
       >
-        <CommentForm @submit-comment='getCommentInfo'/>
+        <CommentForm @submit-comment='getCommentInfo' :mentions-name='mentionsInfo.toName' />
       </Modal>
     </div>
 
+    <div v-if='commentNum === 0' class='empty-comment flex-center'>
+      这片小沙滩还没人踩过呢~
+    </div>
     <!--  评论列表  -->
-    <ul class='comment-list'>
+    <ul v-else class='comment-list'>
       <li
         class='comment-item'
         v-for='commentItem in commentList'
@@ -33,9 +36,9 @@
           </div>
 
           <div class='comment-nickname flex-between'>
-            <span class='nickname'>{{ commentItem.fromName }}</span>
+            <span class='nickname txt-overflow'>{{ commentItem.fromName }}</span>
             <div class='time'>
-              <span class='comment-reply'>Reply</span>
+              <span class='comment-reply' @click='reply(true, commentItem)'>Reply</span>
               <span class='comment-time'>{{ DAYJS(commentItem.ctime).format(timeFormat) }}</span>
             </div>
           </div>
@@ -60,18 +63,19 @@
               </div>
 
               <div class='comment-nickname flex-between'>
-                <div>
-                  <span class='nickname'>{{ childItem.fromName }}</span>
-                  @
-                  <span class='nickname'>{{ childItem.toName }}</span>
-                </div>
+                <span class='nickname txt-overflow'>{{ childItem.fromName }}</span>
                 <div class='time'>
-                  <span class='comment-reply'>Reply</span>
-                  <span class='comment-time'>{{ DAYJS(commentItem.ctime).format(timeFormat) }}</span>
+                  <span class='comment-reply' @click='reply(true, childItem)'>Reply</span>
+                  <span class='comment-time'>{{ DAYJS(childItem.ctime).format(timeFormat) }}</span>
                 </div>
               </div>
             </div>
-            <p class='comment-content'>{{ commentItem.content }}</p>
+            <p class='comment-content'>
+              <span>回复</span>
+              <span>{{ childItem.toName }}</span>
+              <span>：</span>
+              {{ childItem.content }}
+            </p>
           </li>
         </ul>
       </li>
@@ -80,7 +84,7 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
 import Modal from '~/components/KModal/index.vue'
 import CommentForm from '~/components/CommentForm/index.vue'
 import useComment from './useComment'
@@ -95,11 +99,11 @@ export default defineComponent({
       default: () => ([])
     }
   },
-  setup() {
+  setup(props: any, ctx: SetupContext) {
     const timeFormat = 'YYYY-MM-DD HH:mm'
 
     return {
-      ...useComment(),
+      ...useComment(props, ctx),
       timeFormat,
       DAYJS
     }

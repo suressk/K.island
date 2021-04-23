@@ -15,8 +15,8 @@ export function getRecordComment(options: QueryCommentsParams) {
     const {articleId} = options
     // 按评论时间升序排序
     const sqlStr = `SELECT id, uid, record_id as recordId, topic_id as topicId, parent_id as parentId,
-        from_name as fromName, from_email as fromEmail, to_name as toName, to_email as toEmail,
-        is_read as isRead FROM tbl_comments WHERE record_id = ? ORDER BY ctime;`
+        from_name as fromName, from_email as fromEmail, to_name as toName, to_email as toEmail, content, ctime
+        FROM tbl_comments WHERE record_id = ? ORDER BY ctime;`
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, [articleId])
             .then((result: any) => {
@@ -35,9 +35,9 @@ export function getAllComments(options: PageQueryParams) {
     const {pageNo, pageSize} = options
     const params = [(pageNo - 1) * pageSize, pageSize] // 分页参数
     const sqlStr = `
-        SELECT c.id, c.uid, c.record_id as recordId, c.topic_id as topicId, c.parent_id as parentId,
+        SELECT c.id, c.uid, c.content, c.record_id as recordId, c.topic_id as topicId, c.parent_id as parentId,
         c.from_name as fromName, c.from_email as fromEmail, c.to_name as toName, c.to_email as toEmail,
-        c.is_read as isRead, r.title FROM tbl_comments as c
+        c.is_read as isRead, c.ctime, r.title FROM tbl_comments as c
         LEFT JOIN tbl_records as r ON r.id = c.record_id ORDER BY ctime DESC LIMIT ?, ?;
     `
     return new Promise((resolve, reject) => {
