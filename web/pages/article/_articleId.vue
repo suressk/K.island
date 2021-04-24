@@ -3,7 +3,7 @@
     <KHeader :title='article.title' :need-scroll='true'/>
 
     <div class='content'>
-      <div class='article-content' :class='articleClass'>
+      <div class='article-content' :class='typeClass'>
         <div class='stuffix d-flex'>
           <span class='time tip'>
             {{ article.time.day }} {{ article.time.month }} {{ article.time.year }}
@@ -15,7 +15,7 @@
 
         <div
           class='article-info'
-          :class='articleClass'
+          :class='typeClass'
           v-html='htmlContent'
         />
       </div>
@@ -61,7 +61,7 @@ export default defineComponent({
         return {
           article: data,
           htmlContent: parseMarkdownFile(data.content),
-          articleClass: data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
+          typeClass: data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
         }
       } else {
         return {
@@ -69,7 +69,7 @@ export default defineComponent({
             time: {}
           },
           htmlContent: '',
-          articleClass: 'mood'
+          typeClass: 'mood'
         }
       }
     } catch (e) {
@@ -78,7 +78,7 @@ export default defineComponent({
           time: {}
         },
         htmlContent: '',
-        articleClass: 'mood'
+        typeClass: 'mood'
       }
     }
   },

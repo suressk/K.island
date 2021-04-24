@@ -1,11 +1,9 @@
-import {ref, reactive, toRefs, computed, SetupContext, nextTick, onMounted} from '@nuxtjs/composition-api'
-import {checkIsEmail, getStorageItem} from '~/utils/util'
-import {CommentProps} from '~/types'
-import {COMMENT_USER, AuthorInfo} from '~/store/mutation-types'
+import { computed, reactive, ref, nextTick, onMounted } from '@nuxtjs/composition-api'
+import { checkIsEmail, getStorageItem } from '~/utils/util'
+import { AuthorInfo, COMMENT_USER } from '~/store/mutation-types'
 
-let timer: number
-
-function matchStationmasterEmail(email: string) {
+/* 匹配本人邮箱 */
+function matchAuthorEmail(email: string) {
   switch (email) {
     case AuthorInfo.qq:
     case AuthorInfo.QQ:
@@ -22,83 +20,89 @@ interface CommentUserInfo {
   email: string
 }
 
+/**
+ * 获取 localstorage 存储的评论人信息
+ * */
 function getLocalUserInfo(): CommentUserInfo {
-  const userInfo = getStorageItem<CommentUserInfo>(COMMENT_USER)
-  return (userInfo ? userInfo : { name: '', email: ''})
+  return (getStorageItem<CommentUserInfo>(COMMENT_USER) || { name: '', email: '' })
 }
 
 /**
  * TODO =====> add comment => validate myself
  * */
-export default function (props: CommentProps, ctx: SetupContext) {
-  const user = reactive({
+export default function() {
+
+  const commentInfo = reactive({
     name: '',
     email: '',
     comment: ''
   })
   const tipIndex = ref<number>(-1)
   const tipTxt = reactive([
-    '您的昵称不能是空白哦~',
+    '昵称不能是空白哦~',
+    '昵称太长辣~ （十个字符以内）',
     '邮箱格式貌似不太对呢~',
     '胆敢冒充站长？！拉出去枪毙五分钟！！！',
-    '多说一点儿吧，至少能成一句诗~',
-    '偷偷告诉我，你作文是不是 0 分~',
+    '要不多写一点儿吧？！至少四字能成词嘛~',
     'Submitting...',
-    '哇哦！遇到错误辣，要不再试试？',
+    '哇哦！遇到错误辣，要不扥会儿再试试？',
     'Successfully completed, Nice!'
   ])
+
+  /*
+  * 0: empty nickname
+  * 1: too long nickname
+  * 2: invalid email
+  * 3: not author
+  * 4: comment content too short
+  * 5: error Response
+  * 6: submitting...
+  * 7: success Response
+  *  */
 
   // 初始化评论人信息
   onMounted(() => {
     const userInfo = getLocalUserInfo()
-    user.name = userInfo.name
-    user.email = userInfo.email
+    commentInfo.name = userInfo.name
+    commentInfo.email = userInfo.email
   })
 
   const disabledSubmit = computed(() => {
-    return (user.name === '' || user.email === '' || user.comment === '')
+    return (commentInfo.name.trim() === '' || commentInfo.email.trim() === '' || commentInfo.comment.trim() === '')
   })
 
-  function handleSubmit() {
-    // name 全空格或 Tab 制表符等空字符串
-    if (!user.name.trim()) {
-      tipIndex.value = 0
-      return
-    }
-    // 邮箱格式不正确
-    if (!checkIsEmail(user.email)) {
-      tipIndex.value = 1
-      return
-    } else if (matchStationmasterEmail(user.email)) {
-      tipIndex.value = 2
-      return
-    }
-    if (user.comment.length < 5) {
-      tipIndex.value = 3
-      return
-    }
-    tipIndex.value = 7
-
-    // addComment()
-
-    ctx.emit('submit-comment', {
-      name: user.name,
-      email: user.email,
-      comment: user.comment
-    })
-    nextTick(() => {
-      if (timer) clearTimeout(timer)
-      timer = window.setTimeout(() => {
-        tipIndex.value = -1 // 均满足条件
-      }, 3000)
+  function validateForm() {
+    return new Promise((resolve, reject) => {
+      // name 全空格或 Tab 制表符等空字符串
+      if (!commentInfo.name.trim()) {
+        reject(0)
+        return
+      } else if (commentInfo.name.trim().length > 10) {
+        reject(1)
+        return
+      }
+      // 邮箱格式不正确
+      if (!checkIsEmail(commentInfo.email.trim())) {
+        reject(2)
+        return
+      } else if (matchAuthorEmail(commentInfo.email.trim())) {
+        reject(3)
+        // TODO 小K. 的邮箱，我自己发评论（需单独验证）
+        return
+      }
+      if (commentInfo.comment.trim().length < 5) {
+        reject(4)
+        return
+      }
+      resolve(5) /* success */
     })
   }
 
   return {
-    ...toRefs(user),
+    commentInfo,
     disabledSubmit,
     tipTxt,
     tipIndex,
-    handleSubmit
+    validateForm
   }
 }

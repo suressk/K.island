@@ -19,15 +19,15 @@
           <div class='d-flex chat-container'>
             <label class='name-txt'>
               <i class='iconfont icon-name' />
-              <input type='text' placeholder='Your nickname' v-model='name'>
+              <input type='text' placeholder='你的昵称，便于区识' v-model='commentInfo.name'>
             </label>
             <label class='email-txt'>
               <i class='iconfont icon-email' />
-              <input type='text' placeholder='Your email' v-model='email'>
+              <input type='text' placeholder='你的邮箱，仅用于评论通知' v-model='commentInfo.email'>
             </label>
           </div>
           <label class='content-txt'>
-            <textarea class='scroller-light' v-model='comment' placeholder='' />
+            <textarea class='scroller-light' v-model='commentInfo.comment' placeholder='' />
           </label>
           <div class='comment-submit d-flex'>
             <span class='comment-status d-flex'>
@@ -36,8 +36,9 @@
                 v-show='tipIndex > -1'
                 class='comment-tip'
                 :class="{
+                  'info-tip': tipIndex === 6,
                   'success-tip': tipIndex === 7,
-                  'error-tip': tipIndex > -1 && tipIndex < 7
+                  'error-tip': tipIndex > -1 && tipIndex < 6
                 }"
               >
                 {{ tipIndex > -1 ? tipTxt[tipIndex] : '' }}
@@ -47,7 +48,7 @@
               class='btn btn-primary'
               :class='{ disabled: disabledSubmit }'
               :disabled='disabledSubmit'
-              @click='submitComment'
+              @click='submit'
             >
               SUBMIT
             </button>
@@ -128,13 +129,12 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 import DAYJS from 'dayjs'
 import Modal from '~/components/KModal/index.vue'
 import CubeLoading from '../loadingComp/CubeLoading.vue'
 import LoadMore from '~/components/LoadMore.vue'
 import useList from './useList'
-import useForm from './useForm'
 // import CommentForm from '~/components/CommentForm/index.vue'
 
 export default defineComponent({
@@ -146,12 +146,11 @@ export default defineComponent({
       default: () => ({})
     }
   },
-  setup(props: any, ctx: SetupContext) {
+  setup(props: any) {
     const timeFormat = 'YYYY-MM-DD HH:mm'
 
     return {
-      ...useList(props, ctx),
-      ...useForm(),
+      ...useList(props),
       timeFormat,
       DAYJS
     }
