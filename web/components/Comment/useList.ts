@@ -1,14 +1,20 @@
+import { reactive, ref, getCurrentInstance, SetupContext, onMounted } from '@nuxtjs/composition-api'
 import { AuthorInfo } from '~/store/mutation-types'
-import { reactive, ref, SetupContext } from '@nuxtjs/composition-api'
 import { CommentItem, CommentInfo } from '~/types'
+import { errorNotify } from '~/utils/util'
 
 type CommentPropsParams = {
   commentList: CommentItem[]
+  articleId: number
 }
 
-export default function useComment(props: CommentPropsParams, { emit }: SetupContext) {
+export default function useList(props: CommentPropsParams, { emit }: SetupContext) {
+  const { proxy } = getCurrentInstance()!
+
   const visible = ref<boolean>(false)
   const isReply = ref<boolean>(false)
+  const comments = ref<CommentItem[]>([])
+  const curPage = ref<number>(1) /* 当前评论分页 */
 
   const mentionsInfo = reactive({
     toName: '',
@@ -41,8 +47,26 @@ export default function useComment(props: CommentPropsParams, { emit }: SetupCon
     mentionsInfo.topicId = topicId
   }
 
+  function getComments() {
+    if (props.articleId === -1) return
+
+    proxy.$axios.get('/comment/list', {
+      params: {articleId: props.articleId}
+    }).then((res: any) => {
+      if (res.success) {
+        comments.value = res.data
+      }
+    }).catch((err: any) => {
+      errorNotify(err.message)
+    })
+  }
+
+  onMounted(() => {
+    getComments()
+  })
+
   // comment modal submit
-  function getCommentInfo(info: CommentInfo) {
+  function submitComment(info: CommentInfo) {
     const { name, email, comment } = info
     console.log(name, email, comment)
     if (isReply.value) {
@@ -57,6 +81,6 @@ export default function useComment(props: CommentPropsParams, { emit }: SetupCon
     mentionsInfo,
     visible,
     reply,
-    getCommentInfo
+    submitComment
   }
 }

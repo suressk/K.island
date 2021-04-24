@@ -42,5 +42,5 @@ export const getMessageList = (params: PageQueryParams) => getAction('/sys/messa
 export const deleteMessages = (data: DeleteMessagesParams) => deleteAction('/sys/messages/delete', data)
 
 // 查询评论信息
-export const getCommentList = (params: PageQueryParams) => getAction('/sys/comments', params)
+export const getCommentList = (params: PageQueryParams) => getAction('/sys/comments/list', params)
 export const deleteComments = (data: DeleteCommentsParams) => deleteAction('/sys/comments', data)

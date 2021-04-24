@@ -37,6 +37,7 @@ export const COMMENT_USER = 'commentUser' // 评论者信息
 export const AuthorInfo = {
   name: '小K.',
   qq: 'sure_k@qq.com',
+  QQ: '865801275@qq.com',
   outlook: 'stack_surek@outlook.com',
   gmail: 'songkun.1008@gmail.com'
 }

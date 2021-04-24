@@ -1,4 +1,4 @@
-import {ref, reactive, toRefs, computed, nextTick, onMounted, SetupContext} from '@nuxtjs/composition-api'
+import {ref, reactive, toRefs, computed, SetupContext, nextTick, onMounted} from '@nuxtjs/composition-api'
 import {checkIsEmail, getStorageItem} from '~/utils/util'
 import {CommentProps} from '~/types'
 import {COMMENT_USER, AuthorInfo} from '~/store/mutation-types'

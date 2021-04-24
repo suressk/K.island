@@ -9,7 +9,8 @@ import {
 } from '../../types'
 import {getCommentList, deleteComments} from '../../api/api'
 import {errorNotify, warningNotify, mapFormatCtimeList, successNotify} from '../../utils/util'
-import { ColumnProps } from 'ant-design-vue/es/table/interface'
+import {ColumnProps} from 'ant-design-vue/es/table/interface'
+
 type Key = ColumnProps['key']
 
 const columns = [
@@ -70,7 +71,6 @@ const list = [
  * 评论管理
  * */
 export default function useComment() {
-
     const loading = ref<boolean>(false)
     const pagination = reactive({
         current: 1,
@@ -106,7 +106,7 @@ export default function useComment() {
         })
     }
 
-    function getComments (params: PageQueryParams) {
+    function getComments(params: PageQueryParams) {
         getCommentList(params)
             // @ts-ignore
             .then((res: ResponseData<ListRes<CommentItem[]>>) => {
@@ -139,17 +139,17 @@ export default function useComment() {
                     pageSize: pagination.pageSize
                 })
             }).catch(err => {
-                errorNotify(err.message)
-            })
+            errorNotify(err.message)
+        })
     }
 
     // 删除评论 按钮点击事件
-    function handleDeleteComments (info: CommentItem | null) {
+    function handleDeleteComments(info: CommentItem | null) {
         if (info === null) {
             // @ts-ignore
-            delMultipleComments({ ids: [...selectedRowKeys.value] })
+            delMultipleComments({ids: [...selectedRowKeys.value]})
         } else {
-            delMultipleComments({ ids: [info.id] })
+            delMultipleComments({ids: [info.id]})
         }
     }
 

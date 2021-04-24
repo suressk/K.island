@@ -1,16 +1,16 @@
 <template>
   <section class='k-article-info'>
-    <KHeader :title='articleDetail.title' :need-scroll='true'/>
+    <KHeader :title='article.title' :need-scroll='true'/>
 
     <div class='content'>
       <div class='article-content' :class='articleClass'>
         <div class='stuffix d-flex'>
           <span class='time tip'>
-            {{ articleDetail.time.day }} {{ articleDetail.time.month }} {{ articleDetail.time.year }}
+            {{ article.time.day }} {{ article.time.month }} {{ article.time.year }}
           </span>
-          <span class='tip tag d-flex'>分类 {{ articleDetail.tag }}</span>
-          <span class='tip views d-flex'>浏览 {{ articleDetail.views }}</span>
-          <span class='tip liked d-flex'>喜欢 {{ articleDetail.liked }}</span>
+          <span class='tip tag d-flex'>分类 {{ article.tag }}</span>
+          <span class='tip views d-flex'>浏览 {{ article.views }}</span>
+          <span class='tip liked d-flex'>喜欢 {{ article.liked }}</span>
         </div>
 
         <div
@@ -20,7 +20,7 @@
         />
       </div>
 
-      <Comment :comment-list='commentList' @reply='addComment' />
+      <Comment :article='article' />
 
       <ThemeSwitch/>
     </div>
@@ -37,7 +37,7 @@ import {ReplyInfo} from '~/types'
 import {AuthorInfo} from '~/store/mutation-types'
 import {successNotify, warnNotify, errorNotify} from '~/utils/util'
 import CommentForm from '~/components/CommentForm/index.vue'
-import Comment from '~/components/CommentList/index.vue'
+import Comment from '~/components/Comment/index.vue'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import BackTop from '~/components/BackTop/index.vue'
@@ -59,13 +59,13 @@ export default defineComponent({
       // success to get article content
       if (success) {
         return {
-          articleDetail: data,
+          article: data,
           htmlContent: parseMarkdownFile(data.content),
           articleClass: data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
         }
       } else {
         return {
-          articleDetail: {
+          article: {
             time: {}
           },
           htmlContent: '',
@@ -74,7 +74,7 @@ export default defineComponent({
       }
     } catch (e) {
       return {
-        articleDetail: {
+        article: {
           time: {}
         },
         htmlContent: '',
@@ -83,11 +83,7 @@ export default defineComponent({
     }
   },
   data() {
-    return {
-      commentList: [],
-      commentStatus: -1
-      // isReply: false /* 评论/回复他人评论： false === 评论文章；true === 回复他人 */
-    }
+    return {}
   },
   methods: {
     addComment(info: ReplyInfo) {
@@ -109,11 +105,11 @@ export default defineComponent({
           fromName: name,
           fromEmail: email,
           /* @ts-ignore */
-          articleId: vm.articleDetail.id,
+          articleId: vm.article.id,
           /* @ts-ignore */
-          articleUid: vm.articleDetail.uid,
+          articleUid: vm.article.uid,
           /* @ts-ignore */
-          articleTitle: vm.articleDetail.title
+          articleTitle: vm.article.title
         }).then((res: any) => {
           if (!res.success) {
             warnNotify(res.message)
@@ -127,18 +123,18 @@ export default defineComponent({
         errorNotify(err.message)
       }
     },
-    getComment() {
-      this.$axios.get('/comment/list', {
-        /* @ts-ignore */
-        params: {articleId: this.articleDetail.id}
-      }).then((res: any) => {
-        if (res.success) {
-          this.commentList = res.data
-        }
-      }).catch((err: any) => {
-        errorNotify(err.message)
-      })
-    }
+    // getComment() {
+    //   this.$axios.get('/comment/list', {
+    //     /* @ts-ignore */
+    //     params: {articleId: this.article.id}
+    //   }).then((res: any) => {
+    //     if (res.success) {
+    //       this.commentList = res.data
+    //     }
+    //   }).catch((err: any) => {
+    //     errorNotify(err.message)
+    //   })
+    // }
   },
   mounted() {
     // @ts-ignore
@@ -147,7 +143,7 @@ export default defineComponent({
   head() {
     return {
       // @ts-ignore
-      title: `${this.articleDetail.title} | K.island`
+      title: `${this.article.title} | K.island`
     }
   }
 })

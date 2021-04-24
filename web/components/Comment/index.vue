@@ -11,13 +11,55 @@
         :show-footer='false'
         class='comment-modal'
       >
-        <CommentForm @submit-comment='getCommentInfo' :mentions-name='mentionsInfo.toName' />
+        <!--<CommentForm @submit-comment='getCommentInfo' :mentions-name='mentionsInfo.toName' />-->
+
+        <!--  评论表单  -->
+        <div class='comment-form'>
+          <span class='mentions txt-overflow' :class='{show: mentionsInfo.toName}'>回复：{{ mentionsInfo.toName }}</span>
+          <div class='d-flex chat-container'>
+            <label class='name-txt'>
+              <i class='iconfont icon-name' />
+              <input type='text' placeholder='Your nickname' v-model='name'>
+            </label>
+            <label class='email-txt'>
+              <i class='iconfont icon-email' />
+              <input type='text' placeholder='Your email' v-model='email'>
+            </label>
+          </div>
+          <label class='content-txt'>
+            <textarea class='scroller-light' v-model='comment' placeholder='' />
+          </label>
+          <div class='comment-submit d-flex'>
+            <span class='comment-status d-flex'>
+              <CubeLoading v-show='tipIndex === 6' />
+              <span
+                v-show='tipIndex > -1'
+                class='comment-tip'
+                :class="{
+                  'success-tip': tipIndex === 7,
+                  'error-tip': tipIndex > -1 && tipIndex < 7
+                }"
+              >
+                {{ tipIndex > -1 ? tipTxt[tipIndex] : '' }}
+              </span>
+            </span>
+            <button
+              class='btn btn-primary'
+              :class='{ disabled: disabledSubmit }'
+              :disabled='disabledSubmit'
+              @click='submitComment'
+            >
+              SUBMIT
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
 
     <div v-if='commentNum === 0' class='empty-comment flex-center'>
       这片小沙滩还没人踩过呢~
     </div>
+
     <!--  评论列表  -->
     <ul v-else class='comment-list'>
       <li
@@ -80,30 +122,36 @@
         </ul>
       </li>
     </ul>
+
+    <LoadMore :load-status='1' />
   </section>
 </template>
 
 <script lang='ts'>
 import { defineComponent, SetupContext } from '@nuxtjs/composition-api'
-import Modal from '~/components/KModal/index.vue'
-import CommentForm from '~/components/CommentForm/index.vue'
-import useComment from './useComment'
 import DAYJS from 'dayjs'
+import Modal from '~/components/KModal/index.vue'
+import CubeLoading from '../loadingComp/CubeLoading.vue'
+import LoadMore from '~/components/LoadMore.vue'
+import useList from './useList'
+import useForm from './useForm'
+// import CommentForm from '~/components/CommentForm/index.vue'
 
 export default defineComponent({
   name: 'CommentList',
-  components: { Modal, CommentForm },
+  components: { Modal, CubeLoading, LoadMore },
   props: {
-    commentList: {
-      type: Array,
-      default: () => ([])
+    article: {
+      type: Object,
+      default: () => ({})
     }
   },
   setup(props: any, ctx: SetupContext) {
     const timeFormat = 'YYYY-MM-DD HH:mm'
 
     return {
-      ...useComment(props, ctx),
+      ...useList(props, ctx),
+      ...useForm(),
       timeFormat,
       DAYJS
     }
