@@ -56,8 +56,8 @@ export function getAllComments(options: PageQueryParams) {
  * */
 export function addComment(options: AddCommentParams) {
     const {articleId, parentId, comment, fromEmail, fromName, topicId} = options
-    const toName = options.toName ? options.toName : authorMailInfo.user
-    const toEmail = options.toEmail ? options.toEmail : authorMailInfo.name
+    const toName = options.toName ? options.toName : authorMailInfo.name
+    const toEmail = options.toEmail ? options.toEmail : authorMailInfo.user
     const uid = uuid()
     const ctime = Date.now()
     const newTopicId = topicId === null ? uid : topicId
@@ -67,8 +67,7 @@ export function addComment(options: AddCommentParams) {
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, params)
             .then(() => {
-                // 评论成功，返回文章基本信息
-                resolve('Successfully added a comment!')
+                resolve('Successfully posted a comment!')
             })
             .catch(err => {
                 reject(err)

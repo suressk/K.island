@@ -12,7 +12,7 @@ export default function ({ app: { $axios } }) {
 
   // response拦截器，数据返回后，可以先在这里进行一个简单的判断
   $axios.interceptors.response.use(
-    (response: AxiosResponse): AxiosResponse<ResponseRes> => response.data,
+    <D>(response: AxiosResponse): AxiosResponse<ResponseRes<D>> => response.data,
     // @ts-ignore 直接返回接口返回的错误信息
     (error: ErrorResponse) => Promise.reject(error.response?.data)
   )

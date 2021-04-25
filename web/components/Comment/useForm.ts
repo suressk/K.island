@@ -1,6 +1,7 @@
-import { computed, reactive, ref, nextTick, onMounted } from '@nuxtjs/composition-api'
-import { checkIsEmail, getStorageItem } from '~/utils/util'
+import { computed, reactive, ref, watch, onMounted, onUnmounted } from '@nuxtjs/composition-api'
+import { checkIsEmail, getStorageItem, setStorageItem } from '~/utils/util'
 import { AuthorInfo, COMMENT_USER } from '~/store/mutation-types'
+import md5 from 'md5'
 
 /* 匹配本人邮箱 */
 function matchAuthorEmail(email: string) {
@@ -27,15 +28,12 @@ function getLocalUserInfo(): CommentUserInfo {
   return (getStorageItem<CommentUserInfo>(COMMENT_USER) || { name: '', email: '' })
 }
 
-/**
- * TODO =====> add comment => validate myself
- * */
 export default function() {
-
   const commentInfo = reactive({
     name: '',
     email: '',
-    comment: ''
+    comment: '',
+    verification: ''
   })
   const tipIndex = ref<number>(-1)
   const tipTxt = reactive([
@@ -44,10 +42,16 @@ export default function() {
     '邮箱格式貌似不太对呢~',
     '胆敢冒充站长？！拉出去枪毙五分钟！！！',
     '要不多写一点儿吧？！至少四字能成词嘛~',
+    '哇哦！遇到错误辣，要不等会儿再试试？',
     'Submitting...',
-    '哇哦！遇到错误辣，要不扥会儿再试试？',
     'Successfully completed, Nice!'
   ])
+
+  const showVerify = ref<boolean>(false)
+
+  const stopWatch = watch(() => commentInfo.email, (email: string) => {
+    showVerify.value = matchAuthorEmail(email)
+  })
 
   /*
   * 0: empty nickname
@@ -58,13 +62,59 @@ export default function() {
   * 5: error Response
   * 6: submitting...
   * 7: success Response
-  *  */
+  * */
 
-  // 初始化评论人信息
-  onMounted(() => {
+  const tipClass = computed(() => {
+    switch (tipIndex.value) {
+      case 0:
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+        return 'error-tip'
+      case 6:
+        return 'info-tip'
+      case 7:
+        return 'success-tip'
+      default:
+        return ''
+    }
+  })
+  const tipContent = computed(() => {
+    return tipIndex.value > -1 ? tipTxt[tipIndex.value] : ''
+  })
+  const submitting = computed(() => tipIndex.value === 6)
+
+  function getCommentUser() {
     const userInfo = getLocalUserInfo()
     commentInfo.name = userInfo.name
     commentInfo.email = userInfo.email
+  }
+
+  function saveCommentUser() {
+    const userInfo = getLocalUserInfo()
+    if (
+      commentInfo.name === userInfo.name &&
+      commentInfo.email === userInfo.email
+    ) {
+      return
+    }
+    setStorageItem<CommentUserInfo>(COMMENT_USER, { name: commentInfo.name, email: commentInfo.email })
+  }
+
+  function clearCommentInfo() {
+    commentInfo.comment = ''
+    // commentInfo.verification = ''
+  }
+
+  // 初始化评论人信息
+  onMounted(() => {
+    getCommentUser()
+  })
+
+  onUnmounted(() => {
+    stopWatch()
   })
 
   const disabledSubmit = computed(() => {
@@ -85,24 +135,34 @@ export default function() {
       if (!checkIsEmail(commentInfo.email.trim())) {
         reject(2)
         return
-      } else if (matchAuthorEmail(commentInfo.email.trim())) {
+      } else if (
+        matchAuthorEmail(commentInfo.email.trim()) &&
+        md5(commentInfo.verification.trim()) !== AuthorInfo.verification
+      ) {
+        console.log('verification: ', md5(commentInfo.verification.trim()))
+        // 小K. 的邮箱，但验证信息不对
         reject(3)
-        // TODO 小K. 的邮箱，我自己发评论（需单独验证）
         return
       }
       if (commentInfo.comment.trim().length < 5) {
         reject(4)
         return
       }
-      resolve(5) /* success */
+      resolve(6) /* success => submitting */
     })
   }
 
   return {
     commentInfo,
+    showVerify,
     disabledSubmit,
-    tipTxt,
+    tipContent,
     tipIndex,
-    validateForm
+    submitting,
+    tipClass,
+    validateForm,
+    getCommentUser,
+    saveCommentUser,
+    clearCommentInfo
   }
 }

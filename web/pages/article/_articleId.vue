@@ -33,9 +33,6 @@ import {defineComponent} from '@nuxtjs/composition-api'
 import {parseMarkdownFile} from '~/utils/marked'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import {Context} from '@nuxt/types'
-import {ReplyInfo} from '~/types'
-import {AuthorInfo} from '~/store/mutation-types'
-import {successNotify, warnNotify, errorNotify} from '~/utils/util'
 import CommentForm from '~/components/CommentForm/index.vue'
 import Comment from '~/components/Comment/index.vue'
 import KHeader from '~/components/KHeader/index.vue'
@@ -81,64 +78,6 @@ export default defineComponent({
         typeClass: 'mood'
       }
     }
-  },
-  data() {
-    return {}
-  },
-  methods: {
-    addComment(info: ReplyInfo) {
-      const {name, email, comment} = info
-      const toName = info.toName || AuthorInfo.name
-      const toEmail = info.toEmail || AuthorInfo.qq
-      const topicId = info.topicId || null
-      const parentId = info.parentId || null
-      const vm = this
-      // 新增评论 / 回复他人评论
-      try {
-        // @ts-ignore
-        vm.$axios.post('/comment/add', {
-          toName,
-          toEmail,
-          topicId,
-          parentId,
-          comment,
-          fromName: name,
-          fromEmail: email,
-          /* @ts-ignore */
-          articleId: vm.article.id,
-          /* @ts-ignore */
-          articleUid: vm.article.uid,
-          /* @ts-ignore */
-          articleTitle: vm.article.title
-        }).then((res: any) => {
-          if (!res.success) {
-            warnNotify(res.message)
-            return
-          }
-          successNotify(res.message)
-        }).catch((err: any) => {
-          errorNotify(err.message)
-        })
-      } catch (err) {
-        errorNotify(err.message)
-      }
-    },
-    // getComment() {
-    //   this.$axios.get('/comment/list', {
-    //     /* @ts-ignore */
-    //     params: {articleId: this.article.id}
-    //   }).then((res: any) => {
-    //     if (res.success) {
-    //       this.commentList = res.data
-    //     }
-    //   }).catch((err: any) => {
-    //     errorNotify(err.message)
-    //   })
-    // }
-  },
-  mounted() {
-    // @ts-ignore
-    this.getComment()
   },
   head() {
     return {

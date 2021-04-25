@@ -47,6 +47,17 @@ export interface ArticleDetail extends ArticleItem {
   musicName: string
 }
 
+export type MentionsInfo = {
+  toName: null | string
+  toEmail: null | string
+  parentId: null | number
+  topicId: null | string
+}
+
+export type CommentPropsParams = {
+  article: ArticleDetail
+}
+
 const tuple = <T extends string[]>(...args: T): T => args
 const TipTypes = tuple('success', 'info', 'warning', 'error')
 

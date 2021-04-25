@@ -195,6 +195,15 @@ export function preventDefault (e: Event) {
 }
 
 /**
+ * delay to call
+ * */
+export function waitForCalling(func: () => void, delay: number = 500) {
+  return window.setTimeout(() => {
+    func()
+  }, delay)
+}
+
+/**
  * 校验 Email 格式
  * */
 export function checkIsEmail (email: string): boolean {
