@@ -21,6 +21,18 @@
       :row-selection="{ selectedRowKeys, onChange: onSelectChange }"
       @change="handlePageChange"
     >
+      <template #id="{ index }">
+        <span>{{ index + 1 }}</span>
+      </template>
+
+      <template #createTime="{ text }">
+        <a-tag color="cyan">{{ text }}</a-tag>
+      </template>
+
+      <template #isRead="{ text }">
+        <a-tag v-if="text === 1" color="green">Have Read</a-tag>
+        <a-tag v-else color="orange">Not Read</a-tag>
+      </template>
 
       <template #action="{ record }">
         <span class="action">

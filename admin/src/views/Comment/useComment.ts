@@ -8,7 +8,7 @@ import {
     DeleteCommentsParams
 } from '../../types'
 import {getCommentList, deleteComments} from '../../api/api'
-import {errorNotify, warningNotify, mapFormatCtimeList, successNotify} from '../../utils/util'
+import {errorNotify, warningNotify, mapCommentList, successNotify} from '../../utils/util'
 import {ColumnProps} from 'ant-design-vue/es/table/interface'
 
 type Key = ColumnProps['key']
@@ -20,14 +20,6 @@ const columns = [
         slots: {customRender: 'id'}
     },
     {
-        title: 'Name',
-        dataIndex: 'name'
-    },
-    {
-        title: 'Email',
-        dataIndex: 'email'
-    },
-    {
         title: 'Article Title',
         dataIndex: 'title'
     },
@@ -37,33 +29,27 @@ const columns = [
         width: '30%'
     },
     {
+        title: 'From',
+        dataIndex: 'from'
+    },
+    {
+        title: 'To',
+        dataIndex: 'to'
+    },
+    {
         title: 'Create Time',
         dataIndex: 'createTime',
         slots: {customRender: 'createTime'}
     },
     {
+        title: 'IsRead',
+        dataIndex: 'isRead',
+        slots: {customRender: 'isRead'}
+    },
+    {
         title: 'Action',
         dataIndex: 'action',
         slots: {customRender: 'action'}
-    }
-]
-
-const list = [
-    {
-        id: 1001,
-        name: 'ssk',
-        email: 'sure_k@qq.com',
-        title: '要么孤独，要么平庸',
-        content: '希望世界美好如初',
-        ctime: Date.now()
-    },
-    {
-        id: 1002,
-        name: 'sure',
-        email: 'sure_k@qq.com',
-        title: '致橡树',
-        content: `Hope that all the good things will come soon!`,
-        ctime: Date.now()
     }
 ]
 
@@ -86,9 +72,12 @@ export default function useComment() {
     const replyVisible = ref<boolean>(false)
 
     onMounted(() => {
-        commentList.value = mapFormatCtimeList(list)
+        // commentList.value = mapFormatCtimeList(list)
+        getComments({
+            pageNo: pagination.current,
+            pageSize: pagination.pageSize
+        })
     })
-
 
     function onSelectChange(selectedKeys: Key[]) {
         selectedRowKeys.value = selectedKeys
@@ -108,14 +97,14 @@ export default function useComment() {
 
     function getComments(params: PageQueryParams) {
         getCommentList(params)
-            // @ts-ignore
+            /* @ts-ignore */
             .then((res: ResponseData<ListRes<CommentItem[]>>) => {
                 loading.value = false
                 if (!res.success) {
                     warningNotify(res.message)
                     return
                 }
-                commentList.value = res.data.list
+                commentList.value = mapCommentList(res.data.list)
                 pagination.total = res.data.total
             }).catch(err => {
                 loading.value = false

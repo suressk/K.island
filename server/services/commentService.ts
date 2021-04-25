@@ -34,16 +34,26 @@ export function getRecordComment(options: QueryCommentsParams) {
 export function getAllComments(options: PageQueryParams) {
     const {pageNo, pageSize} = options
     const params = [(pageNo - 1) * pageSize, pageSize] // 分页参数
-    const sqlStr = `
+    const listStr = `
         SELECT c.id, c.uid, c.content, c.record_id as recordId, c.topic_id as topicId, c.parent_id as parentId,
         c.from_name as fromName, c.from_email as fromEmail, c.to_name as toName, c.to_email as toEmail,
         c.is_read as isRead, c.ctime, r.title FROM tbl_comments as c
         LEFT JOIN tbl_records as r ON r.id = c.record_id ORDER BY ctime DESC LIMIT ?, ?;
     `
+    const totalStr = 'SELECT COUNT(id) as total FROM `tbl_comments`'
+
+    const listPro = poolQuery(listStr, params)
+    const totalPro = poolQuery(totalStr, [])
+
     return new Promise((resolve, reject) => {
-        poolQuery(sqlStr, params)
-            .then(result => {
-                resolve(result)
+
+        Promise.all([listPro, totalPro])
+            .then(([listRes, totalRes]) => {
+                resolve({
+                    list: listRes,
+                    /* @ts-ignore */
+                    total: totalRes.length ? totalRes[0].total : 0
+                })
             })
             .catch(err => {
                 reject(err)
@@ -85,20 +95,33 @@ export function updateComment() {
 
 }
 
+type DeleteCommentParams = {
+    id?: number
+    parentId?: number | null
+} & { ids?: number[] }
+
 /**
  * 删除评论
  * */
-export function deleteComments(options: IdList) {
+export function deleteComments(options: DeleteCommentParams) {
+    let sqlStr: string = ''
+    let params: any[] = []
+    // parentId 为 null，删除一级评论（其子评论删除）
+    if (options.parentId === null) {
+        sqlStr = 'DELETE FROM `tbl_comments` WHERE id = ? OR parent_id = ?;'
+        params = [options.id, options.id]
+    }
+
     return new Promise((resolve, reject) => {
-        const {ids} = options
-        const sqlStr = getDeleteSqlStr(ids)
-        poolQuery(sqlStr, ids)
-            .then(() => {
-                resolve('')
-            })
-            .catch(err => {
-                reject(err)
-            })
+        // const {ids} = options
+        // const sqlStr = getDeleteSqlStr(ids)
+        // poolQuery(sqlStr, ids)
+        //     .then(() => {
+        //         resolve('')
+        //     })
+        //     .catch(err => {
+        //         reject(err)
+        //     })
     })
 }
 

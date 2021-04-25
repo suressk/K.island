@@ -13,6 +13,7 @@
     "dayjs": "^1.10.4",
     "default-passive-events": "^2.0.0",
     "echarts": "^5.0.2",
+    "http-server": "^0.12.3",
     "md5": "^2.3.0",
     "vue": "^3.0.5",
     "vue-router": "^4.0.5",

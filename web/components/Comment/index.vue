@@ -3,7 +3,7 @@
     <div class='comment-header flex-between'>
       <span class='comment-title'>Comment List({{ commentNum }})</span>
 
-      <button class='btn btn-primary' @click='reply(false)'>Add Comment</button>
+      <button class='btn btn-primary' @click='commentReply(false)'>Add Comment</button>
 
       <Modal
         title='评论'
@@ -84,7 +84,7 @@
             <div class='comment-nickname flex-between'>
               <span class='nickname txt-overflow'>{{ commentItem.fromName }}</span>
               <div class='time'>
-                <span class='comment-reply' @click='reply(true, commentItem)'>Reply</span>
+                <span class='comment-reply' @click='commentReply(true, commentItem)'>Reply</span>
                 <span class='comment-time'>{{ DAYJS(commentItem.ctime).format(timeFormat) }}</span>
               </div>
             </div>
@@ -111,7 +111,7 @@
                 <div class='comment-nickname flex-between'>
                   <span class='nickname txt-overflow'>{{ childItem.fromName }}</span>
                   <div class='time'>
-                    <span class='comment-reply' @click='reply(true, childItem)'>Reply</span>
+                    <span class='comment-reply' @click='commentReply(true, childItem)'>Reply</span>
                     <span class='comment-time'>{{ DAYJS(childItem.ctime).format(timeFormat) }}</span>
                   </div>
                 </div>

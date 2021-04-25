@@ -30,15 +30,15 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: () => import('../views/record/List.vue')
         }, {
-            path: 'message',
-            name: 'message',
+            path: 'messages',
+            name: 'messages',
             meta: {
                 title: 'Messages'
             },
             component: () => import('../views/Message/index.vue')
         }, {
-            path: 'comment',
-            name: 'comment',
+            path: 'comments',
+            name: 'comments',
             meta: {
                 title: 'Comments'
             },

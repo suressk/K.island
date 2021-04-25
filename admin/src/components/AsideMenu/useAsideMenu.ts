@@ -8,8 +8,8 @@ const menuList = [
     {label: 'Overview', path: '/overview', icon: 'icon-overview'},
     {label: 'Edit Record', path: '/edit', icon: 'icon-edit'},
     {label: 'Record List', path: '/list', icon: 'icon-send'},
-    {label: 'Comment', path: '/comment', icon: 'icon-management'},
-    {label: 'Message', path: '/message', icon: 'icon-twitter'},
+    {label: 'Comment', path: '/comments', icon: 'icon-management'},
+    {label: 'Message', path: '/messages', icon: 'icon-twitter'},
     {label: 'Setting', path: '/setting', icon: 'icon-setting'}
 ]
 

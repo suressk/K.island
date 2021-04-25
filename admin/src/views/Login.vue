@@ -15,11 +15,10 @@
         <label class="ipt-item">
           <input
             type="password"
-            :autocomplete="false"
+            autocomplete="off"
             required
             v-model="password"
             @keyup.enter="handleLogin"
-            autocomplete="new-password"
           />
           <span class="tip-label">Password</span>
           <span class="border-line"/>

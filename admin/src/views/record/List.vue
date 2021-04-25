@@ -26,7 +26,7 @@
       class="record-table"
       :loading="loading"
       :columns="columns"
-      :row-key="item => item.id"
+      :row-key="item  => item.id"
       :pagination="pagination"
       :data-source="articleList"
       @change="handlePageChange"
@@ -50,8 +50,8 @@
 
       <template #is_delete="{ text, record }">
         <a-switch
-          checked-children="show"
-          un-checked-children="hide"
+          checked-children="S"
+          un-checked-children="H"
           v-model:checked="editableData[record.id].show"
           @change="switchChange(record, $event)"
         />

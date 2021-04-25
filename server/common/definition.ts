@@ -30,4 +30,4 @@ export const authorMailInfo = {
 /**
  * 随机字符串作 jwt 加密秘钥
  * */
-export const CERT = `xxx`
+export const CERT = ``

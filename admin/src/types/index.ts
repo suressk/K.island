@@ -106,12 +106,17 @@ export interface MsgListItem {
  * */
 export interface CommentItem {
     id: number
-    name: string
-    email: string
+    uid: string
+    parentId: null | number
+    topicId: string
+    recordId: number
+    title: string
+    fromName: string
+    fromEmail: string
+    toName: string
+    toEmail: string
     content: string
     ctime: number
-    parentId?: number
-    to?: string
 }
 
 export interface DeleteCommentsParams {

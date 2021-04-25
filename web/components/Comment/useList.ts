@@ -80,7 +80,7 @@ export default function useList(props: CommentPropsParams) {
    * @param {*} replyTag 是否是评论他人
    * @param {*} info? 评论对象
    * */
-  function reply(replyTag: boolean, info?: CommentItem) {
+  function commentReply(replyTag: boolean, info?: CommentItem) {
     showModal(true)
     isReply.value = replyTag
     !replyTag && initMentions()
@@ -119,13 +119,14 @@ export default function useList(props: CommentPropsParams) {
    * 延迟 1s 关闭 modal
    * */
   function nextHideModal() {
-    nextTick(() => {
+    return new Promise(resolve => {
       if (timer) clearTimeout(timer)
       timer = waitForCalling(() => {
         tipIndex.value = 7
         showModal(false)
         getComments()
         clearCommentInfo()
+        resolve(true)
         /* 移除 tipTxt */
         tipIndex.value = -1
       }, 1000)
@@ -154,8 +155,9 @@ export default function useList(props: CommentPropsParams) {
           return
         }
         saveCommentUser()
-        nextHideModal()
-        successNotify(res.message)
+        nextHideModal().then(() => {
+          successNotify(res.message)
+        })
       }).catch((err: any) => {
         tipIndex.value = 5
         errorNotify(err.message)
@@ -199,8 +201,8 @@ export default function useList(props: CommentPropsParams) {
     visible,
     showList,
     loadStatus,
+    commentReply,
     pagePlus,
-    reply,
     submit
   }
 }

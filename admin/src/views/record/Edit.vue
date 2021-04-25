@@ -155,7 +155,7 @@ export default defineComponent({
     }
   },
   methods: {
-    handleUploadCover(file: File) {
+    handleUploadCover(file: File | Event) {
       if (!(file instanceof File)) return
 
       if (!isImage(file)) {

@@ -1,6 +1,6 @@
 <template>
   <section class='k-article-info'>
-    <KHeader :title='article.title' :need-scroll='true'/>
+    <KHeader :title='article.title' :need-scroll='true' />
 
     <div class='content'>
       <div class='article-content' :class='typeClass'>
@@ -22,17 +22,17 @@
 
       <Comment :article='article' />
 
-      <ThemeSwitch/>
+      <ThemeSwitch />
     </div>
-    <BackTop/>
+    <BackTop />
   </section>
 </template>
 
 <script lang='ts'>
-import {defineComponent} from '@nuxtjs/composition-api'
-import {parseMarkdownFile} from '~/utils/marked'
+import { defineComponent } from '@nuxtjs/composition-api'
+import { parseMarkdownFile } from '~/utils/marked'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
-import {Context} from '@nuxt/types'
+import { Context } from '@nuxt/types'
 import CommentForm from '~/components/CommentForm/index.vue'
 import Comment from '~/components/Comment/index.vue'
 import KHeader from '~/components/KHeader/index.vue'
@@ -42,16 +42,16 @@ import Modal from '~/components/KModal/index.vue'
 
 export default defineComponent({
   name: 'ArticleId',
-  components: {KHeader, CommentForm, ThemeSwitch, BackTop, Modal, Comment},
+  components: { KHeader, CommentForm, ThemeSwitch, BackTop, Modal, Comment },
   // @ts-ignore
-  async asyncData({params, $axios}: Context): Promise<object | void> | object | void {
-    const {articleId} = params
+  async asyncData({ params, $axios }: Context): Promise<object | void> | object | void {
+    const { articleId } = params
     const paramsArr = articleId.split('_') // 路径参数由 uid_id 拼接而来
     const uid = paramsArr[0],
       id = paramsArr[1]
     try {
       const { success, data } = await $axios.get('/record/detail', {
-        params: {uid, id}
+        params: { uid, id }
       })
       // success to get article content
       if (success) {
@@ -99,6 +99,7 @@ export default defineComponent({
 
   .article-content {
     min-height: calc(100vh - 300px);
+
     & > .stuffix {
       margin: 20px 0;
       padding: 10px 0;

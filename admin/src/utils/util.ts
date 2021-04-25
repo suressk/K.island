@@ -2,7 +2,7 @@ import {createVNode} from 'vue'
 import {notification, Modal} from 'ant-design-vue'
 import {ACCESS_TOKEN, STORAGE_PREFIX} from '../store/mutation-types'
 import {QuestionCircleOutlined} from '@ant-design/icons-vue'
-import {TokenInfo, RecordItem} from '../types'
+import {TokenInfo, RecordItem, CommentItem} from '../types'
 import {ConfirmOptions, MessageType} from '../types/tip'
 import {domainUrl} from '../api/request'
 import DAYJS from 'dayjs'
@@ -211,27 +211,6 @@ export function deleteCookie(name: string): void {
     }
 }
 
-/**
- * 平铺按年分组的文章列表
- * */
-// export function plainArticleList(records: YearDataList<RecordItem>): RecordItem[] {
-//     const years = Object.keys(records)
-//     const len = years.length
-//     const result: RecordItem[] = []
-//     for (let i = 0; i < len; i++) {
-//         const list = records[years[i]].map(item => {
-//             return {
-//                 ...item,
-//                 show: item.is_delete === 0,
-//                 createTime: formatTime(item.ctime),
-//                 updateTime: formatTime(item.utime)
-//             }
-//         })
-//         result.push(...list)
-//     }
-//     return result
-// }
-
 export function mapRecordTime(recordList: RecordItem[]) {
     return recordList.map(item => {
         return {
@@ -274,6 +253,20 @@ export function mapFormatCtimeList<T extends CtimeItem>(list: T[]) {
         item => ({
             ...item,
             createTime: formatTime(item.ctime)
+        })
+    )
+}
+
+/**
+ *
+ * */
+export function mapCommentList(list: CommentItem[]) {
+    return list.map(
+        item => ({
+            ...item,
+            createTime: formatTime(item.ctime),
+            from: item.fromName ? (item.fromName + '\r\n【' + item.fromEmail + '】') : '',
+            to: item.toName ? (item.toName + '\r\n【' + item.toEmail + '】') : '',
         })
     )
 }
