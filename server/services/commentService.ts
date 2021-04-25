@@ -96,42 +96,55 @@ export function updateComment() {
 }
 
 type DeleteCommentParams = {
-    id?: number
-    parentId?: number | null
-} & { ids?: number[] }
+    id: number
+    parentId: number | null
+}
 
 /**
  * 删除评论
  * */
 export function deleteComments(options: DeleteCommentParams) {
-    let sqlStr: string = ''
-    let params: any[] = []
-    // parentId 为 null，删除一级评论（其子评论删除）
-    if (options.parentId === null) {
-        sqlStr = 'DELETE FROM `tbl_comments` WHERE id = ? OR parent_id = ?;'
-        params = [options.id, options.id]
-    }
+
+    const {sqlStr, params} = getDeleteCommentsProps(options)
 
     return new Promise((resolve, reject) => {
-        // const {ids} = options
-        // const sqlStr = getDeleteSqlStr(ids)
-        // poolQuery(sqlStr, ids)
-        //     .then(() => {
-        //         resolve('')
-        //     })
-        //     .catch(err => {
-        //         reject(err)
-        //     })
+        poolQuery(sqlStr, params)
+            .then(() => {
+                resolve('Successfully deleted comment!')
+            })
+            .catch(err => {
+                reject(err)
+            })
     })
 }
 
-function getDeleteSqlStr(ids: number[]): string {
-    switch (ids.length) {
-        case 0:
-            return ''
-        case 1:
-            return 'DELETE FROM `tbl_comments` WHERE id = ?;'
-        default:
-            return getTableDeleteSqlStr(ids, '`tbl_comments`', 'id')
+function getDeleteCommentsProps(options: DeleteCommentParams) {
+    if (options.parentId === null) {
+        return {
+            sqlStr: 'DELETE FROM `tbl_comments` WHERE id = ? OR parent_id = ?;',
+            params: [options.id, options.id]
+        }
+    } else {
+        // parentId 有值（即删除子级评论）
+        return {
+            sqlStr: 'DELETE FROM `tbl_comments` WHERE id = ?;',
+            params: [options.id]
+        }
     }
+    /**
+     * TODO 考虑到多条删除的麻烦性（暂不提供多条删除功能）
+     * TODO 要考虑传的 ids 需要去查询是一级还是二级评论
+     * TODO 一级则要去遍历查询其子评论然后删除所有子级评论
+     * */
+    // if (options.ids) {
+    //
+    // }
+    // switch (ids.length) {
+    //     case 0:
+    //         return ''
+    //     case 1:
+    //         return 'DELETE FROM `tbl_comments` WHERE id = ?;'
+    //     default:
+    //         return getTableDeleteSqlStr(ids, '`tbl_comments`', 'id')
+    // }
 }
