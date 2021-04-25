@@ -10,21 +10,21 @@ export const authEmail = {
     outlook: 'stack_surek@outlook.com'
 }
 
+export const mailService = {
+    qq: 'QQ',
+    163: '163',
+    gmail: 'Gmail',
+    outlook: 'Outlook365'
+}
+
 /**
  * QQ 邮箱
  * */
 export const authorMailInfo = {
     user: authEmail.qq,
     pass: authPass.qq,
-    emailType: 'QQ',
+    emailType: mailService.qq,
     name: '小 K.'
-}
-
-export const mailService = {
-    qq: 'QQ',
-    163: '163',
-    gmail: 'Gmail',
-    outlook: 'Outlook365'
 }
 
 /**

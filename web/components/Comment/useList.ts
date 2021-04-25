@@ -120,14 +120,14 @@ export default function useList(props: CommentPropsParams) {
    * */
   function nextHideModal() {
     nextTick(() => {
-      tipIndex.value = 7
       if (timer) clearTimeout(timer)
       timer = waitForCalling(() => {
-        /* 移除 tipTxt */
-        tipIndex.value = -1
+        tipIndex.value = 7
         showModal(false)
         getComments()
         clearCommentInfo()
+        /* 移除 tipTxt */
+        tipIndex.value = -1
       }, 1000)
     })
   }
@@ -153,9 +153,9 @@ export default function useList(props: CommentPropsParams) {
           warnNotify(res.message)
           return
         }
-        successNotify(res.message)
         saveCommentUser()
         nextHideModal()
+        successNotify(res.message)
       }).catch((err: any) => {
         tipIndex.value = 5
         errorNotify(err.message)

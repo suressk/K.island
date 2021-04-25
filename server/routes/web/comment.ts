@@ -51,25 +51,25 @@ router.post('/add', (req, res) => {
             topicId,
             parentId,
             comment
-        }).then(() => {
-            writeHead(res, 200)
-            writeResult(res, true, 'Congratulations！You have posted a comment')
-            // 评论文章或者回复 小K. 的，不发送回复信息邮件
-            if (toEmail === authEmail.qq || toEmail === authEmail.outlook) return
+        })
+            .then(() => {
+                writeHead(res, 200)
+                writeResult(res, true, 'Successful, you have posted a comment')
+                // 评论文章或者回复 小K. 的，不发送回复信息邮件
+                if (!toEmail || toEmail === authEmail.qq || toEmail === authEmail.outlook) return
 
-            const info = {
-                name: toName,
-                title: articleTitle,
-                url: `${req.headers.origin}/article/${articleUid}_${articleId}` /* 邮件跳转文章详情页 */
-            }
-            sendMail(SendEmailType.ADD_COMMENT, info, authorMailInfo)
-                .then(res => {
-                    console.dir(res)
-                    console.log('邮件发送成功!')
-                })
-        }).catch(err => {
+                const info = {
+                    name: toName,
+                    title: articleTitle,
+                    email: toEmail,
+                    url: `${req.headers.origin}/article/${articleUid}_${articleId}` /* 邮件跳转文章详情页 */
+                }
+                sendMail(SendEmailType.ADD_COMMENT, info, authorMailInfo)
+                    .then(() => undefined)
+            })
+            .catch(err => {
             writeHead(res, 500)
-            writeResult(res, false, 'Something wrong with adding a comment', err)
+            writeResult(res, false, 'Something wrong with posting a comment', err)
         })
     } catch (error) {
         writeHead(res, 500)
