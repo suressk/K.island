@@ -32,8 +32,12 @@ router.put('/update', (req, res) => {
  * 删除评论
  * */
 router.delete('/delete', (req, res) => {
-    const ids = req.body.ids
-    deleteComments({ids})
+    const id: number = req.body.id
+    const parentId: number | null = req.body.parentId
+    deleteComments({
+        id,
+        parentId
+    })
         .then(() => {
             writeHead(res, 200)
             writeResult(res, true, 'Successfully deleted', {})

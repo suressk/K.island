@@ -27,6 +27,10 @@ export interface ListRes<T> {
     total: number
 }
 
+export interface CommentListRes extends ListRes<CommentItem[]> {
+    unread: number
+}
+
 export type RecordListResponseData = ResponseData<ListRes<YearDataList<RecordItem>>>
 
 export type LoginResponse = ResponseData<TokenInfo>
@@ -117,6 +121,7 @@ export interface CommentItem {
     toEmail: string
     content: string
     ctime: number
+    isRead: number
 }
 
 export interface DeleteCommentsParams {

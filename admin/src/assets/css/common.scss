@@ -302,11 +302,19 @@
   transition: all .3s;
 }
 
-a, .link {
+a, .link, .link-txt {
   transition: color .3s;
   cursor: pointer;
   &:hover {
     color: var(--primary) !important;
+  }
+}
+
+.link-txt {
+  color: var(--dark-primary);
+  &[disabled="true"] {
+    color: var(--tipColor)!important;
+    cursor: not-allowed;
   }
 }
 

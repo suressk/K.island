@@ -1,15 +1,17 @@
-import {reactive, ref, Ref, onMounted, computed} from 'vue'
+import {reactive, ref, computed, Ref, onMounted} from 'vue'
+import {getCommentList, deleteComments} from '../../api/api'
+import {errorNotify, warningNotify, mapCommentList, successNotify} from '../../utils/util'
+import {useStore} from 'vuex'
+import {ColumnProps} from 'ant-design-vue/es/table/interface'
+import {M_SET_UNREAD} from '../../store/mutation-types'
 import {
     CommentItem,
     PageQueryParams,
     Pagination,
     ResponseData,
-    ListRes,
+    CommentListRes,
     DeleteCommentsParams
 } from '../../types'
-import {getCommentList, deleteComments} from '../../api/api'
-import {errorNotify, warningNotify, mapCommentList, successNotify} from '../../utils/util'
-import {ColumnProps} from 'ant-design-vue/es/table/interface'
 
 type Key = ColumnProps['key']
 
@@ -68,18 +70,18 @@ export default function useComment() {
     })
     const commentList: Ref<CommentItem[]> = ref([])
     const selectedRowKeys = ref<Key[]>([])
-    const canDelete = computed(() => (selectedRowKeys.value.length > 0))
+    const canBeRead = computed(() => (selectedRowKeys.value.length > 0))
     const replyVisible = ref<boolean>(false)
 
-    onMounted(() => {
-        // commentList.value = mapFormatCtimeList(list)
-        getComments({
-            pageNo: pagination.current,
-            pageSize: pagination.pageSize
-        })
-    })
+    const store = useStore()
 
+    // TODO ==================== 选中还有警告
     function onSelectChange(selectedKeys: Key[]) {
+        const diffKey = selectedKeys.filter(key => !selectedRowKeys.value.includes(key))[0]
+
+        const item = commentList.value.find(item => item.id === diffKey) as CommentItem
+
+        if (item.isRead === 1) return
         selectedRowKeys.value = selectedKeys
     }
 
@@ -98,20 +100,34 @@ export default function useComment() {
     function getComments(params: PageQueryParams) {
         getCommentList(params)
             /* @ts-ignore */
-            .then((res: ResponseData<ListRes<CommentItem[]>>) => {
+            .then((res: ResponseData<CommentListRes>) => {
                 loading.value = false
                 if (!res.success) {
                     warningNotify(res.message)
                     return
                 }
-                commentList.value = mapCommentList(res.data.list)
-                pagination.total = res.data.total
+                const {list, total, unread} = res.data
+                commentList.value = mapCommentList(list)
+                pagination.total = total
+                store.commit(M_SET_UNREAD, unread)
             }).catch(err => {
                 loading.value = false
                 errorNotify(err.message)
             }
         )
     }
+
+    // 行选中禁用
+    // const rowSelection = {
+    //     onChange: (selectedKeys: Key[]) => {
+    //         console.log(selectedKeys)
+    //         selectedRowKeys.value = [...selectedKeys]
+    //     },
+    //     getCheckboxProps: (record: CommentItem) => ({
+    //         disabled: record.isRead === 1, // Column configuration not to be checked
+    //         title: record.title
+    //     })
+    // }
 
     // 删除评论
     const delMultipleComments = (params: DeleteCommentsParams) => {
@@ -147,17 +163,42 @@ export default function useComment() {
         replyVisible.value = true
     }
 
+    const tableRowClick = (record: CommentItem) => {
+        return {
+            onClick: () => {
+                const {id, isRead} = record
+                const index = selectedRowKeys.value.findIndex(item => item === id)
+                if (isRead === 1) return // 已读则忽略
+                // console.log(index)
+                if (index > -1) {
+                    selectedRowKeys.value.splice(index, 1)
+                } else {
+                    selectedRowKeys.value.push(id)
+                }
+            }
+        }
+    }
+
+    onMounted(() => {
+        // commentList.value = mapFormatCtimeList(list)
+        getComments({
+            pageNo: pagination.current,
+            pageSize: pagination.pageSize
+        })
+    })
+
     return {
         loading,
         columns,
         pagination,
         commentList,
-        canDelete,
+        canBeRead,
         replyVisible,
         selectedRowKeys,
         onSelectChange,
         handlePageChange,
         handleDeleteComments,
-        handleOpenReply
+        handleOpenReply,
+        tableRowClick
     }
 }

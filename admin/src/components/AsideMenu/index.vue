@@ -1,17 +1,36 @@
 <template>
-  <aside class="aside-menu scroller-light" :class="{ shrink: !extendMenu }">
+  <aside class="aside-menu" :class="{ shrink: !extendMenu }">
     <div class="avatar flex-center">
       <img src="../../assets/images/avatar.png" alt="avatar">
     </div>
     <router-link
-        v-for="menuItem in menuList"
-        :key="menuItem.label"
-        :to="menuItem.path"
-        class="menu-item d-flex txt-overflow"
+      v-for="menuItem in menuList"
+      :key="menuItem.label"
+      :to="menuItem.path"
+      class="menu-item d-flex txt-overflow"
     >
       <i class="iconfont" :class="menuItem.icon"/>
       <span v-show="extendMenu">{{ menuItem.label }}</span>
     </router-link>
+
+    <a-badge :count="unread" style="width: 100%;">
+      <router-link
+        to="/comments"
+        class="menu-item d-flex txt-overflow"
+      >
+        <i class="iconfont icon-management" />
+        <span v-show="extendMenu">Comments</span>
+      </router-link>
+    </a-badge>
+
+    <router-link
+      to="/setting"
+      class="menu-item d-flex txt-overflow"
+    >
+      <i class="iconfont icon-setting" />
+      <span v-show="extendMenu">Setting</span>
+    </router-link>
+
     <span class="menu-item d-flex txt-overflow" @click="handleExit">
       <i class="iconfont icon-exit"/>
       <span v-show="extendMenu">Exit</span>
@@ -24,16 +43,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import useAsideMenu from './useAsideMenu'
-import { Switch } from 'ant-design-vue'
-
-// import SvgIcons from '../SvgIcons.vue'
-// <SvgIcons :name="menuItem.icon" />
-// SvgIcons
+import { Switch, Badge } from 'ant-design-vue'
 
 export default defineComponent({
   name: "AsideMenu",
   components: {
-    'a-switch': Switch
+    'a-switch': Switch,
+    'a-badge': Badge
   },
   props: {
     commentNum: {
@@ -56,8 +72,7 @@ export default defineComponent({
   color: #fff;
   position: relative;
   flex-shrink: 0;
-  transition: width .5s;
-  overflow: hidden;
+  transition: width .5s ease;
   .avatar {
     width: 60%;
     border-radius: 50%;
@@ -76,6 +91,7 @@ export default defineComponent({
     transition: all .3s ease;
     cursor: pointer;
     margin-bottom: 3px;
+    position: relative;
     &.router-link-exact-active,
     &:hover {
       background-color: #fff;
@@ -92,9 +108,6 @@ export default defineComponent({
     width: 40px;
     .menu-item {
       padding: 10px 5px;
-      //.svg-icon {
-      //  margin-right: 0;
-      //}
     }
   }
   .switch {

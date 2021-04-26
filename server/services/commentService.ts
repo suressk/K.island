@@ -40,19 +40,23 @@ export function getAllComments(options: PageQueryParams) {
         c.is_read as isRead, c.ctime, r.title FROM tbl_comments as c
         LEFT JOIN tbl_records as r ON r.id = c.record_id ORDER BY ctime DESC LIMIT ?, ?;
     `
-    const totalStr = 'SELECT COUNT(id) as total FROM `tbl_comments`'
+    const totalStr = 'SELECT COUNT(id) as total FROM `tbl_comments`;'
+    const unreadTotal = 'SELECT COUNT(is_read) as total FROM `tbl_comments` WHERE is_read = 0 AND to_email = ?;'
 
     const listPro = poolQuery(listStr, params)
-    const totalPro = poolQuery(totalStr, [])
+    const listTotalPro = poolQuery(totalStr, [])
+    const unreadPro = poolQuery(unreadTotal, [authorMailInfo.user])
 
     return new Promise((resolve, reject) => {
 
-        Promise.all([listPro, totalPro])
-            .then(([listRes, totalRes]) => {
+        Promise.all([listPro, listTotalPro, unreadPro])
+            .then(([listRes, totalRes, unreadRes]) => {
                 resolve({
                     list: listRes,
                     /* @ts-ignore */
-                    total: totalRes.length ? totalRes[0].total : 0
+                    total: totalRes.length ? totalRes[0].total : 0,
+                    /* @ts-ignore */
+                    unread: unreadRes.length ? unreadRes[0].total : 0
                 })
             })
             .catch(err => {
@@ -71,8 +75,11 @@ export function addComment(options: AddCommentParams) {
     const uid = uuid()
     const ctime = Date.now()
     const newTopicId = topicId === null ? uid : topicId
+
+    const isRead = toEmail === authorMailInfo.user ? 0 : 1
+
     const sqlStr = 'INSERT INTO `tbl_comments` (uid, record_id, parent_id, content, topic_id, from_name, from_email, ctime, to_name, to_email, is_read) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
-    const params = [uid, articleId, parentId, comment, newTopicId, fromName, fromEmail, ctime, toName, toEmail, 0]
+    const params = [uid, articleId, parentId, comment, newTopicId, fromName, fromEmail, ctime, toName, toEmail, isRead]
 
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, params)
@@ -88,11 +95,27 @@ export function addComment(options: AddCommentParams) {
 /**
  * 更新评论内容
  * 1. => 已读状态
- * TODO 2. 已回复状态
- * TODO 3. 更新评论内容
+ * TODO 2. 更新评论内容（弃）
  * */
-export function updateComment() {
+export function updateComment(options: IdList) {
+    const str = getIdsStr(options.ids)
+    const sqlStr = 'UPDATE `tbl_comments` SET is_read = 1 WHERE id IN (' + str + ');'
+    return new Promise((resolve, reject) => {
+        poolQuery(sqlStr, options.ids)
+            .then(() => {
+                resolve('Successfully updated as read!')
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
 
+function getIdsStr(ids: number[]) {
+    const arr: string[] = []
+    arr.length = ids.length
+    arr.fill('?')
+    return arr.join(',')
 }
 
 type DeleteCommentParams = {
