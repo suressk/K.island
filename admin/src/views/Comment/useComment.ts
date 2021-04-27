@@ -1,5 +1,5 @@
 import {reactive, ref, computed, Ref, onMounted} from 'vue'
-import {getCommentList, deleteComments} from '../../api/api'
+import {getCommentList, deleteComments, readComments} from '../../api/api'
 import {errorNotify, warningNotify, mapCommentList, successNotify} from '../../utils/util'
 import {useStore} from 'vuex'
 import {ColumnProps} from 'ant-design-vue/es/table/interface'
@@ -9,8 +9,7 @@ import {
     PageQueryParams,
     Pagination,
     ResponseData,
-    CommentListRes,
-    DeleteCommentsParams
+    CommentListRes
 } from '../../types'
 
 type Key = ColumnProps['key']
@@ -66,7 +65,8 @@ export default function useComment() {
         pageSize: 10,
         showQuickJumper: true,
         pageSizeOptions: ["10", "20", "30", "50"],
-        showSizeChanger: true
+        showSizeChanger: true,
+        showTotal: (total: number | string) => `${total} Items`
     })
     const commentList: Ref<CommentItem[]> = ref([])
     const selectedRowKeys = ref<Key[]>([])
@@ -97,10 +97,13 @@ export default function useComment() {
         })
     }
 
+    // 获取所有评论列表
     function getComments(params: PageQueryParams) {
+        loading.value = true
+        clearSelectedKeys()
+        /* res: ResponseData<CommentListRes> */
         getCommentList(params)
-            /* @ts-ignore */
-            .then((res: ResponseData<CommentListRes>) => {
+            .then((res: any) => {
                 loading.value = false
                 if (!res.success) {
                     warningNotify(res.message)
@@ -110,7 +113,8 @@ export default function useComment() {
                 commentList.value = mapCommentList(list)
                 pagination.total = total
                 store.commit(M_SET_UNREAD, unread)
-            }).catch(err => {
+            })
+            .catch(err => {
                 loading.value = false
                 errorNotify(err.message)
             }
@@ -129,11 +133,30 @@ export default function useComment() {
     //     })
     // }
 
-    // 删除评论
-    const delMultipleComments = (params: DeleteCommentsParams) => {
-        deleteComments(params)
-            // @ts-ignore
-            .then((res: ResponseData<any>) => {
+    // // 删除多条评论
+    // const delMultipleComments = (params: DeleteCommentsParams) => {
+    //     deleteComments(params)
+    //         // @ts-ignore
+    //         .then((res: ResponseData<any>) => {
+    //             if (!res.success) {
+    //                 warningNotify(res.message)
+    //                 return
+    //             }
+    //             successNotify(res.message)
+    //             getComments({
+    //                 pageNo: pagination.current,
+    //                 pageSize: pagination.pageSize
+    //             })
+    //         }).catch(err => {
+    //         errorNotify(err.message)
+    //     })
+    // }
+
+    // 删除评论 按钮点击事件
+    function handleDeleteComments(info: CommentItem) {
+        const { id, parentId } = info
+        deleteComments({ id, parentId })
+            .then((res: any) => {
                 if (!res.success) {
                     warningNotify(res.message)
                     return
@@ -143,25 +166,42 @@ export default function useComment() {
                     pageNo: pagination.current,
                     pageSize: pagination.pageSize
                 })
-            }).catch(err => {
+            })
+            .catch(err => {
+                errorNotify(err.message)
+            })
+    }
+
+    // 清空选中的 key
+    const clearSelectedKeys = () => {
+        selectedRowKeys.value = []
+    }
+
+    // 对我的评论 标记为已读
+    function handleRead() {
+        readComments({
+            ids: [...selectedRowKeys.value] as number[]
+        }).then((res: any) => {
+            if (!res.success) {
+                warningNotify(res.message)
+                return
+            }
+            successNotify(res.message)
+            getComments({
+                pageNo: pagination.current,
+                pageSize: pagination.pageSize
+            })
+        }).catch(err => {
             errorNotify(err.message)
         })
     }
 
-    // 删除评论 按钮点击事件
-    function handleDeleteComments(info: CommentItem | null) {
-        if (info === null) {
-            // @ts-ignore
-            delMultipleComments({ids: [...selectedRowKeys.value]})
-        } else {
-            delMultipleComments({ids: [info.id]})
-        }
-    }
-
+    // TODO ====> Reply comment
     function handleOpenReply(info: CommentItem) {
         console.log(info)
         replyVisible.value = true
     }
+    // TODO ====> Reply comment
 
     const tableRowClick = (record: CommentItem) => {
         return {
@@ -199,6 +239,7 @@ export default function useComment() {
         handlePageChange,
         handleDeleteComments,
         handleOpenReply,
+        handleRead,
         tableRowClick
     }
 }

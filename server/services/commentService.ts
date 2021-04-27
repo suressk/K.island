@@ -38,7 +38,7 @@ export function getAllComments(options: PageQueryParams) {
         SELECT c.id, c.uid, c.content, c.record_id as recordId, c.topic_id as topicId, c.parent_id as parentId,
         c.from_name as fromName, c.from_email as fromEmail, c.to_name as toName, c.to_email as toEmail,
         c.is_read as isRead, c.ctime, r.title FROM tbl_comments as c
-        LEFT JOIN tbl_records as r ON r.id = c.record_id ORDER BY ctime DESC LIMIT ?, ?;
+        LEFT JOIN tbl_records as r ON r.id = c.record_id ORDER BY  isRead, ctime DESC LIMIT ?, ?;
     `
     const totalStr = 'SELECT COUNT(id) as total FROM `tbl_comments`;'
     const unreadTotal = 'SELECT COUNT(is_read) as total FROM `tbl_comments` WHERE is_read = 0 AND to_email = ?;'
@@ -92,6 +92,14 @@ export function addComment(options: AddCommentParams) {
     })
 }
 
+
+function getIdsStr(ids: number[]) {
+    const arr: string[] = []
+    arr.length = ids.length
+    arr.fill('?')
+    return arr.join(',')
+}
+
 /**
  * 更新评论内容
  * 1. => 已读状态
@@ -109,13 +117,6 @@ export function updateComment(options: IdList) {
                 reject(err)
             })
     })
-}
-
-function getIdsStr(ids: number[]) {
-    const arr: string[] = []
-    arr.length = ids.length
-    arr.fill('?')
-    return arr.join(',')
 }
 
 type DeleteCommentParams = {
@@ -143,12 +144,13 @@ export function deleteComments(options: DeleteCommentParams) {
 
 function getDeleteCommentsProps(options: DeleteCommentParams) {
     if (options.parentId === null) {
+        // parentId 为 null，即为删除一级评论（直接评论文章的评论） => 删除评论本身及所有子级评论
         return {
             sqlStr: 'DELETE FROM `tbl_comments` WHERE id = ? OR parent_id = ?;',
             params: [options.id, options.id]
         }
     } else {
-        // parentId 有值（即删除子级评论）
+        // parentId 有值（即删除子级评论，则直接删除当前 id 的评论）
         return {
             sqlStr: 'DELETE FROM `tbl_comments` WHERE id = ?;',
             params: [options.id]

@@ -1,5 +1,5 @@
 import express from 'express'
-import {getAllComments, deleteComments} from '../../services/commentService'
+import {getAllComments, deleteComments, updateComment} from '../../services/commentService'
 import {writeHead, writeResult} from "../../utils/writeResponse";
 
 const router = express.Router()
@@ -22,29 +22,39 @@ router.get('/list', (req, res) => {
 })
 
 /**
- * 更新评论已读
+ * 更新评论（标记为已读）
  * */
-router.put('/update', (req, res) => {
-
+router.put('/read', (req, res) => {
+    const ids = req.body.ids as number[]
+    if (ids.length === 0) {
+        writeHead(res, 416)
+        writeResult(res, false, "The parameter of 'ids' is a empty Array")
+        return
+    }
+    updateComment({ids})
+        .then(() => {
+            writeHead(res, 200)
+            writeResult(res, true, 'Successfully read these comment')
+        })
+        .catch(error => {
+            writeHead(res, 500)
+            writeResult(res, false, 'Failed to read these comment', error)
+        })
 })
-
 /**
- * 删除评论
+ * 删除评论（只支持单条评论删除 => 删除一级评论可连带删除其所有子评论）
  * */
 router.delete('/delete', (req, res) => {
     const id: number = req.body.id
     const parentId: number | null = req.body.parentId
-    deleteComments({
-        id,
-        parentId
-    })
+    deleteComments({id, parentId})
         .then(() => {
             writeHead(res, 200)
-            writeResult(res, true, 'Successfully deleted', {})
+            writeResult(res, true, 'Successfully deleted the comment', {})
         })
         .catch(error => {
             writeHead(res, 500)
-            writeResult(res, false, 'Failed to delete', error)
+            writeResult(res, false, 'Failed to delete the comment', error)
         })
 })
 

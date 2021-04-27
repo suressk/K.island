@@ -59,7 +59,8 @@ export default function useMessage() {
         pageSize: 10,
         showQuickJumper: true,
         pageSizeOptions: ["10", "20", "30", "50"],
-        showSizeChanger: true
+        showSizeChanger: true,
+        showTotal: (total: number | string) => `${total} Items`
     })
     const msgList: Ref<MsgListItem[]> = ref([])
     const canDelete = computed<boolean>(() => selectedRowKeys.value.length > 0)
@@ -115,21 +116,26 @@ export default function useMessage() {
             })
     }
 
+    // 清空选中的 key
+    const clearSelectedKeys = () => {
+        selectedRowKeys.value = []
+    }
+
     // 查询留言信息列表
     function getMsgList(params: PageQueryParams) {
         loading.value = true
+        clearSelectedKeys()
         getMessageList(params)
-            // @ts-ignore
-            .then((res: ResponseData<any>) => {
+            .then((res: any) => {
                 if (res.success) {
                     msgList.value = mapFormatCtimeList(res.data.list)
                     pagination.total = res.data.total
-                    selectedRowKeys.value.length && (selectedRowKeys.value = [])
                 } else {
                     warningNotify(res.message)
                 }
                 loading.value = false
-            }).catch(err => {
+            })
+            .catch(err => {
                 loading.value = false
                 errorNotify(err.message)
             }

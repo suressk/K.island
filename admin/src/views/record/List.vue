@@ -35,7 +35,8 @@
         {{ index + 1 }}
       </template>
       <template #tag="{ text }">
-        <a-tag color="blue">{{ text }}</a-tag>
+        <a-tag v-if="text === 'Mood'" color="#2db7f5">{{ text }}</a-tag>
+        <a-tag v-else color="#87d068">{{ text }}</a-tag>
       </template>
       <template #cover="{ text }">
         <img v-if="text" :src="text" alt="cover">

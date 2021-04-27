@@ -124,10 +124,18 @@ export interface CommentItem {
     isRead: number
 }
 
-export interface DeleteCommentsParams {
+type IdsListParam = {
     ids: number[]
 }
-export type DeleteMessagesParams = DeleteCommentsParams
+
+export type DeleteCommentsParams = {
+    id: number
+    parentId: number | null
+}
+
+export type ReadCommentsParams = IdsListParam
+
+export type DeleteMessagesParams = IdsListParam
 
 /**
  * request params type

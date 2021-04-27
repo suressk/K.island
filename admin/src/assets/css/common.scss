@@ -315,6 +315,7 @@ a, .link, .link-txt {
   &[disabled="true"] {
     color: var(--tipColor)!important;
     cursor: not-allowed;
+    pointer-events: none;
   }
 }
 
@@ -355,6 +356,7 @@ div.ant-notification-notice {
     background-color: var(--lightBg)!important;
     color: var(--tipColor)!important;
     cursor: not-allowed!important;
+    pointer-events: none;
   }
   &.btn-primary,
   &.btn-danger,

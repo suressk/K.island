@@ -59,9 +59,8 @@
     </div>
 
     <div v-if='commentNum === 0' class='empty-comment flex-center'>
-      这片小沙滩还没人踩过呢~
+      这片小沙滩还没人踩过呢，你来留下第一个小脚丫吗~
     </div>
-
 
     <template v-else>
       <!--  评论列表  -->
@@ -167,5 +166,5 @@ export default defineComponent({
 </script>
 
 <style lang='scss'>
-@import "/assets/css/components/commentList";
+@import "/assets/css/components/comment";
 </style>

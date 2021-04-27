@@ -1,10 +1,10 @@
 import express from 'express'
 import {getRecordComment, addComment} from '../../services/commentService'
 import {writeHead, writeResult} from '../../utils/writeResponse'
+import {groupCommentList} from '../../utils/util'
 import sendMail from '../../utils/sendMail'
 import {SendEmailType} from '../../common/types'
 import {authEmail, authorMailInfo} from '../../common/definition'
-import {groupCommentList} from '../../utils/util'
 
 const router = express.Router()
 
@@ -68,13 +68,14 @@ router.post('/add', (req, res) => {
                     .then(() => undefined)
             })
             .catch(err => {
-            writeHead(res, 500)
-            writeResult(res, false, 'Something wrong with posting a comment', err)
-        })
+                writeHead(res, 500)
+                writeResult(res, false, 'Something wrong with posting a comment', err)
+            })
     } catch (error) {
         writeHead(res, 500)
         writeResult(res, false, 'Something wrong', error)
     }
 })
+
 
 export default router

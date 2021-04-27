@@ -4,6 +4,7 @@
 
     <div class='content'>
       <div class='article-content' :class='typeClass'>
+        <h1 class='article-title'>{{ article.title }}</h1>
         <div class='stuffix d-flex'>
           <span class='time tip'>
             {{ article.time.day }} {{ article.time.month }} {{ article.time.year }}
@@ -33,7 +34,6 @@ import { defineComponent } from '@nuxtjs/composition-api'
 import { parseMarkdownFile } from '~/utils/marked'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import { Context } from '@nuxt/types'
-import CommentForm from '~/components/CommentForm/index.vue'
 import Comment from '~/components/Comment/index.vue'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
@@ -42,7 +42,7 @@ import Modal from '~/components/KModal/index.vue'
 
 export default defineComponent({
   name: 'ArticleId',
-  components: { KHeader, CommentForm, ThemeSwitch, BackTop, Modal, Comment },
+  components: { KHeader, ThemeSwitch, BackTop, Modal, Comment },
   // @ts-ignore
   async asyncData({ params, $axios }: Context): Promise<object | void> | object | void {
     const { articleId } = params
@@ -100,8 +100,15 @@ export default defineComponent({
   .article-content {
     min-height: calc(100vh - 300px);
 
+    .article-title {
+      font-size: 24px;
+      font-weight: 500;
+      margin-top: 30px;
+      line-height: 32px;
+    }
+
     & > .stuffix {
-      margin: 20px 0;
+      margin-bottom: 20px;
       padding: 10px 0;
 
       & > span {

@@ -3,7 +3,7 @@
     <h3 class="primary-title mb-1">Comment Management</h3>
 
     <div class="mb-1 read-txt">
-      <span class="link-txt" :disabled="!canBeRead">标记为已读</span>
+      <span class="link-txt" :disabled="!canBeRead" @click="handleRead">标记为已读</span>
     </div>
 
     <a-table
@@ -80,7 +80,11 @@ export default defineComponent({
 .comment {
   .read-txt {
     padding: 16px 0;
-    font-weight: 700;
+    font-weight: 500;
+    font-size: 18px;
+    .link-txt {
+      padding: 10px;
+    }
   }
 }
 </style>

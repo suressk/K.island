@@ -15,7 +15,8 @@ import {
   PageQueryParams,
   DeleteRecordParams,
   DeleteCommentsParams,
-  DeleteMessagesParams
+  DeleteMessagesParams,
+  ReadCommentsParams
 } from '../types'
 
 // 登录
@@ -37,10 +38,11 @@ export const deleteCover = (data: DeleteImageParams) => deleteAction('/sys/image
 // export const uploadIllustration = (fileData: FormData) => postUploadImage('/sys/images/upload_plate', fileData)
 
 
-// 查询留言信息
+// 留言信息
 export const getMessageList = (params: PageQueryParams) => getAction('/sys/messages/list', params)
 export const deleteMessages = (data: DeleteMessagesParams) => deleteAction('/sys/messages/delete', data)
 
-// 查询评论信息
+// 评论信息
 export const getCommentList = (params: PageQueryParams) => getAction('/sys/comments/list', params)
-export const deleteComments = (data: DeleteCommentsParams) => deleteAction('/sys/comments', data)
+export const deleteComments = (data: DeleteCommentsParams) => deleteAction('/sys/comments/delete', data)
+export const readComments = (data: ReadCommentsParams) => putAction('/sys/comments/read', data)

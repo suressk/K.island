@@ -79,7 +79,8 @@ export default function useList() {
         pageSize: 10,
         showQuickJumper: true,
         pageSizeOptions: ["10", "20", "30", "50"],
-        showSizeChanger: true
+        showSizeChanger: true,
+        showTotal: (total: number | string) => `${total} Items`
     })
     const articleList: Ref<RecordItem[]> = ref([])
     const editableData: UnwrapRef<Record<string, RecordItem>> = reactive({})
