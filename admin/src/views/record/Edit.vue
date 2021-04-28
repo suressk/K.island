@@ -116,7 +116,7 @@ import {Input, Select, Form, Button, Modal, Switch} from 'ant-design-vue'
 import {SendOutlined} from '@ant-design/icons-vue'
 import {rules, isImage} from './useEdit'
 
-const tagOptions = ['Mood', 'JS', 'Study Note', 'FrontEnd', 'BackEnd']
+const tagOptions = ['Mood', 'JS', 'StudyNote', 'FrontEnd', 'BackEnd']
 
 export default defineComponent({
   name: "EditRecord",

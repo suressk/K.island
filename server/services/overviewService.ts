@@ -1,6 +1,22 @@
 import {poolQuery} from '../db/DBUtil'
 import {authorMailInfo} from '../common/definition'
 
+enum ArticleType {
+    Mood = 'Mood',
+    JS = 'JS',
+    FrontEnd = 'FrontEnd',
+    BackEnd = 'BackEnd',
+    StudyNote = 'StudyNote'
+}
+
+const articleType = [
+    'Mood',
+    'JS',
+    'FrontEnd',
+    'BackEnd',
+    'StudyNote'
+]
+
 /**
  * 概览数据：
  * 1. 文章总数 total
@@ -17,12 +33,27 @@ export function getOverviewData() {
     // 'SELECT COUNT(is_read) as unread FROM `tbl_comments` WHERE is_read = 0 AND to_email = ?;'
     // SELECT COUNT(id) as total, (SELECT COUNT(id) as unread FROM `tbl_comments` WHERE is_read = 0 AND to_email = ?) as unread FROM `tbl_comments` WHERE to_email = ?;
 
-    const articleStr = 'SELECT COUNT(id) AS total, ctime FROM `tbl_records` ORDER BY ctime DESC LIMIT 0, 1;'
+    const articleStr = `
+        SELECT COUNT(id) AS total, ctime,
+        (SELECT COUNT(id) as Mood FROM tbl_records WHERE tag = ?) as Mood,
+        (SELECT COUNT(id) as JS FROM tbl_records WHERE tag = ?) as JS,
+        (SELECT COUNT(id) as FrontEnd FROM tbl_records WHERE tag = ?) as FrontEnd,
+        (SELECT COUNT(id) as BackEnd FROM tbl_records WHERE tag = ?) as BackEnd,
+        (SELECT COUNT(id) as StudyNote FROM tbl_records WHERE tag = ?) as StudyNote
+        FROM tbl_records ORDER BY ctime DESC LIMIT 0, 1;
+    `
+    const articleParams = [
+        ArticleType.Mood,
+        ArticleType.JS,
+        ArticleType.FrontEnd,
+        ArticleType.BackEnd,
+        ArticleType.StudyNote
+    ]
     const unreadStr = 'SELECT COUNT(id) as comments, (SELECT COUNT(id) as unread FROM `tbl_comments` WHERE is_read = 0 AND to_email = ?) as unread FROM `tbl_comments` WHERE to_email = ?;'
 
     const {user} = authorMailInfo
 
-    const articlePro = poolQuery(articleStr, [])
+    const articlePro = poolQuery(articleStr, articleParams)
     const unreadPro = poolQuery(unreadStr, [user, user])
 
     return new Promise((resolve, reject) => {
@@ -36,7 +67,9 @@ export function getOverviewData() {
                     /* @ts-ignore */
                     unread: unreadRes.length ? unreadRes[0].unread : 0,
                     /* @ts-ignore */
-                    comments: unreadRes.length ? unreadRes[0].comments : 0
+                    comments: unreadRes.length ? unreadRes[0].comments : 0,
+                    /* @ts-ignore */
+                    chartOption: mapChartOption(articleRes[0])
                 })
             })
             .catch(error => {
@@ -47,4 +80,18 @@ export function getOverviewData() {
                 })
             })
     })
+}
+
+function mapChartOption (opt: any) {
+    const result: any[] = []
+
+    if (opt) {
+        articleType.forEach(type => {
+            result.push({
+                name: type,
+                value: opt[type]
+            })
+        })
+    }
+    return result
 }

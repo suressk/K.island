@@ -5,76 +5,23 @@ import {errorNotify, warningNotify} from '../../utils/util'
 import {EChartsOption} from 'echarts'
 import {M_SET_UNREAD} from '../../store/mutation-types'
 
-export const barOption = ref<EChartsOption>({})
 export const lineOption = ref<EChartsOption>({})
-export const pieOption = ref<EChartsOption>({})
 
-/**
- * useOverview
- * */
-export default function useOverview() {
-
-    const store = useStore()
-
-    const articleInfo = reactive({
-        total: 0,
-        ctime: 0
-    })
-
-    const commentInfo = reactive({
-        comments: 0,
-        unread: 0
-    })
-
-    function getOverview() {
-        getOverviewData().then((res: any) => {
-            if (!res.success) {
-                warningNotify(res.message)
-                return
-            }
-            const {data: {total, ctime, unread, comments}} = res
-            articleInfo.total = total
-            articleInfo.ctime = ctime
-            commentInfo.comments = comments
-            commentInfo.unread = unread
-            store.commit(M_SET_UNREAD, unread)
-        }).catch(err => {
-            errorNotify(err.message)
-        })
-    }
-
-    onMounted(() => {
-        getOverview()
-    })
-
-    return {
-        ...toRefs(articleInfo),
-        ...toRefs(commentInfo)
-    }
+type PieDataItem = {
+    name: string
+    value: number
 }
 
-setTimeout(() => {
-    lineOption.value = {
-        tooltip: {
-            trigger: 'axis'
-        },
-        xAxis: {
-            data: ['6:00', '8:00', '10:00', '12:00', '14:00', '16:00']
-        },
-        yAxis: {},
-        series: [{
-            type: 'line',
-            smooth: true,
-            data: [5, 10, 26, 53, 12, 8]
-        }]
-    }
-}, 2000)
+type PieSeriesData = PieDataItem[]
 
-setTimeout(() => {
-    pieOption.value = {
+function createPieOption (data: PieSeriesData): EChartsOption {
+    return {
         tooltip: {
             trigger: 'item',
             formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        label: {
+            show: true
         },
         legend: {
             orient: 'vertical',
@@ -82,9 +29,10 @@ setTimeout(() => {
         },
         series: [
             {
-                name: 'Technology',
+                name: '文章统计概览',
                 type: 'pie',
                 radius: ['40%', '70%'],
+                // roseType: 'area',
                 avoidLabelOverlap: false,
                 itemStyle: {
                     borderRadius: 10,
@@ -105,15 +53,72 @@ setTimeout(() => {
                 labelLine: {
                     show: false
                 },
-                data: [
-                    {value: 30, name: 'ES6+'},
-                    {value: 10, name: 'HTML'},
-                    {value: 10, name: 'CSS'},
-                    {value: 20, name: 'vue'},
-                    {value: 20, name: 'react'},
-                    {value: 10, name: '性能优化'}
-                ]
+                data
             }
         ]
     }
-}, 1000)
+}
+
+/**
+ * useOverview
+ * */
+export default function useOverview() {
+
+    const store = useStore()
+
+    const pieOption = ref<EChartsOption>({})
+    const articleInfo = reactive({
+        total: 0,
+        ctime: 0
+    })
+
+    const commentInfo = reactive({
+        comments: 0,
+        unread: 0
+    })
+
+    function getOverview() {
+        getOverviewData().then((res: any) => {
+            if (!res.success) {
+                warningNotify(res.message)
+                return
+            }
+            const {data: {total, ctime, unread, comments, chartOption}} = res
+            articleInfo.total = total
+            articleInfo.ctime = ctime
+            commentInfo.comments = comments
+            commentInfo.unread = unread
+            pieOption.value = createPieOption(chartOption)
+            store.commit(M_SET_UNREAD, unread)
+        }).catch(err => {
+            errorNotify(err.message)
+        })
+    }
+
+    onMounted(() => {
+        getOverview()
+    })
+
+    return {
+        pieOption,
+        ...toRefs(articleInfo),
+        ...toRefs(commentInfo)
+    }
+}
+
+// setTimeout(() => {
+//     lineOption.value = {
+//         tooltip: {
+//             trigger: 'axis'
+//         },
+//         xAxis: {
+//             data: ['6:00', '8:00', '10:00', '12:00', '14:00', '16:00']
+//         },
+//         yAxis: {},
+//         series: [{
+//             type: 'line',
+//             smooth: true,
+//             data: [5, 10, 26, 53, 12, 8]
+//         }]
+//     }
+// }, 2000)

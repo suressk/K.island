@@ -18,10 +18,10 @@
         :row-key="item => item.id"
         :pagination="pagination"
         :data-source="commentList"
-        :row-selection="{selectedRowKeys, onChange: onSelectChange}"
-        :customRow="tableRowClick"
+        :row-selection="rowSelection"
         @change="handlePageChange"
     >
+      <!--:row-selection="{selectedRowKeys, onChange: onSelectChange}"-->
       <template #id="{ record, index }">
         <a-badge :dot="record.isRead === 0">{{ index + 1 }}</a-badge>
       </template>
@@ -90,7 +90,7 @@ export default defineComponent({
     padding: 10px;
     font-weight: 500;
     font-size: 16px;
-
+    user-select: none;
     .iconfont {
       font-size: 14px;
       margin: 3px 5px 0 0;

@@ -72,17 +72,17 @@ export default function useComment() {
     const store = useStore()
 
     // TODO ==================== 选中还有警告
-    function onSelectChange(selectedKeys: Key[]) {
-        const diffKey = selectedKeys.filter(key => !selectedRowKeys.value.includes(key))[0]
-
-        const item = commentList.value.find(item => item.id === diffKey) as CommentItem
-
-        if (item.isRead === 1) {
-            infoNotify('This comment is not for you or has been read!')
-            return
-        }
-        selectedRowKeys.value = selectedKeys
-    }
+    // function onSelectChange(selectedKeys: Key[]) {
+    //     const diffKey = selectedKeys.filter(key => !selectedRowKeys.value.includes(key))[0]
+    //
+    //     const item = commentList.value.find(item => item.id === diffKey) as CommentItem
+    //
+    //     if (item.isRead === 1) {
+    //         infoNotify('This comment is not for you or has been read!')
+    //         return
+    //     }
+    //     selectedRowKeys.value = selectedKeys
+    // }
 
     function handlePageChange(curPagination: Pagination) {
         const current = curPagination!.current!
@@ -121,16 +121,15 @@ export default function useComment() {
     }
 
     // 行选中禁用
-    // const rowSelection = {
-    //     onChange: (selectedKeys: Key[]) => {
-    //         console.log(selectedKeys)
-    //         selectedRowKeys.value = [...selectedKeys]
-    //     },
-    //     getCheckboxProps: (record: CommentItem) => ({
-    //         disabled: record.isRead === 1, // Column configuration not to be checked
-    //         title: record.title
-    //     })
-    // }
+    const rowSelection = {
+        onChange: (selectedKeys: Key[]) => {
+            selectedRowKeys.value = [...selectedKeys]
+        },
+        getCheckboxProps: (record: CommentItem) => ({
+            disabled: record.isRead === 1, // Column configuration not to be checked
+            title: record.title
+        })
+    }
 
     // // 删除多条评论
     // const delMultipleComments = (params: DeleteCommentsParams) => {
@@ -202,28 +201,28 @@ export default function useComment() {
     }
     // TODO ====> Reply comment
 
-    const tableRowClick = (record: CommentItem) => {
-        return {
-            onClick: () => {
-                const {id, isRead} = record
-                // 已读则忽略
-                if (isRead === 1) {
-                    infoNotify('This comment is not for you or has been read!')
-                    return
-                }
-                const index = selectedRowKeys.value.findIndex(item => item === id)
-
-                if (index > -1) {
-                    selectedRowKeys.value.splice(index, 1)
-                } else {
-                    selectedRowKeys.value.push(id)
-                }
-            }
-        }
-    }
+    // 表格行点击选中
+    // const tableRowClick = (record: CommentItem) => {
+    //     return {
+    //         onClick: () => {
+    //             const {id, isRead} = record
+    //             // 已读则忽略
+    //             if (isRead === 1) {
+    //                 infoNotify('This comment is not for you or has been read!')
+    //                 return
+    //             }
+    //             const index = selectedRowKeys.value.findIndex(item => item === id)
+    //
+    //             if (index > -1) {
+    //                 selectedRowKeys.value.splice(index, 1)
+    //             } else {
+    //                 selectedRowKeys.value.push(id)
+    //             }
+    //         }
+    //     }
+    // }
 
     onMounted(() => {
-        // commentList.value = mapFormatCtimeList(list)
         getComments({
             pageNo: pagination.current,
             pageSize: pagination.pageSize
@@ -238,11 +237,10 @@ export default function useComment() {
         canBeRead,
         replyVisible,
         selectedRowKeys,
-        onSelectChange,
+        rowSelection,
         handlePageChange,
         handleDeleteComments,
         handleOpenReply,
-        handleRead,
-        tableRowClick
+        handleRead
     }
 }

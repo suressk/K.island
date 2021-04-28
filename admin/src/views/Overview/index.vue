@@ -35,7 +35,7 @@
             <span>条</span>
           </p>
           <p class="card-tip">
-            未读评论：【<span class="info">{{ unread }}</span>】 来自陌生人的问候！
+            未读评论：【<span class="error">{{ unread }}</span>】 来自陌生人的问候！
           </p>
         </div>
       </div>
@@ -48,7 +48,7 @@
 import {defineComponent} from 'vue'
 import DAYJS from 'dayjs'
 import VueEcharts from '/@comp/VueEcharts/index.vue'
-import useOverview, {lineOption, pieOption} from './useOverview'
+import useOverview, {lineOption} from './useOverview'
 import 'default-passive-events'
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm'
 
@@ -61,9 +61,8 @@ export default defineComponent({
     return {
       DAYJS,
       DATE_FORMAT,
-      ...useOverview(),
       lineOption,
-      pieOption
+      ...useOverview()
     }
   }
 })
@@ -88,9 +87,9 @@ export default defineComponent({
     height: 90%;
     width: 48%;
     transition: all .3s ease;
+    box-shadow: 0 0 10px var(--box-shadow);
     //border: 1px solid var(--primary);
     //border-color: transparent;
-    box-shadow: 0 0 10px var(--box-shadow);
     //&:hover {
     //  transform: translateY(-5px);
     //}
@@ -123,7 +122,7 @@ export default defineComponent({
       }
       .card-tip {
         position: absolute;
-        right: 20px;
+        right: 0;
         bottom: 0;
         color: var(--tipColor);
       }
