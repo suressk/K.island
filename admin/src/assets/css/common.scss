@@ -55,6 +55,8 @@
   --opacity-primary-5: rgba(9, 132, 227, .5);
   --opacity-primary-2: rgba(9, 132, 227, .2);
 
+  --box-shadow: rgba(0, 0, 0, .3);
+
   /** dark-theme colors */
   --dark-theme-body: #0d1117;
   --dark-theme-header: #161b22;
@@ -305,15 +307,16 @@
 a, .link, .link-txt {
   transition: color .3s;
   cursor: pointer;
+  color: var(--dark-primary);
   &:hover {
-    color: var(--primary) !important;
+    color: var(--primary);
   }
 }
 
 .link-txt {
-  color: var(--dark-primary);
+  //color: var(--dark-primary);
   &[disabled="true"] {
-    color: var(--tipColor)!important;
+    color: var(--tipColor) !important;
     cursor: not-allowed;
     pointer-events: none;
   }
@@ -322,13 +325,15 @@ a, .link, .link-txt {
 h3.primary-title {
   color: var(--primary);
   border-left: 3px solid var(--primary);
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   padding: 5px 20px;
   height: 40px;
-  background-color: var(--opacity-cyan-3);
-  border-radius: 0 5px 5px 0;
   width: 100%;
+  margin-bottom: 30px;
+  //background-color: var(--opacity-cyan-3);
+  //border-radius: 0 5px 5px 0;
+  //box-shadow: 0 0 10px var(--opacity-cyan-3);
 }
 
 div.ant-notification-notice {

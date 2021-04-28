@@ -4,6 +4,7 @@ import verifyPermission from './middleware/permission'
 import {createCorsOptionsDelegate} from './utils/util'
 
 import signIn from './routes/sys/managePermission'
+import manageOverview from './routes/sys/manageOverview'
 import manageRecords from './routes/sys/manageRecords'
 import manageImage from './routes/sys/manageCover'
 import manageMessages from './routes/sys/manageMessages'
@@ -54,6 +55,8 @@ app.post('/sys/login', signIn)
 // 后台管理 token 验证 中间件
 app.use('/sys/*', verifyPermission)
 
+// 首页概览
+app.use('/sys/overview', manageOverview)
 // 文章管理 —— 增删改查 文章信息
 app.use('/sys/records', manageRecords)
 // 上传 / 删除 图片管理

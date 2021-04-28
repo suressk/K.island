@@ -72,7 +72,8 @@ export default defineComponent({
   color: #fff;
   position: relative;
   flex-shrink: 0;
-  transition: width .5s ease;
+  transition: all .5s ease;
+  border-radius: 20px;
   .avatar {
     width: 60%;
     border-radius: 50%;
@@ -106,6 +107,7 @@ export default defineComponent({
   }
   &.shrink {
     width: 40px;
+    border-radius: 5px;
     .menu-item {
       padding: 10px 5px;
     }

@@ -3,7 +3,7 @@ import { axios } from './request'
 type URL = string
 type Params = undefined | object
 
-export function getAction (url: URL, params: Params) {
+export function getAction (url: URL, params?: Params) {
   return axios({
     url,
     method: 'get',

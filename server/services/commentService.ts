@@ -1,5 +1,4 @@
 import {poolQuery} from '../db/DBUtil'
-import {getTableDeleteSqlStr} from '../utils/util'
 import {v4 as uuid} from 'uuid'
 import {IdList, PageQueryParams, AddCommentParams} from '../common/types'
 import {authorMailInfo} from '../common/definition'

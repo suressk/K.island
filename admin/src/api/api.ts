@@ -20,29 +20,32 @@ import {
 } from '../types'
 
 // 登录
-export const login = (params: LoginParams) => postAction('/sys/login', params)
-// const logout = (params: LoginInfo) => postAction('/sys/logout', params)
+export const login = (params: LoginParams) => postAction('/login', params)
+// const logout = (params: LoginInfo) => postAction('/logout', params)
+
+// 首页概览
+export const getOverviewData = () => getAction('/overview/view')
 
 // 文章管理
-export const addRecord = (params: NewArticleParams) => postAction('/sys/records/add', params)
-export const getRecordList = (params: QueryArticleListParams) => getAction('/sys/records/list', params)
-export const getRecordDetail = (params: ArticleIds) => getAction('/sys/records/detail', params)
-export const deleteRecord = (params: DeleteRecordParams) => deleteAction('/sys/records/delete', params)
-export const updateRecord = (params: UpdateArticleParams) => putAction('/sys/records/update', params)
+export const addRecord = (params: NewArticleParams) => postAction('/records/add', params)
+export const getRecordList = (params: QueryArticleListParams) => getAction('/records/list', params)
+export const getRecordDetail = (params: ArticleIds) => getAction('/records/detail', params)
+export const deleteRecord = (params: DeleteRecordParams) => deleteAction('/records/delete', params)
+export const updateRecord = (params: UpdateArticleParams) => putAction('/records/update', params)
 
 // 上传封面图
-export const uploadCover = (fileData: FormData) => postUploadImage('/sys/images/upload_cover', fileData)
+export const uploadCover = (fileData: FormData) => postUploadImage('/images/upload_cover', fileData)
 // 删除封面图
-export const deleteCover = (data: DeleteImageParams) => deleteAction('/sys/images/delete', data)
+export const deleteCover = (data: DeleteImageParams) => deleteAction('/images/delete', data)
 // 上传文章插图
-// export const uploadIllustration = (fileData: FormData) => postUploadImage('/sys/images/upload_plate', fileData)
+// export const uploadIllustration = (fileData: FormData) => postUploadImage('/images/upload_plate', fileData)
 
 
 // 留言信息
-export const getMessageList = (params: PageQueryParams) => getAction('/sys/messages/list', params)
-export const deleteMessages = (data: DeleteMessagesParams) => deleteAction('/sys/messages/delete', data)
+export const getMessageList = (params: PageQueryParams) => getAction('/messages/list', params)
+export const deleteMessages = (data: DeleteMessagesParams) => deleteAction('/messages/delete', data)
 
 // 评论信息
-export const getCommentList = (params: PageQueryParams) => getAction('/sys/comments/list', params)
-export const deleteComments = (data: DeleteCommentsParams) => deleteAction('/sys/comments/delete', data)
-export const readComments = (data: ReadCommentsParams) => putAction('/sys/comments/read', data)
+export const getCommentList = (params: PageQueryParams) => getAction('/comments/list', params)
+export const deleteComments = (data: DeleteCommentsParams) => deleteAction('/comments/delete', data)
+export const readComments = (data: ReadCommentsParams) => putAction('/comments/read', data)

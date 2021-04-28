@@ -1,33 +1,63 @@
-import {ref} from 'vue'
+import {ref, reactive, toRefs, onMounted} from 'vue'
+import {useStore} from 'vuex'
+import {getOverviewData} from '../../api/api'
+import {errorNotify, warningNotify} from '../../utils/util'
 import {EChartsOption} from 'echarts'
+import {M_SET_UNREAD} from '../../store/mutation-types'
 
 export const barOption = ref<EChartsOption>({})
 export const lineOption = ref<EChartsOption>({})
 export const pieOption = ref<EChartsOption>({})
+
 /**
  * useOverview
  * */
 export default function useOverview() {
+
+    const store = useStore()
+
+    const articleInfo = reactive({
+        total: 0,
+        ctime: 0
+    })
+
+    const commentInfo = reactive({
+        comments: 0,
+        unread: 0
+    })
+
+    function getOverview() {
+        getOverviewData().then((res: any) => {
+            if (!res.success) {
+                warningNotify(res.message)
+                return
+            }
+            const {data: {total, ctime, unread, comments}} = res
+            articleInfo.total = total
+            articleInfo.ctime = ctime
+            commentInfo.comments = comments
+            commentInfo.unread = unread
+            store.commit(M_SET_UNREAD, unread)
+        }).catch(err => {
+            errorNotify(err.message)
+        })
+    }
+
+    onMounted(() => {
+        getOverview()
+    })
+
+    return {
+        ...toRefs(articleInfo),
+        ...toRefs(commentInfo)
+    }
 }
 
 setTimeout(() => {
-    barOption.value = {
-        tooltip: {},
-        xAxis: {
-            data: ['ES 2015+', 'vue', 'react', '心情随笔', '恋爱酸臭味儿', '花样动效']
-        },
-        yAxis: {},
-        series: [{
-            name: '浏览量',
-            type: 'bar',
-            data: [54, 205, 306, 12, 257, 103]
-        }]
-    }
-}, 1000)
-
-setTimeout(() => {
     lineOption.value = {
-        tooltip: {},
+        tooltip: {
+            trigger: 'axis'
+        },
         xAxis: {
             data: ['6:00', '8:00', '10:00', '12:00', '14:00', '16:00']
         },
@@ -47,12 +77,12 @@ setTimeout(() => {
             formatter: '{a} <br/>{b}: {c} ({d}%)'
         },
         legend: {
-            top: '5%',
-            left: 'center'
+            orient: 'vertical',
+            left: 'left'
         },
         series: [
             {
-                name: '技术支持',
+                name: 'Technology',
                 type: 'pie',
                 radius: ['40%', '70%'],
                 avoidLabelOverlap: false,
@@ -86,4 +116,4 @@ setTimeout(() => {
             }
         ]
     }
-}, 3000)
+}, 1000)

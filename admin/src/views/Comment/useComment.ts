@@ -1,16 +1,17 @@
 import {reactive, ref, computed, Ref, onMounted} from 'vue'
 import {getCommentList, deleteComments, readComments} from '../../api/api'
-import {errorNotify, warningNotify, mapCommentList, successNotify} from '../../utils/util'
+import {successNotify, infoNotify, errorNotify, warningNotify, mapCommentList} from '../../utils/util'
 import {useStore} from 'vuex'
 import {ColumnProps} from 'ant-design-vue/es/table/interface'
 import {M_SET_UNREAD} from '../../store/mutation-types'
 import {
     CommentItem,
     PageQueryParams,
-    Pagination,
-    ResponseData,
-    CommentListRes
+    Pagination
 } from '../../types'
+
+// ResponseData,
+// CommentListRes
 
 type Key = ColumnProps['key']
 
@@ -25,7 +26,7 @@ const columns = [
         dataIndex: 'title'
     },
     {
-        title: 'Comment',
+        title: 'Comment Content',
         dataIndex: 'content',
         width: '30%'
     },
@@ -38,14 +39,9 @@ const columns = [
         dataIndex: 'to'
     },
     {
-        title: 'Create Time',
+        title: 'Comment Time',
         dataIndex: 'createTime',
         slots: {customRender: 'createTime'}
-    },
-    {
-        title: 'IsRead',
-        dataIndex: 'isRead',
-        slots: {customRender: 'isRead'}
     },
     {
         title: 'Action',
@@ -81,7 +77,10 @@ export default function useComment() {
 
         const item = commentList.value.find(item => item.id === diffKey) as CommentItem
 
-        if (item.isRead === 1) return
+        if (item.isRead === 1) {
+            infoNotify('This comment is not for you or has been read!')
+            return
+        }
         selectedRowKeys.value = selectedKeys
     }
 
@@ -207,9 +206,13 @@ export default function useComment() {
         return {
             onClick: () => {
                 const {id, isRead} = record
+                // 已读则忽略
+                if (isRead === 1) {
+                    infoNotify('This comment is not for you or has been read!')
+                    return
+                }
                 const index = selectedRowKeys.value.findIndex(item => item === id)
-                if (isRead === 1) return // 已读则忽略
-                // console.log(index)
+
                 if (index > -1) {
                     selectedRowKeys.value.splice(index, 1)
                 } else {
