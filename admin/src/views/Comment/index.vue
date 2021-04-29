@@ -3,23 +3,20 @@
     <h3 class="primary-title flex-between">
       Comment Management
 
-      <span class="link-txt d-flex" :disabled="!canBeRead" @click="handleRead">
+      <span class="link-txt d-flex" :disabled="!canBeRead">
         <i class="iconfont icon-update"/>
-        <span>标记为已读</span>
+        <span @click="handleRead">标记为已读</span>
       </span>
     </h3>
 
-    <!--    <div class="mb-1 read-txt">-->
-    <!--    </div>-->
-
     <a-table
-        :loading="loading"
-        :columns="columns"
-        :row-key="item => item.id"
-        :pagination="pagination"
-        :data-source="commentList"
-        :row-selection="rowSelection"
-        @change="handlePageChange"
+      :loading="loading"
+      :columns="columns"
+      :row-key="item => item.id"
+      :pagination="pagination"
+      :data-source="commentList"
+      :row-selection="rowSelection"
+      @change="handlePageChange"
     >
       <!--:row-selection="{selectedRowKeys, onChange: onSelectChange}"-->
       <template #id="{ record, index }">
@@ -32,7 +29,7 @@
 
       <template #action="{ record }">
         <span class="action">
-          <i class="iconfont icon-reply" @click.stop="handleOpenReply(record)"/>
+          <i class="iconfont icon-reply" @click.stop="openReply(record)"/>
 
           <pop-confirm
             @click.stop
@@ -46,11 +43,25 @@
     </a-table>
 
     <a-modal
-      title="Reply"
       v-model:visible="replyVisible"
+      class="reply-modal"
       centered
+      @ok="reply"
+      @cancel="showReplyModal(false)"
     >
+      <div class="modal-avatar">
+        <img src="../../assets/images/avatar.png" alt="avatar">
 
+        <span class="mentions-txt info">回复：{{ replyTargetInfo.fromName }}</span>
+      </div>
+
+      <div class="reply-content">
+        <a-textarea
+          placeholder="评论回复..."
+          v-model:value="replyContent"
+          :autoSize="{ minRows: 8, maxRows: 8 }"
+        />
+      </div>
     </a-modal>
 
 
@@ -59,7 +70,7 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {Table, Popconfirm, Tag, Badge, Modal} from 'ant-design-vue'
+import {Table, Popconfirm, Tag, Badge, Modal, Input} from 'ant-design-vue'
 import useComment from './useComment'
 
 export default defineComponent({
@@ -69,7 +80,9 @@ export default defineComponent({
     'a-tag': Tag,
     'a-badge': Badge,
     'pop-confirm': Popconfirm,
-    'a-modal': Modal
+    'a-modal': Modal,
+    'a-input': Input,
+    'a-textarea': Input.TextArea
   },
   setup() {
     return {
@@ -81,11 +94,9 @@ export default defineComponent({
 
 <style lang="scss">
 .comment {
-  //.read-txt {
-  //  padding: 16px 0;
-  //  font-weight: 500;
-  //  font-size: 18px;
-  //}
+  .ant-badge {
+    padding: 0 10px;
+  }
   .link-txt {
     padding: 10px;
     font-weight: 500;
@@ -94,6 +105,33 @@ export default defineComponent({
     .iconfont {
       font-size: 14px;
       margin: 3px 5px 0 0;
+    }
+  }
+}
+.reply-modal {
+  .ant-modal-content {
+    border-radius: 0 20px 20px;
+  }
+  .ant-modal-body {
+    position: relative;
+    .modal-avatar {
+      position: absolute;
+      left: 0;
+      top: -50px;
+      img {
+        border-radius: 50%;
+        width: 100px;
+      }
+      .mentions-txt {
+        position: absolute;
+        left: 100px;
+        bottom: 10px;
+        white-space: nowrap;
+      }
+    }
+
+    .reply-content {
+      margin-top: 50px;
     }
   }
 }

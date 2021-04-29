@@ -45,6 +45,7 @@ export default defineConfig({
             ['/@/', 'src'],
             ['/@assets/', 'src/assets'],
             ['/@comp/', 'src/components'],
+            ['/@api/', 'src/api']
         ]),
     },
     optimizeDeps: {

@@ -2,16 +2,15 @@
   <div class="overview flex-col-start">
     <h3 class="primary-title">Overview</h3>
 
-    <div class="chart-container flex-between">
-      <div class="chart-item">
-        <v-chart :options="pieOption"/>
-      </div>
-      <div class="chart-item">
-        <v-chart :options="lineOption"/>
-      </div>
-    </div>
-
     <div class="card-container flex-between">
+      <div class="card">
+        <h4 class="card-header">ARTICLE TAG</h4>
+
+        <div class="card-content">
+          <v-chart :options="pieOption"/>
+        </div>
+      </div>
+
       <div class="card">
         <h4 class="card-header">ARTICLE</h4>
 
@@ -37,6 +36,14 @@
           <p class="card-tip">
             未读评论：【<span class="error">{{ unread }}</span>】 来自陌生人的问候！
           </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h4 class="card-header">MESSAGES</h4>
+
+        <div class="card-content">
+
         </div>
       </div>
     </div>
@@ -74,30 +81,19 @@ export default defineComponent({
   width: 100%;
 
   .card-container {
-    height: 400px;
+    height: calc(100% - 70px);
     width: 100%;
-  }
-  .chart-container {
-    height: calc(100% - 450px);
-    width: 100%;
-  }
-  .card,
-  .chart-item {
-    border-radius: 5px;
-    height: 90%;
-    width: 48%;
-    transition: all .3s ease;
-    box-shadow: 0 0 10px var(--box-shadow);
-    //border: 1px solid var(--primary);
-    //border-color: transparent;
-    //&:hover {
-    //  transform: translateY(-5px);
-    //}
+    flex-wrap: wrap;
   }
 
   .card {
     padding: 20px;
-    height: 100%;
+    height: 48%;
+    width: 48%;
+    transition: all .3s ease;
+    box-shadow: 0 0 10px var(--box-shadow);
+    border-radius: 5px;
+    overflow: hidden;
     .card-header {
       color: var(--primary);
       font-size: 20px;
@@ -127,10 +123,6 @@ export default defineComponent({
         color: var(--tipColor);
       }
     }
-  }
-
-  .chart-item {
-
   }
 }
 </style>

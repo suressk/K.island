@@ -1,6 +1,6 @@
 import {reactive, ref, computed, Ref, onMounted} from 'vue'
-import {getCommentList, deleteComments, readComments} from '../../api/api'
-import {successNotify, infoNotify, errorNotify, warningNotify, mapCommentList} from '../../utils/util'
+import {getCommentList, deleteComments, readComments, replyComment} from '../../api/api'
+import {successNotify, errorNotify, warningNotify, mapCommentList} from '../../utils/util'
 import {useStore} from 'vuex'
 import {ColumnProps} from 'ant-design-vue/es/table/interface'
 import {M_SET_UNREAD} from '../../store/mutation-types'
@@ -68,6 +68,9 @@ export default function useComment() {
     const selectedRowKeys = ref<Key[]>([])
     const canBeRead = computed(() => (selectedRowKeys.value.length > 0))
     const replyVisible = ref<boolean>(false)
+
+    const replyTargetInfo = ref({})
+    const replyContent = ref<string>('')
 
     const store = useStore()
 
@@ -195,9 +198,72 @@ export default function useComment() {
     }
 
     // TODO ====> Reply comment
-    function handleOpenReply(info: CommentItem) {
-        console.log(info)
-        replyVisible.value = true
+    const showReplyModal = (show: boolean) => {
+        replyVisible.value = show
+        !show && !replyContent.value.trim() && (replyContent.value = '')
+    }
+
+    // 回复评论
+    const reply = () => {
+        const {
+            id,
+            topicId,
+            parentId,
+            fromName,
+            fromEmail,
+            isRead,
+            title,
+            recordId
+        } = replyTargetInfo.value as CommentItem
+
+        replyComment({
+            id,
+            topicId,
+            isRead,
+            articleId: recordId,
+            parentId: parentId !== null ? parentId : id,
+            toName: fromName,
+            toEmail: fromEmail,
+            comment: replyContent.value.trim(),
+            articleTitle: title
+        }).then((res: any) => {
+            if (!res.success) {
+                warningNotify(res.message)
+                return
+            }
+            showReplyModal(false)
+            successNotify(res.message)
+            getComments({
+                pageNo: pagination.current,
+                pageSize: pagination.pageSize
+            })
+        }).catch(err => {
+            errorNotify(err.message)
+        })
+    }
+
+    /** info:
+        content: "回复自己功能测试"
+        createTime: "2021-04-25 14:08"
+        ctime: 1619330915853
+        from: "小K.\r\n【sure_k@qq.com】"
+        fromEmail: "sure_k@qq.com"
+        fromName: "小K."
+        id: 9
+        isRead: 0
+        parentId: 2
+        articleId: 1008
+        articleUid: 'xx'
+        title: "Markdown语法示例"
+        to: "小K.\r\n【sure_k@qq.com】"
+        toEmail: "sure_k@qq.com"
+        toName: "小K."
+        topicId: "160239d9-151e-4be9-8d53-b7235f90b367"
+        uid: "d70b6fa0-097d-4cbf-9dcb-4b605d0caefb"
+    * */
+    function openReply(info: CommentItem) {
+        replyTargetInfo.value = info
+        showReplyModal(true)
     }
     // TODO ====> Reply comment
 
@@ -238,9 +304,13 @@ export default function useComment() {
         replyVisible,
         selectedRowKeys,
         rowSelection,
+        replyTargetInfo,
+        replyContent,
         handlePageChange,
         handleDeleteComments,
-        handleOpenReply,
+        openReply,
+        reply,
+        showReplyModal,
         handleRead
     }
 }

@@ -34,7 +34,7 @@ export function getAllComments(options: PageQueryParams) {
     const {pageNo, pageSize} = options
     const params = [(pageNo - 1) * pageSize, pageSize] // 分页参数
     const listStr = `
-        SELECT c.id, c.uid, c.content, c.record_id as recordId, c.topic_id as topicId, c.parent_id as parentId,
+        SELECT c.id, c.uid, c.content, c.record_id as articleId, c.uid as articleUid, c.topic_id as topicId, c.parent_id as parentId,
         c.from_name as fromName, c.from_email as fromEmail, c.to_name as toName, c.to_email as toEmail,
         c.is_read as isRead, c.ctime, r.title FROM tbl_comments as c
         LEFT JOIN tbl_records as r ON r.id = c.record_id ORDER BY  isRead, ctime DESC LIMIT ?, ?;

@@ -21,7 +21,7 @@
             <span v-show="!isEmail" class="warning-tip">邮箱格式好像不太对呢 ~</span>
           </label>
           <button class="subscription-btn btn btn-primary" @click="handleSubscribe">
-            Subscribe
+            SUBSCRIBE
             <span class="empty-tip" :class="{ show: emptyEmail }">邮箱为空哦~，是不是忘记填啦？</span>
           </button>
         </div>

@@ -133,6 +133,18 @@ export type DeleteCommentsParams = {
     parentId: number | null
 }
 
+export type ReplyCommentParams = {
+    id: number
+    parentId: number
+    topicId: string
+    toName: string
+    toEmail: string
+    isRead: number
+    comment: string
+    articleId: number
+    articleTitle: string
+}
+
 export type ReadCommentsParams = IdsListParam
 
 export type DeleteMessagesParams = IdsListParam

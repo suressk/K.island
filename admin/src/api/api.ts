@@ -14,6 +14,7 @@ import {
   UpdateArticleParams,
   PageQueryParams,
   DeleteRecordParams,
+  ReplyCommentParams,
   DeleteCommentsParams,
   DeleteMessagesParams,
   ReadCommentsParams
@@ -47,5 +48,6 @@ export const deleteMessages = (data: DeleteMessagesParams) => deleteAction('/mes
 
 // 评论信息
 export const getCommentList = (params: PageQueryParams) => getAction('/comments/list', params)
+export const replyComment = (data: ReplyCommentParams) => postAction('/comments/reply', data)
 export const deleteComments = (data: DeleteCommentsParams) => deleteAction('/comments/delete', data)
 export const readComments = (data: ReadCommentsParams) => putAction('/comments/read', data)

@@ -98,8 +98,24 @@
       margin: 10px;
       cursor: pointer;
       transition: all .3s ease-in-out;
+      position: relative;
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -5px;
+        height: 3px;
+        transition: all .3s ease;
+        background-color: var(--tipColor);
+        width: 100%;
+        transform-origin: center;
+        transform: scaleX(0);
+      }
       &:hover {
          color: var(--ink);
+      }
+      &:hover::after {
+        transform: scaleX(1);
       }
     }
     .tip {
