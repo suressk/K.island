@@ -104,7 +104,7 @@ function getIdsStr(ids: number[]) {
  * 1. => 已读状态
  * TODO 2. 更新评论内容（弃）
  * */
-export function updateComment(options: IdList) {
+export function readComments (options: IdList) {
     const str = getIdsStr(options.ids)
     const sqlStr = 'UPDATE `tbl_comments` SET is_read = 1 WHERE id IN (' + str + ');'
     return new Promise((resolve, reject) => {

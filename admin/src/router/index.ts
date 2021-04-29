@@ -37,6 +37,13 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: () => import('../views/Message/index.vue')
         }, {
+            path: 'subscribes',
+            name: 'subscribes',
+            meta: {
+                title: 'Subscribes'
+            },
+            component: () => import('../views/Subscribe/index.vue')
+        }, {
             path: 'comments',
             name: 'comments',
             meta: {

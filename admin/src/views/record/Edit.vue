@@ -1,6 +1,9 @@
 <template>
   <div class="edit-record scroller-light">
-    <h3 class="primary-title">字里行间，发现创作的乐趣</h3>
+    <h3 class="primary-title">
+      <i class="iconfont icon-flashing" />
+      字里行间，发现创作的乐趣
+    </h3>
 
     <div class="form-container">
       <a-form

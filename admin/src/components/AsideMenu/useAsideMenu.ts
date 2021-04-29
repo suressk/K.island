@@ -4,15 +4,13 @@ import {Confirm, deleteCookie, removeStorageItem} from '../../utils/util'
 import {ACCESS_TOKEN, UNREAD} from '../../store/mutation-types'
 import {QuestionCircleOutlined} from '@ant-design/icons-vue'
 import store from '../../store'
-// import {mapState} from 'vuex'
 
 const menuList = [
     {label: 'Overview', path: '/overview', icon: 'icon-overview'},
     {label: 'Edit Record', path: '/edit', icon: 'icon-edit'},
     {label: 'Record List', path: '/list', icon: 'icon-send'},
-    {label: 'Message', path: '/messages', icon: 'icon-twitter'}
-    // {label: 'Comment', path: '/comments', icon: 'icon-management'},
-    // {label: 'Setting', path: '/setting', icon: 'icon-setting'}
+    {label: 'Message', path: '/messages', icon: 'icon-twitter'},
+    {label: 'Subscribe', path: '/subscribes', icon: 'icon-subscribe'}
 ]
 
 export default function useAsideMenu() {

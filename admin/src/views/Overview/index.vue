@@ -1,6 +1,9 @@
 <template>
   <div class="overview flex-col-start">
-    <h3 class="primary-title">Overview</h3>
+    <h3 class="primary-title">
+      <i class="iconfont icon-flashing" />
+      Overview
+    </h3>
 
     <div class="card-container flex-between">
       <div class="card">

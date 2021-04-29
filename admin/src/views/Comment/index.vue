@@ -1,7 +1,10 @@
 <template>
   <section class="comment">
     <h3 class="primary-title flex-between">
-      Comment Management
+      <span>
+        <i class="iconfont icon-flashing" />
+        Comment Management
+      </span>
 
       <span class="link-txt d-flex" :disabled="!canBeRead">
         <i class="iconfont icon-update"/>

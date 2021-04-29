@@ -1,7 +1,12 @@
 <template>
-  <section class="setting scroller">
+  <section class="setting">
 
-    <h3 class="primary-title mb-1">Settings</h3>
+    <h3 class="primary-title mb-1">
+      <i class="iconfont icon-flashing" />
+      Settings
+    </h3>
+
+
   </section>
 </template>
 

@@ -302,6 +302,9 @@
 .iconfont {
   cursor: pointer;
   transition: all .3s;
+  &.icon-flashing {
+    cursor: default;
+  }
 }
 
 a, .link, .link-txt {
@@ -331,6 +334,7 @@ h3.primary-title {
   height: 40px;
   width: 100%;
   margin-bottom: 30px;
+  user-select: none;
   //background-color: var(--opacity-cyan-3);
   //border-radius: 0 5px 5px 0;
   //box-shadow: 0 0 10px var(--opacity-cyan-3);

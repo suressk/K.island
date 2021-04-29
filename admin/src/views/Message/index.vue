@@ -1,6 +1,9 @@
 <template>
   <section class="message-board scroller">
-    <h3 class="primary-title mb-1">Message Management</h3>
+    <h3 class="primary-title mb-1">
+      <i class="iconfont icon-flashing" />
+      Message Management
+    </h3>
 
     <div class="mb-1" style="text-align: right;">
       <button

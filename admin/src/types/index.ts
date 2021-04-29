@@ -113,7 +113,8 @@ export interface CommentItem {
     uid: string
     parentId: null | number
     topicId: string
-    recordId: number
+    articleId: number
+    articleUid: string
     title: string
     fromName: string
     fromEmail: string
@@ -142,6 +143,7 @@ export type ReplyCommentParams = {
     isRead: number
     comment: string
     articleId: number
+    articleUid: string
     articleTitle: string
 }
 

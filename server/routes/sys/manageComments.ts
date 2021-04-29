@@ -3,7 +3,7 @@ import {SendEmailType} from '../../common/subscribeTypes'
 import {authEmail, authorMailInfo, origin} from '../../common/definition'
 import sendMail from '../../utils/sendMail'
 import {writeHead, writeResult} from '../../utils/writeResponse'
-import {getAllComments, deleteComments, updateComment, addComment} from '../../services/commentService'
+import {getAllComments, deleteComments, readComments, addComment} from '../../services/commentService'
 
 const router = express.Router()
 
@@ -34,7 +34,7 @@ router.put('/read', (req, res) => {
         writeResult(res, false, "The parameter of 'ids' is a empty Array")
         return
     }
-    updateComment({ids})
+    readComments({ids})
         .then(() => {
             writeHead(res, 200)
             writeResult(res, true, 'Successfully read these comment')
@@ -49,7 +49,6 @@ router.put('/read', (req, res) => {
  * 回复评论
  * */
 router.post('/reply', (req, res) => {
-
     try {
         const {
             toName,
@@ -59,10 +58,12 @@ router.post('/reply', (req, res) => {
             comment,
             articleId,
             articleUid,
-            articleTitle
+            articleTitle,
+            id,
+            isRead
         } = req.body
-
-        addComment({
+        
+        const replyPro = addComment({
             fromName: authorMailInfo.name,
             fromEmail: authorMailInfo.user,
             toName,
@@ -71,7 +72,9 @@ router.post('/reply', (req, res) => {
             parentId,
             comment,
             articleId
-        }).then(() => {
+        })
+
+        replyPro.then(() => {
             // 自己回复自己的（也存在这情况），不发送回复信息邮件
             if (!toEmail || toEmail === authEmail.qq || toEmail === authEmail.outlook) {
                 writeHead(res, 200)
@@ -86,23 +89,39 @@ router.post('/reply', (req, res) => {
                 url: `${origin}/article/${articleUid}_${articleId}`
             }
 
-            sendMail(SendEmailType.ADD_COMMENT, info, authorMailInfo)
-                .then(() => {
+            const mailPro = sendMail(SendEmailType.ADD_COMMENT, info, authorMailInfo)
+
+            if (isRead === 1) {
+                mailPro.then(() => {
                     writeHead(res, 200)
-                    writeResult(res, true, 'Successfully replied the comment and sent the notify email')
+                    writeResult(res, true, 'Successfully replied to the comment and sent the notify email')
+                }).catch(error => {
+                    writeHead(res, 200)
+                    writeResult(res, false, 'Successfully replied to the comment, but failed to send the notify email', error)
+                })
+                return
+            }
+
+            // update the unread comment
+            const readPro = readComments({ids: [id]})
+
+            Promise.all([mailPro, readPro])
+                .then(([mailRes, readRes]) => {
+                    writeHead(res, 200)
+                    writeResult(res, true, 'Successfully replied to the comment and sent the notify email')
                 })
                 .catch(error => {
                     writeHead(res, 200)
-                    writeResult(res, true, 'Successfully replied the comment, but failed to send the notify email', error)
+                    writeResult(res, false, 'Successfully replied to the comment, but...', error)
                 })
         })
         .catch(err => {
             writeHead(res, 500)
-            writeResult(res, false, 'Something wrong with posting a comment', err)
+            writeResult(res, false, 'Something wrong with replying to a comment', err)
         })
     } catch (error) {
         writeHead(res, 500)
-        writeResult(res, false, 'Failed to reply', error)
+        writeResult(res, false, 'Failed to reply to the comment', error)
     }
 })
 

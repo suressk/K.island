@@ -213,14 +213,16 @@ export default function useComment() {
             fromEmail,
             isRead,
             title,
-            recordId
+            articleId,
+            articleUid
         } = replyTargetInfo.value as CommentItem
 
         replyComment({
             id,
             topicId,
             isRead,
-            articleId: recordId,
+            articleId,
+            articleUid,
             parentId: parentId !== null ? parentId : id,
             toName: fromName,
             toEmail: fromEmail,

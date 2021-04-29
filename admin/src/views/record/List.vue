@@ -1,6 +1,9 @@
 <template>
   <section class="record-list scroller">
-    <h3 class="primary-title">Record List</h3>
+    <h3 class="primary-title">
+      <i class="iconfont icon-flashing" />
+      Record List
+    </h3>
 
     <div class="filter-wrapper d-flex">
       <div class="filter-item d-flex">
