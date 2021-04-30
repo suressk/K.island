@@ -142,7 +142,8 @@ export default function useList() {
 
         getRecords({
             pageNo: current,
-            pageSize
+            pageSize,
+            title: articleTitle.value
         })
     }
 

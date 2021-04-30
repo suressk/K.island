@@ -17,7 +17,9 @@ import {
   ReplyCommentParams,
   DeleteCommentsParams,
   DeleteMessagesParams,
-  ReadCommentsParams
+  ReadCommentsParams,
+  QuerySubscribeParams,
+  DeleteSubscribeParams
 } from '../types'
 
 // 登录
@@ -51,3 +53,7 @@ export const getCommentList = (params: PageQueryParams) => getAction('/comments/
 export const replyComment = (data: ReplyCommentParams) => postAction('/comments/reply', data)
 export const deleteComments = (data: DeleteCommentsParams) => deleteAction('/comments/delete', data)
 export const readComments = (data: ReadCommentsParams) => putAction('/comments/read', data)
+
+// 订阅信息
+export const getSubscribeList = (params: QuerySubscribeParams) => getAction('/subscribes/list', params)
+export const deleteSubscribes = (params: DeleteSubscribeParams) => deleteAction('/subscribes/delete', params)

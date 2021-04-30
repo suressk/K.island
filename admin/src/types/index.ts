@@ -27,6 +27,10 @@ export interface ListRes<T> {
     total: number
 }
 
+type IdsListParam = {
+    ids: number[]
+}
+
 export interface CommentListRes extends ListRes<CommentItem[]> {
     unread: number
 }
@@ -125,10 +129,21 @@ export interface CommentItem {
     isRead: number
 }
 
-type IdsListParam = {
-    ids: number[]
+/**
+ * subscribe board type
+ * */
+export type SubscribeItem = {
+    id: number
+    uid: string
+    email: string
+    name: string
+    ctime: number
 }
 
+
+/**
+ * request params type
+ * */
 export type DeleteCommentsParams = {
     id: number
     parentId: number | null
@@ -151,9 +166,6 @@ export type ReadCommentsParams = IdsListParam
 
 export type DeleteMessagesParams = IdsListParam
 
-/**
- * request params type
- * */
 export interface PageQueryParams {
     pageNo: number
     pageSize: number
@@ -189,3 +201,9 @@ export interface UpdateArticleParams extends ArticleInfo {
     id: number
     uid: string
 }
+
+export interface QuerySubscribeParams extends PageQueryParams {
+    email?: string
+}
+
+export type DeleteSubscribeParams = IdsListParam

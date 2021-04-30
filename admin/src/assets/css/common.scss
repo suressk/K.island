@@ -393,9 +393,18 @@ div.ant-notification-notice {
   }
 }
 
-button.ant-btn {
+button.ant-btn,
+span.ant-input-affix-wrapper {
   border-radius: 5px;
 }
+
+.filter-wrapper {
+  margin: 20px 0;
+  .filter-item:not(:last-child) {
+    margin-right: 30px;
+  }
+}
+
 
 
 .mt-1 {

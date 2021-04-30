@@ -53,7 +53,7 @@ export function getAllComments(options: PageQueryParams) {
                 resolve({
                     list: listRes,
                     /* @ts-ignore */
-                    total: totalRes.length ? totalRes[0].total : 0,
+                    total: totalRes.length ? totalRes[0].total : (list.length || 0),
                     /* @ts-ignore */
                     unread: unreadRes.length ? unreadRes[0].total : 0
                 })

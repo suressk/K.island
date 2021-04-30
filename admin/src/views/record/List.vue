@@ -29,7 +29,7 @@
       class="record-table"
       :loading="loading"
       :columns="columns"
-      :row-key="item  => item.id"
+      :row-key="item => item.id"
       :pagination="pagination"
       :data-source="articleList"
       @change="handlePageChange"
@@ -105,12 +105,6 @@ export default defineComponent({
 .record-list {
   overflow: auto;
   height: 100%;
-  .filter-wrapper {
-    margin: 20px 0;
-    .filter-item:not(:last-child) {
-      margin-right: 30px;
-    }
-  }
   .record-table {
     img {
       max-height: 50px;

@@ -1,7 +1,7 @@
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
-import styleImport from 'vite-plugin-style-import'
 import {resolve} from 'path'
+import styleImport from 'vite-plugin-style-import'
 import type {Alias} from 'vite'
 import viteSvgIcons from 'vite-plugin-svg-icons'
 // import type { UserConfig, ConfigEnv } from 'vite'
@@ -56,11 +56,14 @@ export default defineConfig({
     }
 })
 
-// export default ({ command, mode }: ConfigEnv): UserConfig => {
-//     const root = process.cwd()
+// export default (): UserConfigExport => {
 //
 //     return {
-//         root,
+//         css: {
+//              preprocessorOptions: {
+//                  sass:  { javascriptEnabled: true }
+//              }
+//         },
 //         resolve: {
 //             alias: createAlias([
 //                 ['/@/', 'src'],
@@ -80,7 +83,15 @@ export default defineConfig({
 //                         }
 //                     }
 //                 ]
-//             })
+//             }),
+//             {
+//                 optimizeDeps: {
+//                     include: [
+//                         '@kangc/v-md-editor/lib/theme/github.js',
+//                         '@kangc/v-md-editor/lib/theme/vuepress.js'
+//                     ]
+//                 }
+//             }
 //         ]
 //     }
 // }

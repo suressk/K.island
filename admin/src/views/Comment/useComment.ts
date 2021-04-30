@@ -2,13 +2,13 @@ import {reactive, ref, computed, Ref, onMounted} from 'vue'
 import {getCommentList, deleteComments, readComments, replyComment} from '../../api/api'
 import {successNotify, errorNotify, warningNotify, mapCommentList} from '../../utils/util'
 import {useStore} from 'vuex'
-import {ColumnProps} from 'ant-design-vue/es/table/interface'
 import {M_SET_UNREAD} from '../../store/mutation-types'
 import {
     CommentItem,
     PageQueryParams,
     Pagination
 } from '../../types'
+import {ColumnProps} from 'ant-design-vue/es/table/interface'
 
 // ResponseData,
 // CommentListRes
@@ -129,8 +129,7 @@ export default function useComment() {
             selectedRowKeys.value = [...selectedKeys]
         },
         getCheckboxProps: (record: CommentItem) => ({
-            disabled: record.isRead === 1, // Column configuration not to be checked
-            title: record.title
+            disabled: record.isRead === 1 // Column configuration not to be checked
         })
     }
 

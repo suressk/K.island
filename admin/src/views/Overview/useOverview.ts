@@ -1,4 +1,4 @@
-import {ref, reactive, toRefs, onMounted} from 'vue'
+import {ref, reactive, toRefs, Ref, onMounted} from 'vue'
 import {useStore} from 'vuex'
 import {getOverviewData} from '../../api/api'
 import {errorNotify, warningNotify} from '../../utils/util'
@@ -66,7 +66,7 @@ export default function useOverview() {
 
     const store = useStore()
 
-    const pieOption = ref<EChartsOption>({})
+    const pieOption: Ref<EChartsOption> = ref({})
     const articleInfo = reactive({
         total: 0,
         ctime: 0

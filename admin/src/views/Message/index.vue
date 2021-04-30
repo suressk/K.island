@@ -6,13 +6,12 @@
     </h3>
 
     <div class="mb-1" style="text-align: right;">
-      <button
-        class="btn btn-danger"
+      <a-button
         :disabled="!canDelete"
         @click="handleDeleteMsg(null)"
       >
         Multiple Delete
-      </button>
+      </a-button>
     </div>
 
     <a-table
@@ -42,7 +41,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Table, Popconfirm, Tag } from 'ant-design-vue'
+import { Table, Popconfirm, Tag, Button } from 'ant-design-vue'
 import useMessage from './useMessage'
 
 export default defineComponent({
@@ -50,6 +49,7 @@ export default defineComponent({
   components: {
     'a-table': Table,
     'a-tag': Tag,
+    'a-button': Button,
     'pop-confirm': Popconfirm
   },
   setup() {

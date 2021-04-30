@@ -1,8 +1,9 @@
-import {reactive, ref, Ref, onMounted, unref, computed} from 'vue'
-import {MsgListItem, Pagination, PageQueryParams, ResponseData} from '../../types'
+import {reactive, ref, Ref, onMounted, computed} from 'vue'
+import {MsgListItem, Pagination, PageQueryParams} from '../../types'
 import {deleteMessages, getMessageList} from '../../api/api'
 import {errorNotify, warningNotify, mapFormatCtimeList, successNotify} from '../../utils/util'
-import { ColumnProps } from 'ant-design-vue/es/table/interface'
+import {ColumnProps} from 'ant-design-vue/es/table/interface'
+
 type Key = ColumnProps['key']
 
 const columns = [
@@ -32,21 +33,6 @@ const columns = [
     }
 ]
 
-// const list = [
-//     {
-//         id: 1001,
-//         name: 'ssk',
-//         content: '希望世界美好如初',
-//         ctime: Date.now()
-//     },
-//     {
-//         id: 1002,
-//         name: 'sure',
-//         content: `Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! Hope that all the good things will come soon! `,
-//         ctime: Date.now()
-//     }
-// ]
-
 /**
  * 留言信息管理
  * */
@@ -65,7 +51,7 @@ export default function useMessage() {
     const msgList: Ref<MsgListItem[]> = ref([])
     const canDelete = computed<boolean>(() => selectedRowKeys.value.length > 0)
 
-    const selectedRowKeys = ref<Key[]>([]) // 行选中的 key
+    const selectedRowKeys = ref<Key[]>([])
 
     function onSelectChange(selectedKeys: Key[]) {
         selectedRowKeys.value = selectedKeys
@@ -95,11 +81,11 @@ export default function useMessage() {
         const ids: Key[] = []
         if (info === null) {
             ids.push(...selectedRowKeys.value)
-        } else  {
+        } else {
             ids.push(info.id)
         }
         // @ts-ignore
-        deleteMessages({ ids })
+        deleteMessages({ids})
             .then((res: any) => {
                 if (!res.success) {
                     warningNotify(res.message)
@@ -136,10 +122,10 @@ export default function useMessage() {
                 loading.value = false
             })
             .catch(err => {
-                loading.value = false
-                errorNotify(err.message)
-            }
-        )
+                    loading.value = false
+                    errorNotify(err.message)
+                }
+            )
     }
 
     return {

@@ -62,9 +62,9 @@ export function Confirm(options: ConfirmOptions) {
         content: options.content,
         onOk: options.onOk,
         onCancel: options.onCancel,
-        title: options.title,
-        okText: options.okText,
-        cancelText: options.cancelText,
+        title: options.title || 'Confirm',
+        okText: options.okText || 'Confirm',
+        cancelText: options.cancelText || 'Cancel',
         maskClosable: false
     })
 }

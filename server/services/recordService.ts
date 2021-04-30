@@ -90,8 +90,8 @@ export async function queryRecordList(options: GetRecordListParams) {
 
         return {
             list: mapCreateTime(list as any[]),
-            // @ts-ignore
-            total: totalRes.length ? totalRes[0].total : 0
+            /* @ts-ignore */
+            total: totalRes.length ? totalRes[0].total : (list.length || 0)
         }
     } catch (err) {
         return err

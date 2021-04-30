@@ -3,10 +3,10 @@
  * */
 
 // 删除订阅信息参数
-export interface DeleteSubscribeParams {
-    id: number
-    email: string
-}
+// export interface DeleteSubscribeParams {
+//     id: number
+//     email: string
+// }
 
 // 生成邮件信息类型
 export interface CreateSubscribeEmailInfo {

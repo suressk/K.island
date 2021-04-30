@@ -14,9 +14,13 @@ export async function getMessageList(options: QueryMessageParams) {
 
     try {
         const [list] = await promisePoolQuery(listSqlStr, listParams)
-        const [total] = await promisePoolQuery(totalSqlStr, [])
-        // @ts-ignore
-        return { list, total: total[0].total || 0 }
+        const [totalRes] = await promisePoolQuery(totalSqlStr, [])
+
+        return {
+            list,
+            /* @ts-ignore */
+            total: totalRes.length ? totalRes[0].total : (list.length || 0)
+        }
     } catch (err) {
         return err
     }

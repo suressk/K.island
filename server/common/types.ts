@@ -40,11 +40,12 @@ export {
 /* subscribe service */
 export {
     SendEmailType,
-    DeleteSubscribeParams,
     VerifyCodeParams,
     CreateSubscribeEmailInfo,
     AuthSubscribeInfo
 } from './subscribeTypes'
+
+export type DeleteSubscribeParams = IdList
 
 // 查询订阅列表参数
 // TODO 新增 email 字段作为模糊查询条件，免去多页翻页查找要移除订阅的 email

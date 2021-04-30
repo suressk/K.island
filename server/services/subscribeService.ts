@@ -1,6 +1,6 @@
 import {poolQuery, promisePoolQuery} from '../db/DBUtil'
 import {getTableDeleteSqlStr} from '../utils/util'
-import {DeleteSubscribeParams, GetSubscribeListParams, VerifyCodeParams} from '../common/types'
+import {GetSubscribeListParams, VerifyCodeParams, DeleteSubscribeParams} from '../common/types'
 import {v4 as uuid} from 'uuid'
 
 interface QuerySubscribeOptions {
@@ -22,15 +22,18 @@ interface AddVerifyInfo extends VerifyInfo {
  * 分页查询订阅列表
  * */
 export async function querySubscribeList(options: GetSubscribeListParams) {
-    const listStr = 'SELECT id, uid, name, email, name, ctime from `tbl_subscribe` ORDER BY ctime DESC LIMIT ?, ?;'
-    const totalStr = 'SELECT COUNT(id) as total from `tbl_subscribe`;'
-    const {pageNo, pageSize} = options
-    const listParams = [(pageNo - 1) * pageSize, pageSize]
+    const listStr = 'SELECT id, uid, name, email, name, ctime from `tbl_subscribe` WHERE email LIKE ? ORDER BY ctime DESC LIMIT ?, ?;'
+    const totalStr = 'SELECT COUNT(id) as total from `tbl_subscribe` WHERE email LIKE ?;'
+    const {pageNo, pageSize, email} = options
+    const listParams = [email, (pageNo - 1) * pageSize, pageSize]
     try {
         const [list] = await promisePoolQuery(listStr, listParams)
-        const [totalRes] = await promisePoolQuery(totalStr, [])
-        // @ts-ignore
-        return {list, total: (totalRes.length ? totalRes[0].total : 0)}
+        const [totalRes] = await promisePoolQuery(totalStr, [email])
+        return {
+            list,
+            /* @ts-ignore */
+            total: totalRes.length ? totalRes[0].total : (list.length || 0)
+        }
     } catch (err) {
         return err
     }
@@ -247,11 +250,28 @@ export function addSubscribeInfo(options: QuerySubscribeOptions) {
 /**
  * 删除订阅信息
  * */
-export function deleteSubscribe(options: DeleteSubscribeParams) {
-    const sqlStr = 'DELETE FROM `tbl_subscribe` WHERE id = ? AND email = ?;'
-    const {id, email} = options
+// 单条删除
+// export function deleteSubscribe(options: DeleteSubscribeParams) {
+//     const sqlStr = 'DELETE FROM `tbl_subscribe` WHERE id = ? AND email = ?;'
+//     const {id, email} = options
+//     return new Promise((resolve, reject) => {
+//         poolQuery(sqlStr, [id, email])
+//             .then(result => {
+//                 resolve(result)
+//             })
+//             .catch(err => {
+//                 reject(err)
+//             })
+//     })
+// }
+
+// 多条删除
+export function deleteSubscribes (options: DeleteSubscribeParams) {
+    const {ids} = options
+    const sqlStr = getTableDeleteSqlStr(ids, '`tbl_subscribe`', 'id')
+
     return new Promise((resolve, reject) => {
-        poolQuery(sqlStr, [id, email])
+        poolQuery(sqlStr, ids)
             .then(result => {
                 resolve(result)
             })
