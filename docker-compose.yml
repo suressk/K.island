@@ -1,0 +1,40 @@
+version: "1.0"
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf
+      - ./config:/etc/other
+    links:
+      - server
+      - web
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - ~/suressk/db:/suressk/db
+  server:
+    build: ./server
+    container_name: server
+    restart: always
+    ports:
+      - 9527:9527
+    external_links:
+      - "mysql:mysql"
+    volumes:
+      - ./server/uploads:/server/uploads
+  web:
+    build: ./web
+    container_name: web
+    restart: always
+    ports:
+      - 8108:8108
+    external_links:
+      - "server:server"
+      - "mysql:mysql"

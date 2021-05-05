@@ -24,7 +24,7 @@ router.get('/list', (req, res) => {
         })
         .catch(error => {
             writeHead(res, 500)
-            writeResult(res, false, 'Something wrong happened with getting message list!', error)
+            writeResult(res, false, 'Something wrong happened with querying the message list!', error)
         })
 })
 

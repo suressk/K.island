@@ -37,11 +37,11 @@ export const deleteRecord = (params: DeleteRecordParams) => deleteAction('/recor
 export const updateRecord = (params: UpdateArticleParams) => putAction('/records/update', params)
 
 // 上传封面图
-export const uploadCover = (fileData: FormData) => postUploadImage('/images/upload_cover', fileData)
+export const uploadCover = (fileData: FormData) => postUploadImage('/upload/cover', fileData)
 // 删除封面图
-export const deleteCover = (data: DeleteImageParams) => deleteAction('/images/delete', data)
+export const deleteCover = (data: DeleteImageParams) => deleteAction('/upload/delete', data)
 // 上传文章插图
-// export const uploadIllustration = (fileData: FormData) => postUploadImage('/images/upload_plate', fileData)
+// export const uploadIllustration = (fileData: FormData) => postUploadImage('/upload/plate', fileData)
 
 
 // 留言信息

@@ -1,6 +1,6 @@
 import express from 'express'
 import {addRecord, updateRecord, deleteRecord, sendNotification} from '../../services/recordService'
-import {coverService} from '../../services/coverService'
+import {uploadService} from '../../services/uploadService'
 import {writeHead, writeResult} from '../../utils/writeResponse'
 import {queryRecordListResp, queryRecordDetailResp} from '../recordResponse'
 
@@ -44,7 +44,7 @@ router.post('/add', (req, res) => {
     // 新增文章失败
     addRecordPro.catch(err => {
         writeHead(res, 500)
-        writeResult(res, false, 'Failed to add record', err)
+        writeResult(res, false, 'Failed to add the record', err)
     })
 })
 
@@ -72,7 +72,7 @@ router.delete('/delete', (req, res) => {
     const uid = req.body.uid
 
     const delCoverPro = new Promise((resolve, reject) => {
-        coverService(relativePath)
+        uploadService(relativePath)
             .then(() => {
                 resolve('Successfully deleted the cover.')
             })

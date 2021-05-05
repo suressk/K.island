@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 50" width="150" height="50">
-	<defs>
-		<image width="150" height="50" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAAyCAMAAACJUtIoAAAAAXNSR0IB2cksfwAAAE5QTFRFAAAAxSQkxSMjxCUlxCUlxCQkxSUlxCQkxSQkxSQkxSQksxoawx4exCQkxSUlxCQkxCQkvyAg6tpFDJljxCQkxCUlxCUlxSQkxCQkxSUlHXzXWgAAABp0Uk5TAE+Qw+b8/+7OnVwKEYbs948Y//9k9GiVlqazF12BAAABSElEQVR4nO3Y25KCMAyA4ZZD6gHwhKLv/6I77M5WaZu0lo7xIv91x/kGGEhUSpIkSZK+Kl3VTQtms93tuSm2rh/AdjiekGNnG/FbF9ta1Whg0fVGmgjZxWmNagKve1QVdLmqNa6HrwJ4RFUBl6/KdwWu1dwUVXmukCrXNYZVAGNU5bjCqjxXZzCW6aKqhQtTZbl6TAXQx1UvLlyV4xpw1sDH0rgKQLOxKopVxVXWRaned9UUq2ZjNRSrYWO1FKtlY1EqRhb6MuW9iRuKxffIbykW3wtiR7E0G2t/wFX/Hx8GljriLM5P9emKqZ6DDQNL3TDWcwzkYKl7WPU6NCeoCo+BKmnFSFCVHZrnAkvG5BxJUJVdMebc9dWM3pEEVdmFbG6x7A99FziSoCq7vv71+9dI29SVRg4kqMou+8lFTK7sIyZJkqSP9wNRL35FFJycuwAAAABJRU5ErkJggg=="/>
-	</defs>
-	<style>
-		tspan { white-space:pre }
-	</style>
-	<use id="图层 3" href="#img1" x="0" y="-2" />
-</svg>

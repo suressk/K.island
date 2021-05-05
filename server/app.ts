@@ -6,7 +6,7 @@ import {createCorsOptionsDelegate} from './utils/util'
 import signIn from './routes/sys/managePermission'
 import manageOverview from './routes/sys/manageOverview'
 import manageRecords from './routes/sys/manageRecords'
-import manageImage from './routes/sys/manageCover'
+import manageUploads from './routes/sys/manageUploads'
 import manageMessages from './routes/sys/manageMessages'
 import manageComments from './routes/sys/manageComments'
 import manageSubscribes from './routes/sys/manageSubscribes'
@@ -31,13 +31,13 @@ app.all('*', cors(createCorsOptionsDelegate), (req: Request, res: Response, next
     }
 })
 
-app.get('/images/*', (req, res) => {
+app.get('/uploads/*', (req, res) => {
     res.sendFile(__dirname + "/" + req.url)
 })
 
-app.get('/music/*', (req, res) => {
-    res.sendFile(__dirname + "/" + req.url)
-})
+// app.get('/music/*', (req, res) => {
+//     res.sendFile(__dirname + "/" + req.url)
+// })
 
 // 兼容旧的版本，使用新的 qs 库解析 body 消息体
 app.use(express.urlencoded({extended: true}));
@@ -60,7 +60,7 @@ app.use('/sys/overview', manageOverview)
 // 文章管理 —— 增删改查 文章信息
 app.use('/sys/records', manageRecords)
 // 上传 / 删除 图片管理
-app.use('/sys/images', manageImage)
+app.use('/sys/upload', manageUploads)
 // 留言信息 管理
 app.use('/sys/messages', manageMessages)
 // 评论 管理

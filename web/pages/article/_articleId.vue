@@ -1,6 +1,6 @@
 <template>
   <section class='k-article-info'>
-    <KHeader :title='article.title' :need-scroll='true' />
+    <KHeader :title='article.title' :need-scroll='true' :music='article.music' />
 
     <div class='content'>
       <div class='article-content' :class='typeClass'>

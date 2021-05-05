@@ -12,8 +12,8 @@ export const expireTime = 3600 * 24 * 7 // token 过期时间（7天，单位为
 
 /**
  * 颁发 token
- * @param {*} info 携带信息（{ username: '', password: '' }）
- * @param {*} expiresIn 过期时间（number: 3600 <s> 或 表示时间跨度的 string：'7d', '1h' ...）
+ * @param {AuthorInfo} info 携带信息（{ username: '', password: '' }）
+ * @param {string | number} expiresIn 过期时间（number: 3600 <s> 或 表示时间跨度的 string：'7d', '1h' ...）
  */
 export function publishToken(info: AuthorInfo, expiresIn: string | number = expireTime) {
     return jwt.sign(info, CERT, {expiresIn})
@@ -21,7 +21,7 @@ export function publishToken(info: AuthorInfo, expiresIn: string | number = expi
 
 /**
  * 验证 token 信息
- * @param {*} req
+ * @param {Request} req
  * */
 export function verifyToken(req: Request) {
     let token: string | undefined

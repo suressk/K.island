@@ -31,6 +31,7 @@
     </div>
     <audio ref="musicRef" preload="auto" loop="loop">
       <source type="audio/mpeg" :src="music">
+      <source type="audio/mpeg" src="http://island.suressk.com/music/lightMusic.mp3">
     </audio>
     <div class="view-progress" :style="{ width: viewProgress }" />
 
@@ -51,7 +52,7 @@ export default defineComponent({
     },
     music: {
       type: String,
-      default: 'http://localhost:9527/music/lightMusic.mp3'
+      default: 'http://island.suressk.com/music/lightMusic.mp3'
     },
     needScroll: {
       type: Boolean,

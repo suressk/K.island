@@ -1,0 +1,17 @@
+FROM node:alpine
+
+RUN mkdir -p /server
+
+COPY . /server
+
+WORKDIR /server
+
+# RUN cnpm i
+
+ENV HOST 0.0.0.0
+ENV PORT 9527
+
+EXPOSE 9527
+
+ENTRYPOINT ["npm", "run"]
+CMD ["start"]

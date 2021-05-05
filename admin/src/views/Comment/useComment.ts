@@ -69,7 +69,8 @@ export default function useComment() {
     const canBeRead = computed(() => (selectedRowKeys.value.length > 0))
     const replyVisible = ref<boolean>(false)
 
-    const replyTargetInfo = ref({})
+    // @ts-ignore
+    const replyTargetInfo: Ref<CommentItem> = ref({})
     const replyContent = ref<string>('')
 
     const store = useStore()
