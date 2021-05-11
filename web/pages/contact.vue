@@ -33,10 +33,9 @@
           <span class="k-popover flex-col-start">
             <span class="txt-overflow">🍻{{ AuthorInfo.qq }}</span>
             <span class="txt-overflow">🍸{{ AuthorInfo.outlook }}</span>
-            <!--<span class="txt-overflow">🥂{{ AuthorInfo.gmail }}</span>-->
           </span>
         </span>
-        <a class="link-item" href="https://github.com/suerssk/K.island" target="_blank">
+        <a class="link-item" href="https://github.com/suressk/K.island" target="_blank">
           <i class="iconfont icon-github" />
           <span class="k-popover flex-col-start">
             <span class="txt-overflow">🤞 去点个 star 叭 ~</span>
@@ -56,7 +55,7 @@ import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 
 export default defineComponent({
-  name: 'About',
+  name: 'Contact',
   components: { KHeader, ThemeSwitch },
   setup() {
     return {

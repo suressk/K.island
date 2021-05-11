@@ -70,14 +70,14 @@ body.k-dark {
       .month {
         &::before {
           background-color: var(--lightBlue);
-          border: 3px solid var(--blue-border);
+          border-color: var(--blue-border);
         }
       }
       .month-item {
         border-left-color: var(--dark-theme-border);
         .article-item {
           border-bottom-color: var(--dark-theme-border);
-          .img-box {
+          .cover-box {
             border-color: var(--dark-theme-border);
           }
         }

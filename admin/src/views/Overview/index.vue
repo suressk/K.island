@@ -23,7 +23,7 @@
             <span>篇</span>
           </p>
           <p class="card-tip">
-            最新文章发布于：【<span class="info">{{ DAYJS(ctime).format(DATE_FORMAT) }}</span>】 继续加油！
+            最新文章发布于：【<span class="info">{{ ctime ? DAYJS(ctime).format(DATE_FORMAT) : "=.=" }}</span>】 继续加油！
           </p>
         </div>
       </div>
@@ -58,7 +58,7 @@
 import {defineComponent} from 'vue'
 import DAYJS from 'dayjs'
 import VueEcharts from '/@comp/VueEcharts/index.vue'
-import useOverview, {lineOption} from './useOverview'
+import useOverview from './useOverview'
 import 'default-passive-events'
 const DATE_FORMAT = 'YYYY-MM-DD HH:mm'
 
@@ -71,7 +71,6 @@ export default defineComponent({
     return {
       DAYJS,
       DATE_FORMAT,
-      lineOption,
       ...useOverview()
     }
   }

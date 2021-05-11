@@ -70,6 +70,26 @@ export function Confirm(options: ConfirmOptions) {
 }
 
 /**
+ * 确认删除
+ * */
+export function confirmPro(content: string = '') {
+    return new Promise((resolve, reject) => {
+        Modal.confirm({
+            centered: true,
+            type: 'warning',
+            icon: createVNode(QuestionCircleOutlined),
+            content,
+            onOk: () => { resolve(true) },
+            onCancel: () => { reject(false) },
+            title: 'Confirm',
+            okText: 'Confirm',
+            cancelText: 'Cancel',
+            maskClosable: false
+        })
+    })
+}
+
+/**
  * LocalStorage 存储 token 信息
  * @param {*} info ({ token: string, expireTime: number }) token 信息
  * */

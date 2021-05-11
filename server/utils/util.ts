@@ -12,7 +12,7 @@ const imgSuffixReg = /[.][a-z]+/
 export function createMulterStorage(dir: string) {
     return multer.diskStorage({
         destination(req, file, cb) {
-            cb(null, './images/' + dir) // 图片存储路径
+            cb(null, './uploads/' + dir) // 图片存储路径
         },
         filename(req, file, cb) {
             const matchRes = file.originalname.match(imgSuffixReg)

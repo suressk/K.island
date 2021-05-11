@@ -1,13 +1,13 @@
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios'
 import {ResponseData, ErrorResponse} from '../types'
-import {getStorageToken, errorNotify, Confirm, getStorageItem, setStorageItem, removeStorageItem} from '../utils/util'
+import {getStorageToken, errorNotify, confirmPro, getStorageItem, setStorageItem, removeStorageItem} from '../utils/util'
 import {ACCESS_TOKEN, TOKEN_EXPIRED} from '../store/mutation-types'
 import router from '../router'
 
-export const domainUrl = 'http://localhost:9527/sys'
+export const domainUrl = 'http://localhost:9527'
 
 const service: AxiosInstance = axios.create({
-    baseURL: domainUrl || '/',
+    baseURL: domainUrl + '/sys' || '/sys',
     timeout: 9000
 })
 
@@ -17,8 +17,7 @@ const handleError = (err: ErrorResponse) => {
     }
     if (err.response) {
         // @ts-ignore
-        const data = err.response.data
-        const status = err.response.status
+        const { data, status } = err.response
         const tokenExpired = getStorageItem(TOKEN_EXPIRED)
 
         switch (status) {
@@ -27,17 +26,16 @@ const handleError = (err: ErrorResponse) => {
                 removeStorageItem(ACCESS_TOKEN)
                 new Promise((resolve, reject) => {
                     if (tokenExpired === 0) {
-                        Confirm({
-                            title: 'Confirm',
-                            content: 'Token has expired, redirect to Login Page?',
-                            onOk: () => {
-                                router.push('/login')
+                        confirmPro('Token has expired, redirect to Login Page?')
+                            .then(() => {
+                                router.replace('/login')
                                 resolve(1)
-                            },
-                            onCancel: () => {
+                            })
+                            .catch(() => {
                                 reject(0)
-                            }
-                        })
+                            })
+                    } else {
+                        reject(0)
                     }
                 }).then(() => {
                     setStorageItem(TOKEN_EXPIRED, 1)

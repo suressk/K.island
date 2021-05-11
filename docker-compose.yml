@@ -18,7 +18,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ~/suressk/db:/suressk/db
+      - ~/data/db:/data/db
   server:
     build: ./server
     container_name: server

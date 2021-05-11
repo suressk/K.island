@@ -7,10 +7,10 @@ import store from '../../store'
 
 const menuList = [
     {label: 'Overview', path: '/overview', icon: 'icon-overview'},
-    {label: 'Edit Record', path: '/edit', icon: 'icon-edit'},
-    {label: 'Record List', path: '/list', icon: 'icon-send'},
-    {label: 'Message', path: '/messages', icon: 'icon-twitter'},
-    {label: 'Subscribe', path: '/subscribes', icon: 'icon-subscribe'}
+    {label: 'Edit Article', path: '/edit', icon: 'icon-edit'},
+    {label: 'Article List', path: '/list', icon: 'icon-article'},
+    {label: 'Messages', path: '/messages', icon: 'icon-twitter'},
+    {label: 'Subscriptions', path: '/subscribes', icon: 'icon-subscribe'}
 ]
 
 export default function useAsideMenu() {

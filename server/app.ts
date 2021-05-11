@@ -32,7 +32,7 @@ app.all('*', cors(createCorsOptionsDelegate), (req: Request, res: Response, next
 })
 
 app.get('/uploads/*', (req, res) => {
-    res.sendFile(__dirname + "/" + req.url)
+    res.sendFile(__dirname + req.url)
 })
 
 // app.get('/music/*', (req, res) => {

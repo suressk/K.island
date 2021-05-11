@@ -58,6 +58,8 @@
         width: 100%;
         height: 100%;
         transition: all .3s;
+        user-select: none;
+        pointer-events: none;
         span {
           margin: 20px 0;
           text-align: center;

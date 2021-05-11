@@ -1,7 +1,7 @@
 <template>
   <button
     class="upload-file btn"
-    :class="'btn-' + type"
+    :class="btnType"
     @click="handleClick"
   >
     <slot>Upload</slot>
@@ -35,6 +35,11 @@ export default defineComponent({
   data() {
     return {
       inpRef: null
+    }
+  },
+  computed: {
+    btnType({type}) {
+      return `btn-${type}`
     }
   },
   methods: {

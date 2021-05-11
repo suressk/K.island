@@ -39,6 +39,5 @@ export const AuthorInfo = {
   qq: 'sure_k@qq.com',
   QQ: '865801275@qq.com',
   outlook: 'stack_surek@outlook.com',
-  gmail: 'songkun.1008@gmail.com',
-  verification: 'b1e2bf7e4568c8197ccc4e0d8cb358c5'
+  verification: 'xxx' /** web 页面文章评论验证本人身份的密文 */
 }

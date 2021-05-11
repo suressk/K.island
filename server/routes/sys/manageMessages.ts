@@ -18,14 +18,14 @@ router.get('/list', (req, res) => {
         pageNo: +pageNo,
         pageSize: +pageSize
     })
-        .then((result: any) => {
-            writeHead(res, 200)
-            writeResult(res, true, 'Successfully got the message list~', result)
-        })
-        .catch(error => {
-            writeHead(res, 500)
-            writeResult(res, false, 'Something wrong happened with querying the message list!', error)
-        })
+    .then((result: any) => {
+        writeHead(res, 200)
+        writeResult(res, true, 'Successfully got the message list~', result)
+    })
+    .catch(error => {
+        writeHead(res, 500)
+        writeResult(res, false, 'Something wrong happened with querying the message list!', error)
+    })
 })
 
 /**

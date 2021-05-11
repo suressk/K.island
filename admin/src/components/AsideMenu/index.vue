@@ -18,7 +18,7 @@
         to="/comments"
         class="menu-item d-flex txt-overflow"
       >
-        <i class="iconfont icon-management" />
+        <i class="iconfont icon-send" />
         <span v-show="extendMenu">Comments</span>
       </router-link>
     </a-badge>

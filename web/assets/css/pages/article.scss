@@ -14,7 +14,6 @@
     }
   }
   .content {
-    //min-height: 100vh;
     .month {
       color: var(--dark-primary);
       position: relative;
@@ -43,7 +42,7 @@
         cursor: pointer;
         margin: 20px 0;
         .cover-box {
-          width: 50px;
+          width: 100px;
           height: 50px;
           border: 1px solid var(--silver);
           border-radius: 5px;

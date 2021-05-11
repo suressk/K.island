@@ -31,7 +31,7 @@
         >
           {{ nav.title }}
         </nuxt-link>
-        <!--<a href='https://github.com/suerssk' target='_blank' class='nav-item'>GitHub</a>-->
+        <!--<a href='https://github.com/suressk' target='_blank' class='nav-item'>GitHub</a>-->
         <div class='tip'>
           Everywhere in the world has a similar life.
         </div>
@@ -174,6 +174,6 @@ export default defineComponent({
 </script>
 
 <style lang='scss'>
-@import url("https://at.alicdn.com/t/font_2332190_47i24zpfh49.css");
+@import "assets/font/iconfont.css";
 @import "assets/css/pages/index.scss";
 </style>

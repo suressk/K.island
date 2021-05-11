@@ -89,12 +89,15 @@ export async function queryRecordList(options: GetRecordListParams) {
         const [totalRes] = await promisePoolQuery(totalSqlStr, totalParams)
 
         return {
-            list: mapCreateTime(list as any[]),
+            list: mapCreateTime(list as any[]) || [],
             /* @ts-ignore */
             total: totalRes.length ? totalRes[0].total : (list.length || 0)
         }
     } catch (err) {
-        return err
+        return {
+            list: [],
+            total: 0
+        }
     }
 }
 

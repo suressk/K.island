@@ -8,7 +8,6 @@ function matchAuthorEmail(email: string) {
   switch (email) {
     case AuthorInfo.qq:
     case AuthorInfo.QQ:
-    case AuthorInfo.gmail:
     case AuthorInfo.outlook:
       return true
     default:

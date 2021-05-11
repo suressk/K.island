@@ -45,8 +45,8 @@ import {
   setStorageItem
 } from '../utils/util'
 import {LoginInfo, LoginResponse} from '../types'
-import md5 from 'md5'
 import {ACCESS_TOKEN, TOKEN_EXPIRED} from '../store/mutation-types'
+import md5 from 'md5'
 
 export default defineComponent({
   name: "Login",

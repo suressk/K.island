@@ -5,10 +5,12 @@
 import { AxiosResponse } from 'axios'
 import { ErrorResponse, ResponseRes } from '~/types'
 
+// export const domainUrl = 'http://xxx' // 默认请求路径
+export const domainUrl = 'http://localhost:9527' // 默认请求路径
+
 // @ts-ignore
 export default function({ app: { $axios } }) {
-  $axios.defaults.baseURL = 'http://www.island.suressk.com' // 默认请求路径
-  // $axios.defaults.baseURL = 'http://localhost:9527' // 默认请求路径
+  $axios.defaults.baseURL = domainUrl
 
   // response拦截器，数据返回后，可以先在这里进行一个简单的判断
   $axios.interceptors.response.use(

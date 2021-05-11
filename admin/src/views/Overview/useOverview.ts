@@ -5,7 +5,7 @@ import {errorNotify, warningNotify} from '../../utils/util'
 import {EChartsOption} from 'echarts'
 import {M_SET_UNREAD} from '../../store/mutation-types'
 
-export const lineOption = ref<EChartsOption>({})
+// export const lineOption = ref<EChartsOption>({})
 
 type PieDataItem = {
     name: string

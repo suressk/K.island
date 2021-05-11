@@ -17,7 +17,7 @@ router.get('/list', (req, res) => {
         pageSize: Number(pageSize)
     }).then((result: any) => {
         writeHead(res, 200)
-        writeResult(res, true, 'Query the comment list successfully', result)
+        writeResult(res, true, 'Successfully queried the comment list', result)
     }).catch(error => {
         writeHead(res, 500)
         writeResult(res, false, 'Comment fetching failed', error)

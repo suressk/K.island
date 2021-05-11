@@ -51,9 +51,9 @@ export function getAllComments(options: PageQueryParams) {
         Promise.all([listPro, listTotalPro, unreadPro])
             .then(([listRes, totalRes, unreadRes]) => {
                 resolve({
-                    list: listRes,
+                    list: listRes || [],
                     /* @ts-ignore */
-                    total: totalRes.length ? totalRes[0].total : (list.length || 0),
+                    total: totalRes.length ? totalRes[0].total : (listRes.length || 0),
                     /* @ts-ignore */
                     unread: unreadRes.length ? unreadRes[0].total : 0
                 })

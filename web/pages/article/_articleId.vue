@@ -11,7 +11,7 @@
           </span>
           <span class='tip tag d-flex'>分类 {{ article.tag }}</span>
           <span class='tip views d-flex'>浏览 {{ article.views }}</span>
-          <span class='tip liked d-flex'>喜欢 {{ article.liked }}</span>
+          <!-- <span class='tip liked d-flex'>喜欢 {{ article.liked }}</span> -->
         </div>
 
         <div

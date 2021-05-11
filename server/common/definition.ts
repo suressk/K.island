@@ -1,4 +1,4 @@
-export const origin = 'http://suressk.com'
+export const origin = 'origin'
 
 // 邮箱授权码
 export const authPass = {

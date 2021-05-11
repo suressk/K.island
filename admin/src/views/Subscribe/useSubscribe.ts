@@ -3,7 +3,7 @@
  * */
 import {reactive, ref, computed, Ref, onMounted} from 'vue'
 import {getSubscribeList, deleteSubscribes} from '../../api/api'
-import {errorNotify, warningNotify, mapFormatCtimeList, successNotify, Confirm} from '../../utils/util'
+import {errorNotify, warningNotify, mapFormatCtimeList, successNotify, confirmPro} from '../../utils/util'
 import {SubscribeItem, QuerySubscribeParams, Pagination, DeleteSubscribeParams} from '../../types'
 import {ColumnProps} from 'ant-design-vue/es/table/interface'
 
@@ -100,15 +100,20 @@ export default function useSubscribe() {
     function handleDeleteSubscribes(info: SubscribeItem | null) {
         // 多条删除
         if (info === null) {
-            Confirm({
-                content: 'Are you sure to delete these subscriptions?',
-                onOk: () => {
+            confirmPro('Confirm to delete these subscriptions')
+                .then(() => {
                     deleteSubscriptions({
                         ids: [...selectedRowKeys.value] as number[]
                     })
-                },
-                onCancel: () => undefined
-            })
+                })
+                .catch(() => undefined)
+            // Confirm({
+            //     content: 'Are you sure to delete these subscriptions?',
+            //     onOk: () => {
+            //
+            //     },
+            //     onCancel: () => undefined
+            // })
             return
         }
         const {id} = info

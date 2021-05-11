@@ -94,7 +94,7 @@
       </div>
 
       <!--   编辑文章内容   -->
-      <v-md-editor v-model="recordInfo.content" class="editor"/>
+      <v-md-editor v-model="recordInfo.content" class="editor" />
 
       <div class="submit-container">
         <a-button type="primary" :loading="uploading" @click="submit">

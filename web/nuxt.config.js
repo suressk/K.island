@@ -55,11 +55,10 @@ export default {
   axios: {},
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-  },
+  build: {},
 
   // Run development port Configuration
   server: {
-    port: '8888'
+    port: '8108'
   }
 }

@@ -8,7 +8,8 @@
     "serve": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "prod": "pm2 start npm --name web -- run start"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.12.5",
@@ -36,5 +37,15 @@
     "prettier": "^2.2.1",
     "sass": "^1.32.5",
     "sass-loader": "^10.1.1"
+  },
+  "resolutions": {
+    "@babel/core": "7.13.15",
+    "@babel/preset-env": "7.13.15"
+  },
+  "config": {
+    "nuxt": {
+      "host": "0.0.0.0",
+      "port": "8108"
+    }
   }
 }

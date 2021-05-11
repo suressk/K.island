@@ -1,57 +1,4 @@
 .code {
-  line-height: 1.5;
-  //color: var(--ink);
-  // 标题
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-weight: 700;
-    margin: 1rem 0;
-    font-family: Arial, Helvetica, sans-serif;
-    padding-left: 1rem;
-    border-left: 5px solid transparent;
-  }
-  h1 {
-    font-size: 2rem;
-    padding-left: 0;
-  }
-  h2 {
-    font-size: 1.8rem;
-    border-left-color: var(--error);
-  }
-  h3 {
-    font-size: 1.6rem;
-    border-left-color: var(--warning);
-  }
-  h4 {
-    font-size: 1.4rem;
-    border-left-color: var(--dark-success);
-  }
-  h5 {
-    font-size: 1.2rem;
-    border-left-color: var(--dark-primary);
-  }
-  h6 {
-    font-size: 1rem;
-    border-left-color: var(--lightBlue);
-  }
-  a {
-    color: var(--dark-primary);
-    transition: all 0.3s ease;
-    &:hover {
-      color: var(--primary);
-    }
-  }
-
-  img {
-    display: block;
-    width: 100%;
-    padding: 15px;
-  }
-
   ol, ul {
     padding-left: 2rem;
   }
@@ -64,8 +11,6 @@
 
   blockquote {
     padding: 1rem 1rem 0.5rem;
-    border-left: 5px solid var(--tipColor);
-    background-color: var(--lightInk);
   }
 
   // 代码片段
@@ -124,4 +69,72 @@
       font-style: italic;
     }
   }
+}
+
+.code,
+.mood {
+  line-height: 1.5;
+  // 标题
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 700;
+    margin: 1rem 0;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 1rem;
+    border-left: 5px solid transparent;
+  }
+  h1 {
+    font-size: 2rem;
+    padding-left: 0;
+  }
+  h2 {
+    font-size: 1.8rem;
+    border-left-color: var(--error);
+  }
+  h3 {
+    font-size: 1.6rem;
+    border-left-color: var(--warning);
+  }
+  h4 {
+    font-size: 1.4rem;
+    border-left-color: var(--dark-success);
+  }
+  h5 {
+    font-size: 1.2rem;
+    border-left-color: var(--dark-primary);
+  }
+  h6 {
+    font-size: 1rem;
+    border-left-color: var(--lightBlue);
+  }
+  a {
+    color: var(--dark-primary);
+    transition: all 0.3s ease;
+    &:hover {
+      color: var(--primary);
+    }
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    padding: 15px;
+  }
+
+  blockquote {
+    padding: 0 1rem;
+    border-left: 5px solid var(--tipColor);
+    background-color: var(--lightInk);
+  }
+}
+
+.mood {
+    code {
+      font-size: 14px;
+      font-style: italic;
+    }
 }
