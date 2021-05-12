@@ -1,13 +1,20 @@
 # <div align="center">K.island</div>
 
 <div align="center">
-    <img src="https://img.shields.io/badge/Nuxt-v2.0.1-blue">
-    <img src="https://img.shields.io/badge/@vue/cli-v4.5.9-blue">
+    <img src="https://img.shields.io/badge/nuxt-v2.0.1-green">
+    <img src="https://img.shields.io/badge/nuxtCompositionApi-v0.19.0-green">
+    <img src="https://img.shields.io/badge/glslify-v7.1.1-green">
+    <img src="https://img.shields.io/badge/gsap-v3.6.0-green"><br>
+    <img src="https://img.shields.io/badge/vite-v2.1.0-blue">
+    <img src="https://img.shields.io/badge/vue-v3.0.5-blue">
     <img src="https://img.shields.io/badge/vuex-v4.0.0-blue">
-    <img src="https://img.shields.io/badge/vueRouter-v4.0.0-blue">
+    <img src="https://img.shields.io/badge/vueRouter-v4.0.5-blue">
     <img src="https://img.shields.io/badge/AntDesignVue-v2.1.0-blue">
-    <img src="https://img.shields.io/badge/Node-v12.18.3-blue">
-    <img src="https://img.shields.io/badge/MySQL-v8.0.19-blue">
+    <img src="https://img.shields.io/badge/echarts-v5.0.2-blue"><br>
+    <img src="https://img.shields.io/badge/Node-v14.16.0-red">
+    <img src="https://img.shields.io/badge/mysql2-v2.2.5-red">
+    <img src="https://img.shields.io/badge/jsonwebtoken-v8.5.1-red">
+    <img src="https://img.shields.io/badge/MySQL-.exe8.0.23-red">
 </div>
 
 ## 🏴‍☠️ ONE PIECE
@@ -122,7 +129,7 @@
 
 <div style="width: 100%;">
     <img src="./docImgs/wechat.jpg" style="width: 40%;margin: 0 20px;" alt="wechat" title="wechat">
-    <img src="./docImgs/ali.jpg" style="width: 40%;margin: 0 20px;" alt="alipay" title="alipay">
+    <img src="./docImgs/ali.png" style="width: 40%;margin: 0 20px;" alt="alipay" title="alipay">
 </div>
 
 <!-- ![overview](./docImgs/wechat.jpg) -->
