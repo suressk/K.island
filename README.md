@@ -10,9 +10,13 @@
     <img src="https://img.shields.io/badge/MySQL-v8.0.19-blue">
 </div>
 
+## 🏴‍☠️ ONE PIECE
+
+<img src="http://suressk.com/_nuxt/img/sunny.e630428.webp">
+
 ## 👻 好戏开场了
 
-均尝试使用 typeScript 4.x 编写（当然，初次尝试，问题不少，硬是无法定义类型之后：@ts-ignore || any 大法好🤣）
+均尝试使用 TS（typeScript 4.x） 编写（初次尝试，问题不少，不清楚如何定义类型之后：@ts-ignore || any 永远的神🤣 —— 虽然不是好的解决方案）
 
 > - web：
 >   + nuxtjs + @nuxt/composition-api: 构建时基于 vue2.x
@@ -26,23 +30,22 @@
 >   + 交互组件（未使用 UI 框架，用到的组件通过自定义实现，如 Modal，Notification...）
 > 
 > - admin：
->   + vue-cli 转用 vite 构建后台项目
+>   + 起始使用 vue-cli 构建（已移除），改用 vite 重新构建后台项目
 >   + vue 3.x + vuex 4.x + vue-router 4.x 全家桶
 >   + echarts 5.x 图表库，简单封装 VueEcharts 组件自使用
 >   + ant-design-vue 2.x 组件库（按需引入）
->   + @kangc/v-md-editor 文章编辑器
+>   + @kangc/v-md-editor 文章 markdown 文本编辑器（之前用 marked + highlight.js 自封装一个，奈何功能简陋，遂弃之）
 > 
 > - server：
 >   + express 构建服务
 >   + mysql2 与数据库交互进行数据的增删改查
->   + cors 配置是否跨域
+>   + cors 配置跨域许可
 >   + multer 进行文件存储（项目用于存储文章首页配图）
 >   + jsonwebtoken 颁发 token 与验证
 >   + nodemailer 发送邮件
 >
 > - database：
 >   + *.sql   MySQL 数据库表结构
->   + tbl_user 表未在其中
 
 ## 🤩 才艺展示
 
@@ -90,37 +93,38 @@
     
     ![overview](./docImgs/comment.png)
 
-## 🙃 目录说明（admin，server，web除外）
+## 🙃 目录说明
 
-因为 Docker 部署我还未成功尝试，直接忽略即可
+因为 Docker 部署我还未成功尝试，直接忽略即可（admin，server，web 除外）
 
-- config：准备使用 Docker 部署项目
-- docker-compose.yml 及 admin，server，web 目录下的 Dockerfile 文件：docker 部署的执行文件
-- database：MySQL 创建表的 sql 文件
+- config：准备使用 Docker 部署项目的 Nginx 配置（忽略）
+- docker-compose.yml 及 admin，server，web 目录下的 Dockerfile 文件：docker 部署的执行文件（忽略）
 - docImgs：README.md 文件插图文件夹
+- database：MySQL 创建表的 sql 文件
 
-## 💯 古言古语（借得）
+## 💯 古言古语
 
 > 一身清贫不敢入繁尘，
 > 两袖清风怎敢误佳人。
 > 三餐不定岂敢旭高堂，
 > 四季漂泊哪敢言家成。
 
-> 看日夜更替，看四季更迭
-> 看花开花落，看云卷云舒
-> 时光只能催人老
-> 不信多情，长恨离亭
-> 泪滴春衫酒易醒
+> 看日夜更替，看四季更迭。
+> 看花开花落，看云卷云舒。
 
-> 珍惜所有的不期而遇，看淡所有的不辞而别
+> 时光只能催人老，
+> 不信多情，长恨离亭，
+> 泪滴春衫酒易醒。
+
+> 珍惜所有的不期而遇，看淡所有的不辞而别。
 
 ## 😍 要请我喝杯咖啡吗？
 
-<div align="center">
-    <img src="./docImgs/wechat.jpg" style="width: 250px;margin: 0 25px;" alt="wechat" title="wechat">
-    <img src="./docImgs/alipay.jpg" style="width: 250px;margin: 0 25px;" alt="alipay" title="alipay">
+<div style="width: 100%;">
+    <img src="./docImgs/wechat.jpg" style="width: 40%;margin: 0 20px;" alt="wechat" title="wechat">
+    <img src="./docImgs/ali.jpg" style="width: 40%;margin: 0 20px;" alt="alipay" title="alipay">
 </div>
 
-<!-- ![overview](./docImgs/wechat.jpg)
+<!-- ![overview](./docImgs/wechat.jpg) -->
 
-![overview](./docImgs/alipay.jpg) -->
+<!-- ![overview](./docImgs/ali.jpg) -->
