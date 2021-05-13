@@ -31,7 +31,7 @@
         >
           {{ nav.title }}
         </nuxt-link>
-        <!--<a href='https://github.com/suressk' target='_blank' class='nav-item'>GitHub</a>-->
+        <a href='https://github.com/suressk/K.island' target='_blank' class='nav-item'>GitHub</a>
         <div class='tip'>
           Everywhere in the world has a similar life.
         </div>
@@ -92,17 +92,18 @@ import { commitMutations } from '~/utils/util'
 import {
   CURRENT_PAGE,
   NO_MORE,
+  LOAD_MORE,
   M_RESET_LOAD_MORE,
   M_SET_CURRENT_PAGE,
   M_SET_LOAD_STATUS,
-  M_SET_TOTAL_ITEMS, LOAD_MORE
+  M_SET_TOTAL_ITEMS
 } from '~/store/mutation-types'
 
 const navList = [
   { title: 'Article', path: '/article' },
-  { title: 'Subscription', path: '/subscription' },
-  { title: 'Contact Me', path: '/contact' },
-  { title: 'Messages', path: '/messages' }
+  { title: 'Subscribe', path: '/subscription' },
+  { title: 'Messages', path: '/messages' },
+  { title: 'Contact', path: '/contact' }
 ]
 
 export default defineComponent({

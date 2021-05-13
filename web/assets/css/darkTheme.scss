@@ -96,9 +96,7 @@ body.k-dark {
     p {
       color: var(--dark-txt);
     }
-    blockquote {
-      background-color: var(--opacityBg);
-    }
+    blockquote,
     pre {
       background-color: var(--opacity-cyan-1);
     }

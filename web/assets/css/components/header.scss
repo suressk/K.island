@@ -95,7 +95,6 @@
       opacity: 0;
       width: 100px;
       height: 100px;
-      //border: 1px solid var(--border);
       background-color: var(--white);
       box-shadow: 0 0 10px 2px rgb(0 0 0 / 30%);
       border-radius: 5px;
@@ -105,17 +104,12 @@
         content: "";
         position: absolute;
         left: 50%;
-        //top: -20px;
         top: -30px;
         transform: translateX(-50%);
         width: 0;
         height: 0;
         border: 15px solid transparent;
         border-bottom-color: var(--border);
-        //width: 30px;
-        //height: 15px;
-        //background-color: var(--white);
-        //clip-path: polygon(50% 0, 100% 100%, 0 100%);
       }
       &::after {
         border-bottom-color: var(--white);
@@ -142,7 +136,7 @@
     height: 2px;
     width: 0;
     z-index: 20;
-    transition: width .2s;
+    transition: width .5s;
   }
   .music-progress {
     position: absolute;

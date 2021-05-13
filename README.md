@@ -68,7 +68,7 @@
     - [x] 响应式页面布局
     - [x] 加载更多内容（通过按钮点击或滚动到页面底部触发）
     - [x] 发表评论与回复评论（邮箱正确填写会收到评论或回复提示信息，但 小K. 经测试 outlook 会把此邮件分类为垃圾邮件🤣 咱能说啥呢）
-    - [ ] 邮箱订阅验证成功，跳回网站首页（待做）
+    - [x] 邮箱订阅验证成功，跳回网站首页
     - [ ] 文章点赞（暂取消）
 
 - `ADMIN 端`
@@ -97,13 +97,13 @@
 
     ![overview](./docImgs/overview.png)
     
-    ![overview](./docImgs/edit.png)
+    ![EditArticle](./docImgs/edit.png)
     
-    ![overview](./docImgs/comment.png)
+    ![ManageComments](./docImgs/comment.png)
 
 ## 🙃 目录说明
 
-因为 Docker 部署我还未成功尝试，直接忽略即可（admin，server，web 除外）
+因为 Docker 部署我还未成功尝试，相关文件直接忽略即可
 
 - config：准备使用 Docker 部署项目的 Nginx 配置（忽略）
 - docker-compose.yml 及 admin，server，web 目录下的 Dockerfile 文件：docker 部署的执行文件（忽略）

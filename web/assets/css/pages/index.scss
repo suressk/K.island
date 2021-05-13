@@ -127,10 +127,8 @@
   }
   // 文章列表
   .content {
-    margin: 20px auto;
+    margin: 0 auto 20px;
     width: 1200px;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
     min-height: unset;
     &::after {
       content: "";
@@ -149,6 +147,9 @@
       cursor: pointer;
       &:hover img {
         opacity: 0.9;
+      }
+      .title:hover {
+        color: var(--primary);
       }
       .cover {
         width: 680px;
@@ -238,6 +239,7 @@
     font-size: 25px;
     line-height: 30px;
     cursor: pointer;
+    transition: color .3s ease;
   }
   .introduce {
     word-break: break-all;

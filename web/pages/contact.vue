@@ -3,7 +3,7 @@
     <KHeader />
     <div class="content">
       <h3 class="title">你好！我是 K.</h3>
-      <p class="part">PART 1 《About Me》</p>
+      <p class="part">PART 1 《K.》</p>
       <ul class="introduce-list">
         <li class="item">脚踩 95 后边缘的小 K.</li>
         <li class="item">家居巴蜀之旁，毗邻三峡之坝</li>
@@ -35,7 +35,7 @@
             <span class="txt-overflow">🍸{{ AuthorInfo.outlook }}</span>
           </span>
         </span>
-        <a class="link-item" href="https://github.com/suressk/K.island" target="_blank">
+        <a class="link-item" href="https://github.com/suressk" target="_blank">
           <i class="iconfont icon-github" />
           <span class="k-popover flex-col-start">
             <span class="txt-overflow">🤞 去点个 star 叭 ~</span>

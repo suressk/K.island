@@ -27,7 +27,7 @@ export function createMulterStorage(dir: string) {
 /**
  * 跨域配置
  * */
-const WHITE_LIST = ['http://localhost:8108', 'http://localhost:8888', '*']
+const WHITE_LIST = ['http://localhost:8108', 'http://localhost:8888']
 
 type Callback = (arg0: null, arg1: CorsOption) => void
 

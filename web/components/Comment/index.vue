@@ -17,11 +17,11 @@
           <div class='d-flex chat-container'>
             <label class='name-txt'>
               <i class='iconfont icon-name' />
-              <input type='text' placeholder='你的昵称，便于区识' v-model='commentInfo.name'>
+              <input type='text' placeholder='昵称，方便区识哦~' v-model='commentInfo.name'>
             </label>
             <label class='email-txt'>
               <i class='iconfont icon-email' />
-              <input type='text' placeholder='你的邮箱，仅用于回复通知' v-model='commentInfo.email'>
+              <input type='text' placeholder='邮箱，仅用于他人回复你的邮件通知' v-model='commentInfo.email'>
             </label>
           </div>
 
@@ -32,7 +32,7 @@
           </div>
 
           <label class='content-txt'>
-            <textarea class='scroller-light' v-model='commentInfo.comment' placeholder='' />
+            <textarea class='scroller-light' v-model='commentInfo.comment' placeholder='想说点什么呢？' />
           </label>
           <div class='comment-submit d-flex'>
             <span class='comment-status d-flex'>
