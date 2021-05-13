@@ -29,7 +29,7 @@ export default {
       title: '',
       message: '',
       timer: null,
-      duration: 5000,
+      duration: 4500,
       offset: 0,
       closed: false
       // zIndex: 99,

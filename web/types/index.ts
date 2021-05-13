@@ -66,6 +66,7 @@ type TipType = typeof TipTypes[number]
 interface InfoOptions {
   type: TipType
   message: string
+  duration?: number
 }
 
 export interface NotificationOptions extends InfoOptions {

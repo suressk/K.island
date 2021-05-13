@@ -8,13 +8,14 @@ import {
   onMounted,
   onBeforeUnmount
 } from '@nuxtjs/composition-api'
-import { addListener, removeListener, throttle } from '~/utils/util'
+import { addListener, removeListener, throttle, warnNotify } from '~/utils/util'
 import QRCode from 'qrcode'
 
 export default function useHeader(props: any) {
   const vm = getCurrentInstance()!
   let audio: HTMLAudioElement | null = null
   const showTitle = ref<boolean>(false)
+  const canPlay = ref<boolean>(false)
   const playing = ref<boolean>(false)
   const musicProgress = ref<string>('0')
   const viewProgress = ref<string>('0')
@@ -41,17 +42,19 @@ export default function useHeader(props: any) {
   }
 
   function updateMusicProgress () {
-    const currentTime = audio!.currentTime
-    const totalTime = audio!.duration
+    const currentTime = audio!.currentTime || 0
+    const totalTime = audio!.duration || 0
     musicProgress.value = (currentTime / totalTime) * 100 + '%'
     rafId = window.requestAnimationFrame(updateMusicProgress)
   }
 
   // Toggle to play music
   function handleTogglePlayMusic () {
-    if (!audio) return
+    if (!audio || !canPlay.value) {
+      return warnNotify('音乐可能加载失败辣~', 2000)
+    }
+    // playing ? icon-paused : icon-play
     playing.value = !playing.value
-    // being playing
     if (playing.value) {
       audio.play()
       rafId = window.requestAnimationFrame(updateMusicProgress)
@@ -63,14 +66,21 @@ export default function useHeader(props: any) {
 
   const fnScroll = throttle(handleScroll, 100)
 
+  const listenMusicLoaded = () => {
+    canPlay.value = true
+  }
+
   onMounted(() => {
     audio = vm.refs.musicRef as HTMLAudioElement
+    addListener(audio, 'canplaythrough', listenMusicLoaded)
     const qrCodeContainer = document.getElementById('qrcode') as HTMLCanvasElement
     QRCode.toCanvas(qrCodeContainer, window.location.href)
     props.needScroll && addListener(document, 'scroll', fnScroll)
   })
+
   onBeforeUnmount(() => {
     props.needScroll && removeListener(document, 'scroll', fnScroll)
+    removeListener(audio as HTMLAudioElement, 'canplaythrough', listenMusicLoaded)
   })
   return {
     showTitle,

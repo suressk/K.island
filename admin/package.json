@@ -2,7 +2,7 @@
   "name": "backstage",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite --port 8108",
+    "dev": "vite --port 8888",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview"
   },

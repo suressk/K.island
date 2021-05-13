@@ -10,27 +10,30 @@ const DATE_FORMAT = 'YYYY-MM-DD'
 /**
  * Notification func
  * */
-export function successNotify (message: string) {
+export function successNotify (message: string, duration: number = 4500) {
   return notify({
     type: 'success',
     title: 'Congratulations',
-    message
+    message,
+    duration
   })
 }
 
-export function warnNotify (message: string) {
+export function warnNotify (message: string, duration: number = 4500) {
   return notify({
     type: 'warning',
     title: 'Sorry',
-    message
+    message,
+    duration
   })
 }
 
-export function errorNotify (message: string) {
+export function errorNotify (message: string, duration: number = 4500) {
   return notify({
     type: 'error',
-    title: 'Failed',
-    message
+    title: 'Oops',
+    message,
+    duration
   })
 }
 
@@ -42,11 +45,7 @@ export function commitMutations<Payload> (
   type: string,
   payload?: Payload
 ) {
-  if (payload) {
-    store.commit(type, payload)
-  } else {
-    store.commit(type)
-  }
+  store.commit(type, payload)
 }
 
 /**
