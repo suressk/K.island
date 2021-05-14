@@ -59,7 +59,7 @@ export default function useIndex() {
 
   function init() {
     pageInit()
-    RainInit()
+    RainInit('coverContainer')
     today.value = getCurrentTime()
     addListener(window, 'resize', resizeListener)
   }
@@ -110,7 +110,7 @@ export default function useIndex() {
       const { success, data } = await axios('/record/list', {
         params: {
           pageNo: curPage.value,
-          pageSize: 10,
+          pageSize: 5,
           index: 1
         }
       })

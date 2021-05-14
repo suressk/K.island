@@ -29,7 +29,7 @@ let raindrops,
   renderer,
   canvas;
 
-export default function loadTextures() {
+export default function loadTextures(containerId) {
   loadImages([
     {name: "dropAlpha", src: require("./img/drop-alpha.png")},
     {name: "dropColor", src: require("./img/drop-color.png")},
@@ -55,12 +55,12 @@ export default function loadTextures() {
     dropColor = images.dropColor.img;
     dropAlpha = images.dropAlpha.img;
 
-    init();
+    init(containerId);
   });
 }
 
-function init() {
-  canvas = document.getElementById('coverContainer');
+function init(containerId) {
+  canvas = document.getElementById(containerId);
 
   let dpi = window.devicePixelRatio;
   canvas.width = window.innerWidth * dpi;

@@ -1,6 +1,6 @@
 function loadImage(src, i, onLoad) {
   return new Promise(resolve => {
-    if (typeof src == "string") {
+    if (typeof src === "string") {
       src = {
         name: "image" + i,
         src,
@@ -10,7 +10,7 @@ function loadImage(src, i, onLoad) {
     let img = new Image();
     src.img = img;
     img.addEventListener("load", () => {
-      if (typeof onLoad == "function") {
+      if (typeof onLoad === "function") {
         onLoad.call(null, img, i);
       }
       resolve(src);
