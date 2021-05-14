@@ -133,6 +133,6 @@
     <img src="./docImgs/ali.png" style="width: 40%;margin: 0 20px;" alt="alipay" title="alipay">
 </div>
 
-<!-- ![overview](./docImgs/wechat.jpg) -->
+<!-- ![wechat](./docImgs/wechat.jpg) -->
 
-<!-- ![overview](./docImgs/ali.jpg) -->
+<!-- ![alipay](./docImgs/ali.jpg) -->
