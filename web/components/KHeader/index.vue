@@ -29,7 +29,7 @@
         </li>
       </ul>
     </div>
-    <audio ref='musicRef' preload='auto' loop='loop'>
+    <audio ref='musicRef' preload='metadata' loop='loop'>
       <source type='audio/mpeg' :src='music'>
       <!--<source type='audio/mpeg' src='http://www.island.suressk.com/uploads/music/lightMusic.mp3'>-->
     </audio>
@@ -53,7 +53,7 @@ export default defineComponent({
     },
     music: {
       type: String,
-      default: `${domainUrl}/uploads/music/lightMusic.mp3`
+      default: `${domainUrl}/uploads/music/momentaryEternity.mp3`
     },
     needScroll: {
       type: Boolean,

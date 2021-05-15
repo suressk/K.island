@@ -98,7 +98,7 @@ export default defineComponent({
   }
 
   .article-content {
-    min-height: calc(100vh - 300px);
+    min-height: calc(100vh - 305px);
 
     .article-title {
       font-size: 24px;

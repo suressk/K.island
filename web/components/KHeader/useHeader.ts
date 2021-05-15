@@ -44,14 +44,14 @@ export default function useHeader(props: any) {
   function updateMusicProgress () {
     const currentTime = audio!.currentTime || 0
     const totalTime = audio!.duration || 0
-    musicProgress.value = (currentTime / totalTime) * 100 + '%'
+    musicProgress.value = ((currentTime / totalTime) * 100).toFixed(2) + '%'
     rafId = window.requestAnimationFrame(updateMusicProgress)
   }
 
   // Toggle to play music
   function handleTogglePlayMusic () {
     if (!audio || !canPlay.value) {
-      return warnNotify('音乐可能加载失败辣~', 2000)
+      return warnNotify('音乐好像没有成功加载哦~', 3000)
     }
     // playing ? icon-paused : icon-play
     playing.value = !playing.value
@@ -66,21 +66,52 @@ export default function useHeader(props: any) {
 
   const fnScroll = throttle(handleScroll, 100)
 
-  const listenMusicLoaded = () => {
-    canPlay.value = true
+  // const listenMusicLoaded = () => {
+  //   canPlay.value = true
+  // }
+
+  // 初始化时仅重载一次
+  const loadMusicAgain = async () => {
+    // music 加载失败，duration 为 NaN；否则为音乐时长(number)
+    if (!isNaN(audio!.duration)) return
+
+    const loadPro: Promise<boolean> = new Promise(resolve => {
+      audio!.ondurationchange = () => {
+        resolve(true)
+      }
+    })
+
+    await audio!.load() // reload music
+
+    loadPro.then(() => {
+      // successfully reload
+      canPlay.value = true
+    })
   }
 
   onMounted(() => {
     audio = vm.refs.musicRef as HTMLAudioElement
-    addListener(audio, 'canplaythrough', listenMusicLoaded)
+    
+    // 手机端貌似不能监听到此事件触发，从而导致音乐无法播放，故改用时长判断去重载音乐
+    // addListener(audio, 'canplaythrough', listenMusicLoaded)
+
     const qrCodeContainer = document.getElementById('qrcode') as HTMLCanvasElement
     QRCode.toCanvas(qrCodeContainer, window.location.href)
     props.needScroll && addListener(document, 'scroll', fnScroll)
+
+    setTimeout(() => {
+      // 初次 load music 失败 重载一次
+      if (isNaN(audio!.duration)) {
+        loadMusicAgain()
+        return
+      }
+      canPlay.value = true
+    });
   })
 
   onBeforeUnmount(() => {
     props.needScroll && removeListener(document, 'scroll', fnScroll)
-    removeListener(audio as HTMLAudioElement, 'canplaythrough', listenMusicLoaded)
+    // removeListener(audio as HTMLAudioElement, 'canplaythrough', listenMusicLoaded)
   })
   return {
     showTitle,
