@@ -7,6 +7,8 @@ interface QueryCommentsParams {
     articleId: number
 }
 
+type DeleteArticleCommentParams = QueryCommentsParams
+
 /**
  * 分页查询评论信息（web）
  * */
@@ -136,7 +138,10 @@ export function deleteComments(options: DeleteCommentParams) {
                 resolve('Successfully deleted comment!')
             })
             .catch(err => {
-                reject(err)
+                reject({
+                    message: 'Failed to delete the article comments!',
+                    error: err
+                })
             })
     })
 }
@@ -171,4 +176,20 @@ function getDeleteCommentsProps(options: DeleteCommentParams) {
     //     default:
     //         return getTableDeleteSqlStr(ids, '`tbl_comments`', 'id')
     // }
+}
+
+export function deleteCommentsByArticleId(articleId: number) {
+    const sqlStr = 'DELETE FROM `tbl_comments` WHERE record_id = ?;'
+    return new Promise((resolve, reject) => {
+        poolQuery(sqlStr, [articleId])
+            .then(() => {
+                resolve('Successfully deleted the article comments!')
+            })
+            .catch(err => {
+                reject({
+                    message: 'Failed to delete the article comments!',
+                    error: err
+                })
+            })
+    })
 }

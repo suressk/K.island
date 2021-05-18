@@ -141,7 +141,8 @@ export default function useIndex() {
 
   onBeforeUnmount(() => {
     removeListener(window, 'resize', resizeListener)
-    document.body.style.overflowY = ''
+    document.body.style.overflowY = 'auto'
+    document.documentElement.style.overflowY = 'auto'
   })
 
   return {

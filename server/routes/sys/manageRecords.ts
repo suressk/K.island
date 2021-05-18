@@ -1,6 +1,7 @@
 import express from 'express'
 import {addRecord, updateRecord, deleteRecord, sendNotification} from '../../services/recordService'
 import {uploadService} from '../../services/uploadService'
+import {deleteCommentsByArticleId} from '../../services/commentService'
 import {writeHead, writeResult} from '../../utils/writeResponse'
 import {queryRecordListResp, queryRecordDetailResp} from '../recordResponse'
 
@@ -68,7 +69,7 @@ router.put('/update', (req, res) => {
  * */
 router.delete('/delete', (req, res) => {
     const relativePath = req.body.relativePath
-    const id = req.body.id
+    const id = req.body.id as number
     const uid = req.body.uid
 
     const delCoverPro = new Promise((resolve, reject) => {
@@ -93,17 +94,19 @@ router.delete('/delete', (req, res) => {
             .then(() => {
                 resolve('Successfully deleted the record.')
             }).catch(err => {
-            reject({
-                message: 'Failed to delete the record.',
-                error: err
+                reject({
+                    message: 'Failed to delete the record.',
+                    error: err
+                })
             })
-        })
     })
 
-    Promise.all([delCoverPro, delRecordPro])
-        .then(([coverMsg, recordMsg]) => {
+    const delCommentsPro = deleteCommentsByArticleId(id)
+
+    Promise.all([delCoverPro, delRecordPro, delCommentsPro])
+        .then(([coverMsg, recordMsg, commentMsg]) => {
             writeHead(res, 200)
-            writeResult(res, true, `${recordMsg} \r\n ${coverMsg}`)
+            writeResult(res, true, `${recordMsg} \r\n ${coverMsg} \r\n ${commentMsg}`)
         })
         .catch(err => {
             writeHead(res, 500)

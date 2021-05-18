@@ -134,11 +134,11 @@ router.delete('/delete', (req, res) => {
     deleteComments({id, parentId})
         .then(() => {
             writeHead(res, 200)
-            writeResult(res, true, 'Successfully deleted the comment', {})
+            writeResult(res, true, 'Successfully deleted the comment')
         })
-        .catch(error => {
+        .catch(err => {
             writeHead(res, 500)
-            writeResult(res, false, 'Failed to delete the comment', error)
+            writeResult(res, false, err.message, err.error)
         })
 })
 

@@ -149,7 +149,7 @@ export default defineComponent({
       ...useIndex()
     }
   },
-  // @ts-ignore
+  /* @ts-ignore */
   beforeRouteLeave(to, from, next) {
     commitMutations(this.$store, M_RESET_LOAD_MORE)
     next()
