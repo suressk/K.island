@@ -31,6 +31,14 @@
         >
           {{ nav.title }}
         </nuxt-link>
+        <!-- <span
+          v-for='nav in navList'
+          :key='nav.title'
+          class='nav-item'
+          @click="handleToPage(nav.path)"
+        >
+          {{ nav.title }}
+        </span> -->
         <a href='https://github.com/suressk/K.island' target='_blank' class='nav-item'>GitHub</a>
         <div class='tip'>
           Everywhere in the world has a similar life.
@@ -152,6 +160,11 @@ export default defineComponent({
   /* @ts-ignore */
   beforeRouteLeave(to, from, next) {
     commitMutations(this.$store, M_RESET_LOAD_MORE)
+    // 延时去掉禁止滚动样式（手机端浏览器存在无法滚动的 bug）
+    setTimeout(() => {
+      this.showNav = false // 隐藏 nav 菜单
+      document.body.style.overflow = ''
+    }, 500);
     next()
   },
   head() {

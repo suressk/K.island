@@ -224,11 +224,14 @@ export function deleteRecord(options: IdOption) {
     const params = [id, uid]
     return new Promise((resolve, reject) => {
         poolQuery(sqlStr, params)
-            .then((result: any) => {
-                resolve(result)
+            .then(() => {
+                resolve('Successfully deleted the record.')
             })
             .catch(err => {
-                reject(err)
+                reject({
+                    message: 'Failed to delete the record.',
+                    error: err
+                })
             })
     })
 }

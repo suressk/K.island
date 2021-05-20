@@ -5,7 +5,6 @@
 import { AxiosResponse } from 'axios'
 import { ErrorResponse, ResponseRes } from '~/types'
 
-// export const domainUrl = 'xxx' // 默认请求路径
 export const domainUrl = 'http://localhost:9527' // 默认请求路径
 
 // @ts-ignore

@@ -25,7 +25,7 @@ export const authorMailInfo = {
     user: authEmail.qq,
     pass: authPass.qq,
     emailType: mailService.qq,
-    name: '小 K.'
+    name: '小K.'
 }
 
 /**

@@ -24,7 +24,7 @@ import {
   CURRENT_PAGE,
   TOTAL_ITEMS
 } from '~/store/mutation-types'
-import RainInit from '~/components/rainEffect/index'
+import {loadTextures , rainInit} from '~/components/rainEffect'
 import {useState} from '~/utils/useStore'
 import {ArticleDetail} from '~/types'
 
@@ -53,13 +53,16 @@ export default function useIndex() {
   function pageInit() {
     sceneHeight.value = document.documentElement.clientHeight + 'px'
     sceneWidth.value = document.documentElement.clientWidth + 'px'
+    // rainInit('coverContainer')
   }
 
   const resizeListener = throttle(pageInit, 100)
 
   function init() {
-    pageInit()
-    RainInit('coverContainer')
+    loadTextures().then(() => {
+      rainInit('coverContainer')
+      pageInit()
+    })
     today.value = getCurrentTime()
     addListener(window, 'resize', resizeListener)
   }
@@ -102,6 +105,13 @@ export default function useIndex() {
     })
   }
 
+  // 事件触发跳转页面
+  // function handleToPage (path: string) {
+  //   vm.$router.push(path)
+  //   showNav.value = false // 隐藏 nav
+  //   document.body.style.overflowY = ''
+  // }
+
   async function handleLoadMore() {
     const start = Date.now()
     try {
@@ -141,8 +151,7 @@ export default function useIndex() {
 
   onBeforeUnmount(() => {
     removeListener(window, 'resize', resizeListener)
-    document.body.style.overflowY = 'auto'
-    document.documentElement.style.overflowY = 'auto'
+    document.body.style.overflowY = '' // 貌似在手机端浏览器未生效 ？？？
   })
 
   return {

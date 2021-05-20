@@ -4,6 +4,7 @@ import {uploadService} from '../../services/uploadService'
 import {deleteCommentsByArticleId} from '../../services/commentService'
 import {writeHead, writeResult} from '../../utils/writeResponse'
 import {queryRecordListResp, queryRecordDetailResp} from '../recordResponse'
+import {origin} from '../../common/definition'
 
 const router = express.Router()
 
@@ -32,7 +33,7 @@ router.post('/add', (req, res) => {
         /**
          * 给订阅者发送通知
          * */
-        sendNotification(req.headers.origin as string, req.body.title)
+        sendNotification(origin, req.body.title)
             .then((result: any) => {
                 writeHead(res, 200)
                 writeResult(res, true, 'Successfully added the article, ' + result.message)
@@ -79,7 +80,7 @@ router.delete('/delete', (req, res) => {
             })
             .catch(err => {
                 if (err === 'not exist') {
-                    resolve(`The cover doesn't exist, maybe you have deleted before.`)
+                    resolve(`The cover doesn't exist, maybe you have already deleted it.`)
                 } else {
                     reject({
                         message: err.message,
@@ -89,17 +90,7 @@ router.delete('/delete', (req, res) => {
             })
     })
 
-    const delRecordPro = new Promise((resolve, reject) => {
-        deleteRecord({id, uid})
-            .then(() => {
-                resolve('Successfully deleted the record.')
-            }).catch(err => {
-                reject({
-                    message: 'Failed to delete the record.',
-                    error: err
-                })
-            })
-    })
+    const delRecordPro = deleteRecord({id, uid})
 
     const delCommentsPro = deleteCommentsByArticleId(id)
 

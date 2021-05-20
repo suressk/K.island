@@ -29,37 +29,40 @@ let raindrops,
   renderer,
   canvas;
 
-export default function loadTextures(containerId) {
-  loadImages([
-    {name: "dropAlpha", src: require("./img/drop-alpha.png")},
-    {name: "dropColor", src: require("./img/drop-color.png")},
+export function loadTextures() {
+  return new Promise(resolve => {
+    loadImages([
+      {name: "dropAlpha", src: require("./img/drop-alpha.png")},
+      {name: "dropColor", src: require("./img/drop-color.png")},
 
-    {name: "textureRainFg", src: require("./img/weather/texture-rain-fg.png")},
-    {name: "textureRainBg", src: require("./img/weather/texture-rain-bg.png")},
+      {name: "textureRainFg", src: require("./img/weather/texture-rain-fg.png")},
+      {name: "textureRainBg", src: require("./img/weather/texture-rain-bg.png")},
 
-    {name: "textureFalloutFg", src: require("./img/weather/texture-fallout-fg.png")},
-    {name: "textureFalloutBg", src: require("./img/weather/texture-fallout-bg.png")},
+      {name: "textureFalloutFg", src: require("./img/weather/texture-fallout-fg.png")},
+      {name: "textureFalloutBg", src: require("./img/weather/texture-fallout-bg.png")},
 
-    {name: "textureDrizzleFg", src: require("./img/weather/texture-drizzle-fg.png")}, // 细雨
-    {name: "textureDrizzleBg", src: require("./img/weather/texture-drizzle-bg.png")},
-  ]).then((images) => {
-    textureRainFg = images.textureRainFg.img;
-    textureRainBg = images.textureRainBg.img;
+      {name: "textureDrizzleFg", src: require("./img/weather/texture-drizzle-fg.png")}, // 细雨
+      {name: "textureDrizzleBg", src: require("./img/weather/texture-drizzle-bg.png")},
+    ]).then((images) => {
+      textureRainFg = images.textureRainFg.img;
+      textureRainBg = images.textureRainBg.img;
 
-    textureFalloutFg = images.textureFalloutFg.img;
-    textureFalloutBg = images.textureFalloutBg.img;
+      textureFalloutFg = images.textureFalloutFg.img;
+      textureFalloutBg = images.textureFalloutBg.img;
 
-    textureDrizzleFg = images.textureDrizzleFg.img;
-    textureDrizzleBg = images.textureDrizzleBg.img;
+      textureDrizzleFg = images.textureDrizzleFg.img;
+      textureDrizzleBg = images.textureDrizzleBg.img;
 
-    dropColor = images.dropColor.img;
-    dropAlpha = images.dropAlpha.img;
+      dropColor = images.dropColor.img;
+      dropAlpha = images.dropAlpha.img;
 
-    init(containerId);
-  });
+      resolve();
+    });
+  })
+  
 }
 
-function init(containerId) {
+export function rainInit(containerId) {
   canvas = document.getElementById(containerId);
 
   let dpi = window.devicePixelRatio;
@@ -78,7 +81,8 @@ function init(containerId) {
       trailScaleRange: [0.2, 0.45],
       collisionRadius: 0.45,
       dropletsCleaningRadiusMultiplier: 0.28,
-    });
+    }
+  );
 
   textureFg = createCanvas(textureFgSize.width, textureFgSize.height);
   textureFgCtx = textureFg.getContext('2d');
