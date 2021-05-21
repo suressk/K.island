@@ -31,7 +31,11 @@
               @click="toDetailPage(articleItem)"
             >
               <div class="cover-box flex-center">
-                <img v-if='articleItem.cover' :src='articleItem.cover' alt='cover'>
+                <img
+                  v-lazy='articleItem.cover'
+                  src='~@/static/images/sunny.webp'
+                  :alt='articleItem.title'
+                >
               </div>
               <div class="article-content flex-col-around">
                 <span class="title txt-overflow">{{ articleItem.title }}</span>

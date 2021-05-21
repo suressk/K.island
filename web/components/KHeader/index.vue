@@ -16,7 +16,7 @@
         <li class='r-nav-item flex-center qrcode'>
           <i class='iconfont icon-qrcode trans-all-03' />
           <div class='drop-down flex-center'>
-            <canvas ref='qrcodeRef' />
+            <canvas class="qrcode" ref='qrcodeRef' />
             <span class='tip'>
               在手机上查看本页内容
             </span>

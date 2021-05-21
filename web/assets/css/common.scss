@@ -385,6 +385,9 @@ input, textarea {
     border-color: var(--primary-border);
     box-shadow: 0 0 0 2px var(--primary-shadow);
   }
+  &::placeholder {
+    font-size: 14px;
+  }
 }
 
 textarea {
