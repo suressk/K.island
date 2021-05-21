@@ -65,19 +65,27 @@ export default function useIndex() {
     })
     today.value = getCurrentTime()
     addListener(window, 'resize', resizeListener)
+
+    /**
+     * 页面初始化滚动禁止
+     */
+    showNav.value = false
+    document.body.style.overflowY = ''
   }
 
   // navigation
   function handleToggleNav() {
     showNav.value = !showNav.value
-    if (showNav.value) {
-      document.documentElement.scrollTop = document.body.scrollTop = 0
-      document.addEventListener('touchmove', preventDefault, {passive: false})
-    } else {
-      removeListener(document, 'touchmove', preventDefault)
-    }
     // 下拉菜单可见 => 整页不可滚动
     document.body.style.overflowY = showNav.value ? 'hidden' : ''
+    // if (showNav.value) {
+    //   document.documentElement.scrollTop = document.body.scrollTop = 0
+    //   document.body.style.overflowY = 'hidden'
+    //   // document.addEventListener('touchmove', preventDefault, {passive: false})
+    // } else {
+    //   document.body.style.overflowY = ''
+    //   // removeListener(document, 'touchmove', preventDefault)
+    // }
   }
 
   function nextChangeLoadStatus(data: any) {
@@ -151,7 +159,10 @@ export default function useIndex() {
 
   onBeforeUnmount(() => {
     removeListener(window, 'resize', resizeListener)
-    document.body.style.overflowY = '' // 貌似在手机端浏览器未生效 ？？？
+    // removeListener(document, 'touchmove', preventDefault)
+    // 隐藏 nav 菜单
+    showNav.value = false
+    document.body.style.overflow = ''
   })
 
   return {

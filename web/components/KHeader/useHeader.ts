@@ -51,7 +51,7 @@ export default function useHeader(props: any) {
   // Toggle to play music
   function handleTogglePlayMusic () {
     if (!audio || !canPlay.value) {
-      return warnNotify('音乐好像没有成功加载哦~', 3000)
+      return warnNotify('音乐加载失败，人家不给免费获取音乐资源了~', 4000)
     }
     // playing ? icon-paused : icon-play
     playing.value = !playing.value
@@ -77,7 +77,7 @@ export default function useHeader(props: any) {
 
     const loadPro: Promise<boolean> = new Promise(resolve => {
       audio!.ondurationchange = () => {
-        resolve(true)
+        !isNaN(audio!.duration) && resolve(true)
       }
     })
 
@@ -95,7 +95,7 @@ export default function useHeader(props: any) {
     // 手机端貌似不能监听到此事件触发，从而导致音乐无法播放，故改用时长判断去重载音乐
     // addListener(audio, 'canplaythrough', listenMusicLoaded)
 
-    const qrCodeContainer = document.getElementById('qrcode') as HTMLCanvasElement
+    const qrCodeContainer = vm.refs.qrcodeRef as HTMLCanvasElement
     QRCode.toCanvas(qrCodeContainer, window.location.href)
     props.needScroll && addListener(document, 'scroll', fnScroll)
 

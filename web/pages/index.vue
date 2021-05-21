@@ -160,11 +160,11 @@ export default defineComponent({
   /* @ts-ignore */
   beforeRouteLeave(to, from, next) {
     commitMutations(this.$store, M_RESET_LOAD_MORE)
-    // 延时去掉禁止滚动样式（手机端浏览器存在无法滚动的 bug）
-    setTimeout(() => {
-      this.showNav = false // 隐藏 nav 菜单
-      document.body.style.overflow = ''
-    }, 500);
+    // 延时去掉禁止滚动样式
+    // setTimeout(() => {
+    //   this.showNav = false // 隐藏 nav 菜单
+    //   document.body.style.overflow = ''
+    // }, 300);
     next()
   },
   head() {

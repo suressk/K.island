@@ -16,7 +16,7 @@
         <li class='r-nav-item flex-center qrcode'>
           <i class='iconfont icon-qrcode trans-all-03' />
           <div class='drop-down flex-center'>
-            <canvas id='qrcode' />
+            <canvas ref='qrcodeRef' />
             <span class='tip'>
               在手机上查看本页内容
             </span>
@@ -31,7 +31,8 @@
     </div>
     <audio ref='musicRef' preload='metadata' loop='loop'>
       <source type='audio/mpeg' :src='music'>
-      <!--<source type='audio/mpeg' src='http://www.island.suressk.com/uploads/music/lightMusic.mp3'>-->
+      <!-- 默认加载本服务器音乐 -> 因为人家毕竟要收费 -->
+      <source type='audio/mpeg' src='serverUrl/uploads/music/momentaryEternity.mp3'>
     </audio>
     <div class='view-progress' :style='{ width: viewProgress }' />
 
