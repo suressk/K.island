@@ -10,19 +10,22 @@
           佛曰：前世的五百次回眸才换得今世的擦肩而过。
         </p>
         <p class="subscription-txt">
-          茫茫人海中，人与人的相遇、相知皆是一件十分不易的事情，望你能够珍惜缘分！一个人的生命只有一次，不要等到失去之后才感到后悔不已！而那时，那个人或许已经不再满怀壮志了，也或许是看得通透了
+          茫茫人海中，人与人的相遇、相知皆是一件十分不易的事情，望你能够珍惜缘分！愿你雨天有伞，天黑有灯，愿你惦念的人能和你互道晚安，独闯的日子里不觉得孤单。愿你，在我看不到的地方 [安然无恙]
         </p>
         <p class="subscription-txt">
           佛曰：世间所有的相遇皆因缘起。你我，亦是如此...
         </p>
+        <p class="subscription-txt tip">
+          (订阅本栈，你将第一时间收到新文章发布的通知邮件)
+        </p>
         <div class="d-flex" style="margin-top: 40px">
           <label class="subscription-inp">
             <input type="text" placeholder="Enter your Email" @blur="handleCheckEmail" v-model="email">
+            <span v-show="emptyEmail" class="warning-tip">邮箱为空哦~，是不是忘记填啦？</span>
             <span v-show="!isEmail" class="warning-tip">邮箱格式好像不太对呢 ~</span>
           </label>
           <button class="subscription-btn btn btn-primary" @click="handleSubscribe">
             SUBSCRIBE
-            <span class="empty-tip" :class="{ show: emptyEmail }">邮箱为空哦~，是不是忘记填啦？</span>
           </button>
         </div>
       </div>
@@ -33,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@nuxtjs/composition-api'
+import { defineComponent, ref, getCurrentInstance } from '@nuxtjs/composition-api'
 import { checkIsEmail, successNotify, warnNotify, errorNotify } from '~/utils/util'
 import KHeader from '~/components/KHeader/index.vue'
 import KWave from '~/components/KWave.vue'
@@ -41,7 +44,9 @@ import KWave from '~/components/KWave.vue'
 export default defineComponent({
   name: 'subscription',
   components: { KHeader, KWave },
-  setup(props, { root }) {
+  setup() {
+    const vm = getCurrentInstance()!.proxy
+
     const email = ref<string>('')
     const isEmail = ref<boolean>(true)
     const emptyEmail = ref<boolean>(false)
@@ -69,7 +74,7 @@ export default defineComponent({
       // email 格式正确
       if (isEmail.value && email.value !== '') {
         // @ts-ignore
-        root.$axios.post('/subscribe/add', {
+        vm.$axios.post('/subscribe/add', {
           email: email.value
         }).then((res: any) => {
           if (res.success) {
@@ -101,5 +106,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "../../assets/css/pages/subscription";
+@import "assets/css/pages/subscription";
 </style>

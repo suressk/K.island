@@ -25,11 +25,19 @@
             </label>
           </div>
 
-          <div v-show='showVerify' style='padding: 0 10px 10px;'>
-            <label>
-              <input type='password' placeholder='verification...' v-model='commentInfo.verification'>
-            </label>
-          </div>
+          <!-- Just fixed the warning of 'password input should be wrapped by form ' -->
+          <form>
+            <div v-show='showVerify' style='padding: 0 10px 10px;'>
+              <label>
+                <input
+                  type='password'
+                  placeholder='verification...'
+                  autocomplete='off'
+                  v-model='commentInfo.verification'
+                >
+              </label>
+            </div>
+          </form>
 
           <label class='content-txt'>
             <textarea class='scroller-light' v-model='commentInfo.comment' placeholder='想说点什么呢？' />

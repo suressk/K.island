@@ -9,6 +9,7 @@ import {
   onBeforeUnmount
 } from '@nuxtjs/composition-api'
 import { addListener, removeListener, throttle, warnNotify } from '~/utils/util'
+import { domainUrl } from '~/plugins/axios'
 import QRCode from 'qrcode'
 
 export default function useHeader(props: any) {
@@ -23,6 +24,8 @@ export default function useHeader(props: any) {
   const playIcon = computed(() => {
     return playing.value ? 'icon-paused': 'icon-play'
   })
+
+  const defaultMusic = computed(() => `${domainUrl}/uploads/music/momentaryEternity.mp3`) // 默认不会变（不必为计算属性）
 
   let rafId: null | number = null
 
@@ -117,6 +120,7 @@ export default function useHeader(props: any) {
     showTitle,
     playing,
     playIcon,
+    defaultMusic,
     viewProgress,
     musicProgress,
     handleTogglePlayMusic

@@ -53,6 +53,11 @@
         font-size: 14px;
         color: var(--ink);
         text-indent: 2rem;
+        &.tip {
+          padding-top: 5px;
+          font-size: 12px;
+          text-indent: unset;
+        }
       }
       .subscription-inp {
         width: 75%;
@@ -80,55 +85,50 @@
         height: 40px;
         margin-left: 10px;
         position: relative;
-        .empty-tip {
-          position: absolute;
-          z-index: 10;
-          width: 150px;
-          height: 60px;
-          background-color: var(--dark-primary);
-          padding: 10px 15px;
-          top: -75px;
-          left: 50%;
-          transform: translateX(-50%);
-          border-radius: 5px;
-          visibility: hidden;
-          &.show {
-            animation: bounceOut 1s forwards;
-          }
-          &::before {
-            position: absolute;
-            left: 50%;
-            bottom: -20px;
-            transform: translateX(-50%);
-            content: "";
-            width: 0;
-            height: 0;
-            border: 10px solid var(--dark-primary);
-            border-bottom-color: transparent;
-            border-left-color: transparent;
-            border-right-color: transparent;
-          }
-        }
       }
     }
   }
 }
-@keyframes bounceOut {
-  0% {
-    visibility: hidden;
-    top: 25px;
-  }
-  40% {
-    top: -90px;
-  }
-  60% {
-    top: -80px;
-  }
-  80% {
-    top: -85px;
-  }
-  100% {
-    visibility: visible;
-    top: -75px;
-  }
-}
+
+// .empty-tip {
+//   position: absolute;
+//   z-index: 10;
+//   width: 150px;
+//   height: 60px;
+//   background-color: var(--dark-primary);
+//   padding: 10px 15px;
+//   top: -75px;
+//   left: 50%;
+//   transform: translateX(-50%);
+//   border-radius: 5px;
+//   visibility: hidden;
+//   &.show {
+//     animation: bounceOut 1s forwards;
+//   }
+//   &::before {
+//     position: absolute;
+//     left: 50%;
+//     bottom: -20px;
+//     transform: translateX(-50%);
+//     content: "";
+//     width: 0;
+//     height: 0;
+//     border: 10px solid var(--dark-primary);
+//     border-bottom-color: transparent;
+//     border-left-color: transparent;
+//     border-right-color: transparent;
+//   }
+// }
+// @keyframes bounceOut {
+//   0% {
+//     visibility: hidden;
+//     top: 25px;
+//   }
+//   80% {
+//     top: -85px;
+//   }
+//   100% {
+//     visibility: visible;
+//     top: -75px;
+//   }
+// }
