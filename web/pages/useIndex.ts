@@ -1,12 +1,12 @@
 import {
   ref,
+  Ref,
   getCurrentInstance,
   onMounted,
   onBeforeUnmount,
   nextTick
 } from '@nuxtjs/composition-api'
 import {
-  preventDefault,
   throttle,
   getCurrentTime,
   addListener,
@@ -26,7 +26,7 @@ import {
 } from '~/store/mutation-types'
 import {loadTextures , rainInit} from '~/components/rainEffect'
 import {useState} from '~/utils/useStore'
-import {ArticleDetail} from '~/types'
+import {ArticleItem, ArticleDetail} from '~/types'
 
 /**
  * 首页 composition-api 代码风格 写法抽离
@@ -43,6 +43,8 @@ export default function useIndex() {
   const curPage = useState(vm.$store, CURRENT_PAGE)
   const totalItems = useState(vm.$store, TOTAL_ITEMS)
   const today = ref<string>('')
+
+  const articleList: Ref<ArticleItem[]> = ref([])
 
   /**
    * 加载更多是在浏览器端，用 number 类型也可
@@ -63,6 +65,8 @@ export default function useIndex() {
       rainInit('coverContainer')
       pageInit()
     })
+    // 加载首屏数据（解决服务端渲染导致回到首页会 vuex 状态重置而重复加载文章列表的问题）
+    handleLoadMore()
     today.value = getCurrentTime()
     addListener(window, 'resize', resizeListener)
 
@@ -78,21 +82,12 @@ export default function useIndex() {
     showNav.value = !showNav.value
     // 下拉菜单可见 => 整页不可滚动
     document.body.style.overflowY = showNav.value ? 'hidden' : ''
-    // if (showNav.value) {
-    //   document.documentElement.scrollTop = document.body.scrollTop = 0
-    //   document.body.style.overflowY = 'hidden'
-    //   // document.addEventListener('touchmove', preventDefault, {passive: false})
-    // } else {
-    //   document.body.style.overflowY = ''
-    //   // removeListener(document, 'touchmove', preventDefault)
-    // }
   }
 
-  function nextChangeLoadStatus(data: any) {
-    // @ts-ignore
-    vm.articleList = [...vm.articleList, ...data.list]
-    // @ts-ignore 总条数 还有更多
-    if (vm.articleList.length < data.total) {
+  function nextChangeLoadStatus(data: { list: ArticleItem[], total: number}) {
+    articleList.value = [...articleList.value, ...data.list]
+    // 还有更多
+    if (articleList.value.length < data.total) {
       // 当前页 +1
       commitMutations<number>(vm.$store, M_SET_CURRENT_PAGE, curPage.value + 1)
       nextTick(() => {
@@ -134,24 +129,25 @@ export default function useIndex() {
       })
       const end = Date.now()
       if (success) {
-        // 500ms 加载状态
-        if (end - start > 500) {
+        // 1s loading 动画
+        if (end - start >= 1000) {
           nextChangeLoadStatus(data)
         } else {
           if (loadingTimer) clearTimeout(loadingTimer)
+          // 1s ~ 2s loading
           loadingTimer = setTimeout(() => {
             nextChangeLoadStatus(data)
-          }, 500)
+          }, 1000)
         }
       }
     } catch (e) {
       if (loadingTimer) clearTimeout(loadingTimer)
       loadingTimer = setTimeout(() => {
         nextTick(() => {
-          errorNotify('更多文章加载失败辣，跟 小K. 说一声吧~')
+          errorNotify('Something wrong with getting the article list')
           commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOAD_MORE)
         })
-      }, 500)
+      }, 1000)
     }
   }
 
@@ -168,6 +164,7 @@ export default function useIndex() {
   return {
     today,
     totalItems,
+    articleList,
     showNav,
     loadStatus,
     sceneHeight,

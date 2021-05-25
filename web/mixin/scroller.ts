@@ -16,9 +16,7 @@ export default {
        * scrollHeight: 整屏高度（含不可见区域）
        * clientHeight: 可视区高度
        * */
-      const props = ['scrollTop', 'scrollHeight', 'clientHeight']
-      // @ts-ignore
-      const [scrollTop, scrollHeight, windowH] = props.map(prop => getWindowProp(prop))
+      const [scrollTop, scrollHeight, windowH] = ['scrollTop', 'scrollHeight', 'clientHeight'].map(prop => getWindowProp(prop))
 
       if (scrollHeight === windowH) {
         return

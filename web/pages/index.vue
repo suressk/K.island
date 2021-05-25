@@ -118,39 +118,39 @@ export default defineComponent({
   name: 'Index',
   components: { LoadMore, BackTop, KFooter, ThemeSwitch },
   // @ts-ignore
-  async asyncData({ $axios, store }: Context) {
-    try {
-      const { success, data } = await $axios.get('/record/list', {
-        params: {
-          pageNo: 1,
-          pageSize: 5,
-          index: 1
-        }
-      })
-      if (success) {
-        const { total, list } = data
-        commitMutations(store, M_SET_TOTAL_ITEMS, total)
-        // 还有更多文章（不是最后一页）
-        if (list.length < total) {
-          commitMutations(store, M_SET_CURRENT_PAGE, store.state[CURRENT_PAGE] + 1)
-          commitMutations(store, M_SET_LOAD_STATUS, LOAD_MORE)
-        } else {
-          commitMutations(store, M_SET_LOAD_STATUS, NO_MORE)
-        }
-        return {
-          articleList: list
-        }
-      } else {
-        return {
-          articleList: []
-        }
-      }
-    } catch (e) {
-      return {
-        articleList: []
-      }
-    }
-  },
+  // async asyncData({ $axios, store }: Context) {
+  //   try {
+  //     const { success, data } = await $axios.get('/record/list', {
+  //       params: {
+  //         pageNo: 1,
+  //         pageSize: 5,
+  //         index: 1
+  //       }
+  //     })
+  //     if (success) {
+  //       const { total, list } = data
+  //       commitMutations(store, M_SET_TOTAL_ITEMS, total)
+  //       // 还有更多文章（不是最后一页）
+  //       if (list.length < total) {
+  //         commitMutations(store, M_SET_CURRENT_PAGE, store.state[CURRENT_PAGE] + 1)
+  //         commitMutations(store, M_SET_LOAD_STATUS, LOAD_MORE)
+  //       } else {
+  //         commitMutations(store, M_SET_LOAD_STATUS, NO_MORE)
+  //       }
+  //       return {
+  //         articleList: list
+  //       }
+  //     } else {
+  //       return {
+  //         articleList: []
+  //       }
+  //     }
+  //   } catch (e) {
+  //     return {
+  //       articleList: []
+  //     }
+  //   }
+  // },
   setup() {
     return {
       navList,
@@ -160,11 +160,6 @@ export default defineComponent({
   /* @ts-ignore */
   beforeRouteLeave(to, from, next) {
     commitMutations(this.$store, M_RESET_LOAD_MORE)
-    // 延时去掉禁止滚动样式
-    // setTimeout(() => {
-    //   this.showNav = false // 隐藏 nav 菜单
-    //   document.body.style.overflow = ''
-    // }, 300);
     next()
   },
   head() {
