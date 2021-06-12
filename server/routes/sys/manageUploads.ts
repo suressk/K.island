@@ -3,6 +3,7 @@ import multer from 'multer'
 import {writeHead, writeResult} from '../../utils/writeResponse'
 import {uploadService, NOT_EXIST} from '../../services/uploadService'
 import {createMulterStorage} from '../../utils/util'
+import {SERVER_ORIGIN} from "../../common/definition";
 
 const router = express.Router()
 
@@ -14,7 +15,8 @@ const uploadCover = multer({storage: createMulterStorage('cover')})
 
 // 封面图上传
 router.post('/cover', uploadCover.single('cover'), (req, res) => {
-    const cover = `http://${req.headers.host}/uploads/cover/${req.file.filename}`
+    // req.headers.host 由于 Nginx 代理的作用，经过转发，host 地址会变更为 127.0.0.1 (即服务器本机地址)
+    const cover = `http://${SERVER_ORIGIN}/uploads/cover/${req.file.filename}`
     res.writeHead(200)
     writeResult(res, true, "Successfully uploaded the cover !", {cover})
 })

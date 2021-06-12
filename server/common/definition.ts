@@ -1,5 +1,7 @@
 export const origin = 'origin'
 
+export const SERVER_ORIGIN = 'server-origin'
+
 // 邮箱授权码
 export const authPass = {
     qq: 'xxx',
@@ -8,7 +10,7 @@ export const authPass = {
 
 export const authEmail = {
     qq: 'sure_k@qq.com',
-    outlook: 'stack_surek@outlook.com'
+    outlook: 'sure_ssk@outlook.com'
 }
 
 export const mailService = {
