@@ -32,10 +32,10 @@
       background-color: var(--tipColor);
     }
 
-    &::after {
-      background-color: var(--warning);
-      left: 28px;
-    }
+    // &::after {
+    //   background-color: var(--warning);
+    //   left: 28px;
+    // }
 
     code {
       color: var(--tipColor);
@@ -137,5 +137,8 @@
   code {
     font-size: 14px;
     font-style: italic;
+  }
+  pre {
+    overflow: auto;
   }
 }

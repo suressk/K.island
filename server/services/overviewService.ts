@@ -27,21 +27,22 @@ const articleType = [
  * */
 export function getOverviewData() {
     // 文章总数（total） + 最新文章发布时间（ctime）
-    // 'SELECT COUNT(id) AS total, ctime FROM tbl_records ORDER BY ctime DESC LIMIT 0, 1;'
+    // 'SELECT COUNT(id) AS total, max(ctime) as ctime FROM tbl_records;'
 
     // unread comments（评论文章或回复我的未读评论数）
     // 'SELECT COUNT(is_read) as unread FROM `tbl_comments` WHERE is_read = 0 AND to_email = ?;'
-    // SELECT COUNT(id) as total, (SELECT COUNT(id) as unread FROM `tbl_comments` WHERE is_read = 0 AND to_email = ?) as unread FROM `tbl_comments` WHERE to_email = ?;
+    // 'SELECT COUNT(id) as total, (SELECT COUNT(id) as unread FROM `tbl_comments` WHERE is_read = 0 AND to_email = ?) as unread FROM `tbl_comments` WHERE to_email = ?;'
 
     const articleStr = `
-        SELECT COUNT(id) AS total, ctime,
+        SELECT COUNT(id) AS total,
         (SELECT COUNT(id) as Mood FROM tbl_records WHERE tag = ?) as Mood,
         (SELECT COUNT(id) as JS FROM tbl_records WHERE tag = ?) as JS,
         (SELECT COUNT(id) as FrontEnd FROM tbl_records WHERE tag = ?) as FrontEnd,
         (SELECT COUNT(id) as BackEnd FROM tbl_records WHERE tag = ?) as BackEnd,
         (SELECT COUNT(id) as StudyNote FROM tbl_records WHERE tag = ?) as StudyNote
-        FROM tbl_records ORDER BY ctime DESC LIMIT 0, 1;
+        max(ctime) as ctime FROM tbl_records;
     `
+    //  ORDER BY ctime DESC LIMIT 0, 1
     const articleParams = [
         ArticleType.Mood,
         ArticleType.JS,
