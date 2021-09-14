@@ -19,7 +19,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
+    "typeRoots": [
+      "node_modules/@types",
+      "global.d.ts"
+    ],
     "baseUrl": ".",
+    "rootDir": ".",
     "paths": {
       "@/*": [
         "./src/*"
@@ -44,9 +49,6 @@
       ]
     }
   },
-  "include": [
-    "./src"
-  ],
   "exclude": [
     "node_modules",
     "dist"
