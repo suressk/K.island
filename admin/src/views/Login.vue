@@ -1,8 +1,19 @@
 <template>
   <section class="login-container">
+    <div class="login-container-bg" />
+    <div class="login-container-bg" />
+    <div class="login-container-bg" />
     <div class="login-form flex-col fixed-center">
-      <div class="avatar flex-center">
-        <img src="../assets/images/avatar.png" alt="author">
+      <span class="circle" />
+      <span class="circle" />
+      <span class="circle" />
+      <span class="circle" />
+      <span class="circle" />
+      <div class="form-item login-header d-flex">
+        <span class="avatar flex-center">
+          <img src="../assets/images/avatar.png" alt="author">
+        </span>
+        <!-- <span>登录</span> -->
       </div>
       <div class="form-item">
         <label class="ipt-item">
@@ -25,7 +36,7 @@
         </label>
       </div>
       <div class="form-item">
-        <button class="btn btn-primary btn-login" @click="handleLogin" type="button">SIGN IN</button>
+        <button class="btn btn-primary btn-login" @click="handleLogin" type="button">LOGIN</button>
       </div>
     </div>
     <div class="hint">Hope that all the good things will come on schedule...</div>
@@ -72,9 +83,9 @@ export default defineComponent({
           setStorageToken(res.data)
           setCookie(ACCESS_TOKEN, res.data.token, res.data.expireTime)
           setStorageItem(TOKEN_EXPIRED, 0)
-          setTimeout(() => {
-            router.push('/')
-          }, 500)
+          router.push('/') // 移除延迟 500ms 跳转首页
+          // setTimeout(() => {
+          // }, 500)
         } else {
           warningNotify(res.message)
         }
