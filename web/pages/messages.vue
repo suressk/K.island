@@ -1,72 +1,71 @@
 <template>
-  <section class='k-message'>
+  <section class="k-message">
     <KHeader />
-    <div class='content'>
+    <div class="content">
       <!--    v-show="showTip"    -->
-      <transition name='fadeUp' mode='out-in'>
-        <div class='tip-message' v-show='showTip'>
-          <i class='iconfont icon-close' @click='toggleTipMsg(false)' />
-          <p>😍 你可以在这里写下你想对 Ta 说的话，然后悄悄地扔个网址给 Ta ~ <span class='tip'>（你的内心OS：我直接给人家说不香吗？）</span></p>
-          <p>❤️ 你也可以在这里写下你想说的励志鸡汤，伤感心情，牢骚小文，也或是当一回文人墨客<span class='tip'>（小K.都是欢迎的）</span></p>
-          <p>🤨 <span class='tip'>如果你的有些言论太过敏感或是不太合适展示给大家看的内容，小 K. 看到后可能会删掉哦~ 还是记得多传播积极的东西哦</span></p>
+      <transition name="fadeUp" mode="out-in">
+        <div class="tip-message" v-show="showTip">
+          <i class="iconfont icon-close" @click="toggleTipMsg(false)" />
+          <p>
+            😍 你可以在这里写下你想对 Ta 说的话，然后悄悄地扔个网址给 Ta ~
+            <span class="tip">（你的内心OS：我直接给人家说不香吗？）</span>
+          </p>
+          <p>
+            ❤️ 你也可以在这里写下你想说的励志鸡汤，伤感心情，牢骚小文，也或是当一回文人墨客
+            <span class="tip">（小K.都是欢迎的）</span>
+          </p>
+          <p>
+            🤨
+            <span class="tip">如果你的有些言论太过敏感或是不太合适展示给大家看的内容，小 K. 看到后可能会删掉哦~ 还是记得多传播积极的东西哦</span>
+          </p>
         </div>
       </transition>
 
-      <div class='add-message'>
+      <div class="add-message">
         <button
-          class='btn btn-success'
-          @click='toggleTipMsg(true)'
-          :disabled='showTip'
-        >
-          Show Tip Message
-        </button>
-        <button class='btn btn-primary' @click='showModal'>Leave a Message</button>
+          class="btn btn-success"
+          @click="toggleTipMsg(true)"
+          :disabled="showTip"
+        >Show Tip Message</button>
+        <button class="btn btn-primary" @click="showModal">Leave a Message</button>
       </div>
 
       <!--   添加留言 modal   -->
-      <Modal
-        :visible.sync='modalVisible'
-        @ok='handleLeaveMessage'
-      >
+      <Modal :visible.sync="modalVisible" @ok="handleLeaveMessage">
         <template v-slot:avatar>
-          <img src='~~/static/images/avatar.png' alt='K. avatar'>
+          <img src="~~/static/images/avatar.png" alt="K. avatar" />
         </template>
 
         <!--  edit message form  -->
-        <div class='message-form'>
-          <div class='message-from-item'>
+        <div class="message-form">
+          <div class="message-from-item">
             <label>
-              <input type='text' placeholder='Enter your nickname' v-model='nickName'>
+              <input type="text" placeholder="Enter your nickname" v-model="nickName" />
             </label>
           </div>
-          <div class='message-from-item'>
+          <div class="message-from-item">
             <label>
-                <textarea
-                  class='message-content scroller'
-                  placeholder='Enter the message what you wanna to leave...'
-                  v-model='messageContent'
-                />
+              <textarea
+                class="message-content scroller"
+                placeholder="Enter the message what you wanna to leave..."
+                v-model="messageContent"
+              />
             </label>
           </div>
         </div>
-
       </Modal>
       <!--   留言列表   -->
-      <ul class='message-list'>
-        <li
-          class='tip-message message-item'
-          v-for='msg in msgList'
-          :key='msg.uid'
-        >
-          <p class='message-content'>{{ msg.content }}</p>
-          <p class='message-form'>
-            <span class='time'>{{ DAYJS(msg.ctime).format(dateFormat) }}</span>
+      <ul class="message-list">
+        <li class="tip-message message-item" v-for="msg in msgList" :key="msg.uid">
+          <p class="message-content">{{ msg.content }}</p>
+          <p class="message-form">
+            <span class="time">{{ DAYJS(msg.ctime).format(dateFormat) }}</span>
             <span>{{ msg.name }}</span>
           </p>
         </li>
       </ul>
 
-      <LoadMore :load-status='loadStatus' :show-load-more='false' />
+      <LoadMore :load-status="loadStatus" :show-load-more="false" />
     </div>
 
     <ThemeSwitch />
@@ -75,15 +74,15 @@
 </template>
 
 <script lang='ts'>
-import DAYJS from 'dayjs'
-import { defineComponent } from '@nuxtjs/composition-api'
-import { mapState } from 'vuex'
+import D AYJS from 'dayj s'
+import { defineComponent } from '@nuxt js/compo sition-api'
+import { m apState } f rom 'vuex'
 import {
-  CURRENT_PAGE,
-  LOAD_MORE,
+  CUR RENT_PAGE,
+  HAS_MORE,
   LOAD_STATUS,
   LOADING,
-  LEAVE_MSG_LIMIT,
+  LEAVE_MSG_LIMI T,
   M_SET_CURRENT_PAGE,
   M_SET_LOAD_STATUS,
   M_RESET_LOAD_MORE,
@@ -104,8 +103,8 @@ import { PaginationParams } from '~/types'
 import scrollMixin from '~/mixin/scroller'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
-import BackTop from '~/components/BackTop/index.vue'
-import Modal from '~/components/KModal/index.vue'
+import BackTop from '~/compo nents/BackTop/index.vue'
+impor t Modal from '~/components/KModal/index.vue'
 import LoadMore from '~/components/LoadMore.vue'
 
 interface MsgLimitInfo {
@@ -132,7 +131,7 @@ export default defineComponent({
         commitMutations(ctx.store, M_SET_TOTAL_ITEMS, total)
         // 不是全部 message
         if (list.length < total) {
-          commitMutations(ctx.store, M_SET_LOAD_STATUS, LOAD_MORE)
+          commitMutations(ctx.store, M_SET_LOAD_STATUS, HAS_MORE)
         } else {
           commitMutations(ctx.store, M_SET_LOAD_STATUS, NO_MORE)
         }
@@ -152,20 +151,19 @@ export default defineComponent({
   },
   data() {
     return {
-      showTip: false,
+      sho wTip: fa lse,
       modalVisible: false,
       nickName: '',
       messageContent: '',
       msgLimit: {
         time: 0,
-        name: ''
-      },
+         nam          },
       dateFormat: 'YYYY-MM-DD'
     }
   },
   computed: {
     ...mapState({
-      totalItems: (state: any): number => state[TOTAL_ITEMS],
+      totalItems:  (state : any) number=> state[TOTAL_ITEMS],
       currentPage: (state: any): number => state[CURRENT_PAGE],
       loadStatus: (state: any): number => state[LOAD_STATUS]
     })
@@ -177,14 +175,14 @@ export default defineComponent({
       setStorageItem(MSG_TIP_SHOW, flag)
     },
     showModal() {
-      const localLimit = getStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT)
+      const  localLimit =  g StorageItem< gLimitInfo>(LEAVE_MSG_LIMIT)
       if (localLimit) {
         this.nickName = localLimit.name
       }
       this.modalVisible = true
     },
     hideModal() {
-      this.modalVisible = false
+       this.modal V      = false
       this.messageContent = ''
     },
     // get message list
@@ -217,18 +215,18 @@ export default defineComponent({
             params.pageNo > 1 ? (this.msgList = this.msgList.concat(list)) : (this.msgList = list)
             // @ts-ignore 还有更多留言
             if (this.msgList.length < total) {
-              commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 还有更多 可加载
+              commitMutations(this.$store, M_SET_LOAD_STATUS, HAS_MORE) // 还有更多 可加载
             } else {
               commitMutations(this.$store, M_SET_LOAD_STATUS, NO_MORE) // 没有更多
             }
           })
         } else {
           warnNotify(message)
-          commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 还有更多 可加载
+          commitMutations(this.$store, M_SET_LOAD_STATUS, HAS_MORE) // 还有更多 可加载
         }
       } catch (err) {
         errorNotify(err.message)
-        commitMutations(this.$store, M_SET_LOAD_STATUS, LOAD_MORE) // 还有更多 可加载
+        commitMutations(this.$store, M_SET_LOAD_STATUS, HAS_MORE) // 还有更多 可加载
       }
     },
     async handleLeaveMessage() {
@@ -248,9 +246,8 @@ export default defineComponent({
         if (success) {
           successNotify(message)
           /**
-           * 添加 msg 成功，时间更新
-           * */
-          setStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT, {
+                 sg 成                  * */
+                rageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT, {
             time: Date.now(),
             name: vm.nickName
           })
@@ -269,9 +266,9 @@ export default defineComponent({
       }
     },
     /**
-     * 初始化新增留言限制数
-     * */
-    initMsgLimit() {
+     * 初始化新增留    
+        /
+    initMsg     () {
       const localLimit = getStorageItem<MsgLimitInfo>(LEAVE_MSG_LIMIT)
       const tipMsgShow = getStorageItem<boolean>(MSG_TIP_SHOW)
 
@@ -296,7 +293,7 @@ export default defineComponent({
   watch: {
     scrollerIsBottom(flag) {
       // @ts-ignore
-      if (flag && (this.loadStatus === LOAD_MORE) && (this.msgList.length < this.totalItems)) {
+      if (flag && (this.loadStatus === HAS_MORE) && (this.msgList.length < this.totalItems)) {
         // 滚动到页底，加载下一页数据
         this.getMessageList({
           pageNo: this.currentPage + 1,

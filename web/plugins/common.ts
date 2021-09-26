@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {ILoadImageItem} from '~/types'
+import { ILoadImageItem } from '~/types'
 import Confirm from "~/components/popConfirm";
 import {
   throttle,
@@ -31,9 +31,9 @@ const common = {
     Vue.directive('lazy', {
       inserted: (el: HTMLImageElement, binding: { value: any }) => {
         const src = binding.value
-        listenList.push({el, src})
+        listenList.push({ el, src })
         addListener(window, 'scroll', watch)
-        lazyLoadImg({el, src})
+        lazyLoadImg({ el, src })
       }
     })
 
@@ -44,7 +44,7 @@ const common = {
 
     // 图片懒加载
     const lazyLoadImg = (loadItem: ILoadImageItem) => {
-      const {el, src} = loadItem
+      const { el, src } = loadItem
       const windowHeight = getWindowProp('clientHeight')
       const elInfo = el.getBoundingClientRect()
       const show = elInfo.bottom + 100 > 0 && elInfo.top - windowHeight < 0

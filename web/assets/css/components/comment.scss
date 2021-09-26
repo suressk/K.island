@@ -61,7 +61,7 @@
           width: calc(100% - 152px);
         }
         .time {
-          width: 152px;
+          min-width: 152px;
           .comment-time {
             font-size: 12px;
             color: var(--tipColor);

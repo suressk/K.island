@@ -1,27 +1,23 @@
 <template>
-  <section class='k-article-info'>
-    <KHeader :title='article.title' :need-scroll='true' :music='article.music' />
+  <section class="k-article-info">
+    <KHeader :title="article.title" :need-scroll="true" :music="article.music" />
 
-    <div class='content'>
-      <div class='article-content' :class='typeClass'>
-        <h1 class='article-title'>{{ article.title }}</h1>
-        <div class='stuffix d-flex'>
-          <span class='time tip'>
-            {{ article.time.day }} {{ article.time.month }} {{ article.time.year }}
-          </span>
-          <span class='tip tag d-flex'>分类 {{ article.tag }}</span>
-          <span class='tip views d-flex'>浏览 {{ article.views }}</span>
+    <div class="content">
+      <div class="article-content" :class="typeClass">
+        <h1 class="article-title">{{ article.title }}</h1>
+        <div class="stuffix d-flex">
+          <span
+            class="time tip"
+          >{{ article.time.day }} {{ article.time.month }} {{ article.time.year }}</span>
+          <span class="tip tag d-flex">分类 {{ article.tag }}</span>
+          <span class="tip views d-flex">浏览 {{ article.views }}</span>
           <!-- <span class='tip liked d-flex'>喜欢 {{ article.liked }}</span> -->
         </div>
 
-        <div
-          class='article-info'
-          :class='typeClass'
-          v-html='htmlContent'
-        />
+        <div class="article-info" :class="typeClass" v-html="htmlContent" />
       </div>
 
-      <Comment :article='article' />
+      <Comment :article="article" />
 
       <ThemeSwitch />
     </div>
@@ -31,52 +27,56 @@
 
 <script lang='ts'>
 import { defineComponent } from '@nuxtjs/composition-api'
-import { parseMarkdownFile } from '~/utils/marked'
-import 'highlight.js/styles/atom-one-dark-reasonable.css'
-import { Context } from '@nuxt/types'
+import useArticleDetail from '~/pageHooks/useArticleDetail'
 import Comment from '~/components/Comment/index.vue'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import BackTop from '~/components/BackTop/index.vue'
 import Modal from '~/components/KModal/index.vue'
+import 'highlight.js/styles/atom-one-dark-reasonable.css'
 
 export default defineComponent({
   name: 'ArticleId',
   components: { KHeader, ThemeSwitch, BackTop, Modal, Comment },
   // @ts-ignore
-  async asyncData({ params, $axios }: Context): Promise<object | void> | object | void {
-    const { articleId } = params
-    const paramsArr = articleId.split('_') // 路径参数由 uid_id 拼接而来
-    const uid = paramsArr[0],
-      id = paramsArr[1]
-    try {
-      const { success, data } = await $axios.get('/record/detail', {
-        params: { uid, id }
-      })
-      // success to get article content
-      if (success) {
-        return {
-          article: data,
-          htmlContent: parseMarkdownFile(data.content),
-          typeClass: data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
-        }
-      } else {
-        return {
-          article: {
-            time: {}
-          },
-          htmlContent: '',
-          typeClass: 'mood'
-        }
-      }
-    } catch (e) {
-      return {
-        article: {
-          time: {}
-        },
-        htmlContent: '',
-        typeClass: 'mood'
-      }
+  // async asyncData({ params, $axios }: Context): Promise<object | void> | object | void {
+  //   const { articleId } = params
+  //   const paramsArr = articleId.split('_') // 路径参数由 uid_id 拼接而来
+  //   const uid = paramsArr[0],
+  //     id = paramsArr[1]
+  //   try {
+  //     const { success, data } = await $axios.get('/record/detail', {
+  //       params: { uid, id }
+  //     })
+  //     // success to get article content
+  //     if (success) {
+  //       return {
+  //         article: data,
+  //         htmlContent: parseMarkdownFile(data.content),
+  //         typeClass: data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
+  //       }
+  //     } else {
+  //       return {
+  //         article: {
+  //           time: {}
+  //         },
+  //         htmlContent: '',
+  //         typeClass: 'mood'
+  //       }
+  //     }
+  //   } catch (e) {
+  //     return {
+  //       article: {
+  //         time: {}
+  //       },
+  //       htmlContent: '',
+  //       typeClass: 'mood'
+  //     }
+  //   }
+  // },
+  setup() {
+    return {
+      ...useArticleDetail()
     }
   },
   head() {

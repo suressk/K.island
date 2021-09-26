@@ -1,16 +1,14 @@
-import { zhMonths } from './variable'
+import { zhMonths } from './variables'
 import { ArticleItem } from '~/types'
 import { Store } from 'vuex'
 import DAYJS from 'dayjs'
 import notify from '~/components/notification'
-
-const PRE_FIXED = 'K_'
-const DATE_FORMAT = 'YYYY-MM-DD'
+import { PRE_FIXED, DATE_FORMAT } from './variables'
 
 /**
  * Notification func
  * */
-export function successNotify (message: string, duration: number = 4500) {
+export function successNotify(message: string, duration: number = 4500) {
   return notify({
     type: 'success',
     title: 'Congratulations',
@@ -19,7 +17,7 @@ export function successNotify (message: string, duration: number = 4500) {
   })
 }
 
-export function warnNotify (message: string, duration: number = 4500) {
+export function warnNotify(message: string, duration: number = 4500) {
   return notify({
     type: 'warning',
     title: 'Sorry',
@@ -28,7 +26,7 @@ export function warnNotify (message: string, duration: number = 4500) {
   })
 }
 
-export function errorNotify (message: string, duration: number = 4500) {
+export function errorNotify(message: string, duration: number = 4500) {
   return notify({
     type: 'error',
     title: 'Oops',
@@ -38,9 +36,26 @@ export function errorNotify (message: string, duration: number = 4500) {
 }
 
 /**
+ * @description 延迟执行
+ * @author Saul
+ * @date 26/09/2021
+ * @export
+ * @param {Function} func
+ * @param {number} [delayTime=1000]
+ */
+export function delayCall(
+  func: Function,
+  delayTime: number = 1000
+): number {
+  return window.setTimeout(() => {
+    func()
+  }, delayTime)
+}
+
+/**
  * commit mutations
  * */
-export function commitMutations<Payload> (
+export function commitMutations<Payload>(
   store: Store<any>,
   type: string,
   payload?: Payload
@@ -51,7 +66,7 @@ export function commitMutations<Payload> (
 /**
  * 添加事件监听
  * */
-export function addListener (
+export function addListener(
   element: HTMLElement | Document | Window,
   event: string,
   handler: EventListener,
@@ -63,7 +78,7 @@ export function addListener (
 /**
  * 移除事件监听
  * */
-export function removeListener (
+export function removeListener(
   element: HTMLElement | Document | Window,
   event: string,
   handler: EventListener
@@ -77,7 +92,7 @@ export function removeListener (
  * @param delay
  * @param immediate
  */
-export function debounce (fn: Function, delay: number, immediate: boolean = false) {
+export function debounce(fn: Function, delay: number, immediate: boolean = false) {
   let timer: any = null
   return function (...args: any[]) {
     // @ts-ignore
@@ -109,7 +124,7 @@ export function getWindowProp(type: string) {
  * 滚动条滚动事件处理
  * */
 let rafId = -1 // 存储调用 requestAnimationFrame() 的返回值，用于取消动画
-export function singleScroll (domSelector: string, type: string = 'top', speed = 10) {
+export function singleScroll(domSelector: string, type: string = 'top', speed = 10) {
   // DOM元素 计算位置
   const dom = document.querySelector(domSelector) as HTMLElement
   const top = dom.offsetTop
@@ -117,11 +132,11 @@ export function singleScroll (domSelector: string, type: string = 'top', speed =
   let target: number = 0
   if (type === 'top') {
     target = 0
-  // } else if (type === 'comment') {
-  //   // 评论
-  //   const commentDom = <HTMLElement>document.querySelector('.comment-form')
-  //   const commentHeight = commentDom.offsetHeight
-  //   target = top - getWindowProp('clientHeight') + commentHeight
+    // } else if (type === 'comment') {
+    //   // 评论
+    //   const commentDom = <HTMLElement>document.querySelector('.comment-form')
+    //   const commentHeight = commentDom.offsetHeight
+    //   target = top - getWindowProp('clientHeight') + commentHeight
   } else {
     const index = type === 'index' ? 280 : -700
     target = top + (getWindowProp('clientHeight') / 2) + index
@@ -130,7 +145,7 @@ export function singleScroll (domSelector: string, type: string = 'top', speed =
 
   handleScroll()
 
-  function handleScroll () {
+  function handleScroll() {
     let scrollTop = getWindowProp('scrollTop')
     let distance = (target - scrollTop) / speed
     distance = distance > 0 ? Math.ceil(distance) : Math.floor(distance)
@@ -165,7 +180,7 @@ export function singleScroll (domSelector: string, type: string = 'top', speed =
  * @param fn
  * @param delay
  */
-export function throttle (fn: Function, delay: number = 3000) {
+export function throttle(fn: Function, delay: number = 3000) {
   let timer: any = null
   let startTime: number
   return function (...args: any[]) {
@@ -189,7 +204,7 @@ export function throttle (fn: Function, delay: number = 3000) {
  * 阻止默认事件
  * @param e Event
  */
-export function preventDefault (e: Event) {
+export function preventDefault(e: Event) {
   e.preventDefault()
 }
 
@@ -205,7 +220,7 @@ export function waitForCalling(func: () => void, delay: number = 500) {
 /**
  * 校验 Email 格式
  * */
-export function checkIsEmail (email: string): boolean {
+export function checkIsEmail(email: string): boolean {
   // const emailReg = /^([a-zA-Z]|[0-9])(\w|-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
   const emailReg = /\w+@([0-9a-zA-Z]+[-0-9a-zA-Z]*)(\.[0-9a-zA-Z]+[-0-9a-zA-Z]*)+/
   return emailReg.test(email)
@@ -214,7 +229,7 @@ export function checkIsEmail (email: string): boolean {
 /**
  * 获取当前时间：月 日 年 格式返回
  * */
-export function getCurrentTime () {
+export function getCurrentTime() {
   const date: Date = new Date()
   const year: number = date.getFullYear()
   const month: number = date.getMonth()
@@ -223,17 +238,17 @@ export function getCurrentTime () {
 }
 
 /**
- * 获取 localstorage 存储的数据
+ * 获取 localStorage 存储的数据
  * */
-export function getStorageItem<V> (key: string): null | V {
+export function getStorageItem<V>(key: string): null | V {
   const value = localStorage.getItem(PRE_FIXED + key)
   return (value ? JSON.parse(value) : null)
 }
 
 /**
- * 将数据存储到 localstorage
+ * 将数据存储到 localStorage
  * */
-export function setStorageItem<V> (key: string, value: V): void {
+export function setStorageItem<V>(key: string, value: V): void {
   localStorage.setItem(PRE_FIXED + key, JSON.stringify(value))
 }
 
@@ -241,7 +256,7 @@ export function setStorageItem<V> (key: string, value: V): void {
  * 插入 time: dateFormat() => time
  * 生成按年分组的数据
  * */
-export function mapYearGroup (dataList: ArticleItem[]) {
+export function mapYearGroup(dataList: ArticleItem[]) {
   const data: any = {}
   const years: string[] = [] // 所有年份
   dataList.forEach(item => {
@@ -278,7 +293,7 @@ interface YearData<T> {
  *   }
  * }
  * */
-export function createArticleListData (records: YearData<ArticleItem>) {
+export function createArticleListData(records: YearData<ArticleItem>) {
   const result: any = {}
   for (const yearStr in records) {
     result[yearStr] = createMonthGroup(records[yearStr])
@@ -289,7 +304,7 @@ export function createArticleListData (records: YearData<ArticleItem>) {
 /**
  * 创建月分组
  * */
-function createMonthGroup (data: ArticleItem[]) {
+function createMonthGroup(data: ArticleItem[]) {
   const result: any = {}
   data.forEach(item => {
     const { time: { month } } = item // 'Jan'
@@ -304,7 +319,7 @@ function createMonthGroup (data: ArticleItem[]) {
 /**
  * 平铺按年分组的文章列表
  * */
-export function plainArticleList (records: YearData<ArticleItem>) {
+export function plainArticleList(records: YearData<ArticleItem>) {
   const years = Object.keys(records)
   const len = years.length
   const result: ArticleItem[] = []
@@ -338,7 +353,7 @@ export function isToday(time: number): boolean {
 /**
  * 解析查询参数
  * */
-export function parseLocationSearch () {
+export function parseLocationSearch() {
   const searchStr = decodeURIComponent(location.search)
   const obj: any = {}
   if (searchStr) {

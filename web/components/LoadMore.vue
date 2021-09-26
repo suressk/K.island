@@ -1,42 +1,45 @@
 <template>
-  <div class='load-more flex-center'>
-    <template v-if='showLoadMore && loadStatus === 0'>
-      <div class='load-more-btn' @click='emitLoadMore'>Load More</div>
+  <div class="load-more flex-center">
+    <template v-if="showLoadMore && loadStatus === 0">
+      <div class="load-more-btn" @click="emitLoadMore">Load More</div>
     </template>
-    <template v-else-if='loadStatus === -1'>
-      <div class='tip trans-all-03'>没有更多了 ~</div>
+    <template v-else-if="loadStatus === -1">
+      <div class="tip trans-all-03">没有更多了 ~</div>
     </template>
-    <template v-else-if='loadStatus === 1'>
-      <span class='dot' />
-      <span class='dot' />
-      <span class='dot' />
-      <span class='dot' />
-      <span class='dot' />
+    <template v-else-if="loadStatus === 1">
+      <span class="dot" />
+      <span class="dot" />
+      <span class="dot" />
+      <span class="dot" />
+      <span class="dot" />
     </template>
   </div>
 </template>
 
 <script lang='ts'>
+import { getCurrentInstance } from '@nuxtjs/composition-api'
 import { defineComponent } from '@nuxtjs/composition-api'
+import { useState } from '~/utils'
+import { LOAD_STATUS } from '~/store/mutation-types'
 
 export default defineComponent({
   name: 'LoadMore',
   props: {
-    loadStatus: {
-      type: Number,
-      default: 0
-    },
     showLoadMore: {
       type: Boolean,
       default: true
     }
   },
   setup(props, { emit }) {
+    const vm = getCurrentInstance()!.proxy
+
+    const loadStatus = useState(vm.$store, LOAD_STATUS)
     function emitLoadMore() {
       emit('load-more')
     }
 
     return {
+      loadStatus,
       emitLoadMore
     }
   }
@@ -60,7 +63,7 @@ export default defineComponent({
     padding: 6px 10px;
     color: var(--tipColor);
     cursor: pointer;
-    transition: background-color .3s, color .3s, border-color .3s;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 
     &:hover {
       color: var(--white);
@@ -117,7 +120,8 @@ export default defineComponent({
 }
 
 @keyframes beat {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(0.5);
     opacity: 0.8;
     filter: drop-shadow(0 0 10px var(--error)) invert(0%);

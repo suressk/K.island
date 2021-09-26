@@ -14,7 +14,7 @@ export const M_RESET_LOAD_MORE = 'M_RESET_LOAD_MORE' // 重置 loadMore 状态
  *  1   正在加载
  */
 export const LOADING = 1
-export const LOAD_MORE = 0
+export const HAS_MORE = 0
 export const NO_MORE = -1
 
 /**

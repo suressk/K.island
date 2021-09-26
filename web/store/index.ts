@@ -6,7 +6,7 @@ import {
   LOAD_STATUS,
   TOTAL_ITEMS,
   CURRENT_PAGE,
-  LOAD_MORE
+  HAS_MORE
 } from './mutation-types'
 
 interface State {
@@ -28,19 +28,19 @@ export const state = (): State => ({
  * mutations
  * */
 export const mutations = {
-  [M_SET_CURRENT_PAGE] (state: State, page: number) {
+  [M_SET_CURRENT_PAGE](state: State, page: number) {
     state[CURRENT_PAGE] = page
   },
-  [M_SET_TOTAL_ITEMS] (state: State, itemsNum: number) {
+  [M_SET_TOTAL_ITEMS](state: State, itemsNum: number) {
     state[TOTAL_ITEMS] = itemsNum
   },
   // 重置加载更多状态值
-  [M_RESET_LOAD_MORE] (state: State) {
+  [M_RESET_LOAD_MORE](state: State) {
     state[TOTAL_ITEMS] = 0
     state[CURRENT_PAGE] = 1
-    state[LOAD_STATUS] = LOAD_MORE
+    state[LOAD_STATUS] = HAS_MORE
   },
-  [M_SET_LOAD_STATUS] (state: State, status: number) {
+  [M_SET_LOAD_STATUS](state: State, status: number) {
     state[LOAD_STATUS] = status
   }
 }

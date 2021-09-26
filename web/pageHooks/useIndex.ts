@@ -12,34 +12,33 @@ import {
   addListener,
   removeListener,
   commitMutations,
-  errorNotify
-} from '~/utils/util'
+  errorNotify,
+  useState,
+  delayCall
+} from '~/utils'
 import {
   M_SET_LOAD_STATUS,
   M_SET_CURRENT_PAGE,
   LOADING,
-  LOAD_MORE,
+  HAS_MORE,
   NO_MORE,
-  LOAD_STATUS,
   CURRENT_PAGE,
   TOTAL_ITEMS
 } from '~/store/mutation-types'
-import {loadTextures , rainInit} from '~/components/rainEffect'
-import {useState} from '~/utils/useStore'
-import {ArticleItem, ArticleDetail} from '~/types'
+import { loadTextures, rainInit } from '~/components/rainEffect'
+import { ArticleItem, ArticleDetail } from '~/types'
 
 /**
  * 首页 composition-api 代码风格 写法抽离
  */
 export default function useIndex() {
   const vm = getCurrentInstance()!.proxy
-  // @ts-ignore
   const axios = vm.$axios
   const sceneHeight = ref<string>('100%')
   const sceneWidth = ref<string>('100%')
   const showNav = ref<boolean>(false)
 
-  const loadStatus = useState(vm.$store, LOAD_STATUS)
+  // const loadStatus = useState(vm.$store, LOAD_STATUS)
   const curPage = useState(vm.$store, CURRENT_PAGE)
   const totalItems = useState(vm.$store, TOTAL_ITEMS)
   const today = ref<string>('')
@@ -84,14 +83,14 @@ export default function useIndex() {
     document.body.style.overflowY = showNav.value ? 'hidden' : ''
   }
 
-  function nextChangeLoadStatus(data: { list: ArticleItem[], total: number}) {
+  function nextChangeLoadStatus(data: { list: ArticleItem[], total: number }) {
     articleList.value = [...articleList.value, ...data.list]
     // 还有更多
     if (articleList.value.length < data.total) {
       // 当前页 +1
       commitMutations<number>(vm.$store, M_SET_CURRENT_PAGE, curPage.value + 1)
       nextTick(() => {
-        commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOAD_MORE)
+        commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, HAS_MORE)
       })
       return
     }
@@ -135,19 +134,17 @@ export default function useIndex() {
         } else {
           if (loadingTimer) clearTimeout(loadingTimer)
           // 1s ~ 2s loading
-          loadingTimer = setTimeout(() => {
-            nextChangeLoadStatus(data)
-          }, 1000)
+          loadingTimer = delayCall(() => nextChangeLoadStatus(data))
         }
       }
     } catch (e) {
       if (loadingTimer) clearTimeout(loadingTimer)
-      loadingTimer = setTimeout(() => {
+      loadingTimer = delayCall(() => {
         nextTick(() => {
           errorNotify('Something wrong with getting the article list')
-          commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, LOAD_MORE)
+          commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, HAS_MORE)
         })
-      }, 1000)
+      })
     }
   }
 
@@ -166,7 +163,6 @@ export default function useIndex() {
     totalItems,
     articleList,
     showNav,
-    loadStatus,
     sceneHeight,
     sceneWidth,
     handleToggleNav,

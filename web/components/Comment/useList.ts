@@ -1,5 +1,5 @@
 import { reactive, ref, getCurrentInstance, computed, nextTick, onMounted } from '@nuxtjs/composition-api'
-import { AuthorInfo, LOAD_MORE, LOADING, NO_MORE } from '~/store/mutation-types'
+import { AuthorInfo, HAS_MORE, LOADING, NO_MORE } from '~/store/mutation-types'
 import { CommentItem, MentionsInfo, CommentPropsParams } from '~/types'
 import { errorNotify, successNotify, warnNotify, waitForCalling } from '~/utils/util'
 import useForm from './useForm'
@@ -52,8 +52,8 @@ export default function useList(props: CommentPropsParams) {
     loadStatus.value = LOADING
     if (timer) clearTimeout(timer)
     timer = waitForCalling(() => {
-      curPage.value ++
-      loadStatus.value = showList.value.length < commentList.value.length ? LOAD_MORE : NO_MORE
+      curPage.value++
+      loadStatus.value = showList.value.length < commentList.value.length ? HAS_MORE : NO_MORE
     }, 1000)
   }
 
@@ -108,7 +108,7 @@ export default function useList(props: CommentPropsParams) {
       if (res.success) {
         commentList.value = res.data
         curPage.value = 1
-        loadStatus.value = res.data.length > curPage.value * size ? LOAD_MORE : NO_MORE
+        loadStatus.value = res.data.length > curPage.value * size ? HAS_MORE : NO_MORE
       }
     }).catch((err: any) => {
       errorNotify(err.message)
