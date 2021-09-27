@@ -14,7 +14,7 @@ import {
   commitMutations,
   errorNotify,
   useState,
-  delayCall
+  waitForCalling
 } from '~/utils'
 import {
   M_SET_LOAD_STATUS,
@@ -134,17 +134,17 @@ export default function useIndex() {
         } else {
           if (loadingTimer) clearTimeout(loadingTimer)
           // 1s ~ 2s loading
-          loadingTimer = delayCall(() => nextChangeLoadStatus(data))
+          loadingTimer = waitForCalling(() => nextChangeLoadStatus(data), 1000)
         }
       }
     } catch (e) {
       if (loadingTimer) clearTimeout(loadingTimer)
-      loadingTimer = delayCall(() => {
+      loadingTimer = waitForCalling(() => {
         nextTick(() => {
           errorNotify('Something wrong with getting the article list')
           commitMutations<number>(vm.$store, M_SET_LOAD_STATUS, HAS_MORE)
         })
-      })
+      }, 1000)
     }
   }
 

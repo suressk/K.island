@@ -12,7 +12,7 @@
       <!--   月份分组   -->
       <div class="year-list" v-for="(yearItem, year, idx) in articleList" :key="idx">
         <ul class="month-list" v-for="(monthItem, month) in yearItem" :key="month">
-          <li class="month">{{ month + ', ' + year }}</li>
+          <li class="month">{{ `${month as string}, ${year as string}` }}</li>
           <li class="month-item">
             <div
               class="article-item"
@@ -49,25 +49,11 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { mapState } from 'vuex'
-import { ArticleItem } from '~/types'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import LoadMore from '~/components/LoadMore.vue'
 import scrollMixin from '~/mixin/scroller'
 import useArticleList from '~/pageHooks/useArticleList'
-import { commitMutations, mapYearGroup, createArticleListData, errorNotify, delayCall, DEFAULT_ERROR_TIP } from '~/utils'
-import {
-  NO_MORE,
-  LOADING,
-  HAS_MORE,
-  TOTAL_ITEMS,
-  CURRENT_PAGE,
-  M_SET_LOAD_STATUS,
-  M_SET_TOTAL_ITEMS,
-  M_SET_CURRENT_PAGE,
-  M_RESET_LOAD_MORE
-} from '~/store/mutation-types'
 // import {Context} from '@nuxt/types'
 
 export default defineComponent({

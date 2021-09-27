@@ -107,7 +107,7 @@ export default defineComponent({
         {
           hid: 'description',
           name: 'description',
-          content: '愿世间美好都能如约而至，愿我们都能变为自己期愿的 样子...'
+          content: '愿世间美好都能如约而至，愿我们都能变为自己期愿的样子...'
         }
       ]
     }

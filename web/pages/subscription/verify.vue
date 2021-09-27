@@ -1,34 +1,28 @@
 <template>
-  <section class='verify-subscription'>
+  <section class="verify-subscription">
     <KHeader />
 
-    <div class='content'>
-      <div class='verify-form absolute-center'>
-        <div class='modal-avatar flex-center'>
-          <img src='~~/static/images/avatar.png' alt='K.'>
+    <div class="content">
+      <div class="verify-form absolute-center">
+        <div class="modal-avatar flex-center">
+          <img src="~~/static/images/avatar.png" alt="K." />
         </div>
 
-        <div class='verify-item d-flex'>
-          <span class='inp-tag'>Name</span>
+        <div class="verify-item d-flex">
+          <span class="inp-tag">Name</span>
           <label>
-            <input type='text' placeholder='Enter your nickname...' v-model='name' />
+            <input type="text" placeholder="Enter your nickname..." v-model="name" />
           </label>
         </div>
 
-        <div class='verify-item d-flex'>
-          <span class='inp-tag'>Code</span>
+        <div class="verify-item d-flex">
+          <span class="inp-tag">Code</span>
           <label>
-            <input type='text' placeholder='Enter the verification code...' v-model='code' />
+            <input type="text" placeholder="Enter the verification code..." v-model="code" />
           </label>
         </div>
-        <div class='btn-container'>
-          <button
-            class='btn btn-primary'
-            :disabled='notAllowed'
-            @click='handleVerifyCode'
-          >
-            SUBMIT
-          </button>
+        <div class="btn-container">
+          <button class="btn btn-primary" :disabled="notAllowed" @click="handleVerifyCode">SUBMIT</button>
         </div>
       </div>
     </div>
@@ -42,6 +36,7 @@ import { ref, computed, getCurrentInstance, defineComponent, onMounted } from '@
 import { parseLocationSearch, successNotify, warnNotify, errorNotify } from '~/utils/util'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
+import { DEFAULT_ERROR_TIP } from '~/utils'
 
 export default defineComponent({
   name: 'verify',
@@ -52,28 +47,26 @@ export default defineComponent({
     const name = ref<string>('')
     const code = ref<string>('')
 
-    const notAllowed = computed(() => {
-      return ((!code.value) || (!email.value) || (!name.value))
-    })
+    const notAllowed = computed(() => ((!code.value) || (!email.value) || (!name.value)))
 
-    function handleVerifyCode() {
-      // @ts-ignore
-      vm.$axios.post('/subscribe/verify', {
-        email: email.value,
-        code: code.value,
-        name: name.value
-      }).then((res: any) => {
-        if (res.success) {
-          successNotify(res.message + ' 1s 后将回到首页')
+    async function handleVerifyCode() {
+      try {
+        const { success, message } = await vm.$axios.post('/subscribe/verify', {
+          email: email.value,
+          code: code.value,
+          name: name.value
+        })
+        if (success) {
+          successNotify(message + ' 1s 后将回到首页')
           setTimeout(() => {
             location.href = location.origin
           }, 1000)
         } else {
-          warnNotify(res.message)
+          warnNotify(message ?? DEFAULT_ERROR_TIP)
         }
-      }).catch((err: any) => {
-        errorNotify(err.message)
-      })
+      } catch (error: any) {
+        errorNotify(error?.message ?? DEFAULT_ERROR_TIP)
+      }
     }
 
     onMounted(() => {
@@ -110,11 +103,11 @@ export default defineComponent({
       top: -50px;
       left: 0;
       border-radius: 50%;
-      box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .verify-item {
-      box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       margin: 50px 20px 0;
       border: 1px solid var(--border);
       border-radius: 5px;
@@ -152,7 +145,7 @@ export default defineComponent({
       text-align: right;
 
       .btn {
-        box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       }
     }
   }

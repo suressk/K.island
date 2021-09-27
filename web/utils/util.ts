@@ -36,21 +36,12 @@ export function errorNotify(message: string, duration: number = 4500) {
 }
 
 /**
- * @description 延迟执行
- * @author Saul
- * @date 26/09/2021
- * @export
- * @param {Function} func
- * @param {number} [delayTime=1000]
+ * 格式化显示时间
  */
-export function delayCall(
-  func: Function,
-  delayTime: number = 1000
-): number {
-  return window.setTimeout(() => {
-    func()
-  }, delayTime)
-}
+export const formatTime = (
+  date: number,
+  format: string = 'YYYY-MM-DD HH:mm:ss'
+) => date ? DAYJS(date).format(format) : '-'
 
 /**
  * commit mutations
@@ -211,7 +202,10 @@ export function preventDefault(e: Event) {
 /**
  * delay to call
  * */
-export function waitForCalling(func: () => void, delay: number = 500) {
+export function waitForCalling(
+  func: () => void,
+  delay: number = 500
+) {
   return window.setTimeout(() => {
     func()
   }, delay)
@@ -259,6 +253,7 @@ export function setStorageItem<V>(key: string, value: V): void {
 export function mapYearGroup(dataList: ArticleItem[]) {
   const data: any = {}
   const years: string[] = [] // 所有年份
+
   dataList.forEach(item => {
     if (!years.includes(item.time.year)) {
       years.push(item.time.year)
@@ -267,6 +262,7 @@ export function mapYearGroup(dataList: ArticleItem[]) {
   const yearLen = years.length
   // 年份从大到小排序
   years.sort((a, b) => Number(b) - Number(a))
+
   for (let i = 0; i < yearLen; i++) {
     const sortData = dataList.filter(item => item.time.year === years[i])
     // 月份从大到小排序
@@ -333,21 +329,10 @@ export function plainArticleList(records: YearData<ArticleItem>) {
  * 判断是否是今天（年月日 => 日期同一天）
  * */
 export function isToday(time: number): boolean {
-  const now = DAYJS(Date.now()).format(DATE_FORMAT).split('-') // today
-  const other = DAYJS(new Date(time)).format(DATE_FORMAT).split('-') // anotherDay
-  const today = {
-    year: now[0],
-    month: now[1],
-    day: now[2]
-  }
-  const otherDay = {
-    year: other[0],
-    month: other[1],
-    day: other[2]
-  }
-  return (today.year === otherDay.year &&
-    today.month === otherDay.month &&
-    today.day === otherDay.day);
+  const now = DAYJS(Date.now()).format(DATE_FORMAT) // today
+  const other = DAYJS(time).format(DATE_FORMAT) // anotherDay
+
+  return now === other
 }
 
 /**

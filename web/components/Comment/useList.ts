@@ -1,8 +1,10 @@
-import { reactive, ref, getCurrentInstance, computed, nextTick, onMounted } from '@nuxtjs/composition-api'
-import { AuthorInfo, HAS_MORE, LOADING, NO_MORE } from '~/store/mutation-types'
+import { reactive, ref, getCurrentInstance, computed, onBeforeUnmount, onMounted } from '@nuxtjs/composition-api'
+import { AuthorInfo, HAS_MORE, LOADING, M_RESET_LOAD_MORE, M_SET_LOAD_STATUS, NO_MORE } from '~/store/mutation-types'
 import { CommentItem, MentionsInfo, CommentPropsParams } from '~/types'
-import { errorNotify, successNotify, warnNotify, waitForCalling } from '~/utils/util'
+import { errorNotify, successNotify, warnNotify, waitForCalling, commitMutations, DEFAULT_ERROR_TIP } from '~/utils'
 import useForm from './useForm'
+
+const PAGE_SIZE = 5
 
 export default function useList(props: CommentPropsParams) {
   const {
@@ -37,23 +39,26 @@ export default function useList(props: CommentPropsParams) {
   })
   /* 当前评论分页 (web 端处理) */
   const curPage = ref<number>(1)
-  const size = 5 /* 分页，每页显示数 */
-  const loadStatus = ref<number>(0)
+  // const loadStatus = ref<number>(0)
 
   /**
    * 分页展示的评论
    * */
   const showList = computed(() => {
-    const showTotal = curPage.value * size
+    const showTotal = curPage.value * PAGE_SIZE
     return showTotal < commentList.value.length ? commentList.value.slice(0, showTotal) : commentList.value
   })
 
   function pagePlus() {
-    loadStatus.value = LOADING
+    commitMutations(vm.$store, M_SET_LOAD_STATUS, LOADING)
     if (timer) clearTimeout(timer)
     timer = waitForCalling(() => {
       curPage.value++
-      loadStatus.value = showList.value.length < commentList.value.length ? HAS_MORE : NO_MORE
+      if (showList.value.length < commentList.value.length) {
+        commitMutations(vm.$store, M_SET_LOAD_STATUS, HAS_MORE)
+      } else {
+        commitMutations(vm.$store, M_SET_LOAD_STATUS, NO_MORE)
+      }
     }, 1000)
   }
 
@@ -80,12 +85,15 @@ export default function useList(props: CommentPropsParams) {
    * @param {*} replyTag 是否是评论他人
    * @param {*} info? 评论对象
    * */
-  function commentReply(replyTag: boolean, info?: CommentItem) {
+  function replyComment(replyTag: boolean, info?: CommentItem) {
     showModal(true)
     isReply.value = replyTag
     !replyTag && initMentions()
-    if (!info) return
-    // 拿取回复对象信息
+
+    if (!info) {
+      return
+    }
+    // 回复对象信息
     const { fromName, fromEmail, id, topicId, parentId } = info
     mentionsInfo.toName = fromName
     mentionsInfo.toEmail = fromEmail
@@ -96,23 +104,29 @@ export default function useList(props: CommentPropsParams) {
   /**
    * 获取当前文章评论列表
    * */
-  function getComments() {
+  async function getComments() {
     if (!props.article.id) {
-      loadStatus.value = NO_MORE
+      commitMutations(vm.$store, M_SET_LOAD_STATUS, NO_MORE)
       return
     }
 
-    vm.$axios.get('/comment/list', {
-      params: { articleId: props.article.id }
-    }).then((res: any) => {
-      if (res.success) {
-        commentList.value = res.data
+    try {
+      const { success, data } = await vm.$axios.get('/comment/list', {
+        params: { articleId: props.article.id }
+      })
+      if (success) {
+        commentList.value = data
         curPage.value = 1
-        loadStatus.value = res.data.length > curPage.value * size ? HAS_MORE : NO_MORE
+        // 还有更多
+        if (data.length > curPage.value * PAGE_SIZE) {
+          commitMutations(vm.$store, M_SET_LOAD_STATUS, HAS_MORE)
+        } else {
+          commitMutations(vm.$store, M_SET_LOAD_STATUS, NO_MORE)
+        }
       }
-    }).catch((err: any) => {
-      errorNotify(err.message)
-    })
+    } catch (error: any) {
+      errorNotify(error?.message ?? DEFAULT_ERROR_TIP)
+    }
   }
 
   /**
@@ -136,9 +150,9 @@ export default function useList(props: CommentPropsParams) {
   /**
    * 新增评论文章或回复他人评论
    * */
-  function addComment() {
+  async function addComment() {
     try {
-      vm.$axios.post('/comment/add', {
+      const { success, message } = vm.$axios.post('/comment/add', {
         toName: mentionsInfo.toName,
         toEmail: mentionsInfo.toEmail,
         topicId: mentionsInfo.topicId,
@@ -149,27 +163,27 @@ export default function useList(props: CommentPropsParams) {
         articleId: props.article.id,
         articleUid: props.article.uid,
         articleTitle: props.article.title
-      }).then((res: any) => {
-        if (!res.success) {
-          warnNotify(res.message)
-          return
-        }
-        saveCommentUser()
-        nextHideModal().then(() => {
-          successNotify(res.message)
-        })
-      }).catch((err: any) => {
-        tipIndex.value = 5
-        errorNotify(err.message)
       })
-    } catch (err) {
+      if (!success) {
+        warnNotify(message)
+        return
+      }
+      saveCommentUser()
+      nextHideModal().then(() => {
+        successNotify(message)
+      })
+    } catch (err: any) {
       tipIndex.value = 5
-      errorNotify(err.message)
+      errorNotify(err?.message ?? DEFAULT_ERROR_TIP)
     }
   }
 
   onMounted(() => {
     getComments()
+  })
+
+  onBeforeUnmount(() => {
+    commitMutations(vm.$store, M_RESET_LOAD_MORE)
   })
 
   // comment modal submit button click
@@ -200,8 +214,7 @@ export default function useList(props: CommentPropsParams) {
     mentionsInfo,
     visible,
     showList,
-    loadStatus,
-    commentReply,
+    replyComment,
     pagePlus,
     submit
   }

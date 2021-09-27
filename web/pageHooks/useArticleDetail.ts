@@ -3,11 +3,9 @@ import {
   Ref,
   reactive,
   getCurrentInstance,
-  onMounted,
-  onBeforeUnmount,
-  nextTick
+  onMounted
 } from '@nuxtjs/composition-api'
-import { parseMarkdownFile, errorNotify, DEFAULT_ERROR_TIP } from '~/utils'
+import { parseMarkdownFile, errorNotify, DEFAULT_ERROR_TIP, warnNotify } from '~/utils'
 import { ArticleDetail } from '~/types'
 
 type Ids = [string, string]
@@ -24,7 +22,6 @@ interface ArticleDetailReturns {
   article: ArticleDetail
   htmlContent: Ref<string>
   typeClass: Ref<string>
-
 }
 
 /**
@@ -34,7 +31,7 @@ interface ArticleDetailReturns {
  */
 const useArticleDetail = (): ArticleDetailReturns => {
   const vm = getCurrentInstance()!.proxy
-  const axios = vm.$axios
+
   const article = reactive<ArticleDetail>({
     id: 1,
     uid: '',
@@ -48,7 +45,7 @@ const useArticleDetail = (): ArticleDetailReturns => {
     },
     title: '',
     introduce: '',
-    tag: 'mood',
+    tag: 'Mood',
     views: 10,
     liked: 1,
     cover: '',
@@ -63,21 +60,33 @@ const useArticleDetail = (): ArticleDetailReturns => {
 
   const fetchArticleDetail = async (uid: string, id: string) => {
     try {
-      const { success, data } = await axios.get('/record/detail', {
+      const { success, data, message } = await vm.$axios.get('/record/detail', {
         params: { uid, id }
       })
       if (success) {
         htmlContent.value = parseMarkdownFile(data.content)
         typeClass.value = data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
 
-        // return {
-        //   article: data,
-        //   htmlContent: parseMarkdownFile(data.content),
-        //   typeClass: data.tag.toLowerCase() === 'mood' ? 'mood' : 'code'
-        // }
+        const NOW = Date.now()
+        article.id = data?.id ?? id
+        article.uid = data?.uid ?? uid
+        article.time = data?.time ?? {}
+        article.title = data?.title ?? ''
+        article.introduce = data?.introduce ?? ''
+        article.tag = data?.tag ?? 'Mood'
+        article.views = data?.views ?? 10
+        article.liked = data?.liked ?? 1
+        article.cover = data?.cover ?? ''
+        article.ctime = data?.ctime ?? NOW
+        article.utime = data?.utime ?? NOW
+        article.content = data?.content ?? ''
+        article.music = data?.music ?? ''
+        article.musicName = data?.musicName ?? ''
+      } else {
+        warnNotify(message ?? DEFAULT_ERROR_TIP)
       }
     } catch (error: any) {
-      errorNotify(error?.message || DEFAULT_ERROR_TIP)
+      errorNotify(error?.message ?? DEFAULT_ERROR_TIP)
     }
   }
   onMounted(() => {
