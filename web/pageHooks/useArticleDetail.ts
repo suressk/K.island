@@ -11,14 +11,17 @@ import { ArticleDetail } from '~/types'
 type Ids = [string, string]
 
 // 获取文章 uid 与 id
-function getIds(): Ids {
-  const paths = window.location.pathname.split('/')
+export function getIds(pathname: string): Ids {
+  if (!pathname || pathname.indexOf('_') === -1) {
+    return ['', '']
+  }
+  const paths = pathname.split('/')
   const idGroup = paths[paths.length - 1] // uid_id
-  const ids = idGroup.split('_') as Ids // 拆分 uid 与 id
-  return ids
+  // 拆分 uid 与 id
+  return idGroup.split('_') as Ids
 }
 
-interface ArticleDetailReturns {
+export interface ArticleDetailReturns {
   article: ArticleDetail
   htmlContent: Ref<string>
   typeClass: Ref<string>
@@ -90,8 +93,9 @@ const useArticleDetail = (): ArticleDetailReturns => {
     }
   }
   onMounted(() => {
-    const [uid, id] = getIds()
+    const [uid, id] = getIds(window.location.pathname)
     fetchArticleDetail(uid, id)
+    console.log('article-detail: ', vm)
   })
 
   return {

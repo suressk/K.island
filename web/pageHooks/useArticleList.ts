@@ -35,6 +35,7 @@ interface ArticleListReturns {
   articleList: ComputedRef<any> // 懒得写...
   getArticleList: (nextPage: number) => Promise<void>
   toDetailPage: (item: ArticleItem) => void
+  loadMore: () => void
 }
 
 /**
@@ -88,12 +89,17 @@ const useArticleList = (): ArticleListReturns => {
     vm.$router.push(`/article/${uid}_${id}`)
   }
 
+  const loadMore = () => {
+    if (loadStatus.value === HAS_MORE) {
+      getArticleList(curPage.value)
+    }
+  }
+
   // 滚动到页面底部触发加载更多
   // @ts-ignore
   watch(() => vm.scrollerIsBottom, (isBottom: boolean) => {
-    if (isBottom && loadStatus.value === HAS_MORE) {
-      getArticleList(curPage.value)
-    }
+    if (!isBottom) return
+    loadMore()
   })
 
   onMounted(() => {
@@ -109,7 +115,8 @@ const useArticleList = (): ArticleListReturns => {
     listData,
     articleList,
     getArticleList,
-    toDetailPage
+    toDetailPage,
+    loadMore
   }
 }
 

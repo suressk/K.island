@@ -7,10 +7,9 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 NProgress.inc(0.2)
-NProgress.configure({ easing:'ease', speed:500, showSpinner: false })
+NProgress.configure({ easing: 'ease', speed: 500, showSpinner: false })
 
-// @ts-ignore , store
-export default ({ app: { router } }) => {
+export default ({ app: { router } }: any) => {
   // 前置守卫 => loader 显示加载状态
   router.beforeEach((to: any, from: any, next: () => void) => {
     NProgress.start()
@@ -18,8 +17,8 @@ export default ({ app: { router } }) => {
   })
 
   // 后置守卫 => loader 隐藏
-  // @ts-ignore
-  router.afterEach((to: any, from: any) => {
+  router.afterEach(() => {
+    // to: any, from: any
     // console.log('afterEach from: ', from)
     // console.log('afterEach to: ', to)
     NProgress.done()

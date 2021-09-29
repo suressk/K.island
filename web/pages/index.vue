@@ -40,7 +40,7 @@
           v-for="item in articleList"
           :key="item.uid"
           class="content-item"
-          @click="handleToDetail(item as any)"
+          @click="handleToDetail(item)"
         >
           <div class="cover flex-center">
             <img v-lazy="item.cover" src="~@/static/images/sunny.webp" :alt="item.title" />
@@ -75,8 +75,8 @@
 <script lang='ts'>
 import { defineComponent } from '@nuxtjs/composition-api'
 import useIndex from '~/pageHooks/useIndex'
-import LoadMore from '~/comp onents/LoadMore.vue'
-import BackTop from '~/components/BackTop/in dex.vue'
+import LoadMore from '~/components/LoadMore.vue'
+import BackTop from '~/components/BackTop/index.vue'
 import KFooter from '~/components/KFooter.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
 import { commitMutations, navList } from '~/utils'

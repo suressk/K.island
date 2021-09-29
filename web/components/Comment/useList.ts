@@ -6,6 +6,8 @@ import useForm from './useForm'
 
 const PAGE_SIZE = 5
 
+const TIME_FORMAT = 'YYYY-MM-DD HH:mm'
+
 export default function useList(props: CommentPropsParams) {
   const {
     commentInfo,
@@ -214,6 +216,7 @@ export default function useList(props: CommentPropsParams) {
     mentionsInfo,
     visible,
     showList,
+    TIME_FORMAT,
     replyComment,
     pagePlus,
     submit

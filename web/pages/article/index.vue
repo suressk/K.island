@@ -12,7 +12,7 @@
       <!--   月份分组   -->
       <div class="year-list" v-for="(yearItem, year, idx) in articleList" :key="idx">
         <ul class="month-list" v-for="(monthItem, month) in yearItem" :key="month">
-          <li class="month">{{ `${month as string}, ${year as string}` }}</li>
+          <li class="month">{{ `${month}, ${year}` }}</li>
           <li class="month-item">
             <div
               class="article-item"
@@ -30,17 +30,17 @@
               <div class="article-content flex-col-around">
                 <span class="title txt-overflow">{{ articleItem.title }}</span>
                 <span class="tip-txt txt-overflow">
-                  {{ articleItem.views + ' READED' }}
-                  {{ articleItem.liked ? (' / ' + articleItem.liked + ' LIKED') : '' }}
+                  {{ (articleItem.views || '-') + ' READED' }}
+                  {{ articleItem.liked ? (` / ${articleItem.liked || '-'} LIKED`) : '' }}
                 </span>
               </div>
-              <div class="day-marker">{{ articleItem.time.day }}</div>
+              <div class="day-marker">{{ articleItem.time.day || '-' }}</div>
             </div>
           </li>
         </ul>
       </div>
 
-      <LoadMore />
+      <LoadMore :show="false" @load-more="loadMore" />
     </div>
 
     <ThemeSwitch />

@@ -114,7 +114,7 @@
         </li>
       </ul>
 
-      <LoadMore @load-more="pagePlus" />
+      <LoadMore @load-more="pagePlus" :show-load-more="false" />
     </template>
   </section>
 </template>
@@ -126,8 +126,6 @@ import CubeLoading from '../loadingComp/CubeLoading.vue'
 import LoadMore from '~/components/LoadMore.vue'
 import useList from './useList'
 import { formatTime } from '~/utils'
-
-const TIME_FORMAT = 'YYYY-MM-DD HH:mm'
 
 export default defineComponent({
   name: 'Comment',
@@ -141,15 +139,9 @@ export default defineComponent({
   setup(props: any) {
     return {
       ...useList(props),
-      TIME_FORMAT,
       formatTime
     }
   }
-  // computed: {
-  //   commentNum({ commentList }: any) {
-  //     return commentList.length
-  //   }
-  // }
 })
 </script>
 

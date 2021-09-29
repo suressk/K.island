@@ -1,4 +1,4 @@
-import { getCurrentInstance, ref, Ref, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
+import { getCurrentInstance, ref, Ref, watch, onMounted, onBeforeUnmount } from '@nuxtjs/composition-api'
 
 import {
   HAS_MORE,

@@ -1,6 +1,6 @@
 <template>
   <div class="load-more flex-center">
-    <template v-if="showLoadMore && loadStatus === 0">
+    <template v-if="show && loadStatus === 0">
       <div class="load-more-btn" @click="emitLoadMore">Load More</div>
     </template>
     <template v-else-if="loadStatus === -1">
@@ -25,7 +25,7 @@ import { LOAD_STATUS } from '~/store/mutation-types'
 export default defineComponent({
   name: 'LoadMore',
   props: {
-    showLoadMore: {
+    show: {
       type: Boolean,
       default: true
     }

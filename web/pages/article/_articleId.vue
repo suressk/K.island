@@ -4,32 +4,33 @@
 
     <div class="content">
       <div class="article-content" :class="typeClass">
-        <h1 class="article-title">{{ article.title }}</h1>
+        <h1 class="article-title">{{ article.title || 'K.' }}</h1>
         <div class="stuffix d-flex">
           <span class="time tip">
-            {{ article.time?.day || '-' }}
-            {{ article.time?.month || '-' }}
-            {{ article.time?.year || '-' }}
+            {{ article.time.day || '-' }}
+            {{ article.time.month || '-' }}
+            {{ article.time.year || '-' }}
           </span>
           <span class="tip tag d-flex">分类 {{ article.tag }}</span>
           <span class="tip views d-flex">浏览 {{ article.views }}</span>
-          <!-- <span class='tip liked d-flex'>喜欢 {{ article.liked }}</span> -->
+          <span class="tip liked d-flex">喜欢 {{ article.liked }}</span>
         </div>
 
         <div class="article-info" :class="typeClass" v-html="htmlContent" />
       </div>
 
       <Comment :article="article" />
-
-      <ThemeSwitch />
     </div>
+
+    <ThemeSwitch />
+
     <BackTop />
   </section>
 </template>
 
 <script lang='ts'>
 import { defineComponent } from '@nuxtjs/composition-api'
-import useArticleDetail from '~/pageHooks/useArticleDetail'
+import useArticleDetail, { ArticleDetailReturns, getIds } from '~/pageHooks/useArticleDetail'
 import Comment from '~/components/Comment/index.vue'
 import KHeader from '~/components/KHeader/index.vue'
 import ThemeSwitch from '~/components/ThemeSwitch/index.vue'
@@ -37,10 +38,14 @@ import BackTop from '~/components/BackTop/index.vue'
 import Modal from '~/components/KModal/index.vue'
 import 'highlight.js/styles/atom-one-dark-reasonable.css'
 
-export default defineComponent({
+export default defineComponent<any, ArticleDetailReturns, {}, {}>({
   name: 'ArticleId',
-  components: { KHeader, ThemeSwitch, BackTop, Modal, Comment },
-  // @ts-ignore
+  components: { KHeader, ThemeSwitch, Modal, Comment, BackTop },
+  validate({ params }) {
+    const [uid, id] = getIds(params.articleId)
+    return !!uid && !!id // 新增 id 验证
+    // return true
+  },
   // async asyncData({ params, $axios }: Context): Promise<object | void> | object | void {
   //   const { articleId } = params
   //   const paramsArr = articleId.split('_') // 路径参数由 uid_id 拼接而来
@@ -81,9 +86,12 @@ export default defineComponent({
       ...useArticleDetail()
     }
   },
+  mmounted() {
+    console.log(this)
+  },
   head() {
     return {
-      // @ts-ignore
+      /* @ts-ignore */
       title: `${this.article.title} | K.island`
     }
   }
@@ -92,7 +100,6 @@ export default defineComponent({
 
 <style lang='scss'>
 @import "assets/css/components/marked.scss";
-
 @import "assets/css/components/marked.scss";
 
 .k-article-info {
@@ -138,3 +145,4 @@ export default defineComponent({
     }
   }
 }
+</style>
