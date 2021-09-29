@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 # author files
 server/common/definition.ts
+
+yarn.lock
+package-lock.json
