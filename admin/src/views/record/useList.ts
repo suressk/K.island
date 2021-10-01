@@ -1,4 +1,4 @@
-import {ref, reactive, Ref, UnwrapRef, onMounted} from 'vue'
+import { ref, reactive, Ref, UnwrapRef, onMounted } from 'vue'
 import {
     Pagination,
     QueryArticleListParams,
@@ -7,15 +7,16 @@ import {
     RecordListResponseData,
     YearDataList
 } from '../../types'
-import {useRouter} from 'vue-router'
-import {deleteRecord, getRecordList, updateRecord} from '../../api/api'
-import {errorNotify, successNotify, warningNotify, mapRecordTime, getCoverRelativePath} from '../../utils/util'
+import { useRouter } from 'vue-router'
+import { deleteRecord, getRecordList, updateRecord } from '../../api/api'
+import { errorNotify, successNotify, warningNotify, mapRecordTime, getCoverRelativePath } from '../../utils/util'
+import usePagination from '../../hooks/usePagination'
 
 const columns = [
     {
         title: 'No.',
         dataIndex: 'id',
-        slots: {customRender: 'id'}
+        slots: { customRender: 'id' }
     },
     {
         title: 'Article Title',
@@ -28,12 +29,12 @@ const columns = [
     {
         title: 'Tag',
         dataIndex: 'tag',
-        slots: {customRender: 'tag'}
+        slots: { customRender: 'tag' }
     },
     {
         title: 'Cover',
         dataIndex: 'cover',
-        slots: {customRender: 'cover'}
+        slots: { customRender: 'cover' }
     },
     {
         title: 'Views',
@@ -46,23 +47,23 @@ const columns = [
     {
         title: 'Show',
         dataIndex: 'is_delete',
-        slots: {customRender: 'is_delete'},
+        slots: { customRender: 'is_delete' },
         width: 150
     },
     {
         title: 'Create Time',
         dataIndex: 'createTime',
-        slots: {customRender: 'createTime'}
+        slots: { customRender: 'createTime' }
     },
     {
         title: 'Update Time',
         dataIndex: 'updateTime',
-        slots: {customRender: 'updateTime'}
+        slots: { customRender: 'updateTime' }
     },
     {
         title: 'Action',
         dataIndex: 'action',
-        slots: {customRender: 'action'}
+        slots: { customRender: 'action' }
     }
 ]
 
@@ -73,15 +74,7 @@ export default function useList() {
     const router = useRouter()
     const loading = ref<boolean>(false)
     const articleTitle = ref<string>('')
-    const pagination = reactive({
-        current: 1,
-        total: 0,
-        pageSize: 10,
-        showQuickJumper: true,
-        pageSizeOptions: ["10", "20", "30", "50"],
-        showSizeChanger: true,
-        showTotal: (total: number | string) => `${total} Items`
-    })
+    const pagination = usePagination()
     const articleList: Ref<RecordItem[]> = ref([])
     const editableData: UnwrapRef<Record<string, RecordItem>> = reactive({})
 
@@ -109,7 +102,7 @@ export default function useList() {
      * */
     function switchChange(record: RecordItem, show: boolean) {
         // console.log(show) // true => 显示； false => 隐藏
-        const {id, uid} = record
+        const { id, uid } = record
         const matchItem = articleList.value.filter(item => id === item.id)[0]
         updateRecord({
             id,
@@ -189,10 +182,10 @@ export default function useList() {
      * 前往文章编辑页面（更新文章） icon-edit
      * */
     function toEditRecord(item: RecordItem) {
-        const {id, uid} = item
+        const { id, uid } = item
         router.push({
             path: '/edit',
-            query: {id, uid}
+            query: { id, uid }
         })
     }
 
@@ -200,7 +193,7 @@ export default function useList() {
      * 删除文章 icon-delete
      * */
     function handleDeleteRecord(item: RecordItem) {
-        const {id, uid, cover} = item
+        const { id, uid, cover } = item
         const relativePath = getCoverRelativePath(cover)
         // @ts-ignore
         deleteRecord({ id, uid, relativePath }).then((res: ResponseData<object>) => {

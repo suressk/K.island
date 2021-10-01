@@ -1,14 +1,15 @@
-import {reactive, ref, computed, Ref, onMounted} from 'vue'
-import {getCommentList, deleteComments, readComments, replyComment} from '../../api/api'
-import {successNotify, errorNotify, warningNotify, mapCommentList} from '../../utils/util'
-import {useStore} from 'vuex'
-import {M_SET_UNREAD} from '../../store/mutation-types'
+import { reactive, ref, computed, Ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { getCommentList, deleteComments, readComments, replyComment } from '../../api/api'
+import { successNotify, errorNotify, warningNotify, mapCommentList } from '../../utils/util'
+import { ColumnProps } from 'ant-design-vue/es/table/interface'
+import { M_SET_UNREAD } from '../../store/mutation-types'
+import usePagination from '../../hooks/usePagination'
 import {
     CommentItem,
     PageQueryParams,
     Pagination
 } from '../../types'
-import {ColumnProps} from 'ant-design-vue/es/table/interface'
 
 // ResponseData,
 // CommentListRes
@@ -19,7 +20,7 @@ const columns = [
     {
         title: 'No.',
         dataIndex: 'id',
-        slots: {customRender: 'id'}
+        slots: { customRender: 'id' }
     },
     {
         title: 'Article Title',
@@ -41,12 +42,12 @@ const columns = [
     {
         title: 'Comment Time',
         dataIndex: 'createTime',
-        slots: {customRender: 'createTime'}
+        slots: { customRender: 'createTime' }
     },
     {
         title: 'Action',
         dataIndex: 'action',
-        slots: {customRender: 'action'}
+        slots: { customRender: 'action' }
     }
 ]
 
@@ -55,15 +56,7 @@ const columns = [
  * */
 export default function useComment() {
     const loading = ref<boolean>(false)
-    const pagination = reactive({
-        current: 1,
-        total: 0,
-        pageSize: 10,
-        showQuickJumper: true,
-        pageSizeOptions: ["10", "20", "30", "50"],
-        showSizeChanger: true,
-        showTotal: (total: number | string) => `${total} Items`
-    })
+    const pagination = usePagination()
     const commentList: Ref<CommentItem[]> = ref([])
     const selectedRowKeys = ref<Key[]>([])
     const canBeRead = computed(() => (selectedRowKeys.value.length > 0))
@@ -112,7 +105,7 @@ export default function useComment() {
                     warningNotify(res.message)
                     return
                 }
-                const {list, total, unread} = res.data
+                const { list, total, unread } = res.data
                 commentList.value = mapCommentList(list)
                 pagination.total = total
                 store.commit(M_SET_UNREAD, unread)
@@ -121,7 +114,7 @@ export default function useComment() {
                 loading.value = false
                 errorNotify(err.message)
             }
-        )
+            )
     }
 
     // 行选中禁用
@@ -260,15 +253,15 @@ export default function useComment() {
         to: "小K.\r\n【sure_k@qq.com】"
         toEmail: "sure_k@qq.com"
         toName: "小K."
-        topicId: "160239d9-151e-4be9-8d53-b7235f90b367"
-        uid: "d70b6fa0-097d-4cbf-9dcb-4b605d0caefb"
+        topicId: "160239d9-151e-4be3709-8d53-b7235f90b"
+        uid: "d70b6fa0-097d-4cbf-9dcb-4b834d0caefb"
     * */
     function openReply(info: CommentItem) {
         replyTargetInfo.value = info
         showReplyModal(true)
     }
-    // TODO ====> Reply comment
 
+    // TODO ====> Reply comment
     // 表格行点击选中
     // const tableRowClick = (record: CommentItem) => {
     //     return {

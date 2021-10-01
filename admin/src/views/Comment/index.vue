@@ -7,8 +7,8 @@
       </span>
 
       <span class="link-txt d-flex" :disabled="!canBeRead">
-        <i class="iconfont icon-update"/>
-        <span @click="handleRead">标记为已读</span>
+        <i class="iconfont icon-update" />
+        <span @click="handleRead">Mark As Read</span>
       </span>
     </h3>
 
@@ -32,14 +32,14 @@
 
       <template #action="{ record }">
         <span class="action">
-          <i class="iconfont icon-reply" @click.stop="openReply(record)"/>
+          <i class="iconfont icon-reply" @click.stop="openReply(record)" />
 
           <pop-confirm
             @click.stop
             title="Sure to delete ?"
             @confirm.stop="handleDeleteComments(record)"
           >
-            <i class="iconfont icon-delete"/>
+            <i class="iconfont icon-delete" />
           </pop-confirm>
         </span>
       </template>
@@ -53,7 +53,7 @@
       @cancel="showReplyModal(false)"
     >
       <div class="modal-avatar">
-        <img src="../../assets/images/avatar.png" alt="avatar">
+        <img src="../../assets/images/avatar.png" alt="avatar" />
 
         <span class="mentions-txt info">回复：{{ replyTargetInfo.fromName }}</span>
       </div>
@@ -66,14 +66,12 @@
         />
       </div>
     </a-modal>
-
-
   </section>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
-import {Table, Popconfirm, Tag, Badge, Modal, Input} from 'ant-design-vue'
+import { defineComponent } from 'vue'
+import { Table, Popconfirm, Tag, Badge, Modal, Input } from 'ant-design-vue'
 import useComment from './useComment'
 
 export default defineComponent({

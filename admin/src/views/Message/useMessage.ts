@@ -1,8 +1,9 @@
-import {reactive, ref, Ref, onMounted, computed} from 'vue'
-import {MsgListItem, Pagination, PageQueryParams} from '../../types'
-import {deleteMessages, getMessageList} from '../../api/api'
-import {errorNotify, warningNotify, mapFormatCtimeList, successNotify} from '../../utils/util'
-import {ColumnProps} from 'ant-design-vue/es/table/interface'
+import { reactive, ref, Ref, onMounted, computed } from 'vue'
+import { MsgListItem, Pagination, PageQueryParams } from '../../types'
+import { deleteMessages, getMessageList } from '../../api/api'
+import { errorNotify, warningNotify, mapFormatCtimeList, successNotify } from '../../utils/util'
+import { ColumnProps } from 'ant-design-vue/es/table/interface'
+import usePagination from '../../hooks/usePagination'
 
 type Key = ColumnProps['key']
 
@@ -10,7 +11,7 @@ const columns = [
     {
         title: 'No.',
         dataIndex: 'id',
-        slots: {customRender: 'id'}
+        slots: { customRender: 'id' }
     },
     {
         title: 'Name',
@@ -24,12 +25,12 @@ const columns = [
     {
         title: 'Create Time',
         dataIndex: 'createTime',
-        slots: {customRender: 'createTime'}
+        slots: { customRender: 'createTime' }
     },
     {
         title: 'Action',
         dataIndex: 'action',
-        slots: {customRender: 'action'}
+        slots: { customRender: 'action' }
     }
 ]
 
@@ -39,15 +40,7 @@ const columns = [
 export default function useMessage() {
 
     const loading = ref<boolean>(false)
-    const pagination = reactive({
-        current: 1,
-        total: 0,
-        pageSize: 10,
-        showQuickJumper: true,
-        pageSizeOptions: ["10", "20", "30", "50"],
-        showSizeChanger: true,
-        showTotal: (total: number | string) => `${total} Items`
-    })
+    const pagination = usePagination()
     const msgList: Ref<MsgListItem[]> = ref([])
     const canDelete = computed<boolean>(() => selectedRowKeys.value.length > 0)
 
@@ -85,7 +78,7 @@ export default function useMessage() {
             ids.push(info.id)
         }
         // @ts-ignore
-        deleteMessages({ids})
+        deleteMessages({ ids })
             .then((res: any) => {
                 if (!res.success) {
                     warningNotify(res.message)
@@ -122,9 +115,9 @@ export default function useMessage() {
                 loading.value = false
             })
             .catch(err => {
-                    loading.value = false
-                    errorNotify(err.message)
-                }
+                loading.value = false
+                errorNotify(err.message)
+            }
             )
     }
 
