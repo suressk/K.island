@@ -1,8 +1,8 @@
-import {defineConfig} from 'vite'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import {resolve} from 'path'
+import { resolve } from 'path'
 import styleImport from 'vite-plugin-style-import'
-import type {Alias} from 'vite'
+import type { Alias } from 'vite'
 // import type { UserConfig, ConfigEnv } from 'vite'
 
 function pathResolve(dir: string) {
@@ -40,7 +40,8 @@ export default defineConfig({
             ['/@/', 'src'],
             ['/@assets/', 'src/assets'],
             ['/@comp/', 'src/components'],
-            ['/@api/', 'src/api']
+            ['/@api/', 'src/api'],
+            ['/@utils/', 'src/utils']
         ]),
     },
     optimizeDeps: {

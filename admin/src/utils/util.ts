@@ -1,10 +1,10 @@
-import {createVNode} from 'vue'
-import {notification, Modal} from 'ant-design-vue'
-import {ACCESS_TOKEN, STORAGE_PREFIX} from '../store/mutation-types'
-import {QuestionCircleOutlined} from '@ant-design/icons-vue'
-import {TokenInfo, RecordItem, CommentItem} from '../types'
-import {ConfirmOptions, MessageType} from '../types/tip'
-import {domainUrl} from '../api/request'
+import { createVNode } from 'vue'
+import { notification, Modal } from 'ant-design-vue'
+import { ACCESS_TOKEN, STORAGE_PREFIX } from '../store/mutation-types'
+import { QuestionCircleOutlined } from '@ant-design/icons-vue'
+import { TokenInfo, RecordItem, CommentItem } from '../types'
+import { ConfirmOptions, MessageType } from '../types/tip'
+import { domainUrl } from '../api/request'
 import DAYJS from 'dayjs'
 
 /**
@@ -20,7 +20,7 @@ export function notify(
     type: MessageType = 'info',
     duration = 4.5
 ) {
-    notification[type]({message, description, duration})
+    notification[type]({ message, description, duration })
 }
 
 export function infoNotify(description: string) {
@@ -110,7 +110,7 @@ export function getStorageToken(): null | string {
     const tokenInfo = getStorageItem<TokenInfo>(ACCESS_TOKEN)
     // token 存在
     if (tokenInfo !== null) {
-        const {token, expireTime} = tokenInfo
+        const { token, expireTime } = tokenInfo
         const now: number = new Date().getTime()
         // 未过期
         if (expireTime > now) {
@@ -254,11 +254,11 @@ export function convertAsBase64Code(file: File) {
     })
 }
 
-function formatTime(
+export function formatTime(
     time: number,
     timeFormat: string = 'YYYY-MM-DD HH:mm'
 ) {
-    return DAYJS(time).format(timeFormat)
+    return time ? DAYJS(time).format(timeFormat) : '=.='
 }
 
 interface CtimeItem {
