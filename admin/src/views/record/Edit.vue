@@ -15,27 +15,16 @@
         autocomplete="off"
       >
         <a-form-item name="title" label="文章标题">
-          <a-input
-            type="text"
-            placeholder="Title"
-            v-model:value="recordInfo.title"
-            allowClear
-          />
+          <a-input type="text" placeholder="Title" v-model:value="recordInfo.title" allowClear />
         </a-form-item>
 
         <a-form-item label="文章分类">
-          <a-select
-            placeholder="Tag"
-            v-model:value="recordInfo.tag"
-            style="width: 200px;"
-          >
+          <a-select placeholder="Tag" v-model:value="recordInfo.tag" style="width: 200px;">
             <a-select-option
               v-for="tagOption in tagOptions"
               :key="tagOption"
               :value="tagOption"
-            >
-              {{ tagOption }}
-            </a-select-option>
+            >{{ tagOption }}</a-select-option>
           </a-select>
         </a-form-item>
 
@@ -80,17 +69,14 @@
             class="upload-cover-btn"
             accept="image/*"
             @change="handleUploadCover"
-          >
-            Upload Cover
-          </upload-button>
+          >Upload Cover</upload-button>
         </a-form-item>
-
       </a-form>
 
       <!--   封面图预览   -->
       <div v-if="recordInfo.cover" class="preview-cover right-in flex-center">
-        <img :src="recordInfo.cover" alt="Preview image">
-        <i class="iconfont icon-delete absolute-center" @click.self="handleDeleteCover"/>
+        <img :src="recordInfo.cover" alt="Preview image" />
+        <i class="iconfont icon-delete absolute-center" @click.self="handleDeleteCover" />
       </div>
 
       <!--   编辑文章内容   -->
@@ -99,7 +85,7 @@
       <div class="submit-container">
         <a-button type="primary" :loading="uploading" @click="submit">
           <template #icon>
-            <SendOutlined/>
+            <SendOutlined />
           </template>
           SUBMIT
         </a-button>
@@ -109,15 +95,26 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
-import {errorNotify, parseLocationSearch, successNotify, warningNotify, getCoverRelativePath} from '../../utils/util'
-import {addRecord, deleteCover, getRecordDetail, uploadCover, updateRecord} from '../../api/api'
-import {ValidateErrorEntity} from 'ant-design-vue/es/form/interface'
-import {ArticleIds, RecordInfo, RecordItem, ResponseData} from '../../types'
-import UploadButton from '../../components/UploadButton.vue'
-import {Input, Select, Form, Button, Modal, Switch} from 'ant-design-vue'
-import {SendOutlined} from '@ant-design/icons-vue'
-import {rules, isImage} from './useEdit'
+import { defineComponent } from 'vue'
+import {
+  errorNotify,
+  parseLocationSearch,
+  successNotify,
+  warningNotify,
+  getCoverRelativePath,
+  debounce,
+  getStorageItem,
+  setStorageItem,
+  removeStorageItem
+} from '../../utils'
+import { addRecord, deleteCover, getRecordDetail, uploadCover, updateRecord } from '../../api/api'
+import { ValidateErrorEntity } from 'ant-design-vue/es/form/interface'
+import { ArticleIds, RecordInfo, RecordItem, ResponseData } from '../../types'
+import UploadButton from '/@comp/UploadButton.vue'
+import { Input, Select, Form, Button, Modal, Switch } from 'ant-design-vue'
+import { SendOutlined } from '@ant-design/icons-vue'
+import { rules, isImage } from './useEdit'
+import { RECORD_INFO } from '../../store/mutation-types'
 
 const tagOptions = ['Mood', 'JS', 'StudyNote', 'FrontEnd', 'BackEnd']
 
@@ -154,7 +151,8 @@ export default defineComponent({
         id: -1,
         uid: ''
       },
-      rules
+      rules,
+      saveInfo: () => { }
     }
   },
   methods: {
@@ -247,6 +245,21 @@ export default defineComponent({
       //   uid: ''
       // }
     },
+    /**
+     * 本地保存编辑内容
+     * 解决无意刷新界面时丢失编辑的内容
+     */
+    setLocalRecordInfo() {
+      setStorageItem(RECORD_INFO, this.recordInfo)
+    },
+    // 从 localStorage 获取上次编辑存储的内容
+    getLocalRecordInfo() {
+      const info = getStorageItem<RecordInfo | string>(RECORD_INFO) // null / recordInfo
+      // @ts-ignore
+      if (info !== null && !info.includes('null')) {
+        this.recordInfo = info
+      }
+    },
     // 底部按钮触发表单验证 => 新增 / 更新文章
     submit() {
       // @ts-ignore
@@ -263,13 +276,25 @@ export default defineComponent({
         })
     },
     // 新增文章
-    addRecordInfo() {
+    async addRecordInfo() {
+      // const { success, message } = await addRecord({
+      //   ...this.recordInfo
+      // })
+      // if (success) {
+      //   successNotify(message)
+      //   this.clearContent()
+      //   // @ts-ignore
+      //   this.$refs.formRef.resetFields() // 重置表单内容及验证结果
+      // } else {
+      //   warningNotify(message)
+      // }
       addRecord({
         ...this.recordInfo
       }).then((res: any) => {
         if (res.success) {
           successNotify(res.message)
           this.clearContent()
+          setStorageItem(RECORD_INFO, null)
           // @ts-ignore
           this.$refs.formRef.resetFields() // 重置表单内容及验证结果
         } else {
@@ -287,6 +312,7 @@ export default defineComponent({
       }).then((res: any) => {
         if (res.success) {
           successNotify(res.message)
+          setStorageItem(RECORD_INFO, null)
         } else {
           warningNotify(res.message)
         }
@@ -295,16 +321,28 @@ export default defineComponent({
       })
     }
   },
+  watch: {
+    recordInfo: {
+      handler() {
+        this.saveInfo() // 保存
+      },
+      deep: true // 开启深度监听，每一个属性变更都触发函数执行
+    }
+  },
   mounted() {
     const params = parseLocationSearch()
     this.isUpdate = !!(params.id && params.uid)
     this.isUpdate && this.getRecordInfo(params)
-    // if (Object.keys(params).length > 0) {
-    //   this.isUpdate = true
-    //   this.getRecordInfo(params)
-    // } else {
-    //   this.isUpdate = false
-    // }
+
+    // 1. 获取 localStorage 存储的上次编辑结果
+    const info = this.getLocalRecordInfo()
+
+    if (info !== null) {
+      this.setLocalRecordInfo(info)
+    }
+
+    // 2. 设置监听变化该执行的函数 => 顺序不要逆
+    this.saveInfo = debounce(this.setLocalRecordInfo, 500)
   }
 })
 </script>
@@ -339,7 +377,7 @@ export default defineComponent({
       &::after {
         content: "";
         position: absolute;
-        transition: .3s;
+        transition: 0.3s;
         left: 0;
         top: 0;
         width: 100%;

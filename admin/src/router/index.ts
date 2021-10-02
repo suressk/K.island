@@ -1,6 +1,6 @@
-import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/index.vue'
-import {getStorageToken} from '../utils/util'
+import { getStorageToken } from '../utils'
 
 const routes: Array<RouteRecordRaw> = [
     {

@@ -1,9 +1,9 @@
-import {ref, reactive, toRefs, Ref, onMounted} from 'vue'
-import {useStore} from 'vuex'
-import {getOverviewData} from '../../api/api'
-import {errorNotify, warningNotify} from '../../utils/util'
-import {EChartsOption} from 'echarts'
-import {M_SET_UNREAD} from '../../store/mutation-types'
+import { ref, reactive, toRefs, Ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { getOverviewData } from '../../api/api'
+import { errorNotify, warningNotify } from '../../utils'
+import { EChartsOption } from 'echarts'
+import { M_SET_UNREAD } from '../../store/mutation-types'
 
 // export const lineOption = ref<EChartsOption>({})
 
@@ -14,7 +14,7 @@ type PieDataItem = {
 
 type PieSeriesData = PieDataItem[]
 
-function createPieOption (data: PieSeriesData): EChartsOption {
+function createPieOption(data: PieSeriesData): EChartsOption {
     return {
         tooltip: {
             trigger: 'item',
@@ -83,7 +83,7 @@ export default function useOverview() {
                 warningNotify(res.message)
                 return
             }
-            const {data: {total, ctime, unread, comments, chartOption}} = res
+            const { data: { total, ctime, unread, comments, chartOption } } = res
             articleInfo.total = total
             articleInfo.ctime = ctime
             commentInfo.comments = comments

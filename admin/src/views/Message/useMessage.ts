@@ -1,7 +1,7 @@
 import { reactive, ref, Ref, onMounted, computed } from 'vue'
 import { MsgListItem, Pagination, PageQueryParams } from '../../types'
 import { deleteMessages, getMessageList } from '../../api/api'
-import { errorNotify, warningNotify, mapFormatCtimeList, successNotify } from '../../utils/util'
+import { errorNotify, warningNotify, mapFormatCtimeList, successNotify } from '../../utils'
 import { ColumnProps } from 'ant-design-vue/es/table/interface'
 import usePagination from '../../hooks/usePagination'
 

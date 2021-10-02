@@ -4,6 +4,8 @@ export const TOKEN_EXPIRED = 'Token-expired'
 
 export const STORAGE_PREFIX = 'K.island_'
 
+export const RECORD_INFO = 'Record-Info'
+
 /**
  * store state
  * prefix: S_

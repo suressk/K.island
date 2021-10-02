@@ -3,7 +3,7 @@
  * */
 import { reactive, ref, computed, Ref, onMounted } from 'vue'
 import { getSubscribeList, deleteSubscribes } from '../../api/api'
-import { errorNotify, warningNotify, mapFormatCtimeList, successNotify, confirmPro } from '../../utils/util'
+import { errorNotify, warningNotify, mapFormatCtimeList, successNotify, confirmPro } from '../../utils'
 import { SubscribeItem, QuerySubscribeParams, Pagination, DeleteSubscribeParams } from '../../types'
 import { ColumnProps } from 'ant-design-vue/es/table/interface'
 import usePagination from '../../hooks/usePagination'

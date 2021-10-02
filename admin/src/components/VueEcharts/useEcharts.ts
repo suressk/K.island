@@ -6,7 +6,7 @@ import {
     ComponentInternalInstance
 } from 'vue'
 import * as echarts from 'echarts'
-import {throttle} from '../../utils/util'
+import { throttle } from '../../utils'
 
 interface EchartsProps {
     options: echarts.EChartsOption

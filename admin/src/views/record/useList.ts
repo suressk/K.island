@@ -9,7 +9,7 @@ import {
 } from '../../types'
 import { useRouter } from 'vue-router'
 import { deleteRecord, getRecordList, updateRecord } from '../../api/api'
-import { errorNotify, successNotify, warningNotify, mapRecordTime, getCoverRelativePath } from '../../utils/util'
+import { errorNotify, successNotify, warningNotify, mapRecordTime, getCoverRelativePath } from '../../utils'
 import usePagination from '../../hooks/usePagination'
 
 const columns = [

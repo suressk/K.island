@@ -57,7 +57,7 @@
 import { defineComponent } from 'vue'
 import VueEcharts from '/@comp/VueEcharts/index.vue'
 import useOverview from './useOverview'
-import { formatTime } from '../../utils/util'
+import { formatTime } from '../../utils'
 import 'default-passive-events'
 
 export default defineComponent({

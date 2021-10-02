@@ -2,13 +2,13 @@
   <section class="login-container">
     <div class="login-form flex-col fixed-center">
       <div class="avatar flex-center">
-        <img src="../assets/images/avatar.png" alt="author">
+        <img src="../assets/images/avatar.png" alt="author" />
       </div>
       <div class="form-item">
         <label class="ipt-item">
           <input type="text" required v-model="username" autocomplete="off" />
           <span class="tip-label">Username</span>
-          <span class="border-line"/>
+          <span class="border-line" />
         </label>
       </div>
       <div class="form-item">
@@ -21,7 +21,7 @@
             @keyup.enter="handleLogin"
           />
           <span class="tip-label">Password</span>
-          <span class="border-line"/>
+          <span class="border-line" />
         </label>
       </div>
       <div class="form-item">
@@ -33,9 +33,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, toRefs} from 'vue'
-import {useRouter} from 'vue-router'
-import {login} from '../api/api'
+import { defineComponent, reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
+import { login } from '../api/api'
 import {
   successNotify,
   warningNotify,
@@ -43,9 +43,9 @@ import {
   setCookie,
   setStorageToken,
   setStorageItem
-} from '../utils/util'
-import {LoginInfo, LoginResponse} from '../types'
-import {ACCESS_TOKEN, TOKEN_EXPIRED} from '../store/mutation-types'
+} from '../utils'
+import { LoginInfo, LoginResponse } from '../types'
+import { ACCESS_TOKEN, TOKEN_EXPIRED } from '../store/mutation-types'
 import md5 from 'md5'
 
 export default defineComponent({

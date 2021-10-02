@@ -1,7 +1,7 @@
-import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios'
-import {ResponseData, ErrorResponse} from '../types'
-import {getStorageToken, errorNotify, confirmPro, getStorageItem, setStorageItem, removeStorageItem} from '../utils/util'
-import {ACCESS_TOKEN, TOKEN_EXPIRED} from '../store/mutation-types'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import { ResponseData, ErrorResponse } from '../types'
+import { getStorageToken, errorNotify, confirmPro, getStorageItem, setStorageItem, removeStorageItem } from '../utils'
+import { ACCESS_TOKEN, TOKEN_EXPIRED } from '../store/mutation-types'
 import router from '../router'
 
 // export const domainUrl = 'xxx'
@@ -88,4 +88,4 @@ service.interceptors.response.use((resp: AxiosResponse): AxiosResponse<ResponseD
     return resp.data
 }, handleError)
 
-export {service as axios}
+export { service as axios }

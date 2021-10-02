@@ -1,7 +1,7 @@
 import { reactive, ref, computed, Ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { getCommentList, deleteComments, readComments, replyComment } from '../../api/api'
-import { successNotify, errorNotify, warningNotify, mapCommentList } from '../../utils/util'
+import { successNotify, errorNotify, warningNotify, mapCommentList } from '../../utils'
 import { ColumnProps } from 'ant-design-vue/es/table/interface'
 import { M_SET_UNREAD } from '../../store/mutation-types'
 import usePagination from '../../hooks/usePagination'
