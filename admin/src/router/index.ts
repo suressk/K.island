@@ -92,6 +92,7 @@ router.beforeEach((to: any, from: any, next: any) => {
     } else {
         next()
     }
+    // next()
 })
 
 // 路由后置守卫 由路由信息 设置标签页标题

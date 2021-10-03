@@ -6,15 +6,33 @@
     </h3>
 
     <div class="card-container flex-between">
-      <div class="card">
+      <overview-card title="ARTICLE TAG">
+        <v-chart :options="pieOption" />
+      </overview-card>
+
+      <!-- <div>
         <h4 class="card-header">ARTICLE TAG</h4>
 
         <div class="card-content">
           <v-chart :options="pieOption" />
         </div>
-      </div>
+      </div>-->
 
-      <div class="card">
+      <overview-card title="ARTICLES">
+        <p class="card-center-info">
+          <span class="card-center-num">{{ total }}</span>
+          <span>篇</span>
+        </p>
+
+        <template #tip>
+          <p class="card-tip">
+            最新文章发布于：
+            <span class="info">「{{ formatTime(ctime) }}」</span> 继续加油！
+          </p>
+        </template>
+      </overview-card>
+
+      <!-- <div class="card">
         <h4 class="card-header">ARTICLE</h4>
 
         <div class="card-content">
@@ -27,28 +45,48 @@
             <span class="info">{{ ctime && formatTime(ctime) }}</span>】 继续加油！
           </p>
         </div>
-      </div>
+      </div>-->
 
-      <div class="card">
-        <h4 class="card-header">COMMENTS</h4>
+      <overview-card title="COMMENTS">
+        <p class="card-center-info">
+          <span class="card-center-num">{{ comments }}</span>
+          <span>条</span>
+        </p>
 
-        <div class="card-content">
-          <p class="card-center-info">
-            <span class="card-center-num">{{ comments }}</span>
-            <span>条</span>
-          </p>
+        <template #tip>
           <p class="card-tip">
-            未读评论：【
-            <span class="error">{{ unread }}</span>】 来自陌生人的问候！
+            未读评论：
+            <span class="error">「{{ unread }}」</span>
+            来自陌生人的问候！
           </p>
-        </div>
-      </div>
+        </template>
+      </overview-card>
 
-      <div class="card">
-        <h4 class="card-header">MESSAGES</h4>
+      <!-- <div class="card">
+          <h4 class="card-header"></h4>
 
-        <div class="card-content"></div>
-      </div>
+          <div class="card-content">
+            <p class="card-center-info">
+              <span class="card-center-num">{{ comments }}</span>
+              <span>条</span>
+            </p>
+            <p class="card-tip">
+              未读评论：【
+              <span class="error">{{ unread }}</span>】 来自陌生人的问候！
+            </p>
+          </div>
+      </div>-->
+
+      <overview-card title="MESSAGES">
+        <p class="card-center-info">
+          <span class="card-center-num">Unrealized</span>
+        </p>
+      </overview-card>
+
+      <!-- <div class="card">
+          <h4 class="card-header">MESSAGES</h4>
+          <div class="card-content"></div>
+      </div>-->
     </div>
   </div>
 </template>
@@ -56,6 +94,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import VueEcharts from '/@comp/VueEcharts/index.vue'
+import OverviewCard from '/@comp/OverviewCard/index.vue'
 import useOverview from './useOverview'
 import { formatTime } from '../../utils'
 import 'default-passive-events'
@@ -63,7 +102,8 @@ import 'default-passive-events'
 export default defineComponent({
   name: "Overview",
   components: {
-    'v-chart': VueEcharts
+    'v-chart': VueEcharts,
+    OverviewCard
   },
   setup() {
     return {

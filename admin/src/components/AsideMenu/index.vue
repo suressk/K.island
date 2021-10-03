@@ -1,7 +1,7 @@
 <template>
   <aside class="aside-menu" :class="{ shrink: !extendMenu }">
     <div class="avatar flex-center">
-      <img src="../../assets/images/avatar.png" alt="avatar">
+      <img src="../../assets/images/avatar.png" alt="avatar" />
     </div>
     <router-link
       v-for="menuItem in menuList"
@@ -9,30 +9,24 @@
       :to="menuItem.path"
       class="menu-item d-flex txt-overflow"
     >
-      <i class="iconfont" :class="menuItem.icon"/>
+      <i class="iconfont" :class="menuItem.icon" />
       <span v-show="extendMenu">{{ menuItem.label }}</span>
     </router-link>
 
     <a-badge :count="unread" style="width: 100%;">
-      <router-link
-        to="/comments"
-        class="menu-item d-flex txt-overflow"
-      >
+      <router-link to="/comments" class="menu-item d-flex txt-overflow">
         <i class="iconfont icon-send" />
         <span v-show="extendMenu">Comments</span>
       </router-link>
     </a-badge>
 
-    <router-link
-      to="/setting"
-      class="menu-item d-flex txt-overflow"
-    >
+    <router-link to="/setting" class="menu-item d-flex txt-overflow">
       <i class="iconfont icon-setting" />
       <span v-show="extendMenu">Setting</span>
     </router-link>
 
     <span class="menu-item d-flex txt-overflow" @click="handleExit">
-      <i class="iconfont icon-exit"/>
+      <i class="iconfont icon-exit" />
       <span v-show="extendMenu">Exit</span>
     </span>
 
@@ -58,12 +52,21 @@ export default defineComponent({
     }
   },
   setup() {
-    return {...useAsideMenu()}
+    return {
+      ...useAsideMenu()
+    }
   }
 })
 </script>
 
 <style lang="scss">
+// .aside-menu {
+//   width: 200px;
+//   height: 100vh;
+//   background-color: var(--primary);
+//   padding: 20px 0;
+//   color: #fff;
+
 .aside-menu {
   width: 200px;
   height: 100vh;
@@ -72,11 +75,11 @@ export default defineComponent({
   color: #fff;
   position: relative;
   flex-shrink: 0;
-  transition: width .5s ease, border-radius .5s ease;
-  border-radius: 20px;
+  transition: width 0.5s ease, border-radius 0.5s ease;
+  border-radius: 0 20px 20px 0;
   &.shrink {
     width: 40px;
-    border-radius: 5px;
+    border-radius: 0 5px 5px 0;
     .menu-item {
       padding: 10px 5px;
     }
@@ -96,7 +99,7 @@ export default defineComponent({
     color: inherit;
     border-right: 3px solid transparent;
     font-size: 14px;
-    transition: all .3s ease;
+    transition: all 0.3s ease;
     cursor: pointer;
     margin-bottom: 3px;
     position: relative;

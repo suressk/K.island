@@ -16,7 +16,7 @@ const menuList = [
 export default function useAsideMenu() {
     const router = useRouter()
     // 展开菜单项
-    const extendMenu = ref<boolean>(true)
+    const extendMenu = ref<boolean>(false)
 
     const unread = computed(() => store.state[UNREAD])
 
