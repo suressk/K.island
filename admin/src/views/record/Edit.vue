@@ -254,9 +254,8 @@ export default defineComponent({
     },
     // 从 localStorage 获取上次编辑存储的内容
     getLocalRecordInfo() {
-      const info = getStorageItem<RecordInfo | string>(RECORD_INFO) // null / recordInfo
-      // @ts-ignore
-      if (info !== null && !info.includes('null')) {
+      const info = getStorageItem<RecordInfo>(RECORD_INFO) // null / recordInfo
+      if (info !== null) {
         this.recordInfo = info
       }
     },
@@ -294,7 +293,7 @@ export default defineComponent({
         if (res.success) {
           successNotify(res.message)
           this.clearContent()
-          setStorageItem(RECORD_INFO, null)
+          setStorageItem(RECORD_INFO, '')
           // @ts-ignore
           this.$refs.formRef.resetFields() // 重置表单内容及验证结果
         } else {
@@ -312,7 +311,7 @@ export default defineComponent({
       }).then((res: any) => {
         if (res.success) {
           successNotify(res.message)
-          setStorageItem(RECORD_INFO, null)
+          setStorageItem(RECORD_INFO, '')
         } else {
           warningNotify(res.message)
         }
@@ -335,11 +334,7 @@ export default defineComponent({
     this.isUpdate && this.getRecordInfo(params)
 
     // 1. 获取 localStorage 存储的上次编辑结果
-    const info = this.getLocalRecordInfo()
-
-    if (info !== null) {
-      this.setLocalRecordInfo(info)
-    }
+    this.getLocalRecordInfo()
 
     // 2. 设置监听变化该执行的函数 => 顺序不要逆
     this.saveInfo = debounce(this.setLocalRecordInfo, 500)

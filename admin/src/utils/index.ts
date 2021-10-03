@@ -133,7 +133,8 @@ export function setStorageItem<V>(name: string, value: V): void {
 export function getStorageItem<V>(name: string): null | V {
     const KEY = STORAGE_PREFIX + name
     const value = localStorage.getItem(KEY)
-    if (value !== null) {
+    // KEY 存在 / 存的值不为 ''
+    if (value !== null && value !== '') {
         return JSON.parse(value) as V
     }
     return null
