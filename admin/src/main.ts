@@ -6,10 +6,8 @@ import store from './store'
 /**
  * markdown 编辑器
  * */
-// @ts-ignore
 import VueMarkdownEditor from '@kangc/v-md-editor'
-// @ts-ignore
-import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js'
+import vuePressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js'
 // import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
 import '@kangc/v-md-editor/lib/style/base-editor.css'
 import '@kangc/v-md-editor/lib/theme/style/vuepress.css'
@@ -17,7 +15,7 @@ import '@kangc/v-md-editor/lib/theme/style/vuepress.css'
 /**
  * 扩展 vue 代码语法高亮
  * */
-VueMarkdownEditor.use(vuepressTheme, {
+VueMarkdownEditor.use(vuePressTheme, {
     codeHighlightExtensionMap: {
         vue: 'xml'
     }
