@@ -22,7 +22,6 @@ import {
   QuerySubscribeParams,
   DeleteSubscribeParams
 } from '../types'
-import { AxiosPromise } from 'axios'
 
 // 登录
 export const login = (params: LoginParams) => postAction<LoginResponse>('/login', params)

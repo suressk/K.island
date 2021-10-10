@@ -10,24 +10,24 @@
       class="menu-item d-flex txt-overflow"
     >
       <i class="iconfont" :class="menuItem.icon" />
-      <span v-show="extendMenu">{{ menuItem.label }}</span>
+      <span class="link-label">{{ menuItem.label }}</span>
     </router-link>
 
     <a-badge :count="unread" style="width: 100%;">
       <router-link to="/comments" class="menu-item d-flex txt-overflow">
         <i class="iconfont icon-send" />
-        <span v-show="extendMenu">Comments</span>
+        <span class="link-label">Comments</span>
       </router-link>
     </a-badge>
 
     <router-link to="/setting" class="menu-item d-flex txt-overflow">
       <i class="iconfont icon-setting" />
-      <span v-show="extendMenu">Setting</span>
+      <span class="link-label">Setting</span>
     </router-link>
 
     <span class="menu-item d-flex txt-overflow" @click="handleExit">
       <i class="iconfont icon-exit" />
-      <span v-show="extendMenu">Exit</span>
+      <span class="link-label">Exit</span>
     </span>
 
     <a-switch class="switch" v-model:checked="extendMenu" />
@@ -45,12 +45,6 @@ export default defineComponent({
     'a-switch': Switch,
     'a-badge': Badge
   },
-  props: {
-    commentNum: {
-      type: [Number, String],
-      default: 0
-    }
-  },
   setup() {
     return {
       ...useAsideMenu()
@@ -60,13 +54,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-// .aside-menu {
-//   width: 200px;
-//   height: 100vh;
-//   background-color: var(--primary);
-//   padding: 20px 0;
-//   color: #fff;
-
 .aside-menu {
   width: 200px;
   height: 100vh;
@@ -77,20 +64,34 @@ export default defineComponent({
   flex-shrink: 0;
   transition: width 0.5s ease, border-radius 0.5s ease;
   border-radius: 0 20px 20px 0;
+  .link-label {
+    transition: opacity 0.2s ease;
+  }
   &.shrink {
     width: 40px;
     border-radius: 0 5px 5px 0;
     .menu-item {
       padding: 10px 5px;
     }
+    .link-label {
+      // display: none;
+      opacity: 0;
+    }
+
+    .avatar {
+      border-width: 1px;
+    }
   }
   .avatar {
     width: 60%;
-    border-radius: 50%;
     margin: 20px auto;
-    overflow: hidden;
+    // overflow: hidden;
+    border-radius: 50%;
     border: 5px solid var(--blue-border);
+    transition: border 0.5s ease;
+    transform-origin: center center;
     img {
+      border-radius: 50%;
       width: 100%;
     }
   }
@@ -121,7 +122,7 @@ export default defineComponent({
     min-width: unset;
     bottom: 20px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(0.8);
     &.ant-switch-checked {
       background-color: var(--blue-border);
     }

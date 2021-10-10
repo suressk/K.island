@@ -1,7 +1,6 @@
 <template>
   <div class="layouts d-flex">
-
-    <aside-menu :commentNum="10" />
+    <aside-menu />
 
     <main class="main">
       <div class="main-content scroller-light">
@@ -41,7 +40,7 @@ export default defineComponent({
     .main-content {
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, .2);
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
       height: calc(100vh - 60px);
     }
   }

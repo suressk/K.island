@@ -1,9 +1,5 @@
 <template>
-  <button
-    class="upload-file btn"
-    :class="btnType"
-    @click="handleClick"
-  >
+  <button class="upload-file btn" :class="btnType" @click="handleClick">
     <slot>Upload</slot>
     <input
       type="file"
@@ -11,13 +7,13 @@
       :accept="accept"
       ref="fileInpRef"
       @change="fileChange"
-    >
+    />
   </button>
 </template>
 
-<script>
-import {defineComponent} from 'vue'
-import {warningNotify} from '../utils/util'
+<script lang="ts">
+import { defineComponent } from 'vue'
+import { warningNotify } from '../utils'
 
 export default defineComponent({
   name: "UploadButton",
@@ -38,7 +34,7 @@ export default defineComponent({
     }
   },
   computed: {
-    btnType({type}) {
+    btnType({ type }) {
       return `btn-${type}`
     }
   },
@@ -71,7 +67,7 @@ export default defineComponent({
     },
     emitFormData(file) {
       const fd = new FormData()
-      fd.append([this.uploadFilename], file.name)
+      fd.append(this.uploadFilename, file.name)
       fd.append('file', file)
       this.$emit('change', fd)
     },
@@ -96,6 +92,5 @@ export default defineComponent({
   .select-file-input {
     display: none !important;
   }
-
 }
 </style>
