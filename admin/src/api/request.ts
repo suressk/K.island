@@ -15,6 +15,7 @@ const service: AxiosInstance = axios.create({
 const handleError = (err: ErrorResponse) => {
     if (err.code === 'ECONNABORTED' && err.message.includes('timeout')) {
         errorNotify('Request Timeout, Please Wait For Trying Again Later...', 'Timeout')
+        return Promise.reject(err)
     }
     if (err.response) {
         // @ts-ignore
@@ -88,4 +89,4 @@ service.interceptors.response.use((resp: AxiosResponse): AxiosResponse<ResponseD
     return resp.data
 }, handleError)
 
-export { service as axios }
+export default service

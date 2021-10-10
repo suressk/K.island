@@ -16,7 +16,7 @@ export interface ErrorResponse {
     response: Response
 }
 
-export interface ResponseData<D> extends PromiseLike<any>{
+export interface ResponseData<D> {
     success: boolean
     message: string
     data: D
@@ -38,6 +38,11 @@ export interface CommentListRes extends ListRes<CommentItem[]> {
 export type RecordListResponseData = ResponseData<ListRes<YearDataList<RecordItem>>>
 
 export type LoginResponse = ResponseData<TokenInfo>
+// export type LoginResponse = {
+//     success: boolean
+//     message: string
+//     data: TokenInfo
+// }
 
 /**
  * 文章相关
