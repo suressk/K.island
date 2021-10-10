@@ -93,12 +93,24 @@
 
 - ADMIN 端
 
+    旧登录页：
+
     ![LoginPage](./docImgs/login.png)
+
+    新登录页：
+
+    ![NewLoginPage](./docImgs/newLogin.png)
+
+    首页概览：
 
     ![overview](./docImgs/overview.png)
     
+    新增/修改 文章：
+
     ![EditArticle](./docImgs/edit.png)
     
+    评论列表：
+
     ![ManageComments](./docImgs/comment.png)
 
 ## 🙃 目录说明
