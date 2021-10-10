@@ -1,4 +1,4 @@
-import { reactive, toRefs, onMounted } from 'vue'
+import { reactive, ref, toRefs, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { getOverviewData } from '../../api/api'
 import { errorNotify, warningNotify } from '../../utils'
@@ -66,7 +66,7 @@ export default function useOverview() {
 
     const store = useStore()
 
-    let pieOption: EChartsOption = {} // 普通对象存储即可
+    let pieOption = ref<EChartsOption>({}) // 普通对象存储即可
     const articleInfo = reactive({
         total: 0,
         ctime: 0
@@ -88,7 +88,7 @@ export default function useOverview() {
             articleInfo.ctime = ctime
             commentInfo.comments = comments
             commentInfo.unread = unread
-            pieOption = createPieOption(chartOption)
+            pieOption.value = createPieOption(chartOption)
             store.commit(M_SET_UNREAD, unread)
         }).catch(err => {
             errorNotify(err.message)
@@ -105,20 +105,3 @@ export default function useOverview() {
         ...toRefs(commentInfo)
     }
 }
-
-// setTimeout(() => {
-//     lineOption.value = {
-//         tooltip: {
-//             trigger: 'axis'
-//         },
-//         xAxis: {
-//             data: ['6:00', '8:00', '10:00', '12:00', '14:00', '16:00']
-//         },
-//         yAxis: {},
-//         series: [{
-//             type: 'line',
-//             smooth: true,
-//             data: [5, 10, 26, 53, 12, 8]
-//         }]
-//     }
-// }, 2000)
