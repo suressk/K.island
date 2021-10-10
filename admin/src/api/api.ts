@@ -8,6 +8,7 @@ import {
 import {
   DeleteImageParams,
   LoginParams,
+  LoginResponse,
   NewArticleParams,
   QueryArticleListParams,
   ArticleIds,
@@ -21,9 +22,10 @@ import {
   QuerySubscribeParams,
   DeleteSubscribeParams
 } from '../types'
+import { AxiosPromise } from 'axios'
 
 // 登录
-export const login = (params: LoginParams) => postAction('/login', params)
+export const login = (params: LoginParams) => postAction<LoginResponse>('/login', params)
 // const logout = (params: LoginInfo) => postAction('/logout', params)
 
 // 首页概览

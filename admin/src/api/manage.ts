@@ -1,9 +1,10 @@
-import { axios } from './request'
+import { AxiosPromise, AxiosResponse } from 'axios'
+import axios from './request'
 
 type URL = string
 type Params = undefined | object
 
-export function getAction (url: URL, params?: Params) {
+export function getAction<D>(url: URL, params?: Params): Promise<AxiosResponse<D>> {
   return axios({
     url,
     method: 'get',
@@ -11,7 +12,7 @@ export function getAction (url: URL, params?: Params) {
   })
 }
 
-export function postAction (url: URL, data: Params = {}) {
+export function postAction<D>(url: URL, data: Params = {}): Promise<AxiosResponse<D>> {
   return axios({
     url,
     method: 'post',
@@ -22,7 +23,7 @@ export function postAction (url: URL, data: Params = {}) {
 /**
  * 修改
  * */
-export function putAction (url: URL, data: Params) {
+export function putAction<D>(url: URL, data: Params): AxiosPromise<D> {
   return axios({
     url,
     method: 'put',
@@ -30,7 +31,7 @@ export function putAction (url: URL, data: Params) {
   })
 }
 
-export function deleteAction (url: URL, data: Params = {}) {
+export function deleteAction<D>(url: URL, data: Params = {}): AxiosPromise<D> {
   return axios({
     url: url,
     method: 'delete',
@@ -38,7 +39,7 @@ export function deleteAction (url: URL, data: Params = {}) {
   })
 }
 
-export function postUploadImage (url: string, data: FormData) {
+export function postUploadImage<D>(url: string, data: FormData): AxiosPromise<D> {
   return axios({
     url,
     data,

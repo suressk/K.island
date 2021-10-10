@@ -11,15 +11,15 @@
       <span class="circle" />
       <div class="form-item login-header d-flex">
         <span class="avatar flex-center">
-          <img src="../assets/images/avatar.png" alt="author">
+          <img src="../assets/images/avatar.png" alt="author" />
         </span>
-        <!-- <span>登录</span> -->
+        <h1 class="island">K.island</h1>
       </div>
       <div class="form-item">
         <label class="ipt-item">
           <input type="text" required v-model="username" autocomplete="off" />
           <span class="tip-label">Username</span>
-          <span class="border-line"/>
+          <span class="border-line" />
         </label>
       </div>
       <div class="form-item">
@@ -32,11 +32,16 @@
             @keyup.enter="handleLogin"
           />
           <span class="tip-label">Password</span>
-          <span class="border-line"/>
+          <span class="border-line" />
         </label>
       </div>
       <div class="form-item">
-        <button class="btn btn-primary btn-login" @click="handleLogin" type="button">LOGIN</button>
+        <button
+          class="btn btn-primary btn-login"
+          :disabled="disabled"
+          @click="handleLogin"
+          type="button"
+        >GO</button>
       </div>
     </div>
     <div class="hint">Hope that all the good things will come on schedule...</div>
@@ -44,19 +49,18 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, toRefs} from 'vue'
-import {useRouter} from 'vue-router'
-import {login} from '../api/api'
+import { defineComponent, reactive, toRefs, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { login } from '../api/api'
 import {
   successNotify,
   warningNotify,
   errorNotify,
-  setCookie,
   setStorageToken,
   setStorageItem
 } from '../utils/util'
-import {LoginInfo, LoginResponse} from '../types'
-import {ACCESS_TOKEN, TOKEN_EXPIRED} from '../store/mutation-types'
+import { LoginInfo, LoginResponse } from '../types'
+import { TOKEN_EXPIRED } from '../store/mutation-types'
 import md5 from 'md5'
 
 export default defineComponent({
@@ -68,34 +72,37 @@ export default defineComponent({
     })
     const router = useRouter()
 
-    function handleLogin() {
+    const disabled = computed(() => (!loginInfo.username || !loginInfo.password))
+
+    async function handleLogin() {
       if (!loginInfo.username || !loginInfo.password) {
         warningNotify('username or password is empty!')
         return
       }
-      login({
-        username: loginInfo.username,
-        password: md5(loginInfo.password)
+      try {
+        // 登录请求
         // @ts-ignore
-      }).then((res: LoginResponse) => {
-        if (res.success) {
-          successNotify(res.message)
-          setStorageToken(res.data)
-          setCookie(ACCESS_TOKEN, res.data.token, res.data.expireTime)
+        const { success, data, message }: LoginResponse = await login({
+          username: loginInfo.username,
+          password: md5(loginInfo.password)
+        })
+
+        if (success) {
+          successNotify(message)
+          setStorageToken(data)
           setStorageItem(TOKEN_EXPIRED, 0)
-          router.push('/') // 移除延迟 500ms 跳转首页
-          // setTimeout(() => {
-          // }, 500)
+          router.push('/')
         } else {
-          warningNotify(res.message)
+          warningNotify(message)
         }
-      }).catch(err => {
-        errorNotify(err.message)
-      })
+      } catch (error) {
+        errorNotify(error?.message ?? 'Login Failed...')
+      }
     }
 
     return {
       ...toRefs(loginInfo),
+      disabled,
       handleLogin
     }
   }
