@@ -22,7 +22,7 @@
           </label>
         </div>
         <div class="btn-container">
-          <button class="btn btn-primary" :disabled="notAllowed" @click="handleVerifyCode">SUBMIT</button>
+          <button class="btn btn-primary" :disabled="disabled" @click="handleVerifyCode">SUBMIT</button>
         </div>
       </div>
     </div>
@@ -47,7 +47,7 @@ export default defineComponent({
     const name = ref<string>('')
     const code = ref<string>('')
 
-    const notAllowed = computed(() => ((!code.value) || (!email.value) || (!name.value)))
+    const disabled = computed(() => ((!code.value) || (!email.value) || (!name.value)))
 
     async function handleVerifyCode() {
       try {
@@ -76,7 +76,7 @@ export default defineComponent({
     return {
       name,
       code,
-      notAllowed,
+      disabled,
       handleVerifyCode
     }
   },

@@ -4,17 +4,21 @@
       <h1 class="header-l-nav d-flex">
         <nuxt-link class="logo flex-center" to="/">K.</nuxt-link>
         <span class="k-play flex-center">
-          <i class="iconfont" :class="playIcon" @click="handleTogglePlayMusic" />
+          <i class="iconfont" :class="playIcon" @click="toggleMusic" />
         </span>
       </h1>
       <span class="k-title txt-overflow" :title="title" :class="{ active: showTitle }">{{ title }}</span>
+
       <ul class="header-r-nav flex-center">
         <li class="r-nav-item flex-center qrcode">
-          <i class="iconfont icon-qrcode trans-all-03" />
-          <div class="drop-down flex-center">
-            <canvas class="qrcode" ref="qrcodeRef" />
-            <span class="tip">在手机上查看本页内容</span>
-          </div>
+          <i class="iconfont icon-menu" />
+          <ul class="drop-down flex-col-center">
+            <li v-for="nav in navList" :key="nav.title">
+              <nuxt-link :to="nav.path" class="nav-item">{{ nav.title }}</nuxt-link>
+            </li>
+            <!-- <canvas class="qrcode" ref="qrcodeRef" />
+            <span class="tip">在手机上查看本页内容</span>-->
+          </ul>
         </li>
         <li class="r-nav-item">
           <nuxt-link class="link flex-center" to="/contact">
@@ -36,6 +40,7 @@
 
 <script lang='ts'>
 import { defineComponent } from '@nuxtjs/composition-api'
+import { navList } from '~/utils'
 import useHeader from './useHeader'
 
 export default defineComponent({
@@ -56,6 +61,7 @@ export default defineComponent({
   },
   setup(props) {
     return {
+      navList,
       ...useHeader(props)
     }
   }

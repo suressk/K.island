@@ -100,7 +100,7 @@ export default function useIndex() {
     })
   }
 
-  function handleToDetail(info: ArticleDetail) {
+  function handleToDetail(info: ArticleItem) {
     const { uid, id } = info
     vm.$router.push({
       path: `/article/${uid}_${id}`

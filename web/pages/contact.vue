@@ -3,29 +3,36 @@
     <KHeader />
 
     <div class="content">
-      <h3 class="title">你好！我是 小K.</h3>
-      <p class="part">PART 1 《K.》</p>
+      <h3 class="title">✨&nbsp;&nbsp;你好！我是 小K.</h3>
+      <p class="part">PART 1 《小思》</p>
       <ul class="introduce-list">
-        <li class="item">脚踩 95 后边缘的 小K.</li>
-        <li class="item">家居巴蜀之旁，毗邻三峡之坝</li>
-        <li class="item">屋后尚有群山环绕，门前也有小河潺潺</li>
-        <li class="item">常年佛系人生，却也偶叹人生几何</li>
-        <li class="item">偶有重温经典，但无热血追捧</li>
-        <li class="item">心有指点江山之意，却扰倦怠缠身之难</li>
+        <li class="item">秋风拂面过，不识人间疾</li>
+        <li class="item">喧嚣的城市，繁华的街道</li>
+        <li class="item">皆与你无关而已</li>
+        <li class="item">人来人往的街道，霓虹闪烁的高楼</li>
+        <li class="item">恰似水中花、镜中月一般</li>
+        <li class="item">只是因为万家灯火没有一处属于你罢了</li>
       </ul>
-      <p class="part">PART 2 《酒与愁》</p>
+      <p class="part">PART 2 《孤独》</p>
       <ul class="introduce-list">
-        <li class="item">人生不过二两酒，一两心酸一两愁</li>
-        <li class="item">昨日心酸酿成酒，苦酒入喉今日愁</li>
-        <li class="item">浮生溺毙杯中物，今日不做明日愁</li>
+        <li class="item">每个人都只能陪你走一段路，迟早都是要分开的</li>
+        <!-- <li class="item">18 岁，孤独是为了拥抱一个人，哭着拥抱了整个班</li> -->
+        <li class="item">20 岁，孤独是从此故乡只有冬夏，再无春秋</li>
+        <li class="item">24 岁，孤独是独自的承受和自我的治愈</li>
+        <li class="item">25 岁，孤独是陌生的城市和拥挤的地铁</li>
+        <li class="item">30 岁，孤独是逝去的年华和父母的白发</li>
       </ul>
+      <p class="part">坦然地面对孤独带来的伤感和难过，可能是对成熟的认知吧</p>
+      <p class="part">PART 3</p>
       <p class="part">你好，陌生人，承蒙遇见，三生有幸~</p>
-      <p class="part">佛曰：前世五百次的回眸才换得今世的擦肩而过。前世的我莫不是用了千百次的回眸才能换得今生的你在此驻足停留？！哈哈哈~</p>
+      <p class="part">佛曰：前世五百次的回眸才换得今世的擦肩而过。前世的我莫不是用了千百次的回眸才能换得今生的你在此驻足停留？！</p>
       <p class="part">
         茫茫人海中，人与人相遇、相知乃至相爱、相守是皆是十分不易的事情，
         希望大家能够珍惜缘分，生命的轮转就是轮回，一个人的生命只有一次！
         佛没说今世该如何做，但佛也算说了，因果就在轮回之中...
       </p>
+      <p class="part">仅愿你，能遇良人，在我看不到的地方 [安然无恙]。如此，便好&nbsp;&nbsp;♥️</p>
+
       <div class="link-area">
         <span class="link-item">
           <i class="iconfont icon-wechat" />
@@ -40,9 +47,9 @@
             <span class="txt-overflow">🍸&nbsp;&nbsp;{{ AuthorInfo.outlook }}</span>
           </span>
         </span>
-        <a class="link-item" href="https://github.com/suressk" target="_blank">
+        <a class="link-item" href="https://github.com/suressk/K.island" target="_blank">
           <i class="iconfont icon-github" />
-          <span class="k-popover flex-col-start">
+          <span class="k-popover d-flex">
             <span class="txt-overflow">🤞&nbsp;&nbsp;去点个 star 叭 ~</span>
           </span>
         </a>

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch *.ts --ignore node_modules/* --exec \"ts-node\" app.ts",
+    "dev": "nodemon --watch *.ts --ignore node_modules/* --exec \"ts-node\" app.ts",
     "build": "tsc"
   },
   "keywords": [

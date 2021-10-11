@@ -7,9 +7,11 @@
       <div class="subscription-form">
         <h3 class="subscription-title">浮生如梦，为欢几何？</h3>
         <p class="subscription-txt">佛曰：前世的五百次回眸才换得今世的擦肩而过。</p>
-        <p
-          class="subscription-txt"
-        >茫茫人海中，人与人的相遇、相知皆是一件十分不易的事情，望你能够珍惜缘分！愿你雨天有伞，天黑有灯，愿你惦念的人能和你互道晚安，独闯的日子里不觉得孤单。愿你，在我看不到的地方 [安然无恙]</p>
+        <p class="subscription-txt">
+          茫茫人海中，人与人的相遇、相知皆是一件十分不易的事情，望你能够珍惜缘分！
+          愿你雨天有伞，天黑有灯，愿你惦念的人能和你互道晚安，独闯的日子里不觉得孤单。
+          愿你，在我看不到的地方 [安然无恙]
+        </p>
         <p class="subscription-txt">佛曰：世间所有的相遇皆因缘起。你我，亦是如此...</p>
         <p class="subscription-txt tip">(订阅本栈，你将第一时间收到新文章发布的通知邮件)</p>
         <div class="d-flex" style="margin-top: 40px">

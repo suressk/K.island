@@ -28,6 +28,11 @@ const common = {
     /** 首页图片懒加载 */
     const listenList: ILoadImageItem[] = []
 
+    // 使用函数，切换路由，可清除监听事件
+    const watch = () => {
+      throttle(() => listenList.map(img => lazyLoadImg(img)), 100)()
+    }
+
     Vue.directive('lazy', {
       inserted: (el: HTMLImageElement, binding: { value: any }) => {
         const src = binding.value
@@ -37,11 +42,6 @@ const common = {
       }
     })
 
-    // 使用函数，切换路由，可清除监听事件
-    const watch = () => {
-      throttle(() => listenList.map(img => lazyLoadImg(img)), 100)()
-    }
-
     // 图片懒加载
     const lazyLoadImg = (loadItem: ILoadImageItem) => {
       const { el, src } = loadItem
@@ -49,7 +49,7 @@ const common = {
       const elInfo = el.getBoundingClientRect()
       const show = elInfo.bottom + 100 > 0 && elInfo.top - windowHeight < 0
       if (src && show) {
-        let img = new Image()
+        const img = new Image()
         img.src = src
         img.onload = () => {
           el.src = src

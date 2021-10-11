@@ -10,7 +10,7 @@ import {
 } from '@nuxtjs/composition-api'
 import { addListener, removeListener, throttle, warnNotify } from '~/utils/util'
 import { domainUrl } from '~/plugins/axios'
-import QRCode from 'qrcode'
+// import QRCode from 'qrcode'
 
 export default function useHeader(props: any) {
   const vm = getCurrentInstance()!
@@ -22,14 +22,14 @@ export default function useHeader(props: any) {
   const viewProgress = ref<string>('0')
 
   const playIcon = computed(() => {
-    return playing.value ? 'icon-paused': 'icon-play'
+    return playing.value ? 'icon-paused' : 'icon-play'
   })
 
   const defaultMusic = computed(() => `${domainUrl}/uploads/music/momentaryEternity.mp3`) // 默认不会变（不必为计算属性）
 
   let rafId: null | number = null
 
-  function handleScroll () {
+  function handleScroll() {
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
     const scrollHeight = document.documentElement.offsetHeight || document.body.offsetHeight
     const winHeight = window.innerHeight
@@ -44,7 +44,7 @@ export default function useHeader(props: any) {
     showTitle.value && (showTitle.value = false)
   }
 
-  function updateMusicProgress () {
+  function updateMusicProgress() {
     const currentTime = audio!.currentTime || 0
     const totalTime = audio!.duration || 0
     musicProgress.value = ((currentTime / totalTime) * 100).toFixed(2) + '%'
@@ -52,7 +52,7 @@ export default function useHeader(props: any) {
   }
 
   // Toggle to play music
-  function handleTogglePlayMusic () {
+  function toggleMusic() {
     if (!audio || !canPlay.value) {
       return warnNotify('音乐加载失败，人家不给免费获取音乐资源了~', 4000)
     }
@@ -94,12 +94,12 @@ export default function useHeader(props: any) {
 
   onMounted(() => {
     audio = vm.refs.musicRef as HTMLAudioElement
-    
+
     // 手机端貌似不能监听到此事件触发，从而导致音乐无法播放，故改用时长判断去重载音乐
     // addListener(audio, 'canplaythrough', listenMusicLoaded)
 
-    const qrCodeContainer = vm.refs.qrcodeRef as HTMLCanvasElement
-    QRCode.toCanvas(qrCodeContainer, window.location.href)
+    // const qrCodeContainer = vm.refs.qrcodeRef as HTMLCanvasElement
+    // QRCode.toCanvas(qrCodeContainer, window.location.href)
     props.needScroll && addListener(document, 'scroll', fnScroll)
 
     setTimeout(() => {
@@ -123,6 +123,6 @@ export default function useHeader(props: any) {
     defaultMusic,
     viewProgress,
     musicProgress,
-    handleTogglePlayMusic
+    toggleMusic
   }
 }
