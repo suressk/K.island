@@ -62,7 +62,7 @@ export function loadTextures() {
   
 }
 
-export function rainInit(containerId) {
+export default function rainInit(containerId) {
   canvas = document.getElementById(containerId);
 
   let dpi = window.devicePixelRatio;

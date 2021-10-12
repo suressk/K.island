@@ -119,6 +119,6 @@ export function setRectangle(gl, x, y, width, height) {
     x2, y2]), gl.STATIC_DRAW);
 }
 
-function error(msg) {
+export default function error(msg) {
   console.error(msg);
 }

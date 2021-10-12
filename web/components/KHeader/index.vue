@@ -12,14 +12,16 @@
       <ul class="header-r-nav flex-center">
         <li class="r-nav-item flex-center qrcode">
           <i class="iconfont icon-menu" />
+
+          <!-- <canvas class="qrcode" ref="qrcodeRef" />
+          <span class="tip">在手机上查看本页内容</span>-->
           <ul class="drop-down flex-col-center">
             <li v-for="nav in navList" :key="nav.title">
               <nuxt-link :to="nav.path" class="nav-item">{{ nav.title }}</nuxt-link>
             </li>
-            <!-- <canvas class="qrcode" ref="qrcodeRef" />
-            <span class="tip">在手机上查看本页内容</span>-->
           </ul>
         </li>
+
         <li class="r-nav-item">
           <nuxt-link class="link flex-center" to="/contact">
             <img class="avatar" src="~~/static/images/avatar.png" alt="K." />
@@ -27,6 +29,7 @@
         </li>
       </ul>
     </div>
+
     <audio ref="musicRef" preload="metadata" loop="loop">
       <source type="audio/mpeg" :src="music" />
       <!-- 默认加载本服务器音乐 -> 因为人家毕竟要收费 -->

@@ -25,11 +25,14 @@
     "nuxt": "^2.14.12"
   },
   "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
     "@nuxt/types": "^2.14.12",
     "@nuxt/typescript-build": "^2.0.4",
     "@types/marked": "^1.2.2",
     "@types/md5": "^2.3.0",
     "@types/nprogress": "^0.2.0",
+    "babel-loader": "^8.2.2",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "prettier": "^2.2.1",
@@ -37,8 +40,8 @@
     "sass-loader": "^10.1.1"
   },
   "resolutions": {
-    "@babel/core": "7.14.2",
-    "@babel/preset-env": "7.12.17"
+    "@babel/core": "7.15.8",
+    "@babel/preset-env": "7.15.8"
   },
   "config": {
     "nuxt": {

@@ -25,7 +25,7 @@ import {
   CURRENT_PAGE,
   TOTAL_ITEMS
 } from '~/store/mutation-types'
-import { loadTextures, rainInit } from '~/components/rainEffect'
+import rainInit, { loadTextures } from '~/components/rainEffect'
 import { ArticleItem, ArticleDetail } from '~/types'
 
 /**

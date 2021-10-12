@@ -25,3 +25,5 @@ export function random(from = null, to = null, interpolation = null) {
 export function chance(c) {
     return random() <= c;
 }
+
+export default {}
