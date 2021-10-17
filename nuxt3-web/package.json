@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "nuxt dev --port 8108",
+    "dev": "nuxt dev -o --port 8108",
     "build": "nuxt build",
     "start": "node .output/server/index.mjs"
   },
