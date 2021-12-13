@@ -19,7 +19,8 @@
 
 ## 🏴‍☠️ ONE PIECE
 
-<img src="http://suressk.com/_nuxt/img/sunny.e630428.webp">
+【服务器】没续费了，所以暂时看不了效果了，实际效果就拉下来，自己运行一下看吧～
+<!-- <img src="http://suressk.com/_nuxt/img/sunny.e630428.webp"> -->
 
 ## 👻 好戏开场了
 
