@@ -86,6 +86,9 @@
 
     - [x] http 请求处理，数据库数据交互
 
+## Star History
+![Star History Chart](https://api.star-history.com/svg?repos=suressk%2Fk.island&type=Date)
+
 ## 🤪 效果图
 
 - WEB 端直接去网站看吧，就不贴图了 → [suressk.com](http://suressk.com)
@@ -138,13 +141,6 @@
 > 泪滴春衫酒易醒。
 
 > 珍惜所有的不期而遇，看淡所有的不辞而别。
-
-## 😍 要请我喝杯咖啡吗？
-
-<div style="width: 100%;">
-    <img src="./docImgs/wechat.jpg" style="width: 40%;margin: 0 20px;" alt="wechat" title="wechat">
-    <img src="./docImgs/ali.png" style="width: 40%;margin: 0 20px;" alt="alipay" title="alipay">
-</div>
 
 <!-- ![wechat](./docImgs/wechat.jpg) -->
 
